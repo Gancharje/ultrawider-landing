@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Ultrawider — Chrome extension that converts 16:9 video to true 21:9 ultrawide using content-aware S-curve warping. No black bars, no distorted faces." />
+  <meta name="theme-color" content="#0a0a0a" />
+  <meta property="og:title" content="Ultrawider — Watch any video in true 21:9 ultrawide" />
+  <meta property="og:description" content="Content-aware S-curve warping converts 16:9 video to 21:9 without distorting faces or UI." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ultrawider.net" />
+  <title>Ultrawider — Watch any video in true 21:9 ultrawide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a href="/" class="logo">
+        <span class="logo-mark"></span>
+        <span class="logo-text">Ultrawider</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#how">How it works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <a href="#" class="btn btn-primary btn-sm">Add to Chrome</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Chrome Extension</span>
+          <h1>Watch any video in true 21:9 ultrawide</h1>
+          <p class="lede">
+            Content-aware S-curve warping converts 16:9 video to 21:9 without
+            distorting faces or UI. No black bars. No squashed people.
+          </p>
+          <div class="hero-cta">
+            <a href="#" class="btn btn-primary btn-lg">Add to Chrome — Free</a>
+            <a href="#how" class="btn btn-ghost btn-lg">See how it works</a>
+          </div>
+          <ul class="hero-bullets">
+            <li>Works instantly on YouTube</li>
+            <li>Original video quality preserved</li>
+            <li>One-click toggle, no setup</li>
+          </ul>
+        </div>
+
+        <div class="hero-media">
+          <div class="video-frame">
+            <video
+              class="hero-video"
+              autoplay muted loop playsinline
+              poster=""
+              preload="metadata"
+              onerror="this.parentElement.classList.add('video-failed')"
+            >
+              <source src="demo/ultrawider-demo.mp4" type="video/mp4" />
+            </video>
+            <div class="video-fallback" aria-hidden="true">
+              <div class="fallback-bars">
+                <div class="bar bar-1"></div>
+                <div class="bar bar-2"></div>
+                <div class="bar bar-3"></div>
+              </div>
+              <p>Demo loading…</p>
+            </div>
+          </div>
+          <p class="media-caption">Live demo — 16:9 source → 21:9 content-aware warp</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how" class="section">
+      <div class="container">
+        <header class="section-head">
+          <span class="eyebrow">How it works</span>
+          <h2>Three steps. Zero configuration.</h2>
+        </header>
+
+        <ol class="steps">
+          <li class="step">
+            <div class="step-num">1</div>
+            <h3>Install extension</h3>
+            <p>Add Ultrawider to Chrome in one click. No account required for the free tier.</p>
+          </li>
+          <li class="step">
+            <div class="step-num">2</div>
+            <h3>Open any video</h3>
+            <p>Go to YouTube — or Twitch, Vimeo, embedded players with Pro — and start watching as usual.</p>
+          </li>
+          <li class="step">
+            <div class="step-num">3</div>
+            <h3>Toggle ultrawide mode</h3>
+            <p>Click the Ultrawider icon, or hit the keyboard shortcut. Done — your 21:9 monitor is full.</p>
+          </li>
+        </ol>
+
+        <div class="scurve-explainer">
+          <div class="scurve-text">
+            <h3>What is S-curve warping?</h3>
+            <p>
+              Naive stretching makes everyone look short and wide. Ultrawider applies
+              a <strong>content-aware S-curve</strong>: pixels at the edges of the
+              frame are warped more aggressively, while the center — where faces, UI
+              elements, and on-screen text usually sit — is left almost untouched.
+              The result: a true 21:9 fill where the subject still looks like a real
+              person, not a melted action figure.
+            </p>
+          </div>
+          <div class="scurve-visual" aria-hidden="true">
+            <div class="scurve-row">
+              <span class="scurve-label">16:9 source</span>
+              <div class="scurve-box scurve-source"></div>
+            </div>
+            <div class="scurve-arrow">→ S-curve</div>
+            <div class="scurve-row">
+              <span class="scurve-label">21:9 output</span>
+              <div class="scurve-box scurve-output">
+                <div class="scurve-grid"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="secondary-demo">
+          <h3>Another example</h3>
+          <div class="video-frame video-frame-wide">
+            <video
+              autoplay muted loop playsinline preload="metadata"
+              onerror="this.parentElement.classList.add('video-failed')"
+            >
+              <source src="demo/ultrawider-sample.mp4" type="video/mp4" />
+            </video>
+            <div class="video-fallback" aria-hidden="true">
+              <p>Sample loading…</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing" class="section section-alt">
+      <div class="container">
+        <header class="section-head">
+          <span class="eyebrow">Pricing</span>
+          <h2>Free for YouTube. Pro for everything else.</h2>
+          <p class="section-sub">Cancel anytime. 30-day money-back guarantee on every paid plan.</p>
+        </header>
+
+        <div class="pricing-grid">
+          <div class="plan">
+            <div class="plan-head">
+              <h3>Free</h3>
+              <div class="plan-price"><span class="price">$0</span><span class="period">forever</span></div>
+            </div>
+            <ul class="plan-features">
+              <li>S-curve warping on YouTube</li>
+              <li>One-click toggle</li>
+              <li>Original video quality</li>
+              <li>No account required</li>
+            </ul>
+            <a href="#" class="btn btn-ghost btn-block">Add to Chrome</a>
+          </div>
+
+          <div class="plan plan-featured">
+            <div class="plan-badge">Best value</div>
+            <div class="plan-head">
+              <h3>Pro Annual</h3>
+              <div class="plan-price"><span class="price">$29</span><span class="period">/ year</span></div>
+              <div class="plan-save">≈ $2.42/mo · save ~40% vs monthly</div>
+            </div>
+            <ul class="plan-features">
+              <li>Everything in Free</li>
+              <li>All video sites: Twitch, Vimeo, embeds, any &lt;video&gt;</li>
+              <li>Basic CSS stretch for DRM content (Netflix, Disney+)</li>
+              <li>Early access to new features</li>
+              <li>Priority email support</li>
+            </ul>
+            <a href="#" class="btn btn-primary btn-block">Get Pro Annual</a>
+          </div>
+
+          <div class="plan">
+            <div class="plan-head">
+              <h3>Pro Monthly</h3>
+              <div class="plan-price"><span class="price">$3.99</span><span class="period">/ month</span></div>
+            </div>
+            <ul class="plan-features">
+              <li>Everything in Pro Annual</li>
+              <li>Cancel anytime</li>
+              <li>30-day money-back guarantee</li>
+            </ul>
+            <a href="#" class="btn btn-ghost btn-block">Get Pro Monthly</a>
+          </div>
+
+          <div class="plan">
+            <div class="plan-head">
+              <h3>Pro Lifetime</h3>
+              <div class="plan-price"><span class="price">$49</span><span class="period">one-time</span></div>
+            </div>
+            <ul class="plan-features">
+              <li>Everything in Pro, forever</li>
+              <li>One payment, no renewals</li>
+              <li>All future updates included</li>
+              <li>30-day refund window</li>
+            </ul>
+            <a href="#" class="btn btn-ghost btn-block">Get Lifetime</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section">
+      <div class="container container-narrow">
+        <header class="section-head">
+          <span class="eyebrow">FAQ</span>
+          <h2>Questions, answered</h2>
+        </header>
+
+        <div class="faq-list">
+          <details>
+            <summary>Will it work on Netflix, Disney+ and other DRM services?</summary>
+            <p>Yes — with limitations. DRM-protected streams cannot be processed pixel-by-pixel by extensions, so for services like Netflix and Disney+ Ultrawider falls back to a basic CSS stretch. You get a full-screen 21:9 image, but without the content-aware S-curve. Full warping works on YouTube (Free + Pro) and any other site with non-DRM video (Pro).</p>
+          </details>
+
+          <details>
+            <summary>Does it reduce video quality?</summary>
+            <p>No. Ultrawider operates as a real-time visual filter on top of the original video stream. Source resolution and bitrate are untouched — we just remap the geometry to fill your ultrawide display.</p>
+          </details>
+
+          <details>
+            <summary>Which monitors are supported?</summary>
+            <p>Any ultrawide display: 21:9 (2560×1080, 3440×1440), 32:9 super-ultrawide (5120×1440), or anything wider than standard 16:9. The extension auto-detects your viewport and warps accordingly.</p>
+          </details>
+
+          <details>
+            <summary>What is your refund policy?</summary>
+            <p>30-day money-back guarantee on every paid plan, no questions asked. Email <a href="mailto:hello@ultrawider.net">hello@ultrawider.net</a> with the subject line "Refund Request" and we'll process it within 5–7 business days. See the <a href="refund.html">full refund policy</a>.</p>
+          </details>
+
+          <details>
+            <summary>What about my privacy?</summary>
+            <p>Ultrawider processes video locally inside your browser. We do not see, log, or transmit your viewing activity, browser history, or video content. We collect only what's strictly needed to deliver a paid subscription: email for receipts, and anonymous usage analytics. Full details in the <a href="privacy.html">privacy policy</a>.</p>
+          </details>
+
+          <details>
+            <summary>Can I cancel anytime?</summary>
+            <p>Yes. Cancel from your account dashboard or by email at any time. You keep Pro access through the end of the period you've already paid for — we don't pro-rate, but we don't charge again either.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section cta-section">
+      <div class="container container-narrow cta-box">
+        <h2>Fill your ultrawide. Today.</h2>
+        <p>Free forever on YouTube. Pro for everything else.</p>
+        <a href="#" class="btn btn-primary btn-lg">Add to Chrome — Free</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a href="/" class="logo">
+          <span class="logo-mark"></span>
+          <span class="logo-text">Ultrawider</span>
+        </a>
+        <p class="footer-tag">Built for ultrawide.</p>
+      </div>
+      <nav class="footer-nav">
+        <h4>Product</h4>
+        <a href="#how">How it works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <nav class="footer-nav">
+        <h4>Legal</h4>
+        <a href="terms.html">Terms of Service</a>
+        <a href="privacy.html">Privacy Policy</a>
+        <a href="refund.html">Refund Policy</a>
+      </nav>
+      <div class="footer-nav">
+        <h4>Contact</h4>
+        <a href="mailto:hello@ultrawider.net">hello@ultrawider.net</a>
+      </div>
+    </div>
+    <div class="container footer-bottom">
+      <span>© 2026 Ultrawider. All rights reserved.</span>
+    </div>
+  </footer>
+
+</body>
+</html>
