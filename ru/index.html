@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Ultrawider — расширение для Chrome, которое превращает YouTube в настоящий ультраширокий 21:9 кинотеатр с помощью content-aware S-образного искажения. Альфа-доступ за $3.99." />
+  <meta name="theme-color" content="#0a0a0a" />
+  <meta property="og:title" content="Ultrawider — Превратите YouTube в ультраширокий кинотеатр" />
+  <meta property="og:description" content="Content-aware S-curve превращает 16:9 YouTube в настоящие 21:9 без искажения лиц и интерфейса." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://ultrawider.net/ru/" />
+  <link rel="alternate" hreflang="en" href="https://ultrawider.net/" />
+  <link rel="alternate" hreflang="ru" href="https://ultrawider.net/ru/" />
+  <link rel="alternate" hreflang="x-default" href="https://ultrawider.net/" />
+  <title>Ultrawider — Превратите YouTube в ультраширокий кинотеатр</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+  <link rel="stylesheet" href="/style.css" />
+  <script src="/lang-switch.js" defer></script>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a href="/ru/" class="logo">
+        <span class="logo-mark"></span>
+        <span class="logo-text">Ultrawider</span>
+      </a>
+      <nav class="nav-links">
+        <a href="#features">Возможности</a>
+        <a href="#pricing">Цена</a>
+        <a href="#faq">Вопросы</a>
+        <div class="lang-switch" data-current="ru">
+          <a href="/" class="lang-alt">EN</a>
+          <span class="lang-sep">/</span>
+          <a href="/ru/" class="lang-current">RU</a>
+        </div>
+        <a href="#pricing" class="btn btn-primary btn-sm">Получить альфу</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="eyebrow">Расширение Chrome · Альфа-доступ</span>
+          <h1>Превратите YouTube в ультраширокий кинотеатр</h1>
+          <p class="lede">
+            Ultrawider растягивает 16:9 YouTube в настоящие 21:9, используя
+            content-aware S-кривую. Лица остаются круглыми, интерфейс — резким,
+            а ультраширокий монитор наконец-то заполняется до краёв.
+          </p>
+          <div class="hero-cta">
+            <a href="#pricing" class="btn btn-primary btn-lg">Получить Ultrawider — $3.99</a>
+            <a href="#" class="btn btn-ghost btn-lg">Установить бесплатную версию</a>
+          </div>
+          <ul class="hero-bullets">
+            <li>Разовый платёж</li>
+            <li>Пожизненные обновления</li>
+            <li>Возврат в течение 14 дней</li>
+          </ul>
+        </div>
+
+        <div class="hero-media">
+          <div class="video-frame">
+            <video
+              class="hero-video"
+              autoplay muted loop playsinline
+              poster=""
+              preload="metadata"
+              onerror="this.parentElement.classList.add('video-failed')"
+            >
+              <source src="/demo/ultrawider-demo.mp4" type="video/mp4" />
+            </video>
+            <div class="video-fallback" aria-hidden="true">
+              <div class="fallback-bars">
+                <div class="bar bar-1"></div>
+                <div class="bar bar-2"></div>
+                <div class="bar bar-3"></div>
+              </div>
+              <p>Загрузка демо…</p>
+            </div>
+          </div>
+          <p class="media-caption">Живое демо — 16:9 источник → 21:9 content-aware warp</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FEATURES -->
+    <section id="features" class="section">
+      <div class="container">
+        <header class="section-head">
+          <span class="eyebrow">Что умеет</span>
+          <h2>Сделано для ультрашироких мониторов. Настроено вручную.</h2>
+        </header>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12 C 7 4, 17 20, 21 12" />
+              </svg>
+            </div>
+            <h3>Content-aware S-кривая</h3>
+            <p>Алгоритм растягивает только края кадра, оставляя центр почти нетронутым. Лица, текст и элементы интерфейса в середине сохраняют естественные пропорции — заполняются 21:9 только периферийные трети.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M3 12 h6 M15 12 h6" />
+              </svg>
+            </div>
+            <h3>Регулируемая глубина</h3>
+            <p>Один слайдер управляет силой искажения. Выкрутите на максимум — получите полное 21:9, или оставьте мягкий широкоэкранный эффект. Настройка сохраняется между сессиями.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3" />
+              </svg>
+            </div>
+            <h3>Работает на любом YouTube</h3>
+            <p>Обычные видео, Shorts, встроенные плееры, полноэкранный и театральный режимы — всё поддерживается. Никакой настройки под каждый канал. Включили — забыли.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section id="how" class="section section-alt">
+      <div class="container">
+        <header class="section-head">
+          <span class="eyebrow">Как это работает</span>
+          <h2>Три шага. Без настройки.</h2>
+        </header>
+
+        <ol class="steps">
+          <li class="step">
+            <div class="step-num">1</div>
+            <h3>Установите расширение</h3>
+            <p>Добавьте Ultrawider в Chrome из Web Store. Бесплатная версия ставится за пару секунд — аккаунт не нужен.</p>
+          </li>
+          <li class="step">
+            <div class="step-num">2</div>
+            <h3>Откройте YouTube</h3>
+            <p>Откройте любое видео как обычно. Ultrawider бездействует, пока вы его не включите.</p>
+          </li>
+          <li class="step">
+            <div class="step-num">3</div>
+            <h3>Нажмите активировать</h3>
+            <p>Кликните по кнопке Ultrawider в плеере или используйте горячую клавишу. Ваш 21:9 монитор заполнен.</p>
+          </li>
+        </ol>
+
+        <div class="secondary-demo">
+          <h3>Ещё один пример</h3>
+          <div class="video-frame video-frame-wide">
+            <video
+              autoplay muted loop playsinline preload="metadata"
+              onerror="this.parentElement.classList.add('video-failed')"
+            >
+              <source src="/demo/ultrawider-sample.mp4" type="video/mp4" />
+            </video>
+            <div class="video-fallback" aria-hidden="true">
+              <p>Загрузка примера…</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <section id="pricing" class="section">
+      <div class="container container-narrow">
+        <header class="section-head">
+          <span class="eyebrow">Цена</span>
+          <h2>Альфа-доступ — зафиксируйте $3.99 навсегда</h2>
+          <p class="section-sub">Разовый платёж. Пожизненные обновления. Раннее ценообразование — после релиза цена вырастет.</p>
+        </header>
+
+        <div class="pricing-single">
+          <div class="plan plan-featured plan-single">
+            <div class="plan-badge">Ограниченное время — цена раннего доступа</div>
+            <div class="plan-head">
+              <h3>Альфа-доступ</h3>
+              <div class="plan-price">
+                <span class="price-strike">$34.99</span>
+                <span class="price">$3.99</span>
+                <span class="period">единоразово, навсегда</span>
+              </div>
+              <div class="plan-rub">≈ 320 ₽ <span class="plan-rub-note">по текущему курсу ЦБ РФ</span></div>
+              <div class="plan-save">После релиза цена вырастет.<br/>Зафиксируйте $3.99 навсегда.</div>
+            </div>
+            <ul class="plan-features">
+              <li>Content-aware S-кривая на каждом YouTube-видео</li>
+              <li>Слайдер регулировки глубины</li>
+              <li>Работает в обычном, театральном и полноэкранном режимах</li>
+              <li>Настройки сохраняются между сессиями</li>
+              <li>Пожизненные обновления — никаких продлений</li>
+              <li>Возврат 100% в течение 14 дней без вопросов</li>
+              <li>Приоритетная поддержка по email</li>
+            </ul>
+            <!-- TODO: заменить # на Prodamus checkout URL после получения merchant_id -->
+            <a href="#" class="btn btn-primary btn-block btn-lg">Получить альфу — $3.99</a>
+            <p class="plan-foot">
+              Безопасная оплата через Prodamus. Лицензия приходит на email мгновенно.<br/>
+              <span class="plan-rub-disclaimer">Сумма в рублях рассчитывается по курсу на момент оплаты.</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section id="faq" class="section section-alt">
+      <div class="container container-narrow">
+        <header class="section-head">
+          <span class="eyebrow">FAQ</span>
+          <h2>Вопросы и ответы</h2>
+        </header>
+
+        <div class="faq-list">
+          <details>
+            <summary>Цена останется $3.99?</summary>
+            <p>Для тех, кто покупает в период альфы — да, навсегда. Один раз заплатили — лицензия не истекает. После публичного релиза цена поднимется для новых покупателей, но все, кто зафиксировал $3.99, сохраняют свою цену и получают все будущие обновления бесплатно.</p>
+          </details>
+
+          <details>
+            <summary>Что если меня что-то не устроит?</summary>
+            <p>Полный или частичный возврат в течение 14 дней — без вопросов. Напишите на <a href="mailto:hello@ultrawider.net?subject=Refund%20Request">hello@ultrawider.net</a> с темой "Refund Request" и номером заказа. Возврат проходит за 7–14 рабочих дней на исходный способ оплаты. Подробности — в <a href="/ru/refund.html">политике возвратов</a>.</p>
+          </details>
+
+          <details>
+            <summary>Какие мониторы поддерживаются?</summary>
+            <p>Любой ультраширокий: 21:9 (2560×1080, 3440×1440), 32:9 super-ultrawide (5120×1440), а также любые мониторы шире стандартного 16:9. Расширение само определяет геометрию viewport.</p>
+          </details>
+
+          <details>
+            <summary>Работает ли во всех браузерах?</summary>
+            <p>Chrome 110+ и любые Chromium-браузеры того же поколения (Edge, Brave, Opera, Vivaldi, Arc). Firefox и Safari пока не поддерживаются.</p>
+          </details>
+
+          <details>
+            <summary>Есть ли бесплатная версия?</summary>
+            <p>Да. Бесплатная версия в Chrome Web Store даёт базовую функциональность 21:9 на YouTube. Альфа-доступ открывает content-aware S-кривую, регулировку глубины, сохранение настроек и все будущие Pro-функции.</p>
+          </details>
+
+          <details>
+            <summary>Как я получу лицензию?</summary>
+            <p>Мгновенно по email сразу после подтверждения оплаты Prodamus. В письме приходит ключ активации и ссылка на активацию в один клик.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section cta-section">
+      <div class="container container-narrow cta-box">
+        <h2>Заполните свой ультраширокий. Сегодня.</h2>
+        <p>$3.99 разово. Пожизненные обновления. Возврат 14 дней.</p>
+        <a href="#pricing" class="btn btn-primary btn-lg">Получить альфу — $3.99</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-grid">
+      <div class="footer-brand">
+        <a href="/ru/" class="logo">
+          <span class="logo-mark"></span>
+          <span class="logo-text">Ultrawider</span>
+        </a>
+        <p class="footer-tag">Создано для ультрашироких.</p>
+      </div>
+      <nav class="footer-nav">
+        <h4>Продукт</h4>
+        <a href="#features">Возможности</a>
+        <a href="#how">Как работает</a>
+        <a href="#pricing">Цена</a>
+        <a href="#faq">FAQ</a>
+      </nav>
+      <nav class="footer-nav">
+        <h4>Юридическое</h4>
+        <a href="/ru/terms.html">Условия использования</a>
+        <a href="/ru/privacy.html">Политика конфиденциальности</a>
+        <a href="/ru/refund.html">Политика возвратов</a>
+      </nav>
+      <nav class="footer-nav">
+        <h4>Язык</h4>
+        <a href="/">English</a>
+        <a href="/ru/">Русский</a>
+      </nav>
+    </div>
+
+    <div class="container footer-legal">
+      <div class="footer-operator">
+        <p>
+          <strong>Самозанятый:</strong> Акимов Павел Андреевич<br/>
+          <strong>ИНН:</strong> 482424418541<br/>
+          <strong>Город:</strong> Липецк, Россия<br/>
+          <strong>Контакт:</strong> <a href="mailto:hello@ultrawider.net">hello@ultrawider.net</a>
+        </p>
+        <p class="footer-payment">
+          Платежи обрабатываются через сервис <strong>Prodamus (Продамус)</strong>.
+        </p>
+      </div>
+    </div>
+
+    <div class="container footer-bottom">
+      <span>© 2026 Ultrawider. Все права защищены.</span>
+    </div>
+  </footer>
+
+</body>
+</html>

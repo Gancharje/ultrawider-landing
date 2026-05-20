@@ -3,17 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Ultrawider — Chrome extension that converts 16:9 video to true 21:9 ultrawide using content-aware S-curve warping. No black bars, no distorted faces." />
+  <meta name="description" content="Ultrawider — Chrome extension that transforms YouTube into a true 21:9 ultrawide cinema using content-aware S-curve warping. Get alpha access for $3.99." />
   <meta name="theme-color" content="#0a0a0a" />
-  <meta property="og:title" content="Ultrawider — Watch any video in true 21:9 ultrawide" />
-  <meta property="og:description" content="Content-aware S-curve warping converts 16:9 video to 21:9 without distorting faces or UI." />
+  <meta property="og:title" content="Ultrawider — Transform YouTube into ultrawide cinema" />
+  <meta property="og:description" content="Content-aware S-curve warping turns 16:9 YouTube into true 21:9 ultrawide without distorting faces or UI." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://ultrawider.net" />
-  <title>Ultrawider — Watch any video in true 21:9 ultrawide</title>
+  <link rel="alternate" hreflang="en" href="https://ultrawider.net/" />
+  <link rel="alternate" hreflang="ru" href="https://ultrawider.net/ru/" />
+  <link rel="alternate" hreflang="x-default" href="https://ultrawider.net/" />
+  <title>Ultrawider — Transform YouTube into ultrawide cinema</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
   <link rel="stylesheet" href="style.css" />
+  <script src="lang-switch.js" defer></script>
 </head>
 <body>
 
@@ -24,10 +28,15 @@
         <span class="logo-text">Ultrawider</span>
       </a>
       <nav class="nav-links">
-        <a href="#how">How it works</a>
+        <a href="#features">Features</a>
         <a href="#pricing">Pricing</a>
         <a href="#faq">FAQ</a>
-        <a href="#" class="btn btn-primary btn-sm">Add to Chrome</a>
+        <div class="lang-switch" data-current="en">
+          <a href="/" class="lang-current">EN</a>
+          <span class="lang-sep">/</span>
+          <a href="/ru/" class="lang-alt">RU</a>
+        </div>
+        <a href="#pricing" class="btn btn-primary btn-sm">Get Alpha</a>
       </nav>
     </div>
   </header>
@@ -38,20 +47,21 @@
     <section class="hero">
       <div class="container hero-grid">
         <div class="hero-copy">
-          <span class="eyebrow">Chrome Extension</span>
-          <h1>Watch any video in true 21:9 ultrawide</h1>
+          <span class="eyebrow">Chrome extension · Alpha access</span>
+          <h1>Transform YouTube into ultrawide cinema</h1>
           <p class="lede">
-            Content-aware S-curve warping converts 16:9 video to 21:9 without
-            distorting faces or UI. No black bars. No squashed people.
+            Ultrawider warps 16:9 YouTube video into true 21:9 using a
+            content-aware S-curve. Faces stay round, UI stays sharp, edges
+            get the stretch. Your ultrawide monitor finally fills.
           </p>
           <div class="hero-cta">
-            <a href="#" class="btn btn-primary btn-lg">Add to Chrome — Free</a>
-            <a href="#how" class="btn btn-ghost btn-lg">See how it works</a>
+            <a href="#pricing" class="btn btn-primary btn-lg">Get Ultrawider — $3.99</a>
+            <a href="#" class="btn btn-ghost btn-lg">Install Free Version</a>
           </div>
           <ul class="hero-bullets">
-            <li>Works instantly on YouTube</li>
-            <li>Original video quality preserved</li>
-            <li>One-click toggle, no setup</li>
+            <li>One-time payment</li>
+            <li>Lifetime updates</li>
+            <li>14-day refund</li>
           </ul>
         </div>
 
@@ -80,8 +90,51 @@
       </div>
     </section>
 
+    <!-- FEATURES -->
+    <section id="features" class="section">
+      <div class="container">
+        <header class="section-head">
+          <span class="eyebrow">What it does</span>
+          <h2>Built for ultrawide monitors. Tuned by hand.</h2>
+        </header>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 12 C 7 4, 17 20, 21 12" />
+              </svg>
+            </div>
+            <h3>Content-aware S-curve</h3>
+            <p>The algorithm stretches the edges of the frame and leaves the center almost untouched. Faces, text and UI in the middle of the shot stay natural — only the outer thirds get warped to fill 21:9.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M3 12 h6 M15 12 h6" />
+              </svg>
+            </div>
+            <h3>Adjustable depth</h3>
+            <p>A single slider controls how aggressive the warp is. Crank it for full 21:9 fill, or dial it back for a subtle widescreen feel. Your setting is remembered between sessions.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="5 3 19 12 5 21 5 3" />
+              </svg>
+            </div>
+            <h3>Works with any YouTube video</h3>
+            <p>Standard videos, Shorts, embedded players, fullscreen, theater mode — all supported. No setup per channel or per video. Toggle once and forget.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- HOW IT WORKS -->
-    <section id="how" class="section">
+    <section id="how" class="section section-alt">
       <div class="container">
         <header class="section-head">
           <span class="eyebrow">How it works</span>
@@ -92,46 +145,19 @@
           <li class="step">
             <div class="step-num">1</div>
             <h3>Install extension</h3>
-            <p>Add Ultrawider to Chrome in one click. No account required for the free tier.</p>
+            <p>Add Ultrawider to Chrome from the Web Store. Free version installs in seconds — no account required.</p>
           </li>
           <li class="step">
             <div class="step-num">2</div>
-            <h3>Open any video</h3>
-            <p>Go to YouTube — or Twitch, Vimeo, embedded players with Pro — and start watching as usual.</p>
+            <h3>Open YouTube</h3>
+            <p>Go to any YouTube video as you normally would. Ultrawider sits idle until you turn it on.</p>
           </li>
           <li class="step">
             <div class="step-num">3</div>
-            <h3>Toggle ultrawide mode</h3>
-            <p>Click the Ultrawider icon, or hit the keyboard shortcut. Done — your 21:9 monitor is full.</p>
+            <h3>Click activate</h3>
+            <p>Hit the Ultrawider button in the player, or use the keyboard shortcut. Your 21:9 monitor is full.</p>
           </li>
         </ol>
-
-        <div class="scurve-explainer">
-          <div class="scurve-text">
-            <h3>What is S-curve warping?</h3>
-            <p>
-              Naive stretching makes everyone look short and wide. Ultrawider applies
-              a <strong>content-aware S-curve</strong>: pixels at the edges of the
-              frame are warped more aggressively, while the center — where faces, UI
-              elements, and on-screen text usually sit — is left almost untouched.
-              The result: a true 21:9 fill where the subject still looks like a real
-              person, not a melted action figure.
-            </p>
-          </div>
-          <div class="scurve-visual" aria-hidden="true">
-            <div class="scurve-row">
-              <span class="scurve-label">16:9 source</span>
-              <div class="scurve-box scurve-source"></div>
-            </div>
-            <div class="scurve-arrow">→ S-curve</div>
-            <div class="scurve-row">
-              <span class="scurve-label">21:9 output</span>
-              <div class="scurve-box scurve-output">
-                <div class="scurve-grid"></div>
-              </div>
-            </div>
-          </div>
-        </div>
 
         <div class="secondary-demo">
           <h3>Another example</h3>
@@ -151,78 +177,47 @@
     </section>
 
     <!-- PRICING -->
-    <section id="pricing" class="section section-alt">
-      <div class="container">
+    <section id="pricing" class="section">
+      <div class="container container-narrow">
         <header class="section-head">
           <span class="eyebrow">Pricing</span>
-          <h2>Free for YouTube. Pro for everything else.</h2>
-          <p class="section-sub">Cancel anytime. 30-day money-back guarantee on every paid plan.</p>
+          <h2>Alpha access — lock in $3.99 forever</h2>
+          <p class="section-sub">One-time payment. Lifetime updates. Early-adopter pricing — increases after launch.</p>
         </header>
 
-        <div class="pricing-grid">
-          <div class="plan">
+        <div class="pricing-single">
+          <div class="plan plan-featured plan-single">
+            <div class="plan-badge">Limited time — Early adopter pricing</div>
             <div class="plan-head">
-              <h3>Free</h3>
-              <div class="plan-price"><span class="price">$0</span><span class="period">forever</span></div>
+              <h3>Alpha Access</h3>
+              <div class="plan-price">
+                <span class="price-strike">$34.99</span>
+                <span class="price">$3.99</span>
+                <span class="period">one-time, lifetime</span>
+              </div>
+              <div class="plan-save">Price increases after launch period.<br/>Lock in $3.99 forever.</div>
             </div>
             <ul class="plan-features">
-              <li>S-curve warping on YouTube</li>
-              <li>One-click toggle</li>
-              <li>Original video quality</li>
-              <li>No account required</li>
-            </ul>
-            <a href="#" class="btn btn-ghost btn-block">Add to Chrome</a>
-          </div>
-
-          <div class="plan plan-featured">
-            <div class="plan-badge">Best value</div>
-            <div class="plan-head">
-              <h3>Pro Annual</h3>
-              <div class="plan-price"><span class="price">$29</span><span class="period">/ year</span></div>
-              <div class="plan-save">≈ $2.42/mo · save ~40% vs monthly</div>
-            </div>
-            <ul class="plan-features">
-              <li>Everything in Free</li>
-              <li>All video sites: Twitch, Vimeo, embeds, any &lt;video&gt;</li>
-              <li>Basic CSS stretch for DRM content (Netflix, Disney+)</li>
-              <li>Early access to new features</li>
+              <li>Content-aware S-curve warping on every YouTube video</li>
+              <li>Adjustable depth slider</li>
+              <li>Works in standard, theater, and fullscreen modes</li>
+              <li>Settings remembered between sessions</li>
+              <li>Lifetime updates — no renewals, ever</li>
+              <li>14-day full refund, no questions asked</li>
               <li>Priority email support</li>
             </ul>
-            <a href="#" class="btn btn-primary btn-block">Get Pro Annual</a>
-          </div>
-
-          <div class="plan">
-            <div class="plan-head">
-              <h3>Pro Monthly</h3>
-              <div class="plan-price"><span class="price">$3.99</span><span class="period">/ month</span></div>
-            </div>
-            <ul class="plan-features">
-              <li>Everything in Pro Annual</li>
-              <li>Cancel anytime</li>
-              <li>30-day money-back guarantee</li>
-            </ul>
-            <a href="#" class="btn btn-ghost btn-block">Get Pro Monthly</a>
-          </div>
-
-          <div class="plan">
-            <div class="plan-head">
-              <h3>Pro Lifetime</h3>
-              <div class="plan-price"><span class="price">$49</span><span class="period">one-time</span></div>
-            </div>
-            <ul class="plan-features">
-              <li>Everything in Pro, forever</li>
-              <li>One payment, no renewals</li>
-              <li>All future updates included</li>
-              <li>30-day refund window</li>
-            </ul>
-            <a href="#" class="btn btn-ghost btn-block">Get Lifetime</a>
+            <!-- TODO: replace # with Prodamus checkout URL once merchant_id is finalized -->
+            <a href="#" class="btn btn-primary btn-block btn-lg">Get Alpha Access — $3.99</a>
+            <p class="plan-foot">
+              Secure checkout via Prodamus. Instant license delivery to your email.
+            </p>
           </div>
         </div>
       </div>
     </section>
 
     <!-- FAQ -->
-    <section id="faq" class="section">
+    <section id="faq" class="section section-alt">
       <div class="container container-narrow">
         <header class="section-head">
           <span class="eyebrow">FAQ</span>
@@ -231,13 +226,13 @@
 
         <div class="faq-list">
           <details>
-            <summary>Will it work on Netflix, Disney+ and other DRM services?</summary>
-            <p>Yes — with limitations. DRM-protected streams cannot be processed pixel-by-pixel by extensions, so for services like Netflix and Disney+ Ultrawider falls back to a basic CSS stretch. You get a full-screen 21:9 image, but without the content-aware S-curve. Full warping works on YouTube (Free + Pro) and any other site with non-DRM video (Pro).</p>
+            <summary>Will the price stay $3.99?</summary>
+            <p>For everyone who buys during the alpha period — yes, forever. You pay once and the license never expires. We'll raise the price for new buyers after the public launch, but anyone who locked in $3.99 keeps that license at no extra cost, including all future updates.</p>
           </details>
 
           <details>
-            <summary>Does it reduce video quality?</summary>
-            <p>No. Ultrawider operates as a real-time visual filter on top of the original video stream. Source resolution and bitrate are untouched — we just remap the geometry to fill your ultrawide display.</p>
+            <summary>What if I'm not satisfied?</summary>
+            <p>Full or partial refund within 14 days, no questions asked. Email <a href="mailto:hello@ultrawider.net?subject=Refund%20Request">hello@ultrawider.net</a> with the subject "Refund Request" and your order ID. We process refunds within 7–14 business days back to the original payment method. See our <a href="refund.html">refund policy</a>.</p>
           </details>
 
           <details>
@@ -246,18 +241,18 @@
           </details>
 
           <details>
-            <summary>What is your refund policy?</summary>
-            <p>30-day money-back guarantee on every paid plan, no questions asked. Email <a href="mailto:hello@ultrawider.net">hello@ultrawider.net</a> with the subject line "Refund Request" and we'll process it within 5–7 business days. See the <a href="refund.html">full refund policy</a>.</p>
+            <summary>Does it work in all browsers?</summary>
+            <p>Chrome 110+ and any Chromium-based browser of the same vintage (Edge, Brave, Opera, Vivaldi, Arc). Firefox and Safari are not currently supported.</p>
           </details>
 
           <details>
-            <summary>What about my privacy?</summary>
-            <p>Ultrawider processes video locally inside your browser. We do not see, log, or transmit your viewing activity, browser history, or video content. We collect only what's strictly needed to deliver a paid subscription: email for receipts, and anonymous usage analytics. Full details in the <a href="privacy.html">privacy policy</a>.</p>
+            <summary>Is there a free version?</summary>
+            <p>Yes. The free version on the Chrome Web Store gives you basic 21:9 functionality on YouTube. Alpha Access unlocks the content-aware S-curve, the adjustable depth slider, settings persistence, and all future Pro features.</p>
           </details>
 
           <details>
-            <summary>Can I cancel anytime?</summary>
-            <p>Yes. Cancel from your account dashboard or by email at any time. You keep Pro access through the end of the period you've already paid for — we don't pro-rate, but we don't charge again either.</p>
+            <summary>How do I receive my license?</summary>
+            <p>Instantly, by email, immediately after Prodamus confirms your payment. The email contains your activation key and a one-click activation link.</p>
           </details>
         </div>
       </div>
@@ -267,8 +262,8 @@
     <section class="section cta-section">
       <div class="container container-narrow cta-box">
         <h2>Fill your ultrawide. Today.</h2>
-        <p>Free forever on YouTube. Pro for everything else.</p>
-        <a href="#" class="btn btn-primary btn-lg">Add to Chrome — Free</a>
+        <p>$3.99 one-time. Lifetime updates. 14-day refund.</p>
+        <a href="#pricing" class="btn btn-primary btn-lg">Get Alpha Access — $3.99</a>
       </div>
     </section>
 
@@ -285,6 +280,7 @@
       </div>
       <nav class="footer-nav">
         <h4>Product</h4>
+        <a href="#features">Features</a>
         <a href="#how">How it works</a>
         <a href="#pricing">Pricing</a>
         <a href="#faq">FAQ</a>
@@ -295,11 +291,27 @@
         <a href="privacy.html">Privacy Policy</a>
         <a href="refund.html">Refund Policy</a>
       </nav>
-      <div class="footer-nav">
-        <h4>Contact</h4>
-        <a href="mailto:hello@ultrawider.net">hello@ultrawider.net</a>
+      <nav class="footer-nav">
+        <h4>Language</h4>
+        <a href="/">English</a>
+        <a href="/ru/">Русский</a>
+      </nav>
+    </div>
+
+    <div class="container footer-legal">
+      <div class="footer-operator">
+        <p>
+          <strong>Self-employed individual:</strong> Akimov Pavel Andreevich<br/>
+          <strong>INN:</strong> 482424418541<br/>
+          <strong>City:</strong> Lipetsk, Russia<br/>
+          <strong>Contact:</strong> <a href="mailto:hello@ultrawider.net">hello@ultrawider.net</a>
+        </p>
+        <p class="footer-payment">
+          Payments processed via <strong>Prodamus</strong> (Russian payment aggregator).
+        </p>
       </div>
     </div>
+
     <div class="container footer-bottom">
       <span>© 2026 Ultrawider. All rights reserved.</span>
     </div>
