@@ -53,9 +53,9 @@
 
   <main>
 
-    <!-- HERO с монитор-мокапом — визуализация проблемы. 21:9 рамка с
-         16:9 видео внутри (object-fit: contain) делает чёрные полосы
-         буквальным субъектом страницы. -->
+    <!-- HERO — мокап монитора с bezel/стендом/LED делает чёрные полосы
+         (заштрихованные warning-tape) буквальным субъектом первого
+         экрана. CTA после мокапа — не конкурирует с визуалом. -->
     <section class="cinematic-hero">
       <div class="cinematic-hero-content">
         <span class="eyebrow">Smoothie · Quintic NLS · WebGL2</span>
@@ -65,37 +65,37 @@
         </h1>
         <p class="lede">
           Smoothie заполняет полосы без сплющивания лиц.
-          <strong>Шейдер работает на реальном видео</strong> — скрольте,
-          тяните, крутите слайдер.
+          <strong>Скрольте — увидите вживую.</strong>
         </p>
-        <div class="hero-cta">
-          <a href="/pricing" class="btn btn-primary btn-lg">Получить Pro — $2.99/мес</a>
-          <a href="#playground" class="btn btn-ghost btn-lg">Посмотреть в деле ↓</a>
-        </div>
       </div>
 
       <div class="problem-monitor-wrap">
-        <div class="problem-monitor-frame-label">Ваш 21:9 монитор · прямо сейчас</div>
         <div class="problem-monitor" aria-label="Макет 21:9 монитора с 16:9 видео и чёрными полосами по бокам">
+          <span class="problem-monitor-frame-label">Ваш 21:9 монитор · прямо сейчас</span>
           <video autoplay muted loop playsinline preload="auto">
             <source src="/demo/cinematic-hero.mp4" type="video/mp4" />
           </video>
 
           <div class="problem-monitor-annotation problem-monitor-annotation-left" aria-hidden="true">
-            <span><strong>0 px</strong><br/>видео</span>
+            <span><strong>0&thinsp;px</strong>видео</span>
           </div>
           <div class="problem-monitor-annotation problem-monitor-annotation-right" aria-hidden="true">
-            <span><strong>0 px</strong><br/>видео</span>
+            <span><strong>0&thinsp;px</strong>видео</span>
           </div>
         </div>
-        <p class="problem-monitor-caption">
-          Две колонки чистого чёрного там где должен быть кадр.
-          <strong>Скрольте чтобы исправить ↓</strong>
-        </p>
+        <div class="problem-monitor-neck" aria-hidden="true"></div>
+        <div class="problem-monitor-base" aria-hidden="true"></div>
+      </div>
+
+      <div class="cinematic-hero-cta-wrap">
+        <div class="hero-cta">
+          <a href="/pricing" class="btn btn-primary btn-lg">Получить Pro — $2.99/мес</a>
+        </div>
+        <p class="cta-note">Возврат 14 дней · <span class="text-tech">Отмена в любое время</span></p>
       </div>
 
       <a href="#playground" class="cinematic-hero-scroll" aria-label="Прокрутить к плейграунду">
-        <span>Скролл</span>
+        <span>Посмотреть</span>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="12" y1="5" x2="12" y2="19"/>
           <polyline points="19 12 12 19 5 12"/>
