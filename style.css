@@ -1340,59 +1340,62 @@ strong { color: var(--text); font-weight: 600; }
   pointer-events: none;
 }
 
+/* Restrained — refined amber overlay + sharp dashed inner edge.
+   Earlier loud warning-tape made the hero feel cheap/aggressive.
+   Now: light amber tint + crisp 1.5px dashed line marking the
+   boundary + one small vertical label. Quiet but still legible. */
 .lost-zone {
   position: absolute;
-  top: 0;
+  top: 88px;          /* clear of the sticky nav */
   bottom: 0;
   width: 11.9%;
-  /* Stronger amber against the now-lighter video — bumped amber alpha
-     up and black alpha down so the hatching reads at a glance instead
-     of fading into the background. */
-  background:
-    repeating-linear-gradient(
-      135deg,
-      rgba(245, 158, 11, 0.38) 0px,
-      rgba(245, 158, 11, 0.38) 16px,
-      rgba(0, 0, 0, 0.6) 16px,
-      rgba(0, 0, 0, 0.6) 32px
-    );
+  background: linear-gradient(
+    90deg,
+    rgba(245, 158, 11, 0.12) 0%,
+    rgba(245, 158, 11, 0.06) 100%
+  );
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Soft fade-in / fade-out vertically so the zone doesn't read as a
+     hard rectangle pasted on the video. */
+  mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
 }
-.lost-zone-left  { left: 0;  border-right: 2px dashed rgba(245, 158, 11, 0.65); }
-.lost-zone-right { right: 0; border-left:  2px dashed rgba(245, 158, 11, 0.65); }
+.lost-zone-left  {
+  left: 0;
+  border-right: 1.5px dashed rgba(245, 158, 11, 0.55);
+}
+.lost-zone-right {
+  right: 0;
+  border-left: 1.5px dashed rgba(245, 158, 11, 0.55);
+  /* Mirror the gradient direction so amber peaks at the inner edge */
+  background: linear-gradient(
+    270deg,
+    rgba(245, 158, 11, 0.12) 0%,
+    rgba(245, 158, 11, 0.06) 100%
+  );
+}
 
 .lost-zone-label {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   font-family: var(--font-mono);
-  font-size: 0.85rem;
-  font-weight: 700;
+  font-size: 0.68rem;
+  font-weight: 600;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--accent);
-  text-shadow: 0 0 12px rgba(0, 0, 0, 0.9), 0 0 24px rgba(0, 0, 0, 0.7);
+  color: rgba(245, 158, 11, 0.85);
+  text-shadow: 0 0 10px rgba(0, 0, 0, 0.95);
   white-space: nowrap;
   line-height: 1;
 }
 .lost-zone-left .lost-zone-label { transform: rotate(180deg); }
 
-/* Top-of-zone label that explains what these stripes are */
-.lost-zone-cap {
-  position: absolute;
-  top: 24px;
-  font-family: var(--font-mono);
-  font-size: 0.6rem;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--accent);
-  text-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
-  opacity: 0.85;
-}
-.lost-zone-left  .lost-zone-cap { right: 12px; }
-.lost-zone-right .lost-zone-cap { left: 12px; }
+/* Cap labels dropped in this iteration — they cluttered the hero.
+   The vertical label is sufficient signal. Selector kept for legacy
+   markup safety but emptied. */
+.lost-zone-cap { display: none; }
 
 /* Subtle film-grain across the entire hero (keeps the gradient from
    reading as flat fill). */
