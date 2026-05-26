@@ -1303,6 +1303,7 @@ strong { color: var(--text); font-weight: 600; }
   position: relative;
   min-height: 100vh;
   display: flex;
+  flex-direction: column;          /* stack content + CTA vertically */
   align-items: center;
   justify-content: center;
   overflow: hidden;
@@ -1322,10 +1323,10 @@ strong { color: var(--text); font-weight: 600; }
   height: 100%;
   object-fit: cover;
   z-index: 0;
-  /* Drained color so the foreground text/accent stays legible without
-     the video competing visually. Restored to full saturation on the
-     lost-zone strips where attention should land. */
-  filter: brightness(0.55) saturate(0.85) contrast(1.05);
+  /* Lighter dim than v5 — we want to actually SEE the F1 footage,
+     not silhouette it. Headline legibility comes from the central
+     vignette layer, not from a heavy global darken. */
+  filter: brightness(0.85) saturate(0.95);
 }
 
 /* The LOST ZONES — vertical hatched strips overlaid where letterbox
@@ -1344,13 +1345,16 @@ strong { color: var(--text); font-weight: 600; }
   top: 0;
   bottom: 0;
   width: 11.9%;
+  /* Stronger amber against the now-lighter video — bumped amber alpha
+     up and black alpha down so the hatching reads at a glance instead
+     of fading into the background. */
   background:
     repeating-linear-gradient(
       135deg,
-      rgba(245, 158, 11, 0.22) 0px,
-      rgba(245, 158, 11, 0.22) 16px,
-      rgba(0, 0, 0, 0.78) 16px,
-      rgba(0, 0, 0, 0.78) 32px
+      rgba(245, 158, 11, 0.38) 0px,
+      rgba(245, 158, 11, 0.38) 16px,
+      rgba(0, 0, 0, 0.6) 16px,
+      rgba(0, 0, 0, 0.6) 32px
     );
   display: flex;
   align-items: center;
@@ -1403,25 +1407,25 @@ strong { color: var(--text); font-weight: 600; }
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.7 0'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
 }
 
-/* Vignette over the central video area for headline legibility +
-   corner masks. Bottom-right corner gradient also obscures the Veo
-   watermark — it's inside the right lost-zone strip but the strip's
-   hatching is semi-transparent so the mark would still ghost through.
-   The corner gradient is opaque-enough to fully hide it without
-   feeling like a "mask sticker". */
+/* Vignette layered for legibility + watermark mask, but much lighter
+   overall than v5 — we want the F1 footage visible, not silhouetted.
+   Central darkening only behind the headline area; corners darken
+   only where needed (bottom-right covers Veo mark). */
 .cinematic-hero-vignette {
   position: absolute;
   inset: 0;
   z-index: 3;
   pointer-events: none;
   background:
-    /* Bottom-right corner — covers Veo watermark area */
+    /* Bottom-right corner — covers Veo watermark area (kept dense) */
     radial-gradient(ellipse 24% 32% at 100% 100%, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.7) 55%, transparent 100%),
-    /* Bottom-left corner — symmetric, also helps mask any source artifacts */
-    radial-gradient(ellipse 22% 28% at 0% 100%, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 60%, transparent 100%),
-    /* Central legibility vignette */
-    radial-gradient(ellipse 70% 55% at 50% 50%, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.85) 100%),
-    linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 35%, rgba(0,0,0,0.3) 80%, rgba(0,0,0,0.9) 100%);
+    /* Bottom-left corner — symmetric, lighter */
+    radial-gradient(ellipse 22% 28% at 0% 100%, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, transparent 100%),
+    /* Central legibility vignette — narrower + softer to stop killing
+       the footage; headline reads via text-shadow now. */
+    radial-gradient(ellipse 55% 45% at 50% 45%, rgba(0,0,0,0.55) 0%, transparent 70%),
+    /* Light top-to-bottom gradient for nav legibility + scroll cue. */
+    linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0) 18%, rgba(0,0,0,0) 80%, rgba(0,0,0,0.7) 100%);
 }
 
 .cinematic-hero-content {
