@@ -53,12 +53,30 @@
 
   <main>
 
-    <!-- HERO — the problem, made literal. 21:9 monitor mockup (with
-         bezel, stand, power-LED) frames a 16:9 video inside, exposing
-         the two letterbox bars as warning-striped wasted space. The
-         visual IS the headline; the CTA sits after, not competing.
-         Flow: claim → proof → action. -->
+    <!-- HERO — full-bleed cinematic video. Two amber-hatched "lost
+         zones" overlaid on left + right show EXACTLY what 16:9 source
+         would forfeit on a 21:9 monitor without us. The video keeps
+         playing across the entire viewport including under the zones,
+         so the visitor sees both the dream (filled widescreen) and
+         the threat (zones the standard player would lose). -->
     <section class="cinematic-hero">
+      <video class="cinematic-hero-video" autoplay muted loop playsinline preload="auto">
+        <source src="demo/cinematic-hero.mp4" type="video/mp4" />
+      </video>
+
+      <div class="cinematic-hero-zones" aria-hidden="true">
+        <div class="lost-zone lost-zone-left">
+          <span class="lost-zone-cap">Lost · standard 16:9 player</span>
+          <span class="lost-zone-label">Without Ultrawider</span>
+        </div>
+        <div class="lost-zone lost-zone-right">
+          <span class="lost-zone-cap">Lost · standard 16:9 player</span>
+          <span class="lost-zone-label">Without Ultrawider</span>
+        </div>
+      </div>
+
+      <div class="cinematic-hero-vignette" aria-hidden="true"></div>
+
       <div class="cinematic-hero-content">
         <span class="eyebrow">Smoothie · Quintic NLS · WebGL2</span>
         <h1>
@@ -66,27 +84,11 @@
           <span class="line accent-line">Your videos didn't.</span>
         </h1>
         <p class="lede">
-          Smoothie warp fills the bars without distorting faces.
-          <strong>Scroll down — see it run live.</strong>
+          The amber zones on the sides? That's what a standard player
+          throws away on every video.
+          <strong>Smoothie warp uses every pixel — without distorting
+          faces.</strong>
         </p>
-      </div>
-
-      <div class="problem-monitor-wrap">
-        <div class="problem-monitor" aria-label="Mockup of a 21:9 monitor showing 16:9 video with black letterbox bars on the sides">
-          <span class="problem-monitor-frame-label">Your 21:9 monitor · right now</span>
-          <video autoplay muted loop playsinline preload="auto">
-            <source src="demo/cinematic-hero.mp4" type="video/mp4" />
-          </video>
-
-          <div class="problem-monitor-annotation problem-monitor-annotation-left" aria-hidden="true">
-            <span><strong>0&thinsp;px</strong>of video</span>
-          </div>
-          <div class="problem-monitor-annotation problem-monitor-annotation-right" aria-hidden="true">
-            <span><strong>0&thinsp;px</strong>of video</span>
-          </div>
-        </div>
-        <div class="problem-monitor-neck" aria-hidden="true"></div>
-        <div class="problem-monitor-base" aria-hidden="true"></div>
       </div>
 
       <div class="cinematic-hero-cta-wrap">
@@ -448,10 +450,10 @@
         }
       }
 
-      // Pause hero monitor-mockup video once scrolled past — the
-      // playground below uses the same source, no point decoding both
-      // streams concurrently on low-end machines.
-      const heroVid = document.querySelector('.problem-monitor video');
+      // Pause full-bleed hero video once scrolled past — the playground
+      // below uses the same source, no point decoding both streams
+      // concurrently on low-end machines.
+      const heroVid = document.querySelector('.cinematic-hero-video');
       const hero = document.querySelector('.cinematic-hero');
       if (heroVid && hero && 'IntersectionObserver' in window) {
         const io2 = new IntersectionObserver(function (entries) {

@@ -53,10 +53,28 @@
 
   <main>
 
-    <!-- HERO — мокап монитора с bezel/стендом/LED делает чёрные полосы
-         (заштрихованные warning-tape) буквальным субъектом первого
-         экрана. CTA после мокапа — не конкурирует с визуалом. -->
+    <!-- HERO — full-bleed cinematic. Две amber-заштрихованные «потерянные
+         зоны» по краям показывают что 16:9-плеер выбрасывает на 21:9
+         мониторе. Видео идёт под всем — visitor видит и мечту (полная
+         ширина) и угрозу (зоны которые потеряются без нас). -->
     <section class="cinematic-hero">
+      <video class="cinematic-hero-video" autoplay muted loop playsinline preload="auto">
+        <source src="/demo/cinematic-hero.mp4" type="video/mp4" />
+      </video>
+
+      <div class="cinematic-hero-zones" aria-hidden="true">
+        <div class="lost-zone lost-zone-left">
+          <span class="lost-zone-cap">Теряется · обычный 16:9 плеер</span>
+          <span class="lost-zone-label">Без Ultrawider</span>
+        </div>
+        <div class="lost-zone lost-zone-right">
+          <span class="lost-zone-cap">Теряется · обычный 16:9 плеер</span>
+          <span class="lost-zone-label">Без Ultrawider</span>
+        </div>
+      </div>
+
+      <div class="cinematic-hero-vignette" aria-hidden="true"></div>
+
       <div class="cinematic-hero-content">
         <span class="eyebrow">Smoothie · Quintic NLS · WebGL2</span>
         <h1>
@@ -64,27 +82,10 @@
           <span class="line accent-line">Ваши видео — нет.</span>
         </h1>
         <p class="lede">
-          Smoothie заполняет полосы без сплющивания лиц.
-          <strong>Скрольте — увидите вживую.</strong>
+          Видишь янтарные зоны по бокам? Это то что обычный плеер
+          выбрасывает на каждом видео.
+          <strong>Smoothie использует каждый пиксель — без искажения лиц.</strong>
         </p>
-      </div>
-
-      <div class="problem-monitor-wrap">
-        <div class="problem-monitor" aria-label="Макет 21:9 монитора с 16:9 видео и чёрными полосами по бокам">
-          <span class="problem-monitor-frame-label">Ваш 21:9 монитор · прямо сейчас</span>
-          <video autoplay muted loop playsinline preload="auto">
-            <source src="/demo/cinematic-hero.mp4" type="video/mp4" />
-          </video>
-
-          <div class="problem-monitor-annotation problem-monitor-annotation-left" aria-hidden="true">
-            <span><strong>0&thinsp;px</strong>видео</span>
-          </div>
-          <div class="problem-monitor-annotation problem-monitor-annotation-right" aria-hidden="true">
-            <span><strong>0&thinsp;px</strong>видео</span>
-          </div>
-        </div>
-        <div class="problem-monitor-neck" aria-hidden="true"></div>
-        <div class="problem-monitor-base" aria-hidden="true"></div>
       </div>
 
       <div class="cinematic-hero-cta-wrap">
@@ -440,7 +441,7 @@
           io.observe(target);
         }
       }
-      const heroVid = document.querySelector('.problem-monitor video');
+      const heroVid = document.querySelector('.cinematic-hero-video');
       const hero = document.querySelector('.cinematic-hero');
       if (heroVid && hero && 'IntersectionObserver' in window) {
         const io2 = new IntersectionObserver(function (entries) {

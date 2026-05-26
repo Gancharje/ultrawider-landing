@@ -1303,34 +1303,121 @@ strong { color: var(--text); font-weight: 600; }
   position: relative;
   min-height: 100vh;
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: stretch;
+  align-items: center;
+  justify-content: center;
   overflow: hidden;
   isolation: isolate;
-  padding: 88px 0 80px;
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 30%, rgba(245,158,11,0.05) 0%, transparent 60%),
-    linear-gradient(180deg, var(--bg-elev) 0%, var(--bg) 80%);
+  padding: 88px 0;
+  background: #000;
 }
 
-/* Subtle film-grain across the hero — keeps the dark gradient from
-   looking like a flat fill. */
+/* Full-bleed video fills viewport. object-fit: cover so it always
+   reaches edge-to-edge regardless of source aspect (we crop top/bottom
+   if it's 16:9 source on 21:9 viewport, but we'd rather lose a few
+   pixels vertically than let bars appear — that'd undercut the message). */
+.cinematic-hero-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  /* Drained color so the foreground text/accent stays legible without
+     the video competing visually. Restored to full saturation on the
+     lost-zone strips where attention should land. */
+  filter: brightness(0.55) saturate(0.85) contrast(1.05);
+}
+
+/* The LOST ZONES — vertical hatched strips overlaid where letterbox
+   bars would appear if you watched 16:9 content on a 21:9 monitor
+   without us. Width 12% on each side = matches the math (21−16)/2 / 21 =
+   11.9% bar share. These ARE the visual statement. */
+.cinematic-hero-zones {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.lost-zone {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 11.9%;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      rgba(245, 158, 11, 0.22) 0px,
+      rgba(245, 158, 11, 0.22) 16px,
+      rgba(0, 0, 0, 0.78) 16px,
+      rgba(0, 0, 0, 0.78) 32px
+    );
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.lost-zone-left  { left: 0;  border-right: 2px dashed rgba(245, 158, 11, 0.65); }
+.lost-zone-right { right: 0; border-left:  2px dashed rgba(245, 158, 11, 0.65); }
+
+.lost-zone-label {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-shadow: 0 0 12px rgba(0, 0, 0, 0.9), 0 0 24px rgba(0, 0, 0, 0.7);
+  white-space: nowrap;
+  line-height: 1;
+}
+.lost-zone-left .lost-zone-label { transform: rotate(180deg); }
+
+/* Top-of-zone label that explains what these stripes are */
+.lost-zone-cap {
+  position: absolute;
+  top: 24px;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
+  opacity: 0.85;
+}
+.lost-zone-left  .lost-zone-cap { right: 12px; }
+.lost-zone-right .lost-zone-cap { left: 12px; }
+
+/* Subtle film-grain across the entire hero (keeps the gradient from
+   reading as flat fill). */
 .cinematic-hero::after {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: 0;
+  z-index: 2;
   pointer-events: none;
-  opacity: 0.05;
+  opacity: 0.07;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.7 0'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
 }
 
+/* Vignette over the central video area for headline legibility */
+.cinematic-hero-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 50%, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.85) 100%),
+    linear-gradient(180deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.1) 35%, rgba(0,0,0,0.3) 80%, rgba(0,0,0,0.9) 100%);
+}
+
 .cinematic-hero-content {
   position: relative;
-  z-index: 1;
-  max-width: 820px;
+  z-index: 4;
+  max-width: 880px;
   margin: 0 auto;
   padding: 0 24px;
   text-align: center;
@@ -1338,9 +1425,9 @@ strong { color: var(--text); font-weight: 600; }
 
 .cinematic-hero-cta-wrap {
   position: relative;
-  z-index: 1;
+  z-index: 4;
   text-align: center;
-  margin: 40px auto 0;
+  margin: 36px auto 0;
   padding: 0 24px;
 }
 .cinematic-hero-cta-wrap .hero-cta {
@@ -1353,11 +1440,18 @@ strong { color: var(--text); font-weight: 600; }
   font-size: 0.72rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--text-mute);
+  color: rgba(245, 245, 245, 0.55);
+  text-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
 }
 .cinematic-hero-cta-wrap .cta-note .text-tech {
   color: var(--accent);
   font-weight: 600;
+}
+
+@media (max-width: 720px) {
+  .lost-zone { width: 8%; }
+  .lost-zone-label { font-size: 0.7rem; letter-spacing: 0.18em; }
+  .lost-zone-cap { font-size: 0.55rem; top: 16px; }
 }
 
 .cinematic-hero .eyebrow {
@@ -1377,7 +1471,10 @@ strong { color: var(--text); font-weight: 600; }
   line-height: 1.0;
   margin: 0 0 28px;
   font-variation-settings: "wdth" 100, "opsz" 96;
-  text-shadow: 0 4px 60px rgba(0, 0, 0, 0.4);
+  /* Heavier shadow now that we're over a full-bleed cinematic video */
+  text-shadow:
+    0 2px 16px rgba(0, 0, 0, 0.85),
+    0 8px 40px rgba(0, 0, 0, 0.6);
 }
 .cinematic-hero h1 .line { display: block; }
 .cinematic-hero h1 .accent-line {
