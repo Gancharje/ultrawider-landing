@@ -1462,7 +1462,8 @@ strong { color: var(--text); font-weight: 600; }
   border-radius: 50%;
   background: var(--accent);
   box-shadow: 0 0 8px var(--accent);
-  animation: aaa-pulse 1.8s ease-in-out infinite;
+  /* Same 2s pulse as eyebrow dot — keep "live" indicators in sync */
+  animation: aaa-pulse 2s ease-in-out infinite;
 }
 .aaa-stage-label-sep { color: rgba(245, 245, 245, 0.25); }
 .aaa-stage-label-spec { color: rgba(245, 245, 245, 0.4); font-weight: 500; }
@@ -1482,22 +1483,6 @@ strong { color: var(--text); font-weight: 600; }
     0 0 160px rgba(245, 158, 11, 0.1);
 }
 
-/* Tiny amber LED in the bottom-right corner — the "monitor is on" cue. */
-.aaa-stage-monitor::after {
-  content: "";
-  position: absolute;
-  bottom: 12px;
-  right: 14px;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--accent);
-  box-shadow: 0 0 8px var(--accent), 0 0 16px rgba(245, 158, 11, 0.5);
-  z-index: 4;
-  opacity: 0;
-  animation: aaa-fade-in 0.6s ease-out 2.8s forwards, aaa-pulse 2.4s ease-in-out 3.4s infinite;
-}
-
 /* ─── Lost zones (true black voids with informational content) ─── */
 .aaa-stage-zone {
   position: absolute;
@@ -1508,9 +1493,8 @@ strong { color: var(--text); font-weight: 600; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
-  padding: 5% 0;
-  gap: clamp(4px, 0.8vh, 12px);
+  justify-content: space-between;
+  padding: 6% 0;
   background: #000;
   /* Very subtle vertical micro-stripes so the zone reads as "void
      with texture" not "flat fill" */
@@ -1540,16 +1524,6 @@ strong { color: var(--text); font-weight: 600; }
   line-height: 1;
 }
 
-/* Aspect-ratio inset glyph — shows the 16:9 source rectangle nested
-   inside the 21:9 monitor frame. Reinforces the math visually. Sits
-   between the −12% number and the vertical "Without Ultrawider" label. */
-.aaa-stage-zone-glyph {
-  width: clamp(28px, 4vw, 42px);
-  height: auto;
-  color: var(--accent);
-  opacity: 0.7;
-  flex-shrink: 0;
-}
 .aaa-stage-zone-label {
   writing-mode: vertical-rl;
   transform: rotate(180deg);

@@ -27,6 +27,36 @@
   <script src="/lang-switch.js" defer></script>
   <script src="/assets/aspect-profile.js" defer></script>
   <script src="/assets/warp-demo.js" defer></script>
+
+  <!-- Персонализация лейбла монитора. screen.width/height отдаёт
+       физическое разрешение монитора даже в оконном режиме. Если у
+       юзера реально ультраширокий — дефолтный референс заменяется на
+       его реальный сетап. На 16:9/16:10 — остаётся как есть. -->
+  <script>
+    (function () {
+      try {
+        var w = window.screen && window.screen.width;
+        var h = window.screen && window.screen.height;
+        if (!w || !h) return;
+        var r = w / h;
+        var name = null;
+        if (r >= 3.3)      name = 'Ваш 32:9 монитор';
+        else if (r >= 2.1) name = 'Ваш 21:9 монитор';
+        if (!name) return;
+        var setLabel = function () {
+          var t = document.querySelector('.aaa-stage-label-text');
+          var s = document.querySelector('.aaa-stage-label-spec');
+          if (t) t.textContent = name;
+          if (s) s.textContent = w + ' × ' + h;
+        };
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', setLabel);
+        } else {
+          setLabel();
+        }
+      } catch (_e) { /* ignore — keep default */ }
+    })();
+  </script>
 </head>
 <body>
 
@@ -77,27 +107,19 @@
         <figure class="aaa-stage" aria-label="Ваш 21:9 монитор с обычным 16:9 видео">
           <figcaption class="aaa-stage-label">
             <span class="aaa-stage-label-dot" aria-hidden="true"></span>
-            <span class="aaa-stage-label-text">Ваш 21:9 монитор</span>
+            <span class="aaa-stage-label-text" data-default-text="21:9 монитор">21:9 монитор</span>
             <span class="aaa-stage-label-sep" aria-hidden="true">·</span>
-            <span class="aaa-stage-label-spec">3440 × 1440</span>
+            <span class="aaa-stage-label-spec" data-default-spec="3440 × 1440">3440 × 1440</span>
           </figcaption>
 
           <div class="aaa-stage-monitor">
             <div class="aaa-stage-zone aaa-stage-zone--left" aria-hidden="true">
               <span class="aaa-stage-zone-pct">−12%</span>
-              <svg class="aaa-stage-zone-glyph" viewBox="0 0 42 19" fill="none" stroke="currentColor" stroke-linejoin="round" aria-hidden="true">
-                <rect x="0.75" y="0.75" width="40.5" height="17.5" rx="0.5" stroke-width="0.75" stroke-dasharray="2 1.5" opacity="0.55"/>
-                <rect x="5.64" y="0.75" width="30.72" height="17.5" rx="0.5" stroke-width="1" fill="currentColor" fill-opacity="0.18"/>
-              </svg>
               <span class="aaa-stage-zone-label">Без<br/>Ultrawider</span>
               <span class="aaa-stage-zone-spec">−440 px</span>
             </div>
             <div class="aaa-stage-zone aaa-stage-zone--right" aria-hidden="true">
               <span class="aaa-stage-zone-pct">−12%</span>
-              <svg class="aaa-stage-zone-glyph" viewBox="0 0 42 19" fill="none" stroke="currentColor" stroke-linejoin="round" aria-hidden="true">
-                <rect x="0.75" y="0.75" width="40.5" height="17.5" rx="0.5" stroke-width="0.75" stroke-dasharray="2 1.5" opacity="0.55"/>
-                <rect x="5.64" y="0.75" width="30.72" height="17.5" rx="0.5" stroke-width="1" fill="currentColor" fill-opacity="0.18"/>
-              </svg>
               <span class="aaa-stage-zone-label">Без<br/>Ultrawider</span>
               <span class="aaa-stage-zone-spec">−440 px</span>
             </div>
