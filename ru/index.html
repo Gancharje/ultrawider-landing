@@ -53,16 +53,10 @@
 
   <main>
 
-    <!-- CINEMATIC HERO -->
+    <!-- HERO с монитор-мокапом — визуализация проблемы. 21:9 рамка с
+         16:9 видео внутри (object-fit: contain) делает чёрные полосы
+         буквальным субъектом страницы. -->
     <section class="cinematic-hero">
-      <video
-        class="cinematic-hero-video"
-        autoplay muted loop playsinline preload="auto"
-      >
-        <source src="/demo/cinematic-hero.mp4" type="video/mp4" />
-      </video>
-      <div class="cinematic-hero-overlay"></div>
-
       <div class="cinematic-hero-content">
         <span class="eyebrow">Smoothie · Quintic NLS · WebGL2</span>
         <h1>
@@ -78,6 +72,26 @@
           <a href="/pricing" class="btn btn-primary btn-lg">Получить Pro — $2.99/мес</a>
           <a href="#playground" class="btn btn-ghost btn-lg">Посмотреть в деле ↓</a>
         </div>
+      </div>
+
+      <div class="problem-monitor-wrap">
+        <div class="problem-monitor-frame-label">Ваш 21:9 монитор · прямо сейчас</div>
+        <div class="problem-monitor" aria-label="Макет 21:9 монитора с 16:9 видео и чёрными полосами по бокам">
+          <video autoplay muted loop playsinline preload="auto">
+            <source src="/demo/cinematic-hero.mp4" type="video/mp4" />
+          </video>
+
+          <div class="problem-monitor-annotation problem-monitor-annotation-left" aria-hidden="true">
+            <span><strong>0 px</strong><br/>видео</span>
+          </div>
+          <div class="problem-monitor-annotation problem-monitor-annotation-right" aria-hidden="true">
+            <span><strong>0 px</strong><br/>видео</span>
+          </div>
+        </div>
+        <p class="problem-monitor-caption">
+          Две колонки чистого чёрного там где должен быть кадр.
+          <strong>Скрольте чтобы исправить ↓</strong>
+        </p>
       </div>
 
       <a href="#playground" class="cinematic-hero-scroll" aria-label="Прокрутить к плейграунду">
@@ -426,7 +440,7 @@
           io.observe(target);
         }
       }
-      const heroVid = document.querySelector('.cinematic-hero-video');
+      const heroVid = document.querySelector('.problem-monitor video');
       const hero = document.querySelector('.cinematic-hero');
       if (heroVid && hero && 'IntersectionObserver' in window) {
         const io2 = new IntersectionObserver(function (entries) {

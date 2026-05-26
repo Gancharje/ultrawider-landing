@@ -1308,40 +1308,21 @@ strong { color: var(--text); font-weight: 600; }
   align-items: stretch;
   overflow: hidden;
   isolation: isolate;
-  padding: 96px 0 80px;
-}
-
-.cinematic-hero-video {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  z-index: -2;
-  pointer-events: none;
-  /* Slight blur + drained saturation so the hero text is the focal point.
-     Once visitor scrolls into playground, full color returns to that view. */
-  filter: saturate(0.85) contrast(1.05);
-}
-
-.cinematic-hero-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
+  padding: 120px 0 80px;
   background:
-    radial-gradient(ellipse 80% 60% at 50% 35%, transparent 0%, rgba(5,5,5,0.55) 60%, rgba(5,5,5,0.95) 100%),
-    linear-gradient(180deg, rgba(5,5,5,0.45) 0%, rgba(5,5,5,0.2) 30%, rgba(5,5,5,0.85) 90%, var(--bg) 100%);
+    radial-gradient(ellipse 80% 60% at 50% 30%, rgba(245,158,11,0.05) 0%, transparent 60%),
+    linear-gradient(180deg, var(--bg-elev) 0%, var(--bg) 80%);
 }
 
-/* Subtle film-grain — adds texture so the hero doesn't feel "rendered" */
+/* Subtle film-grain across the hero — keeps the dark gradient from
+   looking like a flat fill. */
 .cinematic-hero::after {
   content: "";
   position: absolute;
   inset: 0;
-  z-index: -1;
+  z-index: 0;
   pointer-events: none;
-  opacity: 0.08;
+  opacity: 0.05;
   mix-blend-mode: overlay;
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.7 0'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
 }
@@ -1350,7 +1331,7 @@ strong { color: var(--text); font-weight: 600; }
   position: relative;
   z-index: 1;
   max-width: 880px;
-  margin: 0 auto;
+  margin: 0 auto 48px;
   padding: 0 24px;
   text-align: center;
 }
@@ -1366,10 +1347,10 @@ strong { color: var(--text); font-weight: 600; }
 }
 
 .cinematic-hero h1 {
-  font-size: clamp(2.75rem, 7vw + 0.5rem, 6.5rem);
+  font-size: clamp(2.5rem, 6vw + 0.5rem, 5.5rem);
   font-weight: 800;
-  letter-spacing: -0.04em;
-  line-height: 0.95;
+  letter-spacing: -0.035em;
+  line-height: 1.0;
   margin: 0 0 28px;
   font-variation-settings: "wdth" 100, "opsz" 96;
   text-shadow: 0 4px 60px rgba(0, 0, 0, 0.4);
@@ -1378,7 +1359,13 @@ strong { color: var(--text); font-weight: 600; }
 .cinematic-hero h1 .accent-line {
   color: var(--accent);
   font-style: italic;
-  font-variation-settings: "wdth" 95, "opsz" 96;
+  /* Important: keep wdth at 100 — italic + wdth:95 caused glyphs to
+     crash into each other (italic descenders/ascenders cross at the
+     tight letter-spacing). Add small positive tracking to compensate
+     for italic's natural visual compression. */
+  font-variation-settings: "wdth" 100, "opsz" 96;
+  letter-spacing: -0.015em;
+  margin-left: -0.05em; /* visual offset — italic slants the optical edge */
 }
 
 .cinematic-hero .lede {
@@ -1407,6 +1394,119 @@ strong { color: var(--text); font-weight: 600; }
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-color: rgba(255, 255, 255, 0.15);
+}
+
+/* Problem monitor — the visual translation of "your videos didn't".
+   A 21:9 frame containing 16:9 video centered → bars on left/right
+   are visible as wasted screen real estate. Annotations point at them. */
+
+.problem-monitor-wrap {
+  position: relative;
+  z-index: 1;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.problem-monitor {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  background: #000;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 40px 100px rgba(0, 0, 0, 0.6),
+    0 0 80px rgba(245, 158, 11, 0.08);
+}
+
+.problem-monitor video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* object-fit: contain → letterboxed 16:9 inside 21:9. The bars on
+     left + right are the design-level pain point. */
+  object-fit: contain;
+  background: #000;
+}
+
+/* Visible labels for the wasted bars — the explainer for the visual */
+.problem-monitor-annotation {
+  position: absolute;
+  top: 50%;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  z-index: 2;
+  white-space: nowrap;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.85;
+}
+.problem-monitor-annotation::before {
+  content: "";
+  display: block;
+  width: 1px;
+  height: 32px;
+  background: linear-gradient(180deg, transparent, var(--text-mute) 40%, var(--text-mute) 60%, transparent);
+  opacity: 0.5;
+}
+.problem-monitor-annotation-left  { left: 24px;  }
+.problem-monitor-annotation-right { right: 24px; }
+.problem-monitor-annotation span {
+  display: block;
+  text-align: center;
+  line-height: 1.4;
+}
+.problem-monitor-annotation strong {
+  color: var(--accent);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+/* Top label — "your 21:9 monitor" framing */
+.problem-monitor-frame-label {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  white-space: nowrap;
+}
+
+/* Below mockup — pointer to playground below */
+.problem-monitor-caption {
+  margin-top: 24px;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+}
+.problem-monitor-caption strong {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+@media (max-width: 720px) {
+  .problem-monitor-annotation { font-size: 0.6rem; }
+  .problem-monitor-annotation-left  { left: 8px;  }
+  .problem-monitor-annotation-right { right: 8px; }
+  .problem-monitor-frame-label { font-size: 0.6rem; top: -22px; }
 }
 
 /* Scroll cue at bottom */

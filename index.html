@@ -53,17 +53,11 @@
 
   <main>
 
-    <!-- CINEMATIC HERO — full-bleed video, big display type -->
+    <!-- HERO — the problem, made visible. Monitor mockup at 21:9 with
+         16:9 video inside (object-fit: contain) makes the letterbox bars
+         the literal subject of the page. Annotations call them out as
+         wasted real estate; playground section below is the fix. -->
     <section class="cinematic-hero">
-      <video
-        class="cinematic-hero-video"
-        autoplay muted loop playsinline preload="auto"
-        poster="demo/cinematic-hero-poster.jpg"
-      >
-        <source src="demo/cinematic-hero.mp4" type="video/mp4" />
-      </video>
-      <div class="cinematic-hero-overlay"></div>
-
       <div class="cinematic-hero-content">
         <span class="eyebrow">Smoothie · Quintic NLS · WebGL2</span>
         <h1>
@@ -79,6 +73,26 @@
           <a href="/pricing" class="btn btn-primary btn-lg">Get Pro — $2.99/mo</a>
           <a href="#playground" class="btn btn-ghost btn-lg">See it work ↓</a>
         </div>
+      </div>
+
+      <div class="problem-monitor-wrap">
+        <div class="problem-monitor-frame-label">Your 21:9 monitor · right now</div>
+        <div class="problem-monitor" aria-label="Mockup of a 21:9 monitor showing 16:9 video with black letterbox bars on the sides">
+          <video autoplay muted loop playsinline preload="auto">
+            <source src="demo/cinematic-hero.mp4" type="video/mp4" />
+          </video>
+
+          <div class="problem-monitor-annotation problem-monitor-annotation-left" aria-hidden="true">
+            <span><strong>0 px</strong><br/>of video</span>
+          </div>
+          <div class="problem-monitor-annotation problem-monitor-annotation-right" aria-hidden="true">
+            <span><strong>0 px</strong><br/>of video</span>
+          </div>
+        </div>
+        <p class="problem-monitor-caption">
+          Two columns of pure black where your screen should be filled.
+          <strong>Scroll to fix it ↓</strong>
+        </p>
       </div>
 
       <a href="#playground" class="cinematic-hero-scroll" aria-label="Scroll to live playground">
@@ -433,10 +447,10 @@
         }
       }
 
-      // Pause hero background video once scrolled past — the playground
-      // below uses the same source, and decoding both streams at the
-      // same time pegs the GPU on low-end machines.
-      const heroVid = document.querySelector('.cinematic-hero-video');
+      // Pause hero monitor-mockup video once scrolled past — the
+      // playground below uses the same source, no point decoding both
+      // streams concurrently on low-end machines.
+      const heroVid = document.querySelector('.problem-monitor video');
       const hero = document.querySelector('.cinematic-hero');
       if (heroVid && hero && 'IntersectionObserver' in window) {
         const io2 = new IntersectionObserver(function (entries) {
