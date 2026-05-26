@@ -1312,7 +1312,10 @@ strong { color: var(--text); font-weight: 600; }
   background: #050505;
   overflow: hidden;
   isolation: isolate;
-  padding: 96px 0 80px;
+  /* Padding scales with viewport-height so the hero compresses on a
+     1080p fold (top 88 + bottom 56 ≈ 144px) and breathes on UWHD
+     (top 112 + bottom 88 ≈ 200px). */
+  padding: clamp(88px, 9vh, 112px) 0 clamp(56px, 7vh, 88px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1356,7 +1359,9 @@ strong { color: var(--text); font-weight: 600; }
     );
 }
 
-/* Content stack — centered horizontally, sequential vertical reveal */
+/* Content stack — centered horizontally, sequential vertical reveal.
+   Gap scales with viewport-height so the hero fits a 1080p fold without
+   surgery on individual margins. */
 .aaa-hero-content {
   position: relative;
   z-index: 2;
@@ -1368,7 +1373,7 @@ strong { color: var(--text); font-weight: 600; }
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: 30px;
+  gap: clamp(20px, 2.4vh, 32px);
 }
 
 /* ─── Eyebrow ────────────────────────────────────────────────────── */
@@ -1398,8 +1403,11 @@ strong { color: var(--text); font-weight: 600; }
   margin: 0;
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(2.5rem, 5.5vw + 0.25rem, 5.5rem);
-  line-height: 0.95;
+  /* Two caps: width-driven AND height-driven. The min() ensures the
+     headline never grows past 9vh — keeps the hero fitting a 1080p
+     fold without sacrificing the 4.5rem on UWHD. */
+  font-size: min(clamp(2.25rem, 4.5vw + 0.25rem, 4.75rem), 9vh);
+  line-height: 0.96;
   letter-spacing: -0.045em;
   font-variation-settings: "wdth" 100, "opsz" 96;
   color: var(--text);
@@ -1426,10 +1434,12 @@ strong { color: var(--text); font-weight: 600; }
   position: relative;
   margin: 0;
   width: 100%;
-  /* 1600px max → inner video ≈ 1220px wide → 1.7× upscale of 720p source.
-     On UWHD this stays crisp; on 1440-1920 viewports the stage fills
-     ~90vw and the video sits near 1:1 with source. */
-  max-width: min(94vw, 1600px);
+  /* Triple cap: width 94vw, height-driven (52vh × 21/9), absolute 1600px.
+     On 1080p (1920×1080): height-cap = 561 × 2.33 = 1308px wins.
+     On UWHD (3440×1440): width-cap = 3234 → height-cap = 748 × 2.33
+       = 1742 → absolute cap 1600px wins.
+     Inner video ≈ 1000-1220px wide → near-pixel 720p source. */
+  max-width: min(94vw, calc(52vh * 21 / 9), 1600px);
   opacity: 0;
   animation: aaa-fade-up 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) 1.05s forwards;
 }
@@ -1438,7 +1448,7 @@ strong { color: var(--text); font-weight: 600; }
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  margin: 0 auto 14px;
+  margin: 0 auto clamp(8px, 1.2vh, 14px);
   font-family: var(--font-mono);
   font-size: 0.72rem;
   font-weight: 600;
@@ -1472,6 +1482,22 @@ strong { color: var(--text); font-weight: 600; }
     0 0 160px rgba(245, 158, 11, 0.1);
 }
 
+/* Tiny amber LED in the bottom-right corner — the "monitor is on" cue. */
+.aaa-stage-monitor::after {
+  content: "";
+  position: absolute;
+  bottom: 12px;
+  right: 14px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent), 0 0 16px rgba(245, 158, 11, 0.5);
+  z-index: 4;
+  opacity: 0;
+  animation: aaa-fade-in 0.6s ease-out 2.8s forwards, aaa-pulse 2.4s ease-in-out 3.4s infinite;
+}
+
 /* ─── Lost zones (true black voids with informational content) ─── */
 .aaa-stage-zone {
   position: absolute;
@@ -1482,8 +1508,9 @@ strong { color: var(--text); font-weight: 600; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  padding: 5.5% 0;
+  justify-content: space-around;
+  padding: 5% 0;
+  gap: clamp(4px, 0.8vh, 12px);
   background: #000;
   /* Very subtle vertical micro-stripes so the zone reads as "void
      with texture" not "flat fill" */
@@ -1511,6 +1538,17 @@ strong { color: var(--text); font-weight: 600; }
   color: var(--accent);
   text-shadow: 0 0 14px rgba(245, 158, 11, 0.35);
   line-height: 1;
+}
+
+/* Aspect-ratio inset glyph — shows the 16:9 source rectangle nested
+   inside the 21:9 monitor frame. Reinforces the math visually. Sits
+   between the −12% number and the vertical "Without Ultrawider" label. */
+.aaa-stage-zone-glyph {
+  width: clamp(28px, 4vw, 42px);
+  height: auto;
+  color: var(--accent);
+  opacity: 0.7;
+  flex-shrink: 0;
 }
 .aaa-stage-zone-label {
   writing-mode: vertical-rl;
@@ -1549,14 +1587,17 @@ strong { color: var(--text); font-weight: 600; }
   display: block;
 }
 
-/* ─── Amber dashed boundary marker between zone and video ─── */
+/* ─── Amber dashed boundary marker between zone and video ───────────
+   The "cut line" — where a standard player drops the bar. Bumped to
+   1.5px + brighter amber so it reads at UWHD viewport zoom levels
+   without disappearing into the dark monitor frame. */
 .aaa-stage-boundary {
   position: absolute;
   top: 0;
   bottom: 0;
   width: 0;
   z-index: 3;
-  border-left: 1px dashed rgba(245, 158, 11, 0.7);
+  border-left: 1.5px dashed rgba(245, 158, 11, 0.85);
   opacity: 0;
   animation: aaa-fade-in 0.6s ease-out 2.7s forwards;
   pointer-events: none;
@@ -1624,36 +1665,35 @@ strong { color: var(--text); font-weight: 600; }
     0 0 100px rgba(245, 158, 11, 0.28);
 }
 
-/* Secondary CTA — text-link with chrome glyph + arrow, underline-on-hover */
+/* Secondary CTA — ghost pill with chrome glyph + arrow. Has its own
+   surface (subtle 1px outline) so it doesn't read as a footnote next
+   to the amber filled primary, but still defers visually to it. */
 .aaa-cta-secondary {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  padding: 14px 4px;
-  color: rgba(245, 245, 245, 0.85);
+  padding: 14px 22px;
+  color: rgba(245, 245, 245, 0.95);
   font-family: var(--font-mono);
   font-size: 0.82rem;
   font-weight: 600;
   letter-spacing: 0.06em;
   text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(15, 15, 15, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   position: relative;
-  transition: color 0.2s ease, transform 0.2s ease;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease,
+              transform 0.2s ease;
 }
-.aaa-cta-secondary::after {
-  content: "";
-  position: absolute;
-  left: 4px;
-  right: 4px;
-  bottom: 9px;
-  height: 1px;
-  background: currentColor;
-  opacity: 0;
-  transform: scaleX(0.6);
-  transform-origin: left;
-  transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+.aaa-cta-secondary:hover {
+  color: var(--accent);
+  border-color: rgba(245, 158, 11, 0.55);
+  background: rgba(25, 22, 17, 0.6);
+  transform: translateY(-1px);
 }
-.aaa-cta-secondary:hover { color: var(--accent); }
-.aaa-cta-secondary:hover::after { opacity: 1; transform: scaleX(1); }
 .aaa-cta-secondary:hover .arrow-glyph { transform: translateX(3px); }
 .aaa-cta-secondary .chrome-glyph,
 .aaa-cta-secondary .arrow-glyph {
@@ -1661,7 +1701,7 @@ strong { color: var(--text); font-weight: 600; }
   flex-shrink: 0;
   transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-.aaa-cta-secondary .arrow-glyph { width: 14px; height: 14px; opacity: 0.7; }
+.aaa-cta-secondary .arrow-glyph { width: 14px; height: 14px; opacity: 0.8; }
 
 .aaa-micro {
   margin: 0;
