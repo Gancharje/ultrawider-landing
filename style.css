@@ -1312,12 +1312,13 @@ strong { color: var(--text); font-weight: 600; }
   background: #050505;
   overflow: hidden;
   isolation: isolate;
-  padding: clamp(48px, 4.5dvh, 72px) 0 clamp(28px, 3dvh, 44px);
+  padding: clamp(40px, 4dvh, 64px) 0 clamp(28px, 3dvh, 44px);
   display: flex;
   flex-direction: column;
-  /* space-between pins the scroll cue at the very bottom of the hero
-     while the main .aaa-hero-content takes flex:1 in the middle. */
-  justify-content: space-between;
+  /* Content + scroll cue centered as a single stack. Empty space
+     splits above and below — no orphan gap. Scroll cue is the last
+     direct child with a deliberate small margin-top. */
+  justify-content: center;
   align-items: center;
 }
 
@@ -1359,13 +1360,11 @@ strong { color: var(--text); font-weight: 600; }
     );
 }
 
-/* Content stack — flex:1 takes available space between top padding
-   and the scroll cue at the bottom. Internally centered so content
-   sits in the middle if there's room left over. */
+/* Content stack — natural sizing (no flex:1). Scroll cue follows it
+   as a hero-direct sibling with a small margin-top. */
 .aaa-hero-content {
   position: relative;
   z-index: 2;
-  flex: 1;
   width: 100%;
   max-width: 1600px;
   margin: 0 auto;
@@ -1373,9 +1372,8 @@ strong { color: var(--text); font-weight: 600; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   text-align: center;
-  gap: clamp(10px, 1.3dvh, 18px);
+  gap: clamp(12px, 1.5dvh, 20px);
 }
 
 /* ─── Eyebrow ────────────────────────────────────────────────────── */
@@ -1435,11 +1433,11 @@ strong { color: var(--text); font-weight: 600; }
   position: relative;
   margin: 0;
   width: 100%;
-  /* Triple cap: width 94vw, height-driven (32dvh × 21/9), absolute 1600px.
-     32dvh × 21/9 = 75% of dvh in stage-width terms. On 1080p:
-     32×10.8×2.33 = 805px wide → stage ≈ 345px tall. On UWHD 1300dvh:
-     stage ≈ 970px wide × 416 tall. Keeps room for see-it-work cue. */
-  max-width: min(94vw, calc(32dvh * 21 / 9), 1600px);
+  /* Triple cap: width 94vw, height-driven (36dvh × 21/9), absolute 1600px.
+     On 1080p (~970dvh): 36dvh×2.33 = 815px wide → stage ≈ 350px tall.
+     On UWHD (~1240dvh): 36dvh×2.33 = 1040px → stage ≈ 446px tall.
+     Bigger than 32dvh but still leaves headroom for scroll cue + paddings. */
+  max-width: min(94vw, calc(36dvh * 21 / 9), 1600px);
   opacity: 0;
   animation: aaa-fade-up 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) 1.05s forwards;
 }
@@ -1698,7 +1696,9 @@ strong { color: var(--text); font-weight: 600; }
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  margin-top: clamp(12px, 1.6dvh, 22px);
+  /* Margin AFTER content (not pinned to viewport bottom). Hero's
+     justify-content: center centers content+cue as one stack. */
+  margin-top: clamp(20px, 2.5dvh, 36px);
   color: rgba(245, 245, 245, 0.4);
   font-family: var(--font-mono);
   font-size: 0.65rem;
