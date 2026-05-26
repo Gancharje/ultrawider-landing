@@ -1818,9 +1818,61 @@ strong { color: var(--text); font-weight: 600; }
   line-height: 1.5;
 }
 
+/* ─── Playground conversion tail ────────────────────────────────────
+   Single compact line under the demo: "Free on YouTube · Get Pro for
+   every supported site →". The demo proved the algorithm; this line
+   turns proof into action by linking to /pricing. */
+.playground-tail {
+  margin: clamp(16px, 2dvh, 28px) auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: clamp(0.78rem, 0.55vw + 0.55rem, 0.88rem);
+  letter-spacing: 0.04em;
+  color: rgba(245, 245, 245, 0.7);
+  text-align: center;
+  line-height: 1.5;
+}
+.playground-tail-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+  animation: aaa-pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+.playground-tail-free { font-weight: 500; }
+.playground-tail-sep {
+  color: rgba(245, 245, 245, 0.3);
+}
+.playground-tail-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--accent);
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  padding-bottom: 1px;
+  transition: border-color 0.18s ease, color 0.18s ease;
+}
+.playground-tail-cta svg {
+  width: 14px; height: 14px;
+  transition: transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.playground-tail-cta:hover {
+  color: var(--accent-hover);
+  border-bottom-color: var(--accent);
+}
+.playground-tail-cta:hover svg { transform: translateX(3px); }
+
 @media (max-width: 900px) {
   .playground-section { min-height: auto; padding: 64px 0; }
   .playground-section .container { max-width: 100%; padding: 0 24px; }
+  .playground-tail-sep { display: none; }
 }
 
 /* ========================================================================
