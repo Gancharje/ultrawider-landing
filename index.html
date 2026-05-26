@@ -28,34 +28,77 @@
   <script src="assets/aspect-profile.js" defer></script>
   <script src="assets/warp-demo.js" defer></script>
 
-  <!-- Hero stage label personalization. Uses screen.width/height which
-       reports physical monitor dimensions even in windowed mode. If the
-       user IS on an ultrawide, the generic "21:9 monitor · 3440 × 1440"
-       reference label gets replaced with their actual setup — instant
-       credibility. On 16:9 / 16:10 the default reference stays. -->
+  <!-- Aspect-aware hero personalization.
+       Reads window.innerWidth/innerHeight (works with DevTools device
+       toolbar, browser windowed mode, all real users). Classifies by
+       width-first (more reliable than ratio, since browser chrome eats
+       80px of height and skews the ratio toward "ultrawide" on regular
+       16:9 monitors). Then computes the LITERAL pixel loss a standard
+       16:9 player would inflict on this viewport, and updates the
+       stage label, the bar percentages, the bar px-loss numbers, and
+       the lede copy. For exactly-16:9 viewports a friendly "your
+       monitor is fine, scroll if curious" lede takes over.
+
+       Re-runs on resize so DevTools toolbar tweaks update live. -->
   <script>
     (function () {
-      try {
-        var w = window.screen && window.screen.width;
-        var h = window.screen && window.screen.height;
-        if (!w || !h) return;
-        var r = w / h;
-        var name = null;
-        if (r >= 3.3)      name = 'Your 32:9 monitor';
-        else if (r >= 2.1) name = 'Your 21:9 monitor';
-        if (!name) return;
-        var setLabel = function () {
-          var t = document.querySelector('.aaa-stage-label-text');
-          var s = document.querySelector('.aaa-stage-label-spec');
-          if (t) t.textContent = name;
-          if (s) s.textContent = w + ' × ' + h;
-        };
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', setLabel);
-        } else {
-          setLabel();
-        }
-      } catch (_e) { /* ignore — keep default */ }
+      var DEFAULT_LEDE = "Those bars on the sides? That's what every standard player gives you on a widescreen monitor. <strong>Smoothie warp fills every pixel — without distorting faces.</strong>";
+
+      function apply() {
+        try {
+          var w = window.innerWidth, h = window.innerHeight;
+          if (!w || !h) return;
+          var r = w / h;
+          var REF = 16 / 9;
+
+          var labelEl = document.querySelector('.aaa-stage-label-text');
+          var specEl  = document.querySelector('.aaa-stage-label-spec');
+          var ledeEl  = document.querySelector('.aaa-lede');
+          var pctEls  = document.querySelectorAll('.aaa-stage-zone-pct');
+          var spcEls  = document.querySelectorAll('.aaa-stage-zone-spec');
+          if (!labelEl || !specEl || !ledeEl) return;
+
+          // Width-first classification (chrome-height-resilient).
+          var name, isUltra = false, isExact169 = false;
+          if (w >= 4800 || r >= 3.0)                     { name = 'Your 32:9 monitor'; isUltra = true; }
+          else if (w >= 3200 || (w >= 2400 && r >= 2.0)) { name = 'Your 21:9 monitor'; isUltra = true; }
+          else if (r >= 1.65 && r <= 1.85)               { name = 'Your 16:9 monitor'; isExact169 = true; }
+          else if (r >= 1.55 && r < 1.65)                { name = 'Your 16:10 monitor'; }
+          else                                            { name = 'Your monitor'; }
+
+          labelEl.textContent = name;
+          specEl.textContent  = w + ' × ' + h;
+
+          if (isUltra) {
+            // Real per-side loss on this monitor with a 16:9 source.
+            var lossFrac = (1 - REF / r) / 2;
+            var lossPct  = Math.round(lossFrac * 100);
+            var lostPx   = Math.round(lossFrac * w);
+            for (var i = 0; i < pctEls.length; i++) pctEls[i].textContent = '−' + lossPct + '%';
+            for (var j = 0; j < spcEls.length; j++) spcEls[j].textContent = lostPx + ' px lost';
+            ledeEl.innerHTML = "That's <strong>" + (lossPct * 2) +
+              "% of your screen</strong> a standard player throws away on every widescreen video. " +
+              "<strong>Smoothie warp fills every pixel</strong> — without distorting faces.";
+          } else if (isExact169) {
+            for (var k = 0; k < pctEls.length; k++) pctEls[k].textContent = '0%';
+            for (var m = 0; m < spcEls.length; m++) spcEls[m].textContent = '0 px lost';
+            ledeEl.innerHTML = "Good news — your monitor is a clean 16:9, you're <strong>not losing pixels on standard video</strong>. Smoothie's built for ultrawides; if you've got one too (or you're just curious), scroll on.";
+          } else {
+            // 16:10 or oddball — keep generic default
+            ledeEl.innerHTML = DEFAULT_LEDE;
+          }
+        } catch (_e) { /* keep defaults */ }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', apply);
+      } else {
+        apply();
+      }
+      var t;
+      window.addEventListener('resize', function () {
+        clearTimeout(t); t = setTimeout(apply, 150);
+      });
     })();
   </script>
 </head>

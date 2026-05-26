@@ -28,33 +28,68 @@
   <script src="/assets/aspect-profile.js" defer></script>
   <script src="/assets/warp-demo.js" defer></script>
 
-  <!-- Персонализация лейбла монитора. screen.width/height отдаёт
-       физическое разрешение монитора даже в оконном режиме. Если у
-       юзера реально ультраширокий — дефолтный референс заменяется на
-       его реальный сетап. На 16:9/16:10 — остаётся как есть. -->
+  <!-- Aspect-aware персонализация хиро. Использует innerWidth/innerHeight
+       (работает с DevTools device toolbar и оконным режимом). Классифицирует
+       по ширине (chrome не съедает ширину как высоту), вычисляет реальную
+       потерю пикселей при показе 16:9 видео, обновляет лейбл, проценты
+       и пиксели в барах, lede. Для ровно 16:9 — дружелюбное "у тебя всё ок,
+       листай если интересно". Re-runs на resize. -->
   <script>
     (function () {
-      try {
-        var w = window.screen && window.screen.width;
-        var h = window.screen && window.screen.height;
-        if (!w || !h) return;
-        var r = w / h;
-        var name = null;
-        if (r >= 3.3)      name = 'Ваш 32:9 монитор';
-        else if (r >= 2.1) name = 'Ваш 21:9 монитор';
-        if (!name) return;
-        var setLabel = function () {
-          var t = document.querySelector('.aaa-stage-label-text');
-          var s = document.querySelector('.aaa-stage-label-spec');
-          if (t) t.textContent = name;
-          if (s) s.textContent = w + ' × ' + h;
-        };
-        if (document.readyState === 'loading') {
-          document.addEventListener('DOMContentLoaded', setLabel);
-        } else {
-          setLabel();
-        }
-      } catch (_e) { /* ignore — keep default */ }
+      var DEFAULT_LEDE = "Видишь чёрные полосы по бокам? Вот что обычный плеер показывает тебе на ультрашироком экране. <strong>Smoothie использует каждый пиксель — без искажения лиц.</strong>";
+
+      function apply() {
+        try {
+          var w = window.innerWidth, h = window.innerHeight;
+          if (!w || !h) return;
+          var r = w / h;
+          var REF = 16 / 9;
+
+          var labelEl = document.querySelector('.aaa-stage-label-text');
+          var specEl  = document.querySelector('.aaa-stage-label-spec');
+          var ledeEl  = document.querySelector('.aaa-lede');
+          var pctEls  = document.querySelectorAll('.aaa-stage-zone-pct');
+          var spcEls  = document.querySelectorAll('.aaa-stage-zone-spec');
+          if (!labelEl || !specEl || !ledeEl) return;
+
+          var name, isUltra = false, isExact169 = false;
+          if (w >= 4800 || r >= 3.0)                     { name = 'Ваш 32:9 монитор'; isUltra = true; }
+          else if (w >= 3200 || (w >= 2400 && r >= 2.0)) { name = 'Ваш 21:9 монитор'; isUltra = true; }
+          else if (r >= 1.65 && r <= 1.85)               { name = 'Ваш 16:9 монитор'; isExact169 = true; }
+          else if (r >= 1.55 && r < 1.65)                { name = 'Ваш 16:10 монитор'; }
+          else                                            { name = 'Твой монитор'; }
+
+          labelEl.textContent = name;
+          specEl.textContent  = w + ' × ' + h;
+
+          if (isUltra) {
+            var lossFrac = (1 - REF / r) / 2;
+            var lossPct  = Math.round(lossFrac * 100);
+            var lostPx   = Math.round(lossFrac * w);
+            for (var i = 0; i < pctEls.length; i++) pctEls[i].textContent = '−' + lossPct + '%';
+            for (var j = 0; j < spcEls.length; j++) spcEls[j].textContent = '−' + lostPx + ' px';
+            ledeEl.innerHTML = "Это <strong>" + (lossPct * 2) +
+              "% твоего экрана</strong>, которые обычный плеер выбрасывает на каждом видео. " +
+              "<strong>Smoothie использует каждый пиксель</strong> — без искажения лиц.";
+          } else if (isExact169) {
+            for (var k = 0; k < pctEls.length; k++) pctEls[k].textContent = '0%';
+            for (var m = 0; m < spcEls.length; m++) spcEls[m].textContent = '0 px';
+            ledeEl.innerHTML = "Хорошие новости — у тебя обычный 16:9, <strong>на стандартном видео ты ничего не теряешь</strong>. Smoothie сделан для ультрашироких; если у тебя есть и такой (или просто интересно) — листай дальше.";
+          } else {
+            ledeEl.innerHTML = DEFAULT_LEDE;
+          }
+        } catch (_e) { /* keep defaults */ }
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', apply);
+      } else {
+        apply();
+      }
+      var t;
+      window.addEventListener('resize', function () {
+        clearTimeout(t); t = setTimeout(apply, 150);
+      });
     })();
   </script>
 </head>

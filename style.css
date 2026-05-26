@@ -1308,13 +1308,15 @@ strong { color: var(--text); font-weight: 600; }
 
 .aaa-hero {
   position: relative;
-  min-height: 100vh;
+  /* dvh = dynamic viewport height. Accounts for browser chrome
+     (URL bar, tabs) so the hero actually fits visible space, not
+     fictional 100vh that includes hidden chrome. Saves ~80px on
+     desktop Chrome at 1080p. */
+  min-height: 100dvh;
   background: #050505;
   overflow: hidden;
   isolation: isolate;
-  /* Tightened paddings — was 88-112 top / 56-88 bottom. Hero needs to
-     fit a 1080p fold WITH micro text + scroll cue all visible. */
-  padding: clamp(64px, 6.5vh, 92px) 0 clamp(48px, 5.5vh, 72px);
+  padding: clamp(56px, 6dvh, 84px) 0 clamp(44px, 5dvh, 68px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1372,7 +1374,7 @@ strong { color: var(--text); font-weight: 600; }
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: clamp(14px, 1.8vh, 24px);
+  gap: clamp(12px, 1.6dvh, 22px);
 }
 
 /* ─── Eyebrow ────────────────────────────────────────────────────── */
@@ -1402,9 +1404,9 @@ strong { color: var(--text); font-weight: 600; }
   margin: 0;
   font-family: var(--font-display);
   font-weight: 800;
-  /* Width-clamp + 8vh ceiling. On 1080p height that caps at 86px ≈
-     5.4rem; the 4.5rem width clamp wins on most viewports → ~72px. */
-  font-size: min(clamp(2.25rem, 4.5vw + 0.25rem, 4.75rem), 8vh);
+  /* Width-clamp + 7.5dvh ceiling. On 1080p real viewport (~970 after
+     chrome) caps at 72px ≈ 4.5rem; matches width-clamp on most setups. */
+  font-size: min(clamp(2.25rem, 4.5vw + 0.25rem, 4.75rem), 7.5dvh);
   line-height: 0.94;
   letter-spacing: -0.045em;
   font-variation-settings: "wdth" 100, "opsz" 96;
@@ -1432,12 +1434,12 @@ strong { color: var(--text); font-weight: 600; }
   position: relative;
   margin: 0;
   width: 100%;
-  /* Triple cap: width 94vw, height-driven (42vh × 21/9), absolute 1600px.
-     On 1080p (1920×1080): 42vh×2.33 = 1058px → stage ≈ 453px tall.
-     On 1440p (3440×1440): 42vh×2.33 = 1411px → stage ≈ 605px tall.
-     On UWHD 1600p+: width or 1600px absolute caps win.
-     Compressed from 52vh after fold-fit feedback. */
-  max-width: min(94vw, calc(42vh * 21 / 9), 1600px);
+  /* Triple cap: width 94vw, height-driven (38dvh × 21/9), absolute 1600px.
+     Using dvh (dynamic) so the stage shrinks with real visible viewport,
+     not fictional 100vh. On 1080p (real ~970dvh): 38dvh×2.33 = 860px
+     wide → stage ≈ 369px tall. On 1440p UWHD: 38dvh×2.33 = 1276px →
+     stage ≈ 547px tall. */
+  max-width: min(94vw, calc(38dvh * 21 / 9), 1600px);
   opacity: 0;
   animation: aaa-fade-up 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) 1.05s forwards;
 }
@@ -1446,7 +1448,7 @@ strong { color: var(--text); font-weight: 600; }
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  margin: 0 auto clamp(6px, 0.9vh, 12px);
+  margin: 0 auto clamp(6px, 0.8dvh, 12px);
   font-family: var(--font-mono);
   font-size: 0.72rem;
   font-weight: 600;
@@ -1582,7 +1584,7 @@ strong { color: var(--text); font-weight: 600; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(14px, 1.8vh, 22px);
+  gap: clamp(12px, 1.6dvh, 20px);
   max-width: 720px;
   opacity: 0;
   animation: aaa-fade-up 1s cubic-bezier(0.2, 0.8, 0.2, 1) 1.65s forwards;
