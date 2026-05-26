@@ -1410,24 +1410,22 @@ strong { color: var(--text); font-weight: 600; }
   background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' seed='3'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.7 0'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
 }
 
-/* Vignette layered for legibility + watermark mask, but much lighter
-   overall than v5 — we want the F1 footage visible, not silhouetted.
-   Central darkening only behind the headline area; corners darken
-   only where needed (bottom-right covers Veo mark). */
+/* Vignette layers for legibility. Paid Veo API outputs are clean — no
+   visible watermark — so the v6 dense bottom-right corner mask is gone.
+   Both lower corners get a light, symmetric vignette purely for
+   cinematic framing. */
 .cinematic-hero-vignette {
   position: absolute;
   inset: 0;
   z-index: 3;
   pointer-events: none;
   background:
-    /* Bottom-right corner — covers Veo watermark area (kept dense) */
-    radial-gradient(ellipse 24% 32% at 100% 100%, rgba(0,0,0,0.98) 0%, rgba(0,0,0,0.7) 55%, transparent 100%),
-    /* Bottom-left corner — symmetric, lighter */
-    radial-gradient(ellipse 22% 28% at 0% 100%, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.3) 60%, transparent 100%),
-    /* Central legibility vignette — narrower + softer to stop killing
-       the footage; headline reads via text-shadow now. */
+    /* Bottom corners — symmetric, gentle cinematic vignette */
+    radial-gradient(ellipse 22% 30% at 100% 100%, rgba(0,0,0,0.55) 0%, transparent 70%),
+    radial-gradient(ellipse 22% 30% at 0% 100%, rgba(0,0,0,0.55) 0%, transparent 70%),
+    /* Central legibility vignette — narrow + soft so footage stays visible */
     radial-gradient(ellipse 55% 45% at 50% 45%, rgba(0,0,0,0.55) 0%, transparent 70%),
-    /* Light top-to-bottom gradient for nav legibility + scroll cue. */
+    /* Light top-to-bottom gradient for nav legibility + scroll cue */
     linear-gradient(180deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0) 18%, rgba(0,0,0,0) 80%, rgba(0,0,0,0.7) 100%);
 }
 
