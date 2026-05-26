@@ -2,46 +2,88 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Order status — Ultrawider</title>
+    <title>Order status — Ultrawider Pro</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    />
+    <link rel="stylesheet" href="/style.css" />
     <link rel="stylesheet" href="/assets/styles.css" />
   </head>
   <body>
-    <main class="container center-narrow center">
-      <div id="processing">
-        <div class="spinner"></div>
-        <h1>Processing your payment</h1>
-        <p>
-          We're confirming with the payment processor. This usually takes
-          1–2 minutes.
-        </p>
+    <header class="site-header">
+      <div class="container nav">
+        <a href="/" class="logo">
+          <span class="logo-mark"></span>
+          <span class="logo-text">Ultrawider</span>
+        </a>
       </div>
+    </header>
 
-      <div id="complete" hidden>
-        <div class="check">✓</div>
-        <h1>Payment received</h1>
-        <p>
-          Your license key has been sent to your email. Check your inbox
-          (and spam folder).
-        </p>
+    <main class="order-page">
+      <div class="container container-narrow">
+        <div class="order-status">
+          <div id="processing">
+            <div class="spinner"></div>
+            <h1>Processing your payment</h1>
+            <p>
+              We're confirming with the payment processor. This usually takes
+              1–2 minutes — but can take up to 20 minutes in rare cases
+              depending on bank-side 3DS challenges. You can safely leave
+              this tab open; we'll also email your key as soon as it's ready.
+            </p>
+          </div>
 
-        <div class="key-box">
-          <label>Your key</label>
-          <code id="key-display"></code>
-          <button type="button" id="copy-btn">Copy</button>
+          <div id="complete" hidden>
+            <div class="check">✓</div>
+            <h1>Payment received</h1>
+            <p>
+              Your license key has been sent to your email. Check your inbox
+              (and spam folder if you don't see it).
+            </p>
+
+            <div class="key-box">
+              <label>Your license key</label>
+              <code id="key-display"></code>
+              <button type="button" id="copy-btn">Copy to clipboard</button>
+            </div>
+
+            <div class="next-steps">
+              <h3>What's next</h3>
+              <ol>
+                <li>Open the Ultrawider extension popup (click its icon in the Chrome toolbar)</li>
+                <li>Click <strong>"Already have a key?"</strong></li>
+                <li>Paste the key above and click <strong>Activate</strong></li>
+                <li>Open any video site — Smoothie now works everywhere it's supported</li>
+              </ol>
+              <p class="muted" style="margin-top: 12px;">
+                You can also paste the key directly into the fullscreen HUD
+                ("Have a key?" button) when watching a video.
+              </p>
+            </div>
+          </div>
+
+          <div id="failed" hidden>
+            <h1>Payment didn't go through</h1>
+            <p id="failure-reason"></p>
+            <a href="/pricing" class="primary">Try again</a>
+            <p class="muted" style="margin-top: 16px;">
+              Or <a href="mailto:hello@ultrawider.net">email us</a> — we'll help sort it out.
+            </p>
+          </div>
         </div>
-
-        <p style="margin-top: 1.5rem; font-size: 0.85rem;">
-          Open the Ultrawider extension and paste the key into the popup.
-        </p>
-      </div>
-
-      <div id="failed" hidden>
-        <h1>Payment didn't go through</h1>
-        <p id="failure-reason"></p>
-        <a href="/pricing" class="primary">Try again</a>
       </div>
     </main>
+
+    <footer class="site-footer">
+      <div class="container footer-bottom">
+        <span>© 2026 Ultrawider · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a href="/refund.html">Refund</a></span>
+      </div>
+    </footer>
 
     <script src="/assets/config.js"></script>
     <script src="/assets/order.js"></script>

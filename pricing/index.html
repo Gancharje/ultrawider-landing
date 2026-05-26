@@ -2,77 +2,196 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Ultrawider Pro — Pricing</title>
+    <title>Pricing — Ultrawider Pro</title>
+    <meta
+      name="description"
+      content="Ultrawider Pro from $2.99/month — unlock the Smoothie warp on Twitch, Vimeo, RuTube and every supported platform. 14-day refund, cancel anytime."
+    />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    />
+    <link rel="stylesheet" href="/style.css" />
     <link rel="stylesheet" href="/assets/styles.css" />
   </head>
   <body>
-    <main class="container">
-      <div class="center-narrow center">
-        <h1>Ultrawider Pro</h1>
-        <p class="lead">Unlock the full experience</p>
+    <header class="site-header">
+      <div class="container nav">
+        <a href="/" class="logo">
+          <span class="logo-mark"></span>
+          <span class="logo-text">Ultrawider</span>
+        </a>
+        <nav class="nav-links">
+          <a href="/#features">Features</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/#faq">FAQ</a>
+          <a href="/" class="btn btn-ghost btn-sm">Back to home</a>
+        </nav>
       </div>
+    </header>
 
-      <div class="plans" id="plans"></div>
-
-      <section class="how center-narrow">
-        <h2>How it works</h2>
-        <ol>
-          <li>Choose a plan and pay with your card</li>
-          <li>Get your license key by email within 5 minutes</li>
-          <li>Paste the key into the extension to activate</li>
-        </ol>
+    <main>
+      <section class="page-hero">
+        <div class="container">
+          <span class="eyebrow">Pricing · Pro subscription</span>
+          <h1>Choose your Pro plan</h1>
+          <p class="lead">
+            Every plan unlocks Smoothie warp on Twitch, Vimeo, RuTube and
+            every supported platform — beyond the YouTube free demo. Auto
+            curve-tuning for 21:9 / 24:9 / 32:9 included. 14-day refund.
+          </p>
+        </div>
       </section>
 
-      <footer class="center-narrow">
-        <small>
-          Payments processed securely by Tazapay (Singapore). Visa,
-          Mastercard, Amex, Apple Pay, Google Pay accepted.
-        </small>
-      </footer>
+      <section>
+        <div class="container">
+          <div class="plans" id="plans"></div>
+
+          <div class="pricing-how">
+            <h2>How it works</h2>
+            <ol>
+              <li>Pick a plan and pay by card (Visa, Mastercard, Amex, Apple Pay, Google Pay)</li>
+              <li>Get your license key by email in 5–20 minutes</li>
+              <li>Paste it into the extension popup — or directly in fullscreen HUD</li>
+            </ol>
+          </div>
+
+          <p class="pricing-footnote">
+            <strong>Secure checkout via Tazapay</strong> (Singapore payment processor).
+            Lost your key? <a href="/recover">Recover it here</a>.
+          </p>
+        </div>
+      </section>
     </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="logo">
+            <span class="logo-mark"></span>
+            <span class="logo-text">Ultrawider</span>
+          </a>
+          <p class="footer-tag">Built for ultrawide.</p>
+        </div>
+        <nav class="footer-nav">
+          <h4>Product</h4>
+          <a href="/#features">Features</a>
+          <a href="/#how">How it works</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/#faq">FAQ</a>
+        </nav>
+        <nav class="footer-nav">
+          <h4>Account</h4>
+          <a href="/recover">Recover license</a>
+          <a href="mailto:hello@ultrawider.net">Contact support</a>
+        </nav>
+        <nav class="footer-nav">
+          <h4>Legal</h4>
+          <a href="/terms.html">Terms of Service</a>
+          <a href="/privacy.html">Privacy Policy</a>
+          <a href="/refund.html">Refund Policy</a>
+        </nav>
+      </div>
+      <div class="container footer-bottom">
+        <span>© 2026 Ultrawider. All rights reserved.</span>
+      </div>
+    </footer>
 
     <script src="/assets/config.js"></script>
     <script>
-      // Render plan cards. Layout decisions baked in here vs templated:
-      // there are 4 plans, this template will not grow, no need for a
-      // framework.
+      // Render plan cards. 4 plans, JS template inline — no framework
+      // needed at this scale. Plan data lives in window.ULTRAWIDER.PLANS
+      // (see /assets/config.js).
       (function () {
-        const RECOMMENDED = 'yearly';
-        const ORDER = ['monthly', 'quarterly', 'yearly', 'lifetime'];
-        const root = document.getElementById('plans');
-        const params = new URLSearchParams(location.search);
-        const installId = params.get('install_id');
+        var RECOMMENDED = 'yearly';
+        var ORDER = ['monthly', 'quarterly', 'yearly', 'lifetime'];
+        var root = document.getElementById('plans');
+        var params = new URLSearchParams(location.search);
+        var installId = params.get('install_id');
 
-        function priceLabel(plan, p) {
-          if (plan === 'monthly') return '<span>/mo</span>';
-          if (plan === 'yearly') return '<span>/yr</span>';
+        // Per-plan extras NOT in config.js — copy/UX detail that doesn't
+        // belong in shared config. Stays close to the rendering code.
+        var EXTRAS = {
+          monthly: {
+            period: '/mo',
+            features: [
+              'Smoothie on Twitch, Vimeo, RuTube, more',
+              'Aspect-aware auto-tuning',
+              'Cancel anytime',
+            ],
+            cta: 'Choose monthly',
+          },
+          quarterly: {
+            period: '',
+            features: [
+              'Everything in Monthly',
+              'Save 11% vs monthly',
+              'Cancel anytime',
+            ],
+            cta: 'Choose 3 months',
+          },
+          yearly: {
+            period: '/yr',
+            features: [
+              'Everything in Quarterly',
+              'Best value — 30% off monthly',
+              'Cancel anytime',
+            ],
+            cta: 'Choose yearly',
+          },
+          lifetime: {
+            period: '',
+            features: [
+              'Everything in Yearly',
+              'Pay once, never renew',
+              'All future updates included',
+            ],
+            cta: 'Choose lifetime',
+          },
+        };
+
+        function effectivePerMonth(planId, p) {
+          if (planId === 'quarterly') return '≈ $' + (p.price / 3).toFixed(2) + '/mo';
+          if (planId === 'yearly') return '≈ $' + (p.price / 12).toFixed(2) + '/mo';
           return '';
         }
 
         function planCard(planId) {
-          const p = window.ULTRAWIDER.PLANS[planId];
+          var p = window.ULTRAWIDER.PLANS[planId];
           if (!p) return '';
-          const isRec = planId === RECOMMENDED;
-          return (
-            '<div class="plan' + (isRec ? ' plan--recommended' : '') +
-            '" data-plan="' + planId + '">' +
-            (p.badge && isRec ? '<div class="ribbon">' + p.badge + '</div>' : '') +
-            '<h3>' + p.label + '</h3>' +
-            '<div class="price">$' + p.price.toFixed(2) + priceLabel(planId, p) + '</div>' +
-            '<p>' + (p.badge && !isRec ? p.badge : 'Valid for ' + p.duration) + '</p>' +
-            '<button type="button" data-select="' + planId + '">Select</button>' +
-            '</div>'
-          );
+          var ex = EXTRAS[planId] || { period: '', features: [], cta: 'Choose' };
+          var isRec = planId === RECOMMENDED;
+          var html = '<div class="plan' + (isRec ? ' plan--recommended' : '') +
+            '" data-plan="' + planId + '">';
+          if (isRec) html += '<div class="ribbon">Best value</div>';
+          html += '<h3>' + p.label + '</h3>';
+          html += '<div class="price">$' + p.price.toFixed(2);
+          if (ex.period) html += '<span>' + ex.period + '</span>';
+          html += '</div>';
+          var eff = effectivePerMonth(planId, p);
+          if (eff) html += '<p class="plan-effective">' + eff + '</p>';
+          html += '<p>Valid for ' + p.duration + '</p>';
+          html += '<ul class="plan-features">';
+          for (var i = 0; i < ex.features.length; i++) {
+            html += '<li>' + ex.features[i] + '</li>';
+          }
+          html += '</ul>';
+          html += '<button type="button" data-select="' + planId + '">' + ex.cta + '</button>';
+          html += '</div>';
+          return html;
         }
 
         root.innerHTML = ORDER.map(planCard).join('');
 
         root.addEventListener('click', function (e) {
-          const btn = e.target.closest('[data-select]');
+          var btn = e.target.closest('[data-select]');
           if (!btn) return;
-          const plan = btn.getAttribute('data-select');
-          const url = new URL('/checkout', location.origin);
+          var plan = btn.getAttribute('data-select');
+          var url = new URL('/checkout', location.origin);
           url.searchParams.set('plan', plan);
           if (installId) url.searchParams.set('install_id', installId);
           location.href = url.toString();

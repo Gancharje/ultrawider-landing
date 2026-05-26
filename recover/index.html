@@ -4,36 +4,65 @@
     <meta charset="UTF-8" />
     <title>Recover your key — Ultrawider</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+    />
+    <link rel="stylesheet" href="/style.css" />
     <link rel="stylesheet" href="/assets/styles.css" />
   </head>
   <body>
-    <main class="container center-narrow">
-      <a href="/pricing" class="back">← Back to plans</a>
-      <h1>Recover your key</h1>
-      <p>
-        Enter the email you used at checkout and we'll resend your
-        active license key.
-      </p>
+    <header class="site-header">
+      <div class="container nav">
+        <a href="/" class="logo">
+          <span class="logo-mark"></span>
+          <span class="logo-text">Ultrawider</span>
+        </a>
+        <nav class="nav-links">
+          <a href="/pricing" class="btn btn-ghost btn-sm">View plans</a>
+        </nav>
+      </div>
+    </header>
 
-      <form id="form" style="margin-top: 1.5rem;">
-        <label for="email">Your email</label>
-        <input
-          type="email"
-          id="email"
-          required
-          placeholder="your.email@example.com"
-        />
-        <button type="submit">Send my key</button>
-      </form>
+    <main class="checkout-page">
+      <div class="container container-narrow">
+        <a href="/pricing" class="back">← Back to plans</a>
+        <h1>Recover your license key</h1>
+        <p>
+          Enter the email you used at checkout. We'll re-send the most
+          recent active license key for that address.
+        </p>
 
-      <div id="msg" hidden style="margin-top: 1rem;"></div>
+        <form id="form" style="margin-top: 1.5rem;">
+          <label for="email">Your email</label>
+          <input
+            type="email"
+            id="email"
+            required
+            placeholder="your.email@example.com"
+            autocomplete="email"
+          />
+          <button type="submit">Send my key</button>
+        </form>
 
-      <p style="font-size: 0.85rem; margin-top: 2rem;">
-        Still no luck? Email
-        <a id="contact-link" href="mailto:hello@ultrawider.net">hello@ultrawider.net</a>
-        and we'll dig it out manually.
-      </p>
+        <div id="msg" hidden style="margin-top: 1rem;"></div>
+
+        <p class="muted" style="margin-top: 2rem;">
+          Still no luck? Email
+          <a id="contact-link" href="mailto:hello@ultrawider.net">hello@ultrawider.net</a>
+          and we'll dig it out manually.
+        </p>
+      </div>
     </main>
+
+    <footer class="site-footer">
+      <div class="container footer-bottom">
+        <span>© 2026 Ultrawider · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a href="/refund.html">Refund</a></span>
+      </div>
+    </footer>
 
     <script src="/assets/config.js"></script>
     <script>
