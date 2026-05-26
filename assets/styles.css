@@ -1,0 +1,368 @@
+/**
+ * Single global stylesheet. Dark theme, minimalist, mobile-first.
+ * Brand accent: gold (#ffd700) for Pro elements, matches extension popup.
+ */
+
+:root {
+  --bg: #0a0a0a;
+  --bg-card: #161616;
+  --bg-card-hover: #1f1f1f;
+  --text: #ededed;
+  --text-muted: #a0a0a0;
+  --text-dim: #6b7280;
+  --accent: #ffd700;
+  --accent-hover: #ffea58;
+  --border: #2a2a2a;
+  --border-accent: #ffd70066;
+  --error: #ff5959;
+  --success: #4ade80;
+  --font:
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  --mono: 'SF Mono', Monaco, Consolas, 'Liberation Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  padding: 2rem 1rem;
+  min-height: 100vh;
+}
+
+a {
+  color: var(--accent);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+h1 {
+  font-size: 2.25rem;
+  margin: 0 0 0.5rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+}
+h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem;
+}
+p {
+  color: var(--text-muted);
+}
+
+/* ─── Layout containers ─────────────────────────────────────────────── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.center-narrow {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* ─── Pricing grid ──────────────────────────────────────────────────── */
+.lead {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin-top: 0;
+}
+
+.plans {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin: 2.5rem 0;
+}
+
+.plan {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  position: relative;
+  transition: transform 0.18s, background 0.18s, border-color 0.18s;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.plan:hover {
+  background: var(--bg-card-hover);
+  transform: translateY(-2px);
+}
+.plan--recommended {
+  border-color: var(--border-accent);
+  background: linear-gradient(180deg, rgba(255, 215, 0, 0.04), var(--bg-card));
+}
+
+.ribbon {
+  position: absolute;
+  top: -10px;
+  right: 16px;
+  background: var(--accent);
+  color: var(--bg);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 4px;
+  letter-spacing: 1px;
+}
+
+.price {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0.25rem 0;
+  line-height: 1;
+}
+.price > span {
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  margin-left: 0.25rem;
+}
+.plan p {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+.plan button {
+  margin-top: auto;
+  width: 100%;
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 0.7rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  font-family: inherit;
+}
+.plan button:hover {
+  background: var(--text);
+  color: var(--bg);
+}
+.plan--recommended button {
+  background: var(--accent);
+  color: var(--bg);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+.plan--recommended button:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+/* ─── How it works ──────────────────────────────────────────────────── */
+.how {
+  margin: 3rem 0 1.5rem;
+}
+.how ol {
+  color: var(--text-muted);
+  padding-left: 1.2rem;
+}
+.how li {
+  margin: 0.4rem 0;
+}
+
+footer {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+  font-size: 0.8rem;
+  color: var(--text-dim);
+}
+
+/* ─── Forms ─────────────────────────────────────────────────────────── */
+label {
+  display: block;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+}
+input[type='email'],
+input[type='text'] {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  background: var(--bg-card);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: inherit;
+  transition: border-color 0.15s;
+}
+input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.primary,
+button[type='submit'] {
+  width: 100%;
+  padding: 0.85rem;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 1rem;
+  font-family: inherit;
+  text-decoration: none;
+  display: inline-block;
+  text-align: center;
+  transition: background 0.15s;
+}
+.primary:hover,
+button[type='submit']:hover {
+  background: var(--accent-hover);
+  text-decoration: none;
+}
+.primary[disabled],
+button[type='submit'][disabled] {
+  background: var(--border);
+  color: var(--text-dim);
+  cursor: not-allowed;
+}
+
+.hint {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  margin: 0.4rem 0 0;
+}
+.legal {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  margin-top: 1rem;
+}
+
+.back {
+  display: inline-block;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+}
+
+/* ─── Summary card on checkout ──────────────────────────────────────── */
+.summary {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin: 1rem 0 2rem;
+}
+.summary h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem;
+}
+.summary p {
+  margin: 0;
+  font-size: 0.85rem;
+}
+
+/* ─── Error / notice ────────────────────────────────────────────────── */
+.error {
+  background: rgba(255, 89, 89, 0.1);
+  border: 1px solid rgba(255, 89, 89, 0.35);
+  color: #fda4a4;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+/* ─── Order status page ─────────────────────────────────────────────── */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 1rem auto;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.check {
+  width: 56px;
+  height: 56px;
+  background: var(--success);
+  color: var(--bg);
+  border-radius: 50%;
+  font-size: 1.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  font-weight: 700;
+}
+
+.key-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-accent);
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  margin: 1.5rem 0;
+}
+.key-box label {
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+.key-box code {
+  display: block;
+  font-family: var(--mono);
+  font-size: 1.5rem;
+  letter-spacing: 0.1em;
+  margin: 0.5rem 0 1rem;
+  color: var(--accent);
+  user-select: all;
+}
+.key-box button {
+  background: transparent;
+  color: var(--text);
+  border: 1px solid var(--border);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.key-box button:hover {
+  background: var(--bg-card-hover);
+}
+
+/* ─── Status text alignment ─────────────────────────────────────────── */
+.center {
+  text-align: center;
+}

@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ultrawider Pro — Checkout</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <main class="container center-narrow">
+      <a href="/pricing" class="back">← Back to plans</a>
+
+      <div class="summary" id="summary"></div>
+
+      <form id="checkout-form">
+        <label for="email">Where should we send your license key?</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          required
+          placeholder="your.email@example.com"
+          autocomplete="email"
+        />
+        <p class="hint">
+          We'll email your activation key here within 5 minutes after
+          payment.
+        </p>
+
+        <button type="submit" id="submit-btn">Continue to payment →</button>
+
+        <p class="legal">
+          By continuing, you agree to our
+          <a href="/terms.html">Terms</a> and
+          <a href="/refund.html">Refund Policy</a>.
+        </p>
+      </form>
+
+      <div id="error" class="error" hidden></div>
+    </main>
+
+    <script src="/assets/config.js"></script>
+    <script src="/assets/checkout.js"></script>
+  </body>
+</html>

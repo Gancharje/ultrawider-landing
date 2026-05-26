@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Order status — Ultrawider</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <main class="container center-narrow center">
+      <div id="processing">
+        <div class="spinner"></div>
+        <h1>Processing your payment</h1>
+        <p>
+          We're confirming with the payment processor. This usually takes
+          1–2 minutes.
+        </p>
+      </div>
+
+      <div id="complete" hidden>
+        <div class="check">✓</div>
+        <h1>Payment received</h1>
+        <p>
+          Your license key has been sent to your email. Check your inbox
+          (and spam folder).
+        </p>
+
+        <div class="key-box">
+          <label>Your key</label>
+          <code id="key-display"></code>
+          <button type="button" id="copy-btn">Copy</button>
+        </div>
+
+        <p style="margin-top: 1.5rem; font-size: 0.85rem;">
+          Open the Ultrawider extension and paste the key into the popup.
+        </p>
+      </div>
+
+      <div id="failed" hidden>
+        <h1>Payment didn't go through</h1>
+        <p id="failure-reason"></p>
+        <a href="/pricing" class="primary">Try again</a>
+      </div>
+    </main>
+
+    <script src="/assets/config.js"></script>
+    <script src="/assets/order.js"></script>
+  </body>
+</html>

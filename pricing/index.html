@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ultrawider Pro — Pricing</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <main class="container">
+      <div class="center-narrow center">
+        <h1>Ultrawider Pro</h1>
+        <p class="lead">Unlock the full experience</p>
+      </div>
+
+      <div class="plans" id="plans"></div>
+
+      <section class="how center-narrow">
+        <h2>How it works</h2>
+        <ol>
+          <li>Choose a plan and pay with your card</li>
+          <li>Get your license key by email within 5 minutes</li>
+          <li>Paste the key into the extension to activate</li>
+        </ol>
+      </section>
+
+      <footer class="center-narrow">
+        <small>
+          Payments processed securely by Tazapay (Singapore). Visa,
+          Mastercard, Amex, Apple Pay, Google Pay accepted.
+        </small>
+      </footer>
+    </main>
+
+    <script src="/assets/config.js"></script>
+    <script>
+      // Render plan cards. Layout decisions baked in here vs templated:
+      // there are 4 plans, this template will not grow, no need for a
+      // framework.
+      (function () {
+        const RECOMMENDED = 'yearly';
+        const ORDER = ['monthly', 'quarterly', 'yearly', 'lifetime'];
+        const root = document.getElementById('plans');
+        const params = new URLSearchParams(location.search);
+        const installId = params.get('install_id');
+
+        function priceLabel(plan, p) {
+          if (plan === 'monthly') return '<span>/mo</span>';
+          if (plan === 'yearly') return '<span>/yr</span>';
+          return '';
+        }
+
+        function planCard(planId) {
+          const p = window.ULTRAWIDER.PLANS[planId];
+          if (!p) return '';
+          const isRec = planId === RECOMMENDED;
+          return (
+            '<div class="plan' + (isRec ? ' plan--recommended' : '') +
+            '" data-plan="' + planId + '">' +
+            (p.badge && isRec ? '<div class="ribbon">' + p.badge + '</div>' : '') +
+            '<h3>' + p.label + '</h3>' +
+            '<div class="price">$' + p.price.toFixed(2) + priceLabel(planId, p) + '</div>' +
+            '<p>' + (p.badge && !isRec ? p.badge : 'Valid for ' + p.duration) + '</p>' +
+            '<button type="button" data-select="' + planId + '">Select</button>' +
+            '</div>'
+          );
+        }
+
+        root.innerHTML = ORDER.map(planCard).join('');
+
+        root.addEventListener('click', function (e) {
+          const btn = e.target.closest('[data-select]');
+          if (!btn) return;
+          const plan = btn.getAttribute('data-select');
+          const url = new URL('/checkout', location.origin);
+          url.searchParams.set('plan', plan);
+          if (installId) url.searchParams.set('install_id', installId);
+          location.href = url.toString();
+        });
+      })();
+    </script>
+  </body>
+</html>

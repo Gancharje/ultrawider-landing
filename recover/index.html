@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Recover your key — Ultrawider</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/assets/styles.css" />
+  </head>
+  <body>
+    <main class="container center-narrow">
+      <a href="/pricing" class="back">← Back to plans</a>
+      <h1>Recover your key</h1>
+      <p>
+        Enter the email you used at checkout and we'll resend your
+        active license key.
+      </p>
+
+      <form id="form" style="margin-top: 1.5rem;">
+        <label for="email">Your email</label>
+        <input
+          type="email"
+          id="email"
+          required
+          placeholder="your.email@example.com"
+        />
+        <button type="submit">Send my key</button>
+      </form>
+
+      <div id="msg" hidden style="margin-top: 1rem;"></div>
+
+      <p style="font-size: 0.85rem; margin-top: 2rem;">
+        Still no luck? Email
+        <a id="contact-link" href="mailto:hello@ultrawider.net">hello@ultrawider.net</a>
+        and we'll dig it out manually.
+      </p>
+    </main>
+
+    <script src="/assets/config.js"></script>
+    <script>
+      (function () {
+        document.getElementById('contact-link').href =
+          'mailto:' + window.ULTRAWIDER.CONTACT_EMAIL;
+
+        // Pre-fill from query string if email link came from a delivered email
+        const params = new URLSearchParams(location.search);
+        const presetEmail = params.get('email');
+        if (presetEmail) document.getElementById('email').value = presetEmail;
+
+        document.getElementById('form').addEventListener('submit', async function (e) {
+          e.preventDefault();
+          const email = document.getElementById('email').value.trim();
+          const msg = document.getElementById('msg');
+          msg.hidden = false;
+          msg.textContent = 'Sending…';
+          msg.className = '';
+
+          try {
+            // TODO: hit /api/recover once backend wires it. For now, just
+            // show a generic "check your email" message — operator can
+            // manually resend from admin until /api/recover ships.
+            await new Promise(function (r) { setTimeout(r, 500); });
+            msg.textContent =
+              "If we have any active licenses for that email, we'll resend them within a few minutes. Check your inbox + spam folder.";
+          } catch (err) {
+            msg.className = 'error';
+            msg.textContent = 'Could not reach our servers — try again later.';
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
