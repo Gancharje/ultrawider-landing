@@ -29,24 +29,36 @@
   <script src="assets/warp-demo.js" defer></script>
 
   <!-- Aspect-aware hero personalization.
-       Reads window.innerWidth/innerHeight (works with DevTools device
-       toolbar, browser windowed mode, all real users). Classifies by
-       width-first (more reliable than ratio, since browser chrome eats
-       80px of height and skews the ratio toward "ultrawide" on regular
-       16:9 monitors). Then computes the LITERAL pixel loss a standard
-       16:9 player would inflict on this viewport, and updates the
-       stage label, the bar percentages, the bar px-loss numbers, and
-       the lede copy. For exactly-16:9 viewports a friendly "your
-       monitor is fine, scroll if curious" lede takes over.
+       Reads physical monitor dims via screen.width/height for real
+       users. If the inner viewport is dramatically narrower (DevTools
+       device toolbar OR snapped window), trusts the inner viewport
+       instead — so DevTools testing works without misleading actual
+       users who browse fullscreen.
 
-       Re-runs on resize so DevTools toolbar tweaks update live. -->
+       Three width tiers per user request:
+         <= 1920px  → 16:9 friendly "your monitor is fine" copy
+         1921-3199  → generic default (referencing demo)
+         >= 3200px  → personalized ultrawide math (-X% / Y px lost) -->
   <script>
     (function () {
       var DEFAULT_LEDE = "Those bars on the sides? That's what every standard player gives you on a widescreen monitor. <strong>Smoothie warp fills every pixel — without distorting faces.</strong>";
 
+      function getDims() {
+        var sw = window.screen && window.screen.width || 0;
+        var sh = window.screen && window.screen.height || 0;
+        var iw = window.innerWidth || 0;
+        var ih = window.innerHeight || 0;
+        // If inner is dramatically narrower than screen, browser is in
+        // DevTools emulation OR snapped window. Trust inner. Otherwise
+        // use the actual monitor dims (screen.*).
+        if (sw && iw && iw < sw * 0.85) return { w: iw, h: ih };
+        return { w: sw || iw, h: sh || ih };
+      }
+
       function apply() {
         try {
-          var w = window.innerWidth, h = window.innerHeight;
+          var d = getDims();
+          var w = d.w, h = d.h;
           if (!w || !h) return;
           var r = w / h;
           var REF = 16 / 9;
@@ -58,19 +70,23 @@
           var spcEls  = document.querySelectorAll('.aaa-stage-zone-spec');
           if (!labelEl || !specEl || !ledeEl) return;
 
-          // Width-first classification (chrome-height-resilient).
-          var name, isUltra = false, isExact169 = false;
-          if (w >= 4800 || r >= 3.0)                     { name = 'Your 32:9 monitor'; isUltra = true; }
-          else if (w >= 3200 || (w >= 2400 && r >= 2.0)) { name = 'Your 21:9 monitor'; isUltra = true; }
-          else if (r >= 1.65 && r <= 1.85)               { name = 'Your 16:9 monitor'; isExact169 = true; }
-          else if (r >= 1.55 && r < 1.65)                { name = 'Your 16:10 monitor'; }
-          else                                            { name = 'Your monitor'; }
+          // Width-first 3-tier classification.
+          var name, tier;
+          if (w >= 4800)      { name = 'Your 32:9 monitor';   tier = 'ultra'; }
+          else if (w >= 3200) { name = 'Your 21:9 monitor';   tier = 'ultra'; }
+          else if (w >= 1921) {
+            name = (r >= 1.95) ? 'Your 21:9 monitor' : 'Your 1440p monitor';
+            tier = (r >= 1.95) ? 'ultra' : 'medium';
+          } else {
+            name = (r >= 1.6) ? 'Your 16:9 monitor' : 'Your monitor';
+            tier = 'compact';
+          }
 
           labelEl.textContent = name;
           specEl.textContent  = w + ' × ' + h;
 
-          if (isUltra) {
-            // Real per-side loss on this monitor with a 16:9 source.
+          if (tier === 'ultra') {
+            // Real per-side loss for this monitor showing a 16:9 source.
             var lossFrac = (1 - REF / r) / 2;
             var lossPct  = Math.round(lossFrac * 100);
             var lostPx   = Math.round(lossFrac * w);
@@ -79,12 +95,12 @@
             ledeEl.innerHTML = "That's <strong>" + (lossPct * 2) +
               "% of your screen</strong> a standard player throws away on every widescreen video. " +
               "<strong>Smoothie warp fills every pixel</strong> — without distorting faces.";
-          } else if (isExact169) {
+          } else if (tier === 'compact') {
             for (var k = 0; k < pctEls.length; k++) pctEls[k].textContent = '0%';
             for (var m = 0; m < spcEls.length; m++) spcEls[m].textContent = '0 px lost';
             ledeEl.innerHTML = "Good news — your monitor is a clean 16:9, you're <strong>not losing pixels on standard video</strong>. Smoothie's built for ultrawides; if you've got one too (or you're just curious), scroll on.";
           } else {
-            // 16:10 or oddball — keep generic default
+            // medium: 1440p 16:9 — generic reference copy
             ledeEl.innerHTML = DEFAULT_LEDE;
           }
         } catch (_e) { /* keep defaults */ }

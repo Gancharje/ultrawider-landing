@@ -1308,18 +1308,17 @@ strong { color: var(--text); font-weight: 600; }
 
 .aaa-hero {
   position: relative;
-  /* dvh = dynamic viewport height. Accounts for browser chrome
-     (URL bar, tabs) so the hero actually fits visible space, not
-     fictional 100vh that includes hidden chrome. Saves ~80px on
-     desktop Chrome at 1080p. */
   min-height: 100dvh;
   background: #050505;
   overflow: hidden;
   isolation: isolate;
-  padding: clamp(56px, 6dvh, 84px) 0 clamp(44px, 5dvh, 68px);
+  padding: clamp(48px, 4.5dvh, 72px) 0 clamp(28px, 3dvh, 44px);
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* space-between pins the scroll cue at the very bottom of the hero
+     while the main .aaa-hero-content takes flex:1 in the middle. */
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* Ambient — blurred poster as a warm cinematic bleed leaking around
@@ -1360,12 +1359,13 @@ strong { color: var(--text); font-weight: 600; }
     );
 }
 
-/* Content stack — centered horizontally, sequential vertical reveal.
-   Gap scales with viewport-height so the hero fits a 1080p fold without
-   surgery on individual margins. */
+/* Content stack — flex:1 takes available space between top padding
+   and the scroll cue at the bottom. Internally centered so content
+   sits in the middle if there's room left over. */
 .aaa-hero-content {
   position: relative;
   z-index: 2;
+  flex: 1;
   width: 100%;
   max-width: 1600px;
   margin: 0 auto;
@@ -1373,8 +1373,9 @@ strong { color: var(--text); font-weight: 600; }
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
-  gap: clamp(12px, 1.6dvh, 22px);
+  gap: clamp(10px, 1.3dvh, 18px);
 }
 
 /* ─── Eyebrow ────────────────────────────────────────────────────── */
@@ -1434,12 +1435,11 @@ strong { color: var(--text); font-weight: 600; }
   position: relative;
   margin: 0;
   width: 100%;
-  /* Triple cap: width 94vw, height-driven (38dvh × 21/9), absolute 1600px.
-     Using dvh (dynamic) so the stage shrinks with real visible viewport,
-     not fictional 100vh. On 1080p (real ~970dvh): 38dvh×2.33 = 860px
-     wide → stage ≈ 369px tall. On 1440p UWHD: 38dvh×2.33 = 1276px →
-     stage ≈ 547px tall. */
-  max-width: min(94vw, calc(38dvh * 21 / 9), 1600px);
+  /* Triple cap: width 94vw, height-driven (32dvh × 21/9), absolute 1600px.
+     32dvh × 21/9 = 75% of dvh in stage-width terms. On 1080p:
+     32×10.8×2.33 = 805px wide → stage ≈ 345px tall. On UWHD 1300dvh:
+     stage ≈ 970px wide × 416 tall. Keeps room for see-it-work cue. */
+  max-width: min(94vw, calc(32dvh * 21 / 9), 1600px);
   opacity: 0;
   animation: aaa-fade-up 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) 1.05s forwards;
 }
@@ -1584,7 +1584,7 @@ strong { color: var(--text); font-weight: 600; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(12px, 1.6dvh, 20px);
+  gap: clamp(10px, 1.3dvh, 18px);
   max-width: 720px;
   opacity: 0;
   animation: aaa-fade-up 1s cubic-bezier(0.2, 0.8, 0.2, 1) 1.65s forwards;
@@ -1686,16 +1686,19 @@ strong { color: var(--text); font-weight: 600; }
 }
 
 /* ─── Scroll cue ─────────────────────────────────────────────────── */
+/* Direct flex-child of .aaa-hero with justify-content: space-between,
+   so it ALWAYS sits at the very bottom of the hero — no position:
+   absolute trickery that risks falling below the fold. The bob
+   animation only applies to the SVG arrow, not the whole element. */
 .aaa-hero-scroll {
-  position: absolute;
-  left: 50%;
-  bottom: 16px;
-  transform: translateX(-50%);
+  position: relative;
   z-index: 3;
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
+  margin-top: clamp(12px, 1.6dvh, 22px);
   color: rgba(245, 245, 245, 0.4);
   font-family: var(--font-mono);
   font-size: 0.65rem;
@@ -1703,13 +1706,14 @@ strong { color: var(--text); font-weight: 600; }
   text-transform: uppercase;
   text-decoration: none;
   opacity: 0;
-  animation:
-    aaa-fade-up 1s cubic-bezier(0.2, 0.8, 0.2, 1) 2.7s forwards,
-    aaa-scroll-bob 2.6s cubic-bezier(0.4, 0, 0.2, 1) 3.8s infinite;
+  animation: aaa-fade-up 1s cubic-bezier(0.2, 0.8, 0.2, 1) 2.7s forwards;
   transition: color 0.2s ease;
 }
 .aaa-hero-scroll:hover { color: var(--accent); }
-.aaa-hero-scroll svg { width: 14px; height: 14px; opacity: 0.7; }
+.aaa-hero-scroll svg {
+  width: 14px; height: 14px; opacity: 0.7;
+  animation: aaa-scroll-bob 2.6s cubic-bezier(0.4, 0, 0.2, 1) 3.8s infinite;
+}
 
 /* ─── Keyframes ──────────────────────────────────────────────────── */
 @keyframes aaa-fade-up {
@@ -1728,8 +1732,8 @@ strong { color: var(--text); font-weight: 600; }
   to { clip-path: inset(0 11.9% 0 11.9%); }
 }
 @keyframes aaa-scroll-bob {
-  0%, 100% { transform: translateX(-50%) translateY(0);   opacity: 0.7; }
-  50%      { transform: translateX(-50%) translateY(5px); opacity: 1; }
+  0%, 100% { transform: translateY(0);   opacity: 0.7; }
+  50%      { transform: translateY(4px); opacity: 1; }
 }
 
 /* ─── Responsive ─────────────────────────────────────────────────── */
@@ -1751,7 +1755,7 @@ strong { color: var(--text); font-weight: 600; }
   .aaa-stage-zone-pct,
   .aaa-stage-zone-label,
   .aaa-stage-zone-spec { display: none; }
-  .aaa-hero-scroll { bottom: 16px; font-size: 0.6rem; }
+  .aaa-hero-scroll { font-size: 0.6rem; margin-top: 12px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
