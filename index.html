@@ -53,67 +53,91 @@
 
   <main>
 
-    <!-- HERO — full-bleed cinematic video. Two amber-hatched "lost
-         zones" overlaid on left + right show EXACTLY what 16:9 source
-         would forfeit on a 21:9 monitor without us. The video keeps
-         playing across the entire viewport including under the zones,
-         so the visitor sees both the dream (filled widescreen) and
-         the threat (zones the standard player would lose). -->
-    <section class="cinematic-hero">
-      <video class="cinematic-hero-video" autoplay muted loop playsinline preload="auto">
-        <source src="demo/cinematic-hero.mp4" type="video/mp4" />
-      </video>
+    <!-- AAA HERO — letterbox demonstration.
+         The video sits CONTAINED in a 16:9 frame inside a 21:9 monitor
+         stage. The left/right black bars are LITERAL empty space — the
+         exact pixels a standard player throws away on widescreen. On
+         load the video reveals the bars via a clip-path reveal so the
+         joke (your videos didn't [fit]) is performed visually. -->
+    <section class="aaa-hero">
+      <div class="aaa-hero-ambient" aria-hidden="true"></div>
+      <div class="aaa-hero-overlay" aria-hidden="true"></div>
 
-      <div class="cinematic-hero-zones" aria-hidden="true">
-        <div class="lost-zone lost-zone-left">
-          <span class="lost-zone-cap">Lost · standard 16:9 player</span>
-          <span class="lost-zone-label">Without Ultrawider</span>
-        </div>
-        <div class="lost-zone lost-zone-right">
-          <span class="lost-zone-cap">Lost · standard 16:9 player</span>
-          <span class="lost-zone-label">Without Ultrawider</span>
-        </div>
-      </div>
-
-      <div class="cinematic-hero-vignette" aria-hidden="true"></div>
-
-      <div class="cinematic-hero-row">
-        <div class="cinematic-hero-content">
-          <span class="eyebrow">Smoothie · Quintic NLS · WebGL2</span>
-          <h1>
-            <span class="line">You bought an ultrawide.</span>
-            <span class="line accent-line">Your videos didn't.</span>
-          </h1>
-          <p class="lede">
-            Those black bars on the sides? That's what a standard player
-            gives you on every ultrawide screen.
-            <strong>Smoothie warp uses every pixel — without distorting
-            faces.</strong>
-          </p>
+      <div class="aaa-hero-content">
+        <div class="aaa-eyebrow">
+          <span class="aaa-eyebrow-dot" aria-hidden="true"></span>
+          <span>Smoothie · Quintic NLS · WebGL2</span>
         </div>
 
-        <div class="cinematic-hero-cta-wrap">
-          <div class="hero-cta">
-            <a href="/pricing" class="btn btn-primary btn-lg">Get Pro — $2.99/mo</a>
+        <h1 class="aaa-headline">
+          <span class="aaa-headline-line">You bought an ultrawide.</span>
+          <span class="aaa-headline-line aaa-headline-line--accent">Your videos didn't.</span>
+        </h1>
+
+        <figure class="aaa-stage" aria-label="Your 21:9 monitor showing a standard 16:9 video">
+          <figcaption class="aaa-stage-label">
+            <span class="aaa-stage-label-dot" aria-hidden="true"></span>
+            <span class="aaa-stage-label-text">Your 21:9 monitor</span>
+            <span class="aaa-stage-label-sep" aria-hidden="true">·</span>
+            <span class="aaa-stage-label-spec">3440 × 1440</span>
+          </figcaption>
+
+          <div class="aaa-stage-monitor">
+            <div class="aaa-stage-zone aaa-stage-zone--left" aria-hidden="true">
+              <span class="aaa-stage-zone-pct">−12%</span>
+              <span class="aaa-stage-zone-label">Without<br/>Ultrawider</span>
+              <span class="aaa-stage-zone-spec">440 px lost</span>
+            </div>
+            <div class="aaa-stage-zone aaa-stage-zone--right" aria-hidden="true">
+              <span class="aaa-stage-zone-pct">−12%</span>
+              <span class="aaa-stage-zone-label">Without<br/>Ultrawider</span>
+              <span class="aaa-stage-zone-spec">440 px lost</span>
+            </div>
+
+            <div class="aaa-stage-video-wrap">
+              <video class="aaa-stage-video" autoplay muted loop playsinline preload="auto"
+                     poster="demo/cinematic-hero-poster.jpg">
+                <source src="demo/cinematic-hero.mp4" type="video/mp4" />
+              </video>
+            </div>
+
+            <span class="aaa-stage-boundary aaa-stage-boundary--left" aria-hidden="true"></span>
+            <span class="aaa-stage-boundary aaa-stage-boundary--right" aria-hidden="true"></span>
           </div>
-          <a href="#install" class="hero-secondary-cta">
-            <svg class="chrome-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="10"/>
-              <circle cx="12" cy="12" r="4"/>
-              <line x1="21.17" y1="8" x2="12" y2="8"/>
-              <line x1="3.95" y1="6.06" x2="8.54" y2="14"/>
-              <line x1="10.88" y1="21.94" x2="15.46" y2="14"/>
-            </svg>
-            <span>Install extension</span>
-            <span class="free-tag">— Free</span>
-          </a>
-          <p class="cta-note">14-day refund · <span class="text-tech">Cancel anytime</span></p>
+        </figure>
+
+        <div class="aaa-hero-tail">
+          <p class="aaa-lede">
+            Those bars on the sides? That's what every standard player gives
+            you on a widescreen monitor.
+            <strong>Smoothie warp fills every pixel — without distorting faces.</strong>
+          </p>
+
+          <div class="aaa-actions">
+            <a href="/pricing" class="aaa-cta-primary">Get Pro — $2.99/mo</a>
+            <a href="#install" class="aaa-cta-secondary">
+              <svg class="chrome-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <circle cx="12" cy="12" r="4"/>
+                <line x1="21.17" y1="8" x2="12" y2="8"/>
+                <line x1="3.95" y1="6.06" x2="8.54" y2="14"/>
+                <line x1="10.88" y1="21.94" x2="15.46" y2="14"/>
+              </svg>
+              <span>Install — Free</span>
+              <svg class="arrow-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </a>
+          </div>
+
+          <p class="aaa-micro">14-day refund · Cancel anytime · No account required</p>
         </div>
       </div>
 
-      <a href="#playground" class="cinematic-hero-scroll" aria-label="Scroll to live playground">
+      <a href="#playground" class="aaa-hero-scroll" aria-label="Scroll to live playground">
         <span>See it work</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <line x1="12" y1="5" x2="12" y2="19"/>
           <polyline points="19 12 12 19 5 12"/>
         </svg>
@@ -463,11 +487,10 @@
         }
       }
 
-      // Pause full-bleed hero video once scrolled past — the playground
-      // below uses the same source, no point decoding both streams
-      // concurrently on low-end machines.
-      const heroVid = document.querySelector('.cinematic-hero-video');
-      const hero = document.querySelector('.cinematic-hero');
+      // Pause hero video once scrolled past — playground below uses same
+      // source, no point decoding both streams concurrently on low-end CPUs.
+      const heroVid = document.querySelector('.aaa-stage-video');
+      const hero = document.querySelector('.aaa-hero');
       if (heroVid && hero && 'IntersectionObserver' in window) {
         const io2 = new IntersectionObserver(function (entries) {
           entries.forEach(function (entry) {

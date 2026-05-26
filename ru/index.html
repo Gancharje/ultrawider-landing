@@ -53,64 +53,91 @@
 
   <main>
 
-    <!-- HERO — full-bleed cinematic. Две amber-заштрихованные «потерянные
-         зоны» по краям показывают что 16:9-плеер выбрасывает на 21:9
-         мониторе. Видео идёт под всем — visitor видит и мечту (полная
-         ширина) и угрозу (зоны которые потеряются без нас). -->
-    <section class="cinematic-hero">
-      <video class="cinematic-hero-video" autoplay muted loop playsinline preload="auto">
-        <source src="/demo/cinematic-hero.mp4" type="video/mp4" />
-      </video>
+    <!-- AAA HERO — letterbox demonstration.
+         Видео содержится в 16:9-рамке внутри 21:9-монитора.
+         Чёрные полосы слева/справа — это буквально те пиксели которые
+         обычный плеер выбрасывает на ультрашироком экране.
+         При загрузке видео сжимается в 16:9 — шутка про "ваши видео —
+         нет" проигрывается визуально. -->
+    <section class="aaa-hero">
+      <div class="aaa-hero-ambient" aria-hidden="true"></div>
+      <div class="aaa-hero-overlay" aria-hidden="true"></div>
 
-      <div class="cinematic-hero-zones" aria-hidden="true">
-        <div class="lost-zone lost-zone-left">
-          <span class="lost-zone-cap">Теряется · обычный 16:9 плеер</span>
-          <span class="lost-zone-label">Без Ultrawider</span>
+      <div class="aaa-hero-content">
+        <div class="aaa-eyebrow">
+          <span class="aaa-eyebrow-dot" aria-hidden="true"></span>
+          <span>Smoothie · Quintic NLS · WebGL2</span>
         </div>
-        <div class="lost-zone lost-zone-right">
-          <span class="lost-zone-cap">Теряется · обычный 16:9 плеер</span>
-          <span class="lost-zone-label">Без Ultrawider</span>
-        </div>
-      </div>
 
-      <div class="cinematic-hero-vignette" aria-hidden="true"></div>
+        <h1 class="aaa-headline">
+          <span class="aaa-headline-line">Вы купили ультраширокий.</span>
+          <span class="aaa-headline-line aaa-headline-line--accent">Ваши видео — нет.</span>
+        </h1>
 
-      <div class="cinematic-hero-row">
-        <div class="cinematic-hero-content">
-          <span class="eyebrow">Smoothie · Quintic NLS · WebGL2</span>
-          <h1>
-            <span class="line">Вы купили ультраширокий.</span>
-            <span class="line accent-line">Ваши видео — нет.</span>
-          </h1>
-          <p class="lede">
+        <figure class="aaa-stage" aria-label="Ваш 21:9 монитор с обычным 16:9 видео">
+          <figcaption class="aaa-stage-label">
+            <span class="aaa-stage-label-dot" aria-hidden="true"></span>
+            <span class="aaa-stage-label-text">Ваш 21:9 монитор</span>
+            <span class="aaa-stage-label-sep" aria-hidden="true">·</span>
+            <span class="aaa-stage-label-spec">3440 × 1440</span>
+          </figcaption>
+
+          <div class="aaa-stage-monitor">
+            <div class="aaa-stage-zone aaa-stage-zone--left" aria-hidden="true">
+              <span class="aaa-stage-zone-pct">−12%</span>
+              <span class="aaa-stage-zone-label">Без<br/>Ultrawider</span>
+              <span class="aaa-stage-zone-spec">−440 px</span>
+            </div>
+            <div class="aaa-stage-zone aaa-stage-zone--right" aria-hidden="true">
+              <span class="aaa-stage-zone-pct">−12%</span>
+              <span class="aaa-stage-zone-label">Без<br/>Ultrawider</span>
+              <span class="aaa-stage-zone-spec">−440 px</span>
+            </div>
+
+            <div class="aaa-stage-video-wrap">
+              <video class="aaa-stage-video" autoplay muted loop playsinline preload="auto"
+                     poster="/demo/cinematic-hero-poster.jpg">
+                <source src="/demo/cinematic-hero.mp4" type="video/mp4" />
+              </video>
+            </div>
+
+            <span class="aaa-stage-boundary aaa-stage-boundary--left" aria-hidden="true"></span>
+            <span class="aaa-stage-boundary aaa-stage-boundary--right" aria-hidden="true"></span>
+          </div>
+        </figure>
+
+        <div class="aaa-hero-tail">
+          <p class="aaa-lede">
             Видишь чёрные полосы по бокам? Вот что обычный плеер
-            показывает тебе на каждом ультрашироком экране.
+            показывает тебе на ультрашироком экране.
             <strong>Smoothie использует каждый пиксель — без искажения лиц.</strong>
           </p>
-        </div>
 
-        <div class="cinematic-hero-cta-wrap">
-          <div class="hero-cta">
-            <a href="/pricing" class="btn btn-primary btn-lg">Получить Pro — $2.99/мес</a>
+          <div class="aaa-actions">
+            <a href="/pricing" class="aaa-cta-primary">Получить Pro — $2.99/мес</a>
+            <a href="#install" class="aaa-cta-secondary">
+              <svg class="chrome-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="10"/>
+                <circle cx="12" cy="12" r="4"/>
+                <line x1="21.17" y1="8" x2="12" y2="8"/>
+                <line x1="3.95" y1="6.06" x2="8.54" y2="14"/>
+                <line x1="10.88" y1="21.94" x2="15.46" y2="14"/>
+              </svg>
+              <span>Установить — Бесплатно</span>
+              <svg class="arrow-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="5" y1="12" x2="19" y2="12"/>
+                <polyline points="12 5 19 12 12 19"/>
+              </svg>
+            </a>
           </div>
-          <a href="#install" class="hero-secondary-cta">
-            <svg class="chrome-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="10"/>
-              <circle cx="12" cy="12" r="4"/>
-              <line x1="21.17" y1="8" x2="12" y2="8"/>
-              <line x1="3.95" y1="6.06" x2="8.54" y2="14"/>
-              <line x1="10.88" y1="21.94" x2="15.46" y2="14"/>
-            </svg>
-            <span>Установить расширение</span>
-            <span class="free-tag">— Бесплатно</span>
-          </a>
-          <p class="cta-note">Возврат 14 дней · <span class="text-tech">Отмена в любое время</span></p>
+
+          <p class="aaa-micro">Возврат 14 дней · Отмена в любое время · Без регистрации</p>
         </div>
       </div>
 
-      <a href="#playground" class="cinematic-hero-scroll" aria-label="Прокрутить к плейграунду">
+      <a href="#playground" class="aaa-hero-scroll" aria-label="Прокрутить к плейграунду">
         <span>Посмотреть</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <line x1="12" y1="5" x2="12" y2="19"/>
           <polyline points="19 12 12 19 5 12"/>
         </svg>
@@ -454,8 +481,8 @@
           io.observe(target);
         }
       }
-      const heroVid = document.querySelector('.cinematic-hero-video');
-      const hero = document.querySelector('.cinematic-hero');
+      const heroVid = document.querySelector('.aaa-stage-video');
+      const hero = document.querySelector('.aaa-hero');
       if (heroVid && hero && 'IntersectionObserver' in window) {
         const io2 = new IntersectionObserver(function (entries) {
           entries.forEach(function (entry) {
