@@ -1779,27 +1779,48 @@ strong { color: var(--text); font-weight: 600; }
    Standalone playground section (replaces hero-playground from v1)
    ======================================================================== */
 
+/* ─── Playground section — full viewport, demo-dominant ───────────
+   Section fills 100dvh with content vertically centered. Header is
+   compact + center-aligned (matches hero rhythm); playground stage
+   takes a viewport-height-driven width so it scales to almost the
+   full visible space without overflowing the fold. */
 .playground-section {
-  padding: 96px 0;
+  min-height: 100dvh;
+  padding: clamp(48px, 5dvh, 80px) 0;
   background: var(--bg);
   position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Override the global .container max-width inside this section so the
+   playground can grow to ~55dvh × 21/9 = much bigger than the default
+   1180px container would allow. On UWHD this reaches ~1590px wide.
+   On 1080p: ~1132px (capped by 94vw fallback otherwise). */
+.playground-section .container {
+  max-width: min(94vw, calc(55dvh * 21 / 9), 1700px);
+  padding: 0 24px;
 }
 
 .playground-section .section-head {
-  text-align: left;
-  margin-bottom: 40px;
+  text-align: center;
+  margin: 0 auto clamp(20px, 2.5dvh, 36px);
   max-width: 720px;
 }
-.playground-section .section-head .eyebrow { margin-bottom: 12px; }
-.playground-section .section-head h2 { margin-bottom: 12px; }
+.playground-section .section-head .eyebrow { margin-bottom: 10px; }
+.playground-section .section-head h2 { margin-bottom: 10px; }
 .playground-section .section-head p {
-  font-size: 1.05rem;
+  font-size: clamp(0.95rem, 0.8vw + 0.5rem, 1.05rem);
   color: var(--text-dim);
-  max-width: 640px;
+  max-width: 620px;
+  margin: 0 auto;
+  line-height: 1.5;
 }
 
-@media (max-width: 720px) {
-  .playground-section { padding: 64px 0; }
+@media (max-width: 900px) {
+  .playground-section { min-height: auto; padding: 64px 0; }
+  .playground-section .container { max-width: 100%; padding: 0 24px; }
 }
 
 /* ========================================================================
