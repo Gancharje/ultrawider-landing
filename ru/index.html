@@ -3,20 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Ultrawider — расширение Chrome, превращающее 16:9 видео в настоящий 21:9 ультраширокий формат через content-aware квинтическую кривую. Алгоритм работает живьём прямо на этой странице." />
-  <meta name="theme-color" content="#0a0a0a" />
-  <meta property="og:title" content="Ultrawider — алгоритм ультраширокого варпа работает в браузере live" />
-  <meta property="og:description" content="Content-aware квинтическая кривая превращает 16:9 в настоящие 21:9 без искажения лиц и интерфейса. Подвиньте слайдер ниже — увидите алгоритм в реальном времени." />
+  <meta name="description" content="Вы купили ультраширокий — а ваши видео нет. Ultrawider превращает любое 16:9 в настоящий 21:9 через квинтическую content-aware кривую. Шейдер работает прямо в вашем браузере." />
+  <meta name="theme-color" content="#050505" />
+  <meta property="og:title" content="Ultrawider — Перестаньте смотреть на чёрные полосы" />
+  <meta property="og:description" content="Квинтическая content-aware кривая превращает 16:9 в настоящие 21:9 без искажения лиц. Шейдер работает у вас в браузере." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://ultrawider.net/ru/" />
   <link rel="alternate" hreflang="en" href="https://ultrawider.net/" />
   <link rel="alternate" hreflang="ru" href="https://ultrawider.net/ru/" />
   <link rel="alternate" hreflang="x-default" href="https://ultrawider.net/" />
-  <title>Ultrawider — ультраширокий варп live в вашем браузере</title>
+  <title>Ultrawider — Перестаньте смотреть на чёрные полосы</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+  />
   <link rel="stylesheet" href="/style.css" />
+
+  <link rel="preload" as="video" href="/demo/cinematic-hero.mp4" type="video/mp4" />
+
   <script src="/lang-switch.js" defer></script>
   <script src="/assets/aspect-profile.js" defer></script>
   <script src="/assets/warp-demo.js" defer></script>
@@ -30,7 +37,8 @@
         <span class="logo-text">Ultrawider</span>
       </a>
       <nav class="nav-links">
-        <a href="#features">Возможности</a>
+        <a href="#playground">Демо</a>
+        <a href="#math">Математика</a>
         <a href="/pricing">Тарифы</a>
         <a href="#faq">Вопросы</a>
         <div class="lang-switch" data-current="ru">
@@ -45,35 +53,61 @@
 
   <main>
 
-    <!-- HERO with live WebGL playground -->
-    <section class="hero hero-playground">
-      <div class="container">
-        <div class="hero-copy hero-copy-centered">
-          <span class="eyebrow">WebGL-варп · работает прямо в вашем браузере →</span>
-          <h1>Смотрите YouTube в настоящем ультрашироком</h1>
-          <p class="lede">
-            Smoothie использует content-aware квинтическую кривую,
-            заполняющую ваш ультраширокий монитор без искажения лиц.
-            Подвиньте разделитель ниже — увидите алгоритм на живом видео
-            прямо сейчас.
-          </p>
-          <div class="hero-cta">
-            <a href="/pricing" class="btn btn-primary btn-lg">Получить Pro — от $2.99/мес</a>
-            <a href="#how" class="btn btn-ghost btn-lg">Как это работает</a>
-          </div>
-        </div>
+    <!-- CINEMATIC HERO -->
+    <section class="cinematic-hero">
+      <video
+        class="cinematic-hero-video"
+        autoplay muted loop playsinline preload="auto"
+      >
+        <source src="/demo/cinematic-hero.mp4" type="video/mp4" />
+      </video>
+      <div class="cinematic-hero-overlay"></div>
 
-        <!--
-          Playground — live WebGL Smoothie shader на реальном видео.
-          Левая половина: сырой 16:9 с чёрными полосами (проблема).
-          Правая: 21:9 после варпа (решение). Драгабельный разделитель.
-        -->
+      <div class="cinematic-hero-content">
+        <span class="eyebrow">Smoothie · Quintic NLS · WebGL2</span>
+        <h1>
+          <span class="line">Вы купили ультраширокий.</span>
+          <span class="line accent-line">Ваши видео — нет.</span>
+        </h1>
+        <p class="lede">
+          Smoothie заполняет полосы без сплющивания лиц.
+          <strong>Шейдер работает на реальном видео</strong> — скрольте,
+          тяните, крутите слайдер.
+        </p>
+        <div class="hero-cta">
+          <a href="/pricing" class="btn btn-primary btn-lg">Получить Pro — $2.99/мес</a>
+          <a href="#playground" class="btn btn-ghost btn-lg">Посмотреть в деле ↓</a>
+        </div>
+      </div>
+
+      <a href="#playground" class="cinematic-hero-scroll" aria-label="Прокрутить к плейграунду">
+        <span>Скролл</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"/>
+          <polyline points="19 12 12 19 5 12"/>
+        </svg>
+      </a>
+    </section>
+
+    <!-- PLAYGROUND -->
+    <section id="playground" class="playground-section">
+      <div class="container">
+        <header class="section-head">
+          <span class="eyebrow">Прямо · в вашем браузере</span>
+          <h2>Тяните. Двигайте. <span class="text-accent">Смотрите как работает.</span></h2>
+          <p>
+            Слева — 16:9 с чёрными полосами (проблема). Справа — 21:9 после
+            варпа (решение). Двигайте разделитель, регулируйте глубину
+            кривой, наблюдайте как заполняются края при сохранённом центре.
+          </p>
+        </header>
+
         <div class="playground" data-playground>
           <video
             class="playground-video"
             autoplay muted loop playsinline preload="metadata" crossorigin="anonymous"
           >
-            <source src="/demo/ultrawider-sample.mp4" type="video/mp4" />
+            <source src="/demo/cinematic-hero.mp4" type="video/mp4" />
           </video>
 
           <canvas class="playground-canvas"></canvas>
@@ -83,7 +117,7 @@
             data-divider
             role="slider"
             tabindex="0"
-            aria-label="Перетащите, чтобы сравнить исходное 16:9 и Smoothie-варпнутое 21:9"
+            aria-label="Перетащите для сравнения 16:9 и Smoothie-варпнутого 21:9"
             aria-valuemin="0"
             aria-valuemax="100"
             aria-valuenow="50"
@@ -98,8 +132,8 @@
           </div>
 
           <div class="playground-labels" aria-hidden="true">
-            <span class="playground-label playground-label-left">Без Ultrawider</span>
-            <span class="playground-label playground-label-right">С Ultrawider</span>
+            <span class="playground-label playground-label-left">Без</span>
+            <span class="playground-label playground-label-right">Ultrawider</span>
           </div>
 
           <div class="playground-controls">
@@ -119,17 +153,59 @@
           </div>
 
           <div class="playground-fallback-message" data-fallback hidden>
-            <p>Live-плейграунд недоступен в вашем браузере. Смотрите демо-видео ниже ↓</p>
+            <p>Live-плейграунд недоступен в вашем браузере. Смотрите математику ниже ↓</p>
           </div>
         </div>
+      </div>
+    </section>
 
-        <p class="hero-bullets-row">
-          <span class="hero-bullets">
-            <span class="hero-bullet">Точно под любой ультраширокий</span>
-            <span class="hero-bullet">Лица не искажаются</span>
-            <span class="hero-bullet">Без DRM-ограничений (Pro)</span>
-          </span>
-        </p>
+    <!-- MATH -->
+    <section id="math" class="math-section">
+      <div class="container">
+        <div class="math-grid">
+          <div class="math-copy">
+            <span class="eyebrow">Шейдер</span>
+            <h2>Квинтическая кривая. <span class="text-accent">Без чёрных полос.</span> Без сплющенных лиц.</h2>
+            <p>
+              Фрагментный шейдер пересчитывает каждый горизонтальный
+              пиксель, смешивая прямую линию (identity) с квинтической
+              кривой smootherstep. Одна uniform-переменная,
+              <code class="code-inline">u_curveStrength</code>, управляет смешиванием.
+            </p>
+            <code class="math-equation">
+              <span class="op">f(</span><span class="var">x</span><span class="op">) = mix(</span><span class="var">x</span><span class="op">, 6</span><span class="var">x</span><span class="op">⁵ − 15</span><span class="var">x</span><span class="op">⁴ + 10</span><span class="var">x</span><span class="op">³, strength)</span>
+            </code>
+            <p>
+              <strong>f(0) = 0, f(1) = 1</strong> — сохранение концов
+              гарантирует отсутствие кропа. <span class="text-mono text-accent">C² непрерывность</span>
+              на границах означает что варп плавно сводится к нулю на краях.
+              Лица в центре остаются круглыми; края поглощают растяжение.
+            </p>
+          </div>
+          <div class="math-visual" data-quintic>
+            <svg class="quintic-svg" viewBox="0 0 400 400" aria-hidden="true">
+              <g class="quintic-grid">
+                <line x1="0" y1="80"  x2="400" y2="80"/>
+                <line x1="0" y1="160" x2="400" y2="160"/>
+                <line x1="0" y1="240" x2="400" y2="240"/>
+                <line x1="0" y1="320" x2="400" y2="320"/>
+                <line x1="80"  y1="0" x2="80"  y2="400"/>
+                <line x1="160" y1="0" x2="160" y2="400"/>
+                <line x1="240" y1="0" x2="240" y2="400"/>
+                <line x1="320" y1="0" x2="320" y2="400"/>
+              </g>
+              <line class="quintic-axis" x1="0" y1="400" x2="400" y2="400"/>
+              <line class="quintic-axis" x1="0" y1="0"   x2="0"   y2="400"/>
+              <text class="quintic-label" x="200" y="392" text-anchor="middle">Источник X →</text>
+              <text class="quintic-label" x="-200" y="14" text-anchor="middle" transform="rotate(-90)">Выход X →</text>
+              <line class="quintic-identity" x1="0" y1="400" x2="400" y2="0"/>
+              <path class="quintic-curve" d="M 0 400 L 20 386.2 L 40 371.7 L 60 355.8 L 80 338.2 L 100 318.7 L 120 297.5 L 140 274.7 L 160 250.6 L 180 225.5 L 200 200 L 220 174.5 L 240 149.4 L 260 125.3 L 280 102.5 L 300 81.2 L 320 61.8 L 340 44.4 L 360 28.3 L 380 13.8 L 400 0"/>
+              <circle class="quintic-tick" cx="200" cy="200" r="6"/>
+            </svg>
+            <span class="quintic-callout callout-center">Центр сохранён</span>
+            <span class="quintic-callout callout-edge">Края ускоряются</span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -138,39 +214,39 @@
       <div class="container">
         <header class="section-head">
           <span class="eyebrow">Что умеет</span>
-          <h2>Сделано для ультрашироких мониторов. Настроено вручную.</h2>
+          <h2>Сделано для ультраширокого. <span class="text-accent">Настроено вручную.</span></h2>
         </header>
 
         <div class="feature-grid">
           <div class="feature-card">
             <div class="feature-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 12 C 7 4, 17 20, 21 12" />
+                <path d="M3 12 C 7 4, 17 20, 21 12"/>
               </svg>
             </div>
-            <h3>Content-aware квинтическая кривая</h3>
-            <p>Алгоритм растягивает только края кадра, оставляя центр почти нетронутым. Лица, текст и элементы интерфейса в середине сохраняют естественные пропорции — заполняются 21:9 только периферийные трети.</p>
+            <h3>Content-aware квинтика</h3>
+            <p>Шейдер растягивает края и оставляет центр почти нетронутым. Лица, текст и UI в середине сохраняют пропорции — только наружные трети заполняются под 21:9.</p>
           </div>
 
           <div class="feature-card">
             <div class="feature-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="4" />
-                <path d="M3 12 h6 M15 12 h6" />
+                <circle cx="12" cy="12" r="4"/>
+                <path d="M3 12 h6 M15 12 h6"/>
               </svg>
             </div>
-            <h3>Авто-настройка под экран</h3>
-            <p>21:9, 24:9, 32:9 super-ultrawide — расширение автоматически подбирает оптимальную глубину кривой под ваш фактический монитор. Слайдер позволяет ужесточить или смягчить эффект.</p>
+            <h3>Авто под ваш экран</h3>
+            <p>21:9, 24:9, 32:9 super-ultrawide — расширение автоматически подбирает глубину кривой под фактический монитор. Слайдер для ручной подстройки.</p>
           </div>
 
           <div class="feature-card">
             <div class="feature-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="5 3 19 12 5 21 5 3" />
+                <polygon points="5 3 19 12 5 21 5 3"/>
               </svg>
             </div>
             <h3>Везде на Pro</h3>
-            <p>YouTube, Twitch, Vimeo, RuTube, встроенные плееры, полноэкранный и театральный режимы. Бесплатная версия открывает YouTube; Pro снимает ограничение для любых платформ без DRM.</p>
+            <p>YouTube, Twitch, Vimeo, RuTube, встроенные плееры, полноэкранный режим. Free открывает YouTube; Pro снимает ограничение для любых платформ без DRM.</p>
           </div>
         </div>
       </div>
@@ -193,38 +269,62 @@
           <li class="step">
             <div class="step-num">2</div>
             <h3>Попробуйте бесплатно на YouTube</h3>
-            <p>Free-тариф открывает Smoothie на YouTube — откройте любое видео, включите полноэкранный режим, варп заработает. Пользуйтесь сколько угодно.</p>
+            <p>Free-тариф открывает Smoothie на YouTube — откройте любое видео, включите полный экран, варп заработает.</p>
           </li>
           <li class="step">
             <div class="step-num">3</div>
             <h3>Перейдите на Pro</h3>
-            <p>Хотите Smoothie на Twitch, Vimeo, RuTube и других? Pro от $2.99/мес открывает все платформы без DRM. Лицензия приходит на email за несколько минут.</p>
+            <p>Хотите Smoothie на Twitch, Vimeo, RuTube? Pro от $2.99/мес открывает все платформы без DRM.</p>
           </li>
         </ol>
+      </div>
+    </section>
 
-        <div class="secondary-demo">
-          <h3>Ещё один пример</h3>
-          <div class="video-frame video-frame-wide">
-            <video
-              autoplay muted loop playsinline preload="metadata"
-              onerror="this.parentElement.classList.add('video-failed')"
-            >
-              <source src="/demo/ultrawider-demo.mp4" type="video/mp4" />
-            </video>
-            <div class="video-fallback" aria-hidden="true">
-              <p>Загрузка примера…</p>
-            </div>
+    <!-- PRICING TEASER -->
+    <section class="pricing-teaser">
+      <div class="container">
+        <span class="eyebrow">Тарифы</span>
+        <h2>Бесплатно на YouTube. <span class="text-accent">Pro везде.</span></h2>
+        <p class="lede">
+          Попробуйте Smoothie бесплатно на YouTube. Перейдите на Pro
+          когда захотите получить его на остальном вебе.
+        </p>
+
+        <div class="tier-compare">
+          <div>
+            <h3>Free</h3>
+            <ul>
+              <li class="has">Smoothie-варп на YouTube</li>
+              <li class="has">Авто-настройка под экран</li>
+              <li class="has">Все режимы (Off / Smooth / Crop)</li>
+              <li class="lacks">Twitch, Vimeo, RuTube и т.д.</li>
+              <li class="lacks">Память глубины кривой per-host</li>
+              <li class="lacks">Будущие Pro-фичи</li>
+            </ul>
+          </div>
+          <div class="tier-compare-pro">
+            <h3>Pro · от $2.99/мес</h3>
+            <ul>
+              <li class="has">Всё что в Free</li>
+              <li class="has">Twitch, Vimeo, RuTube и т.д.</li>
+              <li class="has">Запоминание настроек per-host</li>
+              <li class="has">Все будущие Pro-фичи</li>
+              <li class="has">Возврат 14 дней</li>
+              <li class="has">Отмена в любое время</li>
+            </ul>
           </div>
         </div>
+
+        <a href="/pricing" class="btn btn-primary btn-lg">Смотреть все планы →</a>
       </div>
     </section>
 
     <!-- FAQ -->
-    <section id="faq" class="section">
+    <section id="faq" class="section section-alt">
       <div class="container container-narrow">
         <header class="section-head">
           <span class="eyebrow">FAQ</span>
-          <h2>Вопросы и ответы</h2>
+          <h2>Вопросы и ответы.</h2>
         </header>
 
         <div class="faq-list">
@@ -235,12 +335,12 @@
 
           <details>
             <summary>Какие мониторы поддерживаются?</summary>
-            <p>Любой ультраширокий: 21:9 (2560×1080, 3440×1440), 24:9 (3840×1600), 32:9 super-ultrawide (5120×1440) или любой шире стандартного 16:9. Расширение само определяет соотношение сторон и подбирает глубину кривой в "сладкой точке" для конкретного монитора.</p>
+            <p>Любой ультраширокий: 21:9 (2560×1080, 3440×1440), 24:9 (3840×1600), 32:9 super-ultrawide (5120×1440) или любой шире 16:9. Расширение само определяет соотношение сторон и подбирает глубину кривой в "сладкой точке" для конкретного монитора.</p>
           </details>
 
           <details>
             <summary>Работает ли на Netflix, HBO, Disney+?</summary>
-            <p>DRM-защищённое видео (Netflix, HBO Max, Disney+, Prime Video) блокирует доступ к пикселям, который нужен Smoothie. Мы не можем легально варпать контент, который не можем прочитать. Pro всё равно открывает платформенные фичи на этих сервисах (цветовая настройка, OLED-защита — на подходе), но сам геометрический варп фундаментально заблокирован DRM. YouTube, Twitch, Vimeo, RuTube и большинство независимых видеохостингов работают идеально.</p>
+            <p>DRM-защищённое видео (Netflix, HBO Max, Disney+, Prime Video) блокирует доступ к пикселям, который нужен Smoothie. Мы не можем легально варпать контент, который не можем прочитать. Pro всё равно открывает платформенные фичи (цветовая настройка, OLED-защита — на подходе), но сам геометрический варп фундаментально заблокирован DRM. YouTube, Twitch, Vimeo, RuTube и большинство независимых хостингов работают идеально.</p>
           </details>
 
           <details>
@@ -261,15 +361,6 @@
       </div>
     </section>
 
-    <!-- CTA -->
-    <section class="section cta-section">
-      <div class="container container-narrow cta-box">
-        <h2>Заполните свой ультраширокий. Сегодня.</h2>
-        <p>Pro от $2.99/мес · возврат 14 дней · отмена в любой момент</p>
-        <a href="/pricing" class="btn btn-primary btn-lg">Получить Pro</a>
-      </div>
-    </section>
-
   </main>
 
   <footer class="site-footer">
@@ -283,8 +374,8 @@
       </div>
       <nav class="footer-nav">
         <h4>Продукт</h4>
-        <a href="#features">Возможности</a>
-        <a href="#how">Как работает</a>
+        <a href="#playground">Демо</a>
+        <a href="#math">Математика</a>
         <a href="/pricing">Тарифы</a>
         <a href="#faq">FAQ</a>
       </nav>
@@ -314,8 +405,43 @@
 
     <div class="container footer-bottom">
       <span>© 2026 Ultrawider. Все права защищены.</span>
+      <span class="text-mono text-mute" style="margin-left: 12px;">Видео: Mixkit (free, без атрибуции)</span>
     </div>
   </footer>
+
+  <script>
+    (function () {
+      const target = document.querySelector('[data-quintic]');
+      if (target && 'IntersectionObserver' in window) {
+        const curve = target.querySelector('.quintic-curve');
+        if (curve) {
+          const io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                curve.classList.add('is-revealed');
+                io.disconnect();
+              }
+            });
+          }, { threshold: 0.25 });
+          io.observe(target);
+        }
+      }
+      const heroVid = document.querySelector('.cinematic-hero-video');
+      const hero = document.querySelector('.cinematic-hero');
+      if (heroVid && hero && 'IntersectionObserver' in window) {
+        const io2 = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              heroVid.play().catch(function () {});
+            } else {
+              heroVid.pause();
+            }
+          });
+        }, { threshold: 0.05 });
+        io2.observe(hero);
+      }
+    })();
+  </script>
 
 </body>
 </html>

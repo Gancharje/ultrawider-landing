@@ -3,20 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Ultrawider — Chrome extension that warps 16:9 video into true 21:9 ultrawide using a content-aware quintic curve. Watch the algorithm run live in your browser." />
-  <meta name="theme-color" content="#0a0a0a" />
-  <meta property="og:title" content="Ultrawider — Watch the algorithm run live in your browser" />
-  <meta property="og:description" content="Content-aware quintic-curve warping turns 16:9 video into true 21:9 ultrawide without distorting faces or UI. Drag the slider on the landing page and see it happen in real time." />
+  <meta name="description" content="You bought an ultrawide. Your videos didn't. Ultrawider warps any 16:9 video into true 21:9 using a quintic content-aware curve — watch the algorithm run live on real footage, right now." />
+  <meta name="theme-color" content="#050505" />
+  <meta property="og:title" content="Ultrawider — Stop watching letterbox bars" />
+  <meta property="og:description" content="Quintic content-aware warp turns 16:9 video into true 21:9 without distorting faces. Watch the shader run in your browser." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://ultrawider.net" />
   <link rel="alternate" hreflang="en" href="https://ultrawider.net/" />
   <link rel="alternate" hreflang="ru" href="https://ultrawider.net/ru/" />
   <link rel="alternate" hreflang="x-default" href="https://ultrawider.net/" />
-  <title>Ultrawider — Watch ultrawide warp live in your browser</title>
+  <title>Ultrawider — Stop watching letterbox bars</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+  />
   <link rel="stylesheet" href="style.css" />
+
+  <link rel="preload" as="video" href="demo/cinematic-hero.mp4" type="video/mp4" />
+
   <script src="lang-switch.js" defer></script>
   <script src="assets/aspect-profile.js" defer></script>
   <script src="assets/warp-demo.js" defer></script>
@@ -30,7 +37,8 @@
         <span class="logo-text">Ultrawider</span>
       </a>
       <nav class="nav-links">
-        <a href="#features">Features</a>
+        <a href="#playground">Playground</a>
+        <a href="#math">The math</a>
         <a href="/pricing">Pricing</a>
         <a href="#faq">FAQ</a>
         <div class="lang-switch" data-current="en">
@@ -45,41 +53,63 @@
 
   <main>
 
-    <!-- HERO with live WebGL playground -->
-    <section class="hero hero-playground">
-      <div class="container">
-        <div class="hero-copy hero-copy-centered">
-          <span class="eyebrow">WebGL warp · running live in your browser →</span>
-          <h1>Watch YouTube in true ultrawide</h1>
-          <p class="lede">
-            Smoothie warp uses a content-aware quintic curve to fill your
-            widescreen monitor without distorting faces. Drag the divider
-            below — see the algorithm run on a real video, right now.
-          </p>
-          <div class="hero-cta">
-            <a href="/pricing" class="btn btn-primary btn-lg">Get Pro — from $2.99/mo</a>
-            <a href="#how" class="btn btn-ghost btn-lg">How it works</a>
-          </div>
+    <!-- CINEMATIC HERO — full-bleed video, big display type -->
+    <section class="cinematic-hero">
+      <video
+        class="cinematic-hero-video"
+        autoplay muted loop playsinline preload="auto"
+        poster="demo/cinematic-hero-poster.jpg"
+      >
+        <source src="demo/cinematic-hero.mp4" type="video/mp4" />
+      </video>
+      <div class="cinematic-hero-overlay"></div>
+
+      <div class="cinematic-hero-content">
+        <span class="eyebrow">Smoothie · Quintic NLS · WebGL2</span>
+        <h1>
+          <span class="line">You bought an ultrawide.</span>
+          <span class="line accent-line">Your videos didn't.</span>
+        </h1>
+        <p class="lede">
+          Smoothie warp fills the bars without flattening faces.
+          <strong>Watch the shader run on real footage</strong> — scroll
+          down, drag the divider, push the slider.
+        </p>
+        <div class="hero-cta">
+          <a href="/pricing" class="btn btn-primary btn-lg">Get Pro — $2.99/mo</a>
+          <a href="#playground" class="btn btn-ghost btn-lg">See it work ↓</a>
         </div>
+      </div>
 
-        <!--
-          Playground — live WebGL Smoothie shader running on a real video.
-          Visitor sees raw 16:9 (left, letterboxed = the problem) vs warped
-          21:9 (right = the solution), divider draggable between them.
-          See assets/warp-demo.js for wiring.
+      <a href="#playground" class="cinematic-hero-scroll" aria-label="Scroll to live playground">
+        <span>Scroll</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="12" y1="5" x2="12" y2="19"/>
+          <polyline points="19 12 12 19 5 12"/>
+        </svg>
+      </a>
+    </section>
 
-          Source video: ultrawider-sample.mp4 picked because it's 877KB
-          (light enough for hero) and demonstrates the warp space. For
-          ideal demo quality, swap to a raw 16:9 source clip (~3-5MB
-          recommended; transcode `sample_before.mp4` from extension repo
-          to WebM VP9 if you need smaller).
-        -->
+    <!-- PLAYGROUND — own section, the proof -->
+    <section id="playground" class="playground-section">
+      <div class="container">
+        <header class="section-head">
+          <span class="eyebrow">Live · in your browser</span>
+          <h2>Drag. Slide. <span class="text-accent">See the math work.</span></h2>
+          <p>
+            16:9 stays letterboxed on the left — that's the pain. 21:9
+            warped on the right — that's the solution. Move the divider,
+            adjust the curve depth, watch your edges fill while the centre
+            holds.
+          </p>
+        </header>
+
         <div class="playground" data-playground>
           <video
             class="playground-video"
             autoplay muted loop playsinline preload="metadata" crossorigin="anonymous"
           >
-            <source src="demo/ultrawider-sample.mp4" type="video/mp4" />
+            <source src="demo/cinematic-hero.mp4" type="video/mp4" />
           </video>
 
           <canvas class="playground-canvas"></canvas>
@@ -104,8 +134,8 @@
           </div>
 
           <div class="playground-labels" aria-hidden="true">
-            <span class="playground-label playground-label-left">Without Ultrawider</span>
-            <span class="playground-label playground-label-right">With Ultrawider</span>
+            <span class="playground-label playground-label-left">Without</span>
+            <span class="playground-label playground-label-right">Ultrawider</span>
           </div>
 
           <div class="playground-controls">
@@ -125,17 +155,58 @@
           </div>
 
           <div class="playground-fallback-message" data-fallback hidden>
-            <p>Live WebGL playground isn't available on your browser. See the demo video below ↓</p>
+            <p>Live WebGL playground isn't available on your browser. See the math below ↓</p>
           </div>
         </div>
+      </div>
+    </section>
 
-        <p class="hero-bullets-row">
-          <span class="hero-bullets">
-            <span class="hero-bullet">Pixel-perfect on any aspect</span>
-            <span class="hero-bullet">Faces stay round</span>
-            <span class="hero-bullet">No DRM required (Pro)</span>
-          </span>
-        </p>
+    <!-- MATH — quintic curve as visual + explainer -->
+    <section id="math" class="math-section">
+      <div class="container">
+        <div class="math-grid">
+          <div class="math-copy">
+            <span class="eyebrow">The shader</span>
+            <h2>Quintic smootherstep. <span class="text-accent">No black bars.</span> No flat faces.</h2>
+            <p>
+              The fragment shader remaps every horizontal pixel by blending the
+              identity line with a quintic smootherstep curve. One uniform,
+              <code class="code-inline">u_curveStrength</code>, controls the blend.
+            </p>
+            <code class="math-equation">
+              <span class="op">f(</span><span class="var">x</span><span class="op">) = mix(</span><span class="var">x</span><span class="op">, 6</span><span class="var">x</span><span class="op">⁵ − 15</span><span class="var">x</span><span class="op">⁴ + 10</span><span class="var">x</span><span class="op">³, strength)</span>
+            </code>
+            <p>
+              <strong>f(0) = 0, f(1) = 1</strong> — endpoint preservation
+              guarantees no crop. <span class="text-mono text-accent">C² continuity</span>
+              at the edges means the warp tapers smoothly into the unstretched
+              boundary. Faces in the centre stay round; edges absorb the stretch.
+            </p>
+          </div>
+          <div class="math-visual" data-quintic>
+            <svg class="quintic-svg" viewBox="0 0 400 400" aria-hidden="true">
+              <g class="quintic-grid">
+                <line x1="0" y1="80"  x2="400" y2="80"/>
+                <line x1="0" y1="160" x2="400" y2="160"/>
+                <line x1="0" y1="240" x2="400" y2="240"/>
+                <line x1="0" y1="320" x2="400" y2="320"/>
+                <line x1="80"  y1="0" x2="80"  y2="400"/>
+                <line x1="160" y1="0" x2="160" y2="400"/>
+                <line x1="240" y1="0" x2="240" y2="400"/>
+                <line x1="320" y1="0" x2="320" y2="400"/>
+              </g>
+              <line class="quintic-axis" x1="0" y1="400" x2="400" y2="400"/>
+              <line class="quintic-axis" x1="0" y1="0"   x2="0"   y2="400"/>
+              <text class="quintic-label" x="200" y="392" text-anchor="middle">Source X →</text>
+              <text class="quintic-label" x="-200" y="14" text-anchor="middle" transform="rotate(-90)">Output X →</text>
+              <line class="quintic-identity" x1="0" y1="400" x2="400" y2="0"/>
+              <path class="quintic-curve" d="M 0 400 L 20 386.2 L 40 371.7 L 60 355.8 L 80 338.2 L 100 318.7 L 120 297.5 L 140 274.7 L 160 250.6 L 180 225.5 L 200 200 L 220 174.5 L 240 149.4 L 260 125.3 L 280 102.5 L 300 81.2 L 320 61.8 L 340 44.4 L 360 28.3 L 380 13.8 L 400 0"/>
+              <circle class="quintic-tick" cx="200" cy="200" r="6"/>
+            </svg>
+            <span class="quintic-callout callout-center">Centre held flat</span>
+            <span class="quintic-callout callout-edge">Edges accelerate</span>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -144,39 +215,39 @@
       <div class="container">
         <header class="section-head">
           <span class="eyebrow">What it does</span>
-          <h2>Built for ultrawide monitors. Tuned by hand.</h2>
+          <h2>Built for ultrawide. <span class="text-accent">Tuned by hand.</span></h2>
         </header>
 
         <div class="feature-grid">
           <div class="feature-card">
             <div class="feature-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 12 C 7 4, 17 20, 21 12" />
+                <path d="M3 12 C 7 4, 17 20, 21 12"/>
               </svg>
             </div>
-            <h3>Content-aware quintic curve</h3>
-            <p>The algorithm stretches the edges of the frame and leaves the center almost untouched. Faces, text and UI in the middle of the shot stay natural — only the outer thirds get warped to fill 21:9.</p>
+            <h3>Content-aware quintic</h3>
+            <p>The shader stretches the edges and leaves the centre almost untouched. Faces, text and UI in the middle stay natural — only the outer thirds get warped to fill 21:9.</p>
           </div>
 
           <div class="feature-card">
             <div class="feature-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="4" />
-                <path d="M3 12 h6 M15 12 h6" />
+                <circle cx="12" cy="12" r="4"/>
+                <path d="M3 12 h6 M15 12 h6"/>
               </svg>
             </div>
             <h3>Aspect-aware defaults</h3>
-            <p>21:9, 24:9, 32:9 super-ultrawide — the extension auto-tunes curve depth for your actual screen. Override with a slider when you want it stronger or subtler.</p>
+            <p>21:9, 24:9, 32:9 super-ultrawide — the extension auto-tunes curve depth for your actual screen. Override with the slider when you want it stronger or subtler.</p>
           </div>
 
           <div class="feature-card">
             <div class="feature-icon">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polygon points="5 3 19 12 5 21 5 3" />
+                <polygon points="5 3 19 12 5 21 5 3"/>
               </svg>
             </div>
-            <h3>Works everywhere on Pro</h3>
-            <p>YouTube, Twitch, Vimeo, RuTube, embedded players, fullscreen, theater mode. Free version unlocks YouTube; Pro lifts the gate to any platform without DRM.</p>
+            <h3>Everywhere on Pro</h3>
+            <p>YouTube, Twitch, Vimeo, RuTube, embedded players, fullscreen, theater mode. Free unlocks YouTube; Pro lifts the gate to any platform without DRM.</p>
           </div>
         </div>
       </div>
@@ -199,54 +270,78 @@
           <li class="step">
             <div class="step-num">2</div>
             <h3>Try free on YouTube</h3>
-            <p>The free tier unlocks Smoothie on YouTube — open any video, hit fullscreen, the warp kicks in. Use it as long as you like.</p>
+            <p>The free tier unlocks Smoothie on YouTube — open any video, hit fullscreen, the warp kicks in.</p>
           </li>
           <li class="step">
             <div class="step-num">3</div>
             <h3>Upgrade to Pro</h3>
-            <p>Want Smoothie on Twitch, Vimeo, RuTube and the rest? Pro from $2.99/mo unlocks every platform without DRM. License delivered by email in minutes.</p>
+            <p>Want Smoothie on Twitch, Vimeo, RuTube and the rest? Pro from $2.99/mo unlocks every platform without DRM.</p>
           </li>
         </ol>
+      </div>
+    </section>
 
-        <div class="secondary-demo">
-          <h3>Another example</h3>
-          <div class="video-frame video-frame-wide">
-            <video
-              autoplay muted loop playsinline preload="metadata"
-              onerror="this.parentElement.classList.add('video-failed')"
-            >
-              <source src="demo/ultrawider-demo.mp4" type="video/mp4" />
-            </video>
-            <div class="video-fallback" aria-hidden="true">
-              <p>Sample loading…</p>
-            </div>
+    <!-- PRICING TEASER + comparison -->
+    <section class="pricing-teaser">
+      <div class="container">
+        <span class="eyebrow">Pricing</span>
+        <h2>Free on YouTube. <span class="text-accent">Pro everywhere.</span></h2>
+        <p class="lede">
+          Try Smoothie free on YouTube as long as you like. Upgrade when
+          you want it on the rest of the web.
+        </p>
+
+        <div class="tier-compare">
+          <div>
+            <h3>Free</h3>
+            <ul>
+              <li class="has">Smoothie warp on YouTube</li>
+              <li class="has">Aspect-aware auto-tune</li>
+              <li class="has">All 4 modes (Off / Smooth / Crop)</li>
+              <li class="lacks">Twitch, Vimeo, RuTube, etc.</li>
+              <li class="lacks">Per-host curve persistence</li>
+              <li class="lacks">Future Pro-only features</li>
+            </ul>
+          </div>
+          <div class="tier-compare-pro">
+            <h3>Pro · from $2.99/mo</h3>
+            <ul>
+              <li class="has">Everything in Free</li>
+              <li class="has">Twitch, Vimeo, RuTube, more</li>
+              <li class="has">Per-host curve memory</li>
+              <li class="has">All future Pro features</li>
+              <li class="has">14-day refund</li>
+              <li class="has">Cancel anytime</li>
+            </ul>
           </div>
         </div>
+
+        <a href="/pricing" class="btn btn-primary btn-lg">See all plans →</a>
       </div>
     </section>
 
     <!-- FAQ -->
-    <section id="faq" class="section">
+    <section id="faq" class="section section-alt">
       <div class="container container-narrow">
         <header class="section-head">
           <span class="eyebrow">FAQ</span>
-          <h2>Questions, answered</h2>
+          <h2>Questions, answered.</h2>
         </header>
 
         <div class="faq-list">
           <details>
             <summary>What's the difference between Free and Pro?</summary>
-            <p>Free unlocks the Smoothie warp on YouTube only — that's enough for most casual viewers to fall in love with the feature. Pro from $2.99/month removes the platform gate: Smoothie works on Twitch, Vimeo, RuTube and any other site whose video isn't DRM-protected. See the <a href="/pricing">pricing page</a> for the full plan comparison.</p>
+            <p>Free unlocks the Smoothie warp on YouTube — that's enough for most casual viewers to fall in love with the feature. Pro from $2.99/month removes the platform gate: Smoothie works on Twitch, Vimeo, RuTube and any other site whose video isn't DRM-protected. See the <a href="/pricing">pricing page</a> for the full comparison.</p>
           </details>
 
           <details>
             <summary>Which monitors are supported?</summary>
-            <p>Any ultrawide display: 21:9 (2560×1080, 3440×1440), 24:9 (3840×1600), 32:9 super-ultrawide (5120×1440), or anything wider than standard 16:9. The extension auto-detects your viewport aspect and tunes the curve depth so the warp stays in the sweet spot regardless of display.</p>
+            <p>Any ultrawide: 21:9 (2560×1080, 3440×1440), 24:9 (3840×1600), 32:9 super-ultrawide (5120×1440), or anything wider than 16:9. The extension auto-detects your viewport aspect and tunes the curve depth so the warp stays in the sweet spot regardless of display.</p>
           </details>
 
           <details>
             <summary>Does it work on Netflix, HBO, Disney+?</summary>
-            <p>DRM-protected video (Netflix, HBO Max, Disney+, Prime Video) blocks the kind of pixel access Smoothie needs. We can't legitimately warp content we can't read. Pro still unlocks platform-level features there (display tuning, OLED protection — coming soon), but the geometric warp itself is fundamentally blocked by DRM. YouTube, Twitch, Vimeo, RuTube and most independent video hosts work perfectly.</p>
+            <p>DRM-protected video (Netflix, HBO Max, Disney+, Prime Video) blocks the pixel access Smoothie needs. We can't legitimately warp content we can't read. Pro still unlocks platform-level features there (display tuning, OLED protection — coming soon), but the geometric warp itself is fundamentally blocked by DRM. YouTube, Twitch, Vimeo, RuTube and most independent video hosts work perfectly.</p>
           </details>
 
           <details>
@@ -256,23 +351,14 @@
 
           <details>
             <summary>Does it work in all browsers?</summary>
-            <p>Chrome 110+ and any Chromium-based browser of the same vintage (Edge, Brave, Opera, Vivaldi, Arc). Firefox and Safari are not currently supported for the extension itself; this landing page's live playground works in any modern browser that supports WebGL2.</p>
+            <p>Chrome 110+ and any Chromium-based browser of the same vintage (Edge, Brave, Opera, Vivaldi, Arc). Firefox and Safari are not currently supported for the extension; the live playground on this page works in any modern browser with WebGL2.</p>
           </details>
 
           <details>
             <summary>How is my payment processed?</summary>
-            <p>Payments go through <strong>Tazapay</strong> (Singapore payment processor) handling Visa, Mastercard, Amex, Apple Pay and Google Pay. After your card is charged, your license key arrives by email within 5–20 minutes. Paste it into the extension popup or fullscreen HUD to activate.</p>
+            <p>Payments go through <strong>Tazapay</strong> (Singapore) handling Visa, Mastercard, Amex, Apple Pay and Google Pay. After payment your license key arrives by email within 5–20 minutes. Paste it into the extension popup or fullscreen HUD to activate.</p>
           </details>
         </div>
-      </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="section cta-section">
-      <div class="container container-narrow cta-box">
-        <h2>Fill your ultrawide. Today.</h2>
-        <p>Pro from $2.99/month · 14-day refund · Cancel anytime</p>
-        <a href="/pricing" class="btn btn-primary btn-lg">Get Pro</a>
       </div>
     </section>
 
@@ -289,8 +375,8 @@
       </div>
       <nav class="footer-nav">
         <h4>Product</h4>
-        <a href="#features">Features</a>
-        <a href="#how">How it works</a>
+        <a href="#playground">Playground</a>
+        <a href="#math">The math</a>
         <a href="/pricing">Pricing</a>
         <a href="#faq">FAQ</a>
       </nav>
@@ -320,8 +406,52 @@
 
     <div class="container footer-bottom">
       <span>© 2026 Ultrawider. All rights reserved.</span>
+      <span class="text-mono text-mute" style="margin-left: 12px;">Hero footage: Mixkit (free, no attribution required)</span>
     </div>
   </footer>
+
+  <!-- Math section curve reveal + hero video lifecycle — both keep page
+       cheap on resources (curve only animates once, hero video pauses
+       when scrolled past so we're not decoding two 1080p streams
+       simultaneously). -->
+  <script>
+    (function () {
+      // Quintic curve reveal on first viewport entry
+      const target = document.querySelector('[data-quintic]');
+      if (target && 'IntersectionObserver' in window) {
+        const curve = target.querySelector('.quintic-curve');
+        if (curve) {
+          const io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) {
+                curve.classList.add('is-revealed');
+                io.disconnect();
+              }
+            });
+          }, { threshold: 0.25 });
+          io.observe(target);
+        }
+      }
+
+      // Pause hero background video once scrolled past — the playground
+      // below uses the same source, and decoding both streams at the
+      // same time pegs the GPU on low-end machines.
+      const heroVid = document.querySelector('.cinematic-hero-video');
+      const hero = document.querySelector('.cinematic-hero');
+      if (heroVid && hero && 'IntersectionObserver' in window) {
+        const io2 = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              heroVid.play().catch(function () {});
+            } else {
+              heroVid.pause();
+            }
+          });
+        }, { threshold: 0.05 });
+        io2.observe(hero);
+      }
+    })();
+  </script>
 
 </body>
 </html>
