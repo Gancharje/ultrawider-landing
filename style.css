@@ -1312,10 +1312,9 @@ strong { color: var(--text); font-weight: 600; }
   background: #050505;
   overflow: hidden;
   isolation: isolate;
-  /* Padding scales with viewport-height so the hero compresses on a
-     1080p fold (top 88 + bottom 56 ≈ 144px) and breathes on UWHD
-     (top 112 + bottom 88 ≈ 200px). */
-  padding: clamp(88px, 9vh, 112px) 0 clamp(56px, 7vh, 88px);
+  /* Tightened paddings — was 88-112 top / 56-88 bottom. Hero needs to
+     fit a 1080p fold WITH micro text + scroll cue all visible. */
+  padding: clamp(64px, 6.5vh, 92px) 0 clamp(48px, 5.5vh, 72px);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -1373,7 +1372,7 @@ strong { color: var(--text); font-weight: 600; }
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: clamp(20px, 2.4vh, 32px);
+  gap: clamp(14px, 1.8vh, 24px);
 }
 
 /* ─── Eyebrow ────────────────────────────────────────────────────── */
@@ -1403,11 +1402,10 @@ strong { color: var(--text); font-weight: 600; }
   margin: 0;
   font-family: var(--font-display);
   font-weight: 800;
-  /* Two caps: width-driven AND height-driven. The min() ensures the
-     headline never grows past 9vh — keeps the hero fitting a 1080p
-     fold without sacrificing the 4.5rem on UWHD. */
-  font-size: min(clamp(2.25rem, 4.5vw + 0.25rem, 4.75rem), 9vh);
-  line-height: 0.96;
+  /* Width-clamp + 8vh ceiling. On 1080p height that caps at 86px ≈
+     5.4rem; the 4.5rem width clamp wins on most viewports → ~72px. */
+  font-size: min(clamp(2.25rem, 4.5vw + 0.25rem, 4.75rem), 8vh);
+  line-height: 0.94;
   letter-spacing: -0.045em;
   font-variation-settings: "wdth" 100, "opsz" 96;
   color: var(--text);
@@ -1434,12 +1432,12 @@ strong { color: var(--text); font-weight: 600; }
   position: relative;
   margin: 0;
   width: 100%;
-  /* Triple cap: width 94vw, height-driven (52vh × 21/9), absolute 1600px.
-     On 1080p (1920×1080): height-cap = 561 × 2.33 = 1308px wins.
-     On UWHD (3440×1440): width-cap = 3234 → height-cap = 748 × 2.33
-       = 1742 → absolute cap 1600px wins.
-     Inner video ≈ 1000-1220px wide → near-pixel 720p source. */
-  max-width: min(94vw, calc(52vh * 21 / 9), 1600px);
+  /* Triple cap: width 94vw, height-driven (42vh × 21/9), absolute 1600px.
+     On 1080p (1920×1080): 42vh×2.33 = 1058px → stage ≈ 453px tall.
+     On 1440p (3440×1440): 42vh×2.33 = 1411px → stage ≈ 605px tall.
+     On UWHD 1600p+: width or 1600px absolute caps win.
+     Compressed from 52vh after fold-fit feedback. */
+  max-width: min(94vw, calc(42vh * 21 / 9), 1600px);
   opacity: 0;
   animation: aaa-fade-up 1.1s cubic-bezier(0.2, 0.8, 0.2, 1) 1.05s forwards;
 }
@@ -1448,7 +1446,7 @@ strong { color: var(--text); font-weight: 600; }
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  margin: 0 auto clamp(8px, 1.2vh, 14px);
+  margin: 0 auto clamp(6px, 0.9vh, 12px);
   font-family: var(--font-mono);
   font-size: 0.72rem;
   font-weight: 600;
@@ -1584,9 +1582,8 @@ strong { color: var(--text); font-weight: 600; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 26px;
+  gap: clamp(14px, 1.8vh, 22px);
   max-width: 720px;
-  margin-top: 4px;
   opacity: 0;
   animation: aaa-fade-up 1s cubic-bezier(0.2, 0.8, 0.2, 1) 1.65s forwards;
 }
@@ -1690,7 +1687,7 @@ strong { color: var(--text); font-weight: 600; }
 .aaa-hero-scroll {
   position: absolute;
   left: 50%;
-  bottom: 26px;
+  bottom: 16px;
   transform: translateX(-50%);
   z-index: 3;
   display: flex;
