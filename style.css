@@ -953,3 +953,313 @@ strong { color: var(--text); font-weight: 600; }
 .legal-page a:hover { color: var(--accent-hover); }
 
 .legal-page strong { color: var(--text); }
+
+/* ========================================================================
+   Hero playground — live WebGL warp demo
+   ======================================================================== */
+
+.hero-playground {
+  padding: 64px 0 96px;
+}
+
+.hero-copy-centered {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto 48px;
+}
+
+.hero-copy-centered .eyebrow { margin-bottom: 18px; }
+.hero-copy-centered .lede {
+  margin-left: auto;
+  margin-right: auto;
+}
+.hero-copy-centered .hero-cta { justify-content: center; }
+
+@media (max-width: 720px) {
+  .hero-copy-centered { margin-bottom: 32px; }
+}
+
+/* ---------- The playground ---------- */
+
+.playground {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  background: #000;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  /* Defensive: avoid clipping interactive controls below */
+  isolation: isolate;
+  user-select: none;
+  -webkit-user-select: none;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 360ms cubic-bezier(0.16, 1, 0.3, 1), transform 360ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.playground.playground-ready,
+.playground.playground-fallback {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.playground-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  /* object-fit: contain → letterboxed on 21:9 container (16:9 source).
+     This IS the pain we're solving — the visitor literally sees black
+     bars on the left half before the warp kicks in. */
+  object-fit: contain;
+  background: #000;
+}
+
+.playground-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* clip-path inset() controlled by JS via [data-divider] drag */
+  clip-path: inset(0 0 0 50%);
+  transition: clip-path 80ms linear;
+  will-change: clip-path;
+}
+
+/* Divider line + handle */
+.playground-divider {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  cursor: ew-resize;
+  z-index: 2;
+  transform: translateX(-50%);
+}
+
+.playground-divider-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  margin-left: -1px;
+  background: linear-gradient(180deg, transparent 0%, var(--accent) 12%, var(--accent) 88%, transparent 100%);
+  box-shadow: 0 0 16px var(--accent-glow);
+  pointer-events: none;
+}
+
+.playground-divider-handle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+  background: var(--bg);
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.18), 0 12px 30px rgba(0, 0, 0, 0.5);
+  transition: transform 140ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.playground-divider:hover .playground-divider-handle,
+.playground-divider:focus-visible .playground-divider-handle,
+.playground-divider.is-dragging .playground-divider-handle {
+  transform: scale(1.1);
+  background: var(--bg-elev);
+}
+.playground-divider:focus-visible {
+  outline: none;
+}
+.playground-divider:focus-visible .playground-divider-handle {
+  box-shadow: 0 0 0 4px var(--accent), 0 12px 30px rgba(0, 0, 0, 0.5);
+}
+.playground-divider-handle svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* "Without Ultrawider" / "With Ultrawider" overlay labels */
+.playground-labels {
+  position: absolute;
+  top: 16px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  z-index: 1;
+  pointer-events: none;
+}
+.playground-label {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(10, 10, 10, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+.playground-label-left { color: var(--text-mute); }
+.playground-label-right { color: var(--accent); border-color: rgba(245, 158, 11, 0.3); }
+
+/* Controls row docked at bottom of the playground */
+.playground-controls {
+  position: absolute;
+  left: 24px;
+  right: 24px;
+  bottom: 20px;
+  z-index: 3;
+  background: rgba(10, 10, 10, 0.75);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-sm);
+  padding: 10px 16px 12px;
+}
+
+.playground-control {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.playground-control-name {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  flex-shrink: 0;
+}
+
+.playground-control input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+.playground-control input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--accent), 0 0 12px var(--accent-glow);
+  cursor: grab;
+  transition: transform 120ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.playground-control input[type="range"]::-webkit-slider-thumb:hover,
+.playground-control input[type="range"]:active::-webkit-slider-thumb {
+  transform: scale(1.15);
+}
+.playground-control input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px var(--accent), 0 0 12px var(--accent-glow);
+  cursor: grab;
+}
+
+.playground-control-marks {
+  display: flex;
+  justify-content: space-between;
+  margin: 4px 12px 0;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+/* Bullets row underneath the playground — replaces the per-li bullet
+   list pattern (.hero-bullets ul) since hero-copy-centered doesn't have
+   side-room for them anymore. */
+.hero-bullets-row {
+  text-align: center;
+  margin: 28px 0 0;
+  font-size: 0.875rem;
+  color: var(--text-dim);
+}
+.hero-bullets-row .hero-bullet {
+  position: relative;
+  display: inline-block;
+  padding: 0 14px 0 22px;
+}
+.hero-bullets-row .hero-bullet::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 50%;
+  margin-top: -7px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
+.hero-bullets-row .hero-bullet + .hero-bullet { padding-left: 26px; }
+
+/* Fallback message visible only when WebGL setup failed */
+.playground-fallback-message {
+  position: absolute;
+  inset: auto 0 0 0;
+  text-align: center;
+  padding: 12px 16px;
+  background: rgba(10, 10, 10, 0.85);
+  font-size: 0.875rem;
+  color: var(--text-dim);
+  z-index: 3;
+}
+.playground-fallback-message p { margin: 0; color: inherit; }
+
+/* Fallback (no WebGL or mobile): hide playground chrome, leave the
+   raw video visible as plain hero media. */
+.playground.playground-fallback .playground-canvas,
+.playground.playground-fallback .playground-divider,
+.playground.playground-fallback .playground-labels,
+.playground.playground-fallback .playground-controls {
+  display: none;
+}
+.playground.playground-fallback .playground-video {
+  /* In fallback mode, fill the frame rather than letterboxing — we don't
+     have the warp to compensate, so cover gives the best visual at least. */
+  object-fit: cover;
+}
+
+@media (max-width: 720px) {
+  .hero-playground { padding: 40px 0 64px; }
+  .playground {
+    /* On phones the 21:9 frame is too short to read controls; switch to
+       16:9 letterbox of the source and hide warp UI (handled by JS via
+       .playground-fallback class). */
+    aspect-ratio: 16 / 9;
+  }
+  .playground-labels { top: 10px; padding: 0 12px; }
+  .playground-label { font-size: 0.65rem; padding: 4px 10px; }
+  .playground-controls { left: 12px; right: 12px; bottom: 10px; padding: 8px 12px; }
+  .playground-divider-handle { width: 36px; height: 36px; margin: -18px 0 0 -18px; }
+}
+
+/* prefers-reduced-motion: disable the playground entry transition */
+@media (prefers-reduced-motion: reduce) {
+  .playground { transition: none; transform: none; opacity: 1; }
+  .playground-canvas { transition: none; }
+}

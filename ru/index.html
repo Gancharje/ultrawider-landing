@@ -3,21 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Ultrawider — расширение для Chrome, которое превращает YouTube в настоящий ультраширокий 21:9 кинотеатр с помощью content-aware S-образного искажения. Альфа-доступ за $3.99." />
+  <meta name="description" content="Ultrawider — расширение Chrome, превращающее 16:9 видео в настоящий 21:9 ультраширокий формат через content-aware квинтическую кривую. Алгоритм работает живьём прямо на этой странице." />
   <meta name="theme-color" content="#0a0a0a" />
-  <meta property="og:title" content="Ultrawider — Превратите YouTube в ультраширокий кинотеатр" />
-  <meta property="og:description" content="Content-aware S-curve превращает 16:9 YouTube в настоящие 21:9 без искажения лиц и интерфейса." />
+  <meta property="og:title" content="Ultrawider — алгоритм ультраширокого варпа работает в браузере live" />
+  <meta property="og:description" content="Content-aware квинтическая кривая превращает 16:9 в настоящие 21:9 без искажения лиц и интерфейса. Подвиньте слайдер ниже — увидите алгоритм в реальном времени." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://ultrawider.net/ru/" />
   <link rel="alternate" hreflang="en" href="https://ultrawider.net/" />
   <link rel="alternate" hreflang="ru" href="https://ultrawider.net/ru/" />
   <link rel="alternate" hreflang="x-default" href="https://ultrawider.net/" />
-  <title>Ultrawider — Превратите YouTube в ультраширокий кинотеатр</title>
+  <title>Ultrawider — ультраширокий варп live в вашем браузере</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
   <link rel="stylesheet" href="/style.css" />
   <script src="/lang-switch.js" defer></script>
+  <script src="/assets/aspect-profile.js" defer></script>
+  <script src="/assets/warp-demo.js" defer></script>
 </head>
 <body>
 
@@ -29,64 +31,105 @@
       </a>
       <nav class="nav-links">
         <a href="#features">Возможности</a>
-        <a href="#pricing">Цена</a>
+        <a href="/pricing">Тарифы</a>
         <a href="#faq">Вопросы</a>
         <div class="lang-switch" data-current="ru">
           <a href="/" class="lang-alt">EN</a>
           <span class="lang-sep">/</span>
           <a href="/ru/" class="lang-current">RU</a>
         </div>
-        <a href="#pricing" class="btn btn-primary btn-sm">Получить альфу</a>
+        <a href="/pricing" class="btn btn-primary btn-sm">Получить Pro</a>
       </nav>
     </div>
   </header>
 
   <main>
 
-    <!-- HERO -->
-    <section class="hero">
-      <div class="container hero-grid">
-        <div class="hero-copy">
-          <span class="eyebrow">Расширение Chrome · Альфа-доступ</span>
-          <h1>Превратите YouTube в ультраширокий кинотеатр</h1>
+    <!-- HERO with live WebGL playground -->
+    <section class="hero hero-playground">
+      <div class="container">
+        <div class="hero-copy hero-copy-centered">
+          <span class="eyebrow">WebGL-варп · работает прямо в вашем браузере →</span>
+          <h1>Смотрите YouTube в настоящем ультрашироком</h1>
           <p class="lede">
-            Ultrawider растягивает 16:9 YouTube в настоящие 21:9, используя
-            content-aware S-кривую. Лица остаются круглыми, интерфейс — резким,
-            а ультраширокий монитор наконец-то заполняется до краёв.
+            Smoothie использует content-aware квинтическую кривую,
+            заполняющую ваш ультраширокий монитор без искажения лиц.
+            Подвиньте разделитель ниже — увидите алгоритм на живом видео
+            прямо сейчас.
           </p>
           <div class="hero-cta">
-            <a href="#pricing" class="btn btn-primary btn-lg">Получить Ultrawider — $3.99</a>
-            <a href="#" class="btn btn-ghost btn-lg">Установить бесплатную версию</a>
+            <a href="/pricing" class="btn btn-primary btn-lg">Получить Pro — от $2.99/мес</a>
+            <a href="#how" class="btn btn-ghost btn-lg">Как это работает</a>
           </div>
-          <ul class="hero-bullets">
-            <li>Разовый платёж</li>
-            <li>Пожизненные обновления</li>
-            <li>Возврат в течение 14 дней</li>
-          </ul>
         </div>
 
-        <div class="hero-media">
-          <div class="video-frame">
-            <video
-              class="hero-video"
-              autoplay muted loop playsinline
-              poster=""
-              preload="metadata"
-              onerror="this.parentElement.classList.add('video-failed')"
-            >
-              <source src="/demo/ultrawider-demo.mp4" type="video/mp4" />
-            </video>
-            <div class="video-fallback" aria-hidden="true">
-              <div class="fallback-bars">
-                <div class="bar bar-1"></div>
-                <div class="bar bar-2"></div>
-                <div class="bar bar-3"></div>
-              </div>
-              <p>Загрузка демо…</p>
+        <!--
+          Playground — live WebGL Smoothie shader на реальном видео.
+          Левая половина: сырой 16:9 с чёрными полосами (проблема).
+          Правая: 21:9 после варпа (решение). Драгабельный разделитель.
+        -->
+        <div class="playground" data-playground>
+          <video
+            class="playground-video"
+            autoplay muted loop playsinline preload="metadata" crossorigin="anonymous"
+          >
+            <source src="/demo/ultrawider-sample.mp4" type="video/mp4" />
+          </video>
+
+          <canvas class="playground-canvas"></canvas>
+
+          <div
+            class="playground-divider"
+            data-divider
+            role="slider"
+            tabindex="0"
+            aria-label="Перетащите, чтобы сравнить исходное 16:9 и Smoothie-варпнутое 21:9"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="50"
+          >
+            <div class="playground-divider-line"></div>
+            <div class="playground-divider-handle" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"/>
+                <polyline points="9 6 15 12 9 18"/>
+              </svg>
             </div>
           </div>
-          <p class="media-caption">Живое демо — 16:9 источник → 21:9 content-aware warp</p>
+
+          <div class="playground-labels" aria-hidden="true">
+            <span class="playground-label playground-label-left">Без Ultrawider</span>
+            <span class="playground-label playground-label-right">С Ultrawider</span>
+          </div>
+
+          <div class="playground-controls">
+            <label class="playground-control">
+              <span class="playground-control-name">Глубина кривой</span>
+              <input
+                type="range"
+                min="0.16" max="0.4" step="0.01" value="0.32"
+                aria-label="Глубина кривой — двигайте для изменения силы варпа"
+              />
+            </label>
+            <div class="playground-control-marks" aria-hidden="true">
+              <span>Мягко</span>
+              <span>Средне</span>
+              <span>Сильно</span>
+            </div>
+          </div>
+
+          <div class="playground-fallback-message" data-fallback hidden>
+            <p>Live-плейграунд недоступен в вашем браузере. Смотрите демо-видео ниже ↓</p>
+          </div>
         </div>
+
+        <p class="hero-bullets-row">
+          <span class="hero-bullets">
+            <span class="hero-bullet">Точно под любой ультраширокий</span>
+            <span class="hero-bullet">Лица не искажаются</span>
+            <span class="hero-bullet">Без DRM-ограничений (Pro)</span>
+          </span>
+        </p>
       </div>
     </section>
 
@@ -105,7 +148,7 @@
                 <path d="M3 12 C 7 4, 17 20, 21 12" />
               </svg>
             </div>
-            <h3>Content-aware S-кривая</h3>
+            <h3>Content-aware квинтическая кривая</h3>
             <p>Алгоритм растягивает только края кадра, оставляя центр почти нетронутым. Лица, текст и элементы интерфейса в середине сохраняют естественные пропорции — заполняются 21:9 только периферийные трети.</p>
           </div>
 
@@ -116,8 +159,8 @@
                 <path d="M3 12 h6 M15 12 h6" />
               </svg>
             </div>
-            <h3>Регулируемая глубина</h3>
-            <p>Один слайдер управляет силой искажения. Выкрутите на максимум — получите полное 21:9, или оставьте мягкий широкоэкранный эффект. Настройка сохраняется между сессиями.</p>
+            <h3>Авто-настройка под экран</h3>
+            <p>21:9, 24:9, 32:9 super-ultrawide — расширение автоматически подбирает оптимальную глубину кривой под ваш фактический монитор. Слайдер позволяет ужесточить или смягчить эффект.</p>
           </div>
 
           <div class="feature-card">
@@ -126,8 +169,8 @@
                 <polygon points="5 3 19 12 5 21 5 3" />
               </svg>
             </div>
-            <h3>Работает на любом YouTube</h3>
-            <p>Обычные видео, Shorts, встроенные плееры, полноэкранный и театральный режимы — всё поддерживается. Никакой настройки под каждый канал. Включили — забыли.</p>
+            <h3>Везде на Pro</h3>
+            <p>YouTube, Twitch, Vimeo, RuTube, встроенные плееры, полноэкранный и театральный режимы. Бесплатная версия открывает YouTube; Pro снимает ограничение для любых платформ без DRM.</p>
           </div>
         </div>
       </div>
@@ -138,24 +181,24 @@
       <div class="container">
         <header class="section-head">
           <span class="eyebrow">Как это работает</span>
-          <h2>Три шага. Без настройки.</h2>
+          <h2>Три шага от установки до ультраширокого.</h2>
         </header>
 
         <ol class="steps">
           <li class="step">
             <div class="step-num">1</div>
             <h3>Установите расширение</h3>
-            <p>Добавьте Ultrawider в Chrome из Web Store. Бесплатная версия ставится за пару секунд — аккаунт не нужен.</p>
+            <p>Добавьте Ultrawider в Chrome из Web Store. Бесплатно, ставится за пару секунд — без аккаунта и email.</p>
           </li>
           <li class="step">
             <div class="step-num">2</div>
-            <h3>Откройте YouTube</h3>
-            <p>Откройте любое видео как обычно. Ultrawider бездействует, пока вы его не включите.</p>
+            <h3>Попробуйте бесплатно на YouTube</h3>
+            <p>Free-тариф открывает Smoothie на YouTube — откройте любое видео, включите полноэкранный режим, варп заработает. Пользуйтесь сколько угодно.</p>
           </li>
           <li class="step">
             <div class="step-num">3</div>
-            <h3>Нажмите активировать</h3>
-            <p>Кликните по кнопке Ultrawider в плеере или используйте горячую клавишу. Ваш 21:9 монитор заполнен.</p>
+            <h3>Перейдите на Pro</h3>
+            <p>Хотите Smoothie на Twitch, Vimeo, RuTube и других? Pro от $2.99/мес открывает все платформы без DRM. Лицензия приходит на email за несколько минут.</p>
           </li>
         </ol>
 
@@ -166,7 +209,7 @@
               autoplay muted loop playsinline preload="metadata"
               onerror="this.parentElement.classList.add('video-failed')"
             >
-              <source src="/demo/ultrawider-sample.mp4" type="video/mp4" />
+              <source src="/demo/ultrawider-demo.mp4" type="video/mp4" />
             </video>
             <div class="video-fallback" aria-hidden="true">
               <p>Загрузка примера…</p>
@@ -176,50 +219,8 @@
       </div>
     </section>
 
-    <!-- PRICING -->
-    <section id="pricing" class="section">
-      <div class="container container-narrow">
-        <header class="section-head">
-          <span class="eyebrow">Цена</span>
-          <h2>Альфа-доступ — зафиксируйте $3.99 навсегда</h2>
-          <p class="section-sub">Разовый платёж. Пожизненные обновления. Раннее ценообразование — после релиза цена вырастет.</p>
-        </header>
-
-        <div class="pricing-single">
-          <div class="plan plan-featured plan-single">
-            <div class="plan-badge">Ограниченное время — цена раннего доступа</div>
-            <div class="plan-head">
-              <h3>Альфа-доступ</h3>
-              <div class="plan-price">
-                <span class="price-strike">$34.99</span>
-                <span class="price">$3.99</span>
-                <span class="period">единоразово, навсегда</span>
-              </div>
-              <div class="plan-rub">≈ 320 ₽ <span class="plan-rub-note">по текущему курсу ЦБ РФ</span></div>
-              <div class="plan-save">После релиза цена вырастет.<br/>Зафиксируйте $3.99 навсегда.</div>
-            </div>
-            <ul class="plan-features">
-              <li>Content-aware S-кривая на каждом YouTube-видео</li>
-              <li>Слайдер регулировки глубины</li>
-              <li>Работает в обычном, театральном и полноэкранном режимах</li>
-              <li>Настройки сохраняются между сессиями</li>
-              <li>Пожизненные обновления — никаких продлений</li>
-              <li>Возврат 100% в течение 14 дней без вопросов</li>
-              <li>Приоритетная поддержка по email</li>
-            </ul>
-            <!-- TODO: заменить # на Prodamus checkout URL после получения merchant_id -->
-            <a href="#" class="btn btn-primary btn-block btn-lg">Получить альфу — $3.99</a>
-            <p class="plan-foot">
-              Безопасная оплата через Prodamus. Лицензия приходит на email мгновенно.<br/>
-              <span class="plan-rub-disclaimer">Сумма в рублях рассчитывается по курсу на момент оплаты.</span>
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- FAQ -->
-    <section id="faq" class="section section-alt">
+    <section id="faq" class="section">
       <div class="container container-narrow">
         <header class="section-head">
           <span class="eyebrow">FAQ</span>
@@ -228,33 +229,33 @@
 
         <div class="faq-list">
           <details>
-            <summary>Цена останется $3.99?</summary>
-            <p>Для тех, кто покупает в период альфы — да, навсегда. Один раз заплатили — лицензия не истекает. После публичного релиза цена поднимется для новых покупателей, но все, кто зафиксировал $3.99, сохраняют свою цену и получают все будущие обновления бесплатно.</p>
-          </details>
-
-          <details>
-            <summary>Что если меня что-то не устроит?</summary>
-            <p>Полный или частичный возврат в течение 14 дней — без вопросов. Напишите на <a href="mailto:hello@ultrawider.net?subject=Refund%20Request">hello@ultrawider.net</a> с темой "Refund Request" и номером заказа. Возврат проходит за 7–14 рабочих дней на исходный способ оплаты. Подробности — в <a href="/ru/refund.html">политике возвратов</a>.</p>
+            <summary>В чём разница между Free и Pro?</summary>
+            <p>Free открывает Smoothie-варп только на YouTube — этого достаточно чтобы большинство casual-зрителей полюбили фичу. Pro от $2.99/мес снимает ограничение по платформе: Smoothie работает на Twitch, Vimeo, RuTube и любых сайтах где видео не защищено DRM. <a href="/pricing">Страница тарифов</a> со сравнением всех планов.</p>
           </details>
 
           <details>
             <summary>Какие мониторы поддерживаются?</summary>
-            <p>Любой ультраширокий: 21:9 (2560×1080, 3440×1440), 32:9 super-ultrawide (5120×1440), а также любые мониторы шире стандартного 16:9. Расширение само определяет геометрию viewport.</p>
+            <p>Любой ультраширокий: 21:9 (2560×1080, 3440×1440), 24:9 (3840×1600), 32:9 super-ultrawide (5120×1440) или любой шире стандартного 16:9. Расширение само определяет соотношение сторон и подбирает глубину кривой в "сладкой точке" для конкретного монитора.</p>
+          </details>
+
+          <details>
+            <summary>Работает ли на Netflix, HBO, Disney+?</summary>
+            <p>DRM-защищённое видео (Netflix, HBO Max, Disney+, Prime Video) блокирует доступ к пикселям, который нужен Smoothie. Мы не можем легально варпать контент, который не можем прочитать. Pro всё равно открывает платформенные фичи на этих сервисах (цветовая настройка, OLED-защита — на подходе), но сам геометрический варп фундаментально заблокирован DRM. YouTube, Twitch, Vimeo, RuTube и большинство независимых видеохостингов работают идеально.</p>
+          </details>
+
+          <details>
+            <summary>Что если меня что-то не устроит?</summary>
+            <p>Возврат в течение 14 дней — без вопросов. Напишите на <a href="mailto:hello@ultrawider.net?subject=Refund%20Request">hello@ultrawider.net</a> с темой "Refund Request" и номером заказа. Возврат проходит за 7–14 рабочих дней на исходный способ оплаты. См. <a href="/refund.html">политику возвратов</a>.</p>
           </details>
 
           <details>
             <summary>Работает ли во всех браузерах?</summary>
-            <p>Chrome 110+ и любые Chromium-браузеры того же поколения (Edge, Brave, Opera, Vivaldi, Arc). Firefox и Safari пока не поддерживаются.</p>
+            <p>Chrome 110+ и любые Chromium-браузеры того же поколения (Edge, Brave, Opera, Vivaldi, Arc). Firefox и Safari пока не поддерживаются для самого расширения; live-плейграунд на этом лендинге работает в любом современном браузере с WebGL2.</p>
           </details>
 
           <details>
-            <summary>Есть ли бесплатная версия?</summary>
-            <p>Да. Бесплатная версия в Chrome Web Store даёт базовую функциональность 21:9 на YouTube. Альфа-доступ открывает content-aware S-кривую, регулировку глубины, сохранение настроек и все будущие Pro-функции.</p>
-          </details>
-
-          <details>
-            <summary>Как я получу лицензию?</summary>
-            <p>Мгновенно по email сразу после подтверждения оплаты Prodamus. В письме приходит ключ активации и ссылка на активацию в один клик.</p>
+            <summary>Как обрабатывается платёж?</summary>
+            <p>Платежи проходят через <strong>Tazapay</strong> (сингапурский платёжный процессор) с поддержкой Visa, Mastercard, Amex, Apple Pay и Google Pay. После списания карты лицензионный ключ приходит на email в течение 5–20 минут. Вставляете его в popup расширения или в полноэкранный HUD для активации.</p>
           </details>
         </div>
       </div>
@@ -264,8 +265,8 @@
     <section class="section cta-section">
       <div class="container container-narrow cta-box">
         <h2>Заполните свой ультраширокий. Сегодня.</h2>
-        <p>$3.99 разово. Пожизненные обновления. Возврат 14 дней.</p>
-        <a href="#pricing" class="btn btn-primary btn-lg">Получить альфу — $3.99</a>
+        <p>Pro от $2.99/мес · возврат 14 дней · отмена в любой момент</p>
+        <a href="/pricing" class="btn btn-primary btn-lg">Получить Pro</a>
       </div>
     </section>
 
@@ -284,19 +285,19 @@
         <h4>Продукт</h4>
         <a href="#features">Возможности</a>
         <a href="#how">Как работает</a>
-        <a href="#pricing">Цена</a>
+        <a href="/pricing">Тарифы</a>
         <a href="#faq">FAQ</a>
       </nav>
       <nav class="footer-nav">
-        <h4>Юридическое</h4>
-        <a href="/ru/terms.html">Условия использования</a>
-        <a href="/ru/privacy.html">Политика конфиденциальности</a>
-        <a href="/ru/refund.html">Политика возвратов</a>
+        <h4>Аккаунт</h4>
+        <a href="/recover">Восстановить ключ</a>
+        <a href="mailto:hello@ultrawider.net">Связаться с поддержкой</a>
       </nav>
       <nav class="footer-nav">
-        <h4>Язык</h4>
-        <a href="/">English</a>
-        <a href="/ru/">Русский</a>
+        <h4>Юридическое</h4>
+        <a href="/terms.html">Условия использования</a>
+        <a href="/privacy.html">Политика конфиденциальности</a>
+        <a href="/refund.html">Политика возвратов</a>
       </nav>
     </div>
 
@@ -307,9 +308,6 @@
           <strong>ИНН:</strong> 482424418541<br/>
           <strong>Город:</strong> Липецк, Россия<br/>
           <strong>Контакт:</strong> <a href="mailto:hello@ultrawider.net">hello@ultrawider.net</a>
-        </p>
-        <p class="footer-payment">
-          Платежи обрабатываются через сервис <strong>Prodamus (Продамус)</strong>.
         </p>
       </div>
     </div>

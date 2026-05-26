@@ -3,21 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Ultrawider — Chrome extension that transforms YouTube into a true 21:9 ultrawide cinema using content-aware S-curve warping. Get alpha access for $3.99." />
+  <meta name="description" content="Ultrawider — Chrome extension that warps 16:9 video into true 21:9 ultrawide using a content-aware quintic curve. Watch the algorithm run live in your browser." />
   <meta name="theme-color" content="#0a0a0a" />
-  <meta property="og:title" content="Ultrawider — Transform YouTube into ultrawide cinema" />
-  <meta property="og:description" content="Content-aware S-curve warping turns 16:9 YouTube into true 21:9 ultrawide without distorting faces or UI." />
+  <meta property="og:title" content="Ultrawider — Watch the algorithm run live in your browser" />
+  <meta property="og:description" content="Content-aware quintic-curve warping turns 16:9 video into true 21:9 ultrawide without distorting faces or UI. Drag the slider on the landing page and see it happen in real time." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://ultrawider.net" />
   <link rel="alternate" hreflang="en" href="https://ultrawider.net/" />
   <link rel="alternate" hreflang="ru" href="https://ultrawider.net/ru/" />
   <link rel="alternate" hreflang="x-default" href="https://ultrawider.net/" />
-  <title>Ultrawider — Transform YouTube into ultrawide cinema</title>
+  <title>Ultrawider — Watch ultrawide warp live in your browser</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
   <link rel="stylesheet" href="style.css" />
   <script src="lang-switch.js" defer></script>
+  <script src="assets/aspect-profile.js" defer></script>
+  <script src="assets/warp-demo.js" defer></script>
 </head>
 <body>
 
@@ -29,64 +31,111 @@
       </a>
       <nav class="nav-links">
         <a href="#features">Features</a>
-        <a href="#pricing">Pricing</a>
+        <a href="/pricing">Pricing</a>
         <a href="#faq">FAQ</a>
         <div class="lang-switch" data-current="en">
           <a href="/" class="lang-current">EN</a>
           <span class="lang-sep">/</span>
           <a href="/ru/" class="lang-alt">RU</a>
         </div>
-        <a href="#pricing" class="btn btn-primary btn-sm">Get Alpha</a>
+        <a href="/pricing" class="btn btn-primary btn-sm">Get Pro</a>
       </nav>
     </div>
   </header>
 
   <main>
 
-    <!-- HERO -->
-    <section class="hero">
-      <div class="container hero-grid">
-        <div class="hero-copy">
-          <span class="eyebrow">Chrome extension · Alpha access</span>
-          <h1>Transform YouTube into ultrawide cinema</h1>
+    <!-- HERO with live WebGL playground -->
+    <section class="hero hero-playground">
+      <div class="container">
+        <div class="hero-copy hero-copy-centered">
+          <span class="eyebrow">WebGL warp · running live in your browser →</span>
+          <h1>Watch YouTube in true ultrawide</h1>
           <p class="lede">
-            Ultrawider warps 16:9 YouTube video into true 21:9 using a
-            content-aware S-curve. Faces stay round, UI stays sharp, edges
-            get the stretch. Your ultrawide monitor finally fills.
+            Smoothie warp uses a content-aware quintic curve to fill your
+            widescreen monitor without distorting faces. Drag the divider
+            below — see the algorithm run on a real video, right now.
           </p>
           <div class="hero-cta">
-            <a href="#pricing" class="btn btn-primary btn-lg">Get Ultrawider — $3.99</a>
-            <a href="#" class="btn btn-ghost btn-lg">Install Free Version</a>
+            <a href="/pricing" class="btn btn-primary btn-lg">Get Pro — from $2.99/mo</a>
+            <a href="#how" class="btn btn-ghost btn-lg">How it works</a>
           </div>
-          <ul class="hero-bullets">
-            <li>One-time payment</li>
-            <li>Lifetime updates</li>
-            <li>14-day refund</li>
-          </ul>
         </div>
 
-        <div class="hero-media">
-          <div class="video-frame">
-            <video
-              class="hero-video"
-              autoplay muted loop playsinline
-              poster=""
-              preload="metadata"
-              onerror="this.parentElement.classList.add('video-failed')"
-            >
-              <source src="demo/ultrawider-demo.mp4" type="video/mp4" />
-            </video>
-            <div class="video-fallback" aria-hidden="true">
-              <div class="fallback-bars">
-                <div class="bar bar-1"></div>
-                <div class="bar bar-2"></div>
-                <div class="bar bar-3"></div>
-              </div>
-              <p>Demo loading…</p>
+        <!--
+          Playground — live WebGL Smoothie shader running on a real video.
+          Visitor sees raw 16:9 (left, letterboxed = the problem) vs warped
+          21:9 (right = the solution), divider draggable between them.
+          See assets/warp-demo.js for wiring.
+
+          Source video: ultrawider-sample.mp4 picked because it's 877KB
+          (light enough for hero) and demonstrates the warp space. For
+          ideal demo quality, swap to a raw 16:9 source clip (~3-5MB
+          recommended; transcode `sample_before.mp4` from extension repo
+          to WebM VP9 if you need smaller).
+        -->
+        <div class="playground" data-playground>
+          <video
+            class="playground-video"
+            autoplay muted loop playsinline preload="metadata" crossorigin="anonymous"
+          >
+            <source src="demo/ultrawider-sample.mp4" type="video/mp4" />
+          </video>
+
+          <canvas class="playground-canvas"></canvas>
+
+          <div
+            class="playground-divider"
+            data-divider
+            role="slider"
+            tabindex="0"
+            aria-label="Drag to compare original 16:9 vs Smoothie-warped 21:9"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="50"
+          >
+            <div class="playground-divider-line"></div>
+            <div class="playground-divider-handle" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="15 18 9 12 15 6"/>
+                <polyline points="9 6 15 12 9 18"/>
+              </svg>
             </div>
           </div>
-          <p class="media-caption">Live demo — 16:9 source → 21:9 content-aware warp</p>
+
+          <div class="playground-labels" aria-hidden="true">
+            <span class="playground-label playground-label-left">Without Ultrawider</span>
+            <span class="playground-label playground-label-right">With Ultrawider</span>
+          </div>
+
+          <div class="playground-controls">
+            <label class="playground-control">
+              <span class="playground-control-name">Curve strength</span>
+              <input
+                type="range"
+                min="0.16" max="0.4" step="0.01" value="0.32"
+                aria-label="Curve strength — drag to change warp intensity"
+              />
+            </label>
+            <div class="playground-control-marks" aria-hidden="true">
+              <span>Subtle</span>
+              <span>Medium</span>
+              <span>Strong</span>
+            </div>
+          </div>
+
+          <div class="playground-fallback-message" data-fallback hidden>
+            <p>Live WebGL playground isn't available on your browser. See the demo video below ↓</p>
+          </div>
         </div>
+
+        <p class="hero-bullets-row">
+          <span class="hero-bullets">
+            <span class="hero-bullet">Pixel-perfect on any aspect</span>
+            <span class="hero-bullet">Faces stay round</span>
+            <span class="hero-bullet">No DRM required (Pro)</span>
+          </span>
+        </p>
       </div>
     </section>
 
@@ -105,7 +154,7 @@
                 <path d="M3 12 C 7 4, 17 20, 21 12" />
               </svg>
             </div>
-            <h3>Content-aware S-curve</h3>
+            <h3>Content-aware quintic curve</h3>
             <p>The algorithm stretches the edges of the frame and leaves the center almost untouched. Faces, text and UI in the middle of the shot stay natural — only the outer thirds get warped to fill 21:9.</p>
           </div>
 
@@ -116,8 +165,8 @@
                 <path d="M3 12 h6 M15 12 h6" />
               </svg>
             </div>
-            <h3>Adjustable depth</h3>
-            <p>A single slider controls how aggressive the warp is. Crank it for full 21:9 fill, or dial it back for a subtle widescreen feel. Your setting is remembered between sessions.</p>
+            <h3>Aspect-aware defaults</h3>
+            <p>21:9, 24:9, 32:9 super-ultrawide — the extension auto-tunes curve depth for your actual screen. Override with a slider when you want it stronger or subtler.</p>
           </div>
 
           <div class="feature-card">
@@ -126,8 +175,8 @@
                 <polygon points="5 3 19 12 5 21 5 3" />
               </svg>
             </div>
-            <h3>Works with any YouTube video</h3>
-            <p>Standard videos, Shorts, embedded players, fullscreen, theater mode — all supported. No setup per channel or per video. Toggle once and forget.</p>
+            <h3>Works everywhere on Pro</h3>
+            <p>YouTube, Twitch, Vimeo, RuTube, embedded players, fullscreen, theater mode. Free version unlocks YouTube; Pro lifts the gate to any platform without DRM.</p>
           </div>
         </div>
       </div>
@@ -138,24 +187,24 @@
       <div class="container">
         <header class="section-head">
           <span class="eyebrow">How it works</span>
-          <h2>Three steps. Zero configuration.</h2>
+          <h2>Three steps from install to ultrawide.</h2>
         </header>
 
         <ol class="steps">
           <li class="step">
             <div class="step-num">1</div>
             <h3>Install extension</h3>
-            <p>Add Ultrawider to Chrome from the Web Store. Free version installs in seconds — no account required.</p>
+            <p>Add Ultrawider to Chrome from the Web Store. Free, installs in seconds — no account, no email required.</p>
           </li>
           <li class="step">
             <div class="step-num">2</div>
-            <h3>Open YouTube</h3>
-            <p>Go to any YouTube video as you normally would. Ultrawider sits idle until you turn it on.</p>
+            <h3>Try free on YouTube</h3>
+            <p>The free tier unlocks Smoothie on YouTube — open any video, hit fullscreen, the warp kicks in. Use it as long as you like.</p>
           </li>
           <li class="step">
             <div class="step-num">3</div>
-            <h3>Click activate</h3>
-            <p>Hit the Ultrawider button in the player, or use the keyboard shortcut. Your 21:9 monitor is full.</p>
+            <h3>Upgrade to Pro</h3>
+            <p>Want Smoothie on Twitch, Vimeo, RuTube and the rest? Pro from $2.99/mo unlocks every platform without DRM. License delivered by email in minutes.</p>
           </li>
         </ol>
 
@@ -166,7 +215,7 @@
               autoplay muted loop playsinline preload="metadata"
               onerror="this.parentElement.classList.add('video-failed')"
             >
-              <source src="demo/ultrawider-sample.mp4" type="video/mp4" />
+              <source src="demo/ultrawider-demo.mp4" type="video/mp4" />
             </video>
             <div class="video-fallback" aria-hidden="true">
               <p>Sample loading…</p>
@@ -176,48 +225,8 @@
       </div>
     </section>
 
-    <!-- PRICING -->
-    <section id="pricing" class="section">
-      <div class="container container-narrow">
-        <header class="section-head">
-          <span class="eyebrow">Pricing</span>
-          <h2>Alpha access — lock in $3.99 forever</h2>
-          <p class="section-sub">One-time payment. Lifetime updates. Early-adopter pricing — increases after launch.</p>
-        </header>
-
-        <div class="pricing-single">
-          <div class="plan plan-featured plan-single">
-            <div class="plan-badge">Limited time — Early adopter pricing</div>
-            <div class="plan-head">
-              <h3>Alpha Access</h3>
-              <div class="plan-price">
-                <span class="price-strike">$34.99</span>
-                <span class="price">$3.99</span>
-                <span class="period">one-time, lifetime</span>
-              </div>
-              <div class="plan-save">Price increases after launch period.<br/>Lock in $3.99 forever.</div>
-            </div>
-            <ul class="plan-features">
-              <li>Content-aware S-curve warping on every YouTube video</li>
-              <li>Adjustable depth slider</li>
-              <li>Works in standard, theater, and fullscreen modes</li>
-              <li>Settings remembered between sessions</li>
-              <li>Lifetime updates — no renewals, ever</li>
-              <li>14-day full refund, no questions asked</li>
-              <li>Priority email support</li>
-            </ul>
-            <!-- TODO: replace # with Prodamus checkout URL once merchant_id is finalized -->
-            <a href="#" class="btn btn-primary btn-block btn-lg">Get Alpha Access — $3.99</a>
-            <p class="plan-foot">
-              Secure checkout via Prodamus. Instant license delivery to your email.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
     <!-- FAQ -->
-    <section id="faq" class="section section-alt">
+    <section id="faq" class="section">
       <div class="container container-narrow">
         <header class="section-head">
           <span class="eyebrow">FAQ</span>
@@ -226,33 +235,33 @@
 
         <div class="faq-list">
           <details>
-            <summary>Will the price stay $3.99?</summary>
-            <p>For everyone who buys during the alpha period — yes, forever. You pay once and the license never expires. We'll raise the price for new buyers after the public launch, but anyone who locked in $3.99 keeps that license at no extra cost, including all future updates.</p>
-          </details>
-
-          <details>
-            <summary>What if I'm not satisfied?</summary>
-            <p>Full or partial refund within 14 days, no questions asked. Email <a href="mailto:hello@ultrawider.net?subject=Refund%20Request">hello@ultrawider.net</a> with the subject "Refund Request" and your order ID. We process refunds within 7–14 business days back to the original payment method. See our <a href="refund.html">refund policy</a>.</p>
+            <summary>What's the difference between Free and Pro?</summary>
+            <p>Free unlocks the Smoothie warp on YouTube only — that's enough for most casual viewers to fall in love with the feature. Pro from $2.99/month removes the platform gate: Smoothie works on Twitch, Vimeo, RuTube and any other site whose video isn't DRM-protected. See the <a href="/pricing">pricing page</a> for the full plan comparison.</p>
           </details>
 
           <details>
             <summary>Which monitors are supported?</summary>
-            <p>Any ultrawide display: 21:9 (2560×1080, 3440×1440), 32:9 super-ultrawide (5120×1440), or anything wider than standard 16:9. The extension auto-detects your viewport and warps accordingly.</p>
+            <p>Any ultrawide display: 21:9 (2560×1080, 3440×1440), 24:9 (3840×1600), 32:9 super-ultrawide (5120×1440), or anything wider than standard 16:9. The extension auto-detects your viewport aspect and tunes the curve depth so the warp stays in the sweet spot regardless of display.</p>
+          </details>
+
+          <details>
+            <summary>Does it work on Netflix, HBO, Disney+?</summary>
+            <p>DRM-protected video (Netflix, HBO Max, Disney+, Prime Video) blocks the kind of pixel access Smoothie needs. We can't legitimately warp content we can't read. Pro still unlocks platform-level features there (display tuning, OLED protection — coming soon), but the geometric warp itself is fundamentally blocked by DRM. YouTube, Twitch, Vimeo, RuTube and most independent video hosts work perfectly.</p>
+          </details>
+
+          <details>
+            <summary>What if I'm not satisfied?</summary>
+            <p>14-day refund window, no questions asked. Email <a href="mailto:hello@ultrawider.net?subject=Refund%20Request">hello@ultrawider.net</a> with the subject "Refund Request" and your order ID. We process refunds within 7–14 business days back to the original payment method. See our <a href="refund.html">refund policy</a>.</p>
           </details>
 
           <details>
             <summary>Does it work in all browsers?</summary>
-            <p>Chrome 110+ and any Chromium-based browser of the same vintage (Edge, Brave, Opera, Vivaldi, Arc). Firefox and Safari are not currently supported.</p>
+            <p>Chrome 110+ and any Chromium-based browser of the same vintage (Edge, Brave, Opera, Vivaldi, Arc). Firefox and Safari are not currently supported for the extension itself; this landing page's live playground works in any modern browser that supports WebGL2.</p>
           </details>
 
           <details>
-            <summary>Is there a free version?</summary>
-            <p>Yes. The free version on the Chrome Web Store gives you basic 21:9 functionality on YouTube. Alpha Access unlocks the content-aware S-curve, the adjustable depth slider, settings persistence, and all future Pro features.</p>
-          </details>
-
-          <details>
-            <summary>How do I receive my license?</summary>
-            <p>Instantly, by email, immediately after Prodamus confirms your payment. The email contains your activation key and a one-click activation link.</p>
+            <summary>How is my payment processed?</summary>
+            <p>Payments go through <strong>Tazapay</strong> (Singapore payment processor) handling Visa, Mastercard, Amex, Apple Pay and Google Pay. After your card is charged, your license key arrives by email within 5–20 minutes. Paste it into the extension popup or fullscreen HUD to activate.</p>
           </details>
         </div>
       </div>
@@ -262,8 +271,8 @@
     <section class="section cta-section">
       <div class="container container-narrow cta-box">
         <h2>Fill your ultrawide. Today.</h2>
-        <p>$3.99 one-time. Lifetime updates. 14-day refund.</p>
-        <a href="#pricing" class="btn btn-primary btn-lg">Get Alpha Access — $3.99</a>
+        <p>Pro from $2.99/month · 14-day refund · Cancel anytime</p>
+        <a href="/pricing" class="btn btn-primary btn-lg">Get Pro</a>
       </div>
     </section>
 
@@ -282,19 +291,19 @@
         <h4>Product</h4>
         <a href="#features">Features</a>
         <a href="#how">How it works</a>
-        <a href="#pricing">Pricing</a>
+        <a href="/pricing">Pricing</a>
         <a href="#faq">FAQ</a>
+      </nav>
+      <nav class="footer-nav">
+        <h4>Account</h4>
+        <a href="/recover">Recover license</a>
+        <a href="mailto:hello@ultrawider.net">Contact support</a>
       </nav>
       <nav class="footer-nav">
         <h4>Legal</h4>
         <a href="terms.html">Terms of Service</a>
         <a href="privacy.html">Privacy Policy</a>
         <a href="refund.html">Refund Policy</a>
-      </nav>
-      <nav class="footer-nav">
-        <h4>Language</h4>
-        <a href="/">English</a>
-        <a href="/ru/">Русский</a>
       </nav>
     </div>
 
@@ -305,9 +314,6 @@
           <strong>INN:</strong> 482424418541<br/>
           <strong>City:</strong> Lipetsk, Russia<br/>
           <strong>Contact:</strong> <a href="mailto:hello@ultrawider.net">hello@ultrawider.net</a>
-        </p>
-        <p class="footer-payment">
-          Payments processed via <strong>Prodamus</strong> (Russian payment aggregator).
         </p>
       </div>
     </div>
