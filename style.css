@@ -1303,13 +1303,36 @@ strong { color: var(--text); font-weight: 600; }
   position: relative;
   min-height: 100vh;
   display: flex;
-  flex-direction: column;          /* stack content + CTA vertically */
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
   justify-content: center;
   overflow: hidden;
   isolation: isolate;
   padding: 88px 0;
   background: #000;
+}
+
+/* Two-column hero row: text on the LEFT (asymmetric quote-style layout
+   the user explicitly asked for), CTA stack on the RIGHT — placed next
+   to the text, not stretched to opposite viewport edges. The grid
+   collapses to single-column on tablet/mobile. */
+.cinematic-hero-row {
+  position: relative;
+  z-index: 4;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 56px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 48px;
+  align-items: center;
+}
+@media (max-width: 900px) {
+  .cinematic-hero-row {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 0 32px;
+  }
 }
 
 /* Full-bleed video fills viewport. object-fit: cover so it always
@@ -1340,53 +1363,64 @@ strong { color: var(--text); font-weight: 600; }
   pointer-events: none;
 }
 
-/* Restrained — refined amber overlay + sharp dashed inner edge.
-   Earlier loud warning-tape made the hero feel cheap/aggressive.
-   Now: light amber tint + crisp 1.5px dashed line marking the
-   boundary + one small vertical label. Quiet but still legible. */
+/* Dense dark-amber cut zones — reads as "this part is being clipped",
+   not "lightly tinted region". Darker amber base + bright accent
+   dashed line + bigger label. */
 .lost-zone {
   position: absolute;
   top: 88px;          /* clear of the sticky nav */
   bottom: 0;
   width: 11.9%;
-  background: linear-gradient(
-    90deg,
-    rgba(245, 158, 11, 0.12) 0%,
-    rgba(245, 158, 11, 0.06) 100%
-  );
+  /* Two-layer background: dense dark-amber overlay (using --accent-dim
+     #b45309 at high alpha) over a black wash. Amber peaks at the INNER
+     edge (toward the video center) and fades toward the outer edge —
+     the "cut" feels strongest right at the boundary. */
+  background:
+    linear-gradient(
+      90deg,
+      rgba(180, 83, 9, 0.55) 0%,
+      rgba(180, 83, 9, 0.35) 60%,
+      rgba(180, 83, 9, 0.2) 100%
+    ),
+    rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Soft fade-in / fade-out vertically so the zone doesn't read as a
-     hard rectangle pasted on the video. */
-  mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
-  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  /* Soft vertical fade so zones don't butt jaggedly against nav/footer */
+  mask-image: linear-gradient(180deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 6%, #000 94%, transparent 100%);
 }
-.lost-zone-left  {
+.lost-zone-left {
   left: 0;
-  border-right: 1.5px dashed rgba(245, 158, 11, 0.55);
+  /* Bold 2px sharp dashed amber on the inner edge = the visible "cut line" */
+  border-right: 2px dashed var(--accent);
 }
 .lost-zone-right {
   right: 0;
-  border-left: 1.5px dashed rgba(245, 158, 11, 0.55);
-  /* Mirror the gradient direction so amber peaks at the inner edge */
-  background: linear-gradient(
-    270deg,
-    rgba(245, 158, 11, 0.12) 0%,
-    rgba(245, 158, 11, 0.06) 100%
-  );
+  border-left: 2px dashed var(--accent);
+  /* Mirror gradient so amber peaks at inner edge */
+  background:
+    linear-gradient(
+      270deg,
+      rgba(180, 83, 9, 0.55) 0%,
+      rgba(180, 83, 9, 0.35) 60%,
+      rgba(180, 83, 9, 0.2) 100%
+    ),
+    rgba(0, 0, 0, 0.45);
 }
 
 .lost-zone-label {
   writing-mode: vertical-rl;
   transform: rotate(180deg);
   font-family: var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: rgba(245, 158, 11, 0.85);
-  text-shadow: 0 0 10px rgba(0, 0, 0, 0.95);
+  color: var(--accent);
+  text-shadow:
+    0 0 12px rgba(0, 0, 0, 1),
+    0 0 24px rgba(0, 0, 0, 0.85);
   white-space: nowrap;
   line-height: 1;
 }
@@ -1430,23 +1464,24 @@ strong { color: var(--text); font-weight: 600; }
 }
 
 .cinematic-hero-content {
-  position: relative;
-  z-index: 4;
-  max-width: 880px;
-  margin: 0 auto;
-  padding: 0 24px;
-  text-align: center;
+  text-align: left;
+  max-width: 640px;
+}
+.cinematic-hero-content h1 {
+  text-align: left;
+}
+.cinematic-hero-content .lede {
+  text-align: left;
+  margin-left: 0;
+  margin-right: 0;
+  max-width: 580px;
 }
 
 .cinematic-hero-cta-wrap {
-  position: relative;
-  z-index: 4;
-  text-align: center;
-  margin: 36px auto 0;
-  padding: 0 24px;
+  text-align: left;
 }
 .cinematic-hero-cta-wrap .hero-cta {
-  justify-content: center;
+  justify-content: flex-start;
   margin-bottom: 0;
 }
 .cinematic-hero-cta-wrap .cta-note {
@@ -1457,10 +1492,14 @@ strong { color: var(--text); font-weight: 600; }
   text-transform: uppercase;
   color: rgba(245, 245, 245, 0.55);
   text-shadow: 0 0 12px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
 }
 .cinematic-hero-cta-wrap .cta-note .text-tech {
   color: var(--accent);
   font-weight: 600;
+}
+@media (max-width: 900px) {
+  .cinematic-hero-cta-wrap { text-align: left; }
 }
 
 @media (max-width: 720px) {
@@ -1470,13 +1509,14 @@ strong { color: var(--text); font-weight: 600; }
 }
 
 .cinematic-hero .eyebrow {
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   color: var(--accent);
   font-family: var(--font-mono);
-  letter-spacing: 0.18em;
-  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  font-size: 0.85rem;
   font-weight: 600;
   text-transform: uppercase;
+  text-shadow: 0 0 12px rgba(0, 0, 0, 0.95);
 }
 
 .cinematic-hero h1 {
