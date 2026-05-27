@@ -23,7 +23,7 @@
     monthly: {
       period: '/mo',
       features: [
-        'Smoothie on Twitch, Vimeo, RuTube, more',
+        'Smoothie on Twitch, Vimeo, Kick + most HTML5 video sites',
         'Aspect-aware auto-tuning (21:9 / 24:9 / 32:9)',
         'Cancel anytime',
       ],
