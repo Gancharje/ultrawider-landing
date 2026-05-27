@@ -2647,200 +2647,195 @@ code, .code-inline {
     0 14px 36px rgba(245, 158, 11, 0.45);
 }
 
-/* ─── Below-grid sponsorship trust block ───────────────────────────
-   Visa/MC logos stacked vertically on the left; sponsorship-framed
-   content on the right: headline, flow arrow, contextual note. */
-.lp-disclosure {
-  max-width: 760px;
+/* ─── Wallet-Pass-style sponsorship receipt ─────────────────────────
+   Two-column ledger: "YOU PAY" (Visa/MC logos + Tazapay note) ‖
+   "YOU RECEIVE" (amber envelope + license details). Below the ledger,
+   a dedicated footer block explains 'No Telegram needed + why this
+   model'. Reads as a real transaction receipt, not a wizard. */
+.lp-receipt {
+  max-width: 820px;
   margin: clamp(36px, 4dvh, 56px) auto 0;
-  padding: 22px 26px;
-  display: flex;
-  align-items: flex-start;
-  gap: 24px;
-  background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 14px;
+  background: linear-gradient(180deg,
+    rgba(20, 18, 14, 0.55) 0%,
+    rgba(14, 12, 8, 0.55) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.015),
+    0 30px 80px rgba(0, 0, 0, 0.55);
 }
 
-/* Card logos stacked in a column on the left */
-.lp-disclosure-cards {
+.lp-receipt-top {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: stretch;
+}
+
+.lp-receipt-col {
+  padding: clamp(20px, 2.5vw, 30px) clamp(22px, 2.8vw, 34px);
+}
+
+.lp-receipt-col--receive {
+  background: linear-gradient(180deg,
+    rgba(30, 22, 8, 0.45) 0%,
+    rgba(20, 15, 6, 0.45) 100%);
+}
+
+.lp-receipt-divider {
+  width: 1px;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 18%,
+    rgba(255, 255, 255, 0.1) 82%,
+    transparent 100%);
+}
+
+.lp-receipt-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 14px;
+}
+.lp-receipt-col--receive .lp-receipt-eyebrow {
+  color: var(--accent);
+}
+
+.lp-receipt-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+/* Visa/MC logos stacked vertically in left column */
+.lp-receipt-icons {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 8px;
+  gap: 6px;
   flex-shrink: 0;
-  padding-top: 2px;
 }
-.lp-pay-logo {
-  width: 56px;
+.lp-receipt-pay-icon {
+  width: 52px;
   height: auto;
   display: block;
   border-radius: 4px;
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 2px 8px rgba(0, 0, 0, 0.25);
+    0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.lp-disclosure-body {
-  flex: 1;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.lp-disclosure-headline {
-  margin: 0;
-  font-size: 1rem;
-  color: var(--text);
-  line-height: 1.4;
-}
-.lp-disclosure-headline strong {
-  color: var(--text);
-  font-weight: 700;
-}
-
-/* Apple-style beaded flow diagram — 4 icons on a hairline connector.
-   No card pills, no arrows between — minimalist "string with beads"
-   visual. End-state icon is amber with subtle ring. */
-.lp-flow {
-  position: relative;
-  list-style: none;
-  padding: 4px 0 0;
-  margin: 14px 0 8px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 0;
-  align-items: start;
-}
-
-/* The connector line — single hairline drawn behind all icons.
-   Subtle gradient from white-dim to amber at the end-state side. */
-.lp-flow::before {
-  content: "";
-  position: absolute;
-  top: 26px;        /* center of 48px icon (icon-y 4 + 48/2 = 28; -2 to center vertically) */
-  left: calc(12.5% + 24px);   /* right edge of first icon ≈ center of col 1 + 24 */
-  right: calc(12.5% + 24px);  /* left edge of last icon */
-  height: 1px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.18) 0%,
-    rgba(255, 255, 255, 0.18) 65%,
-    rgba(245, 158, 11, 0.5) 100%
-  );
-  z-index: 0;
-}
-
-.lp-flow-step {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  gap: 12px;
-}
-
-.lp-flow-icon {
+/* Right-column big amber envelope icon — the focal point */
+.lp-receipt-key-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
-  background: var(--bg);
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 50%;
-  color: var(--text-dim);
-  transition: border-color 0.2s ease, color 0.2s ease;
-}
-.lp-flow-icon svg { width: 22px; height: 22px; display: block; }
-
-.lp-flow-step:hover .lp-flow-icon {
-  color: var(--text);
-  border-color: rgba(255, 255, 255, 0.28);
-}
-
-.lp-flow-label {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
-  font-weight: 600;
-  color: var(--text);
-  letter-spacing: 0.02em;
-  line-height: 1.2;
-}
-.lp-flow-sub {
-  display: block;
-  margin-top: 4px;
-  font-family: var(--font-mono);
-  font-size: 0.62rem;
-  font-weight: 500;
-  color: var(--text-mute);
-  letter-spacing: 0.1em;
-  line-height: 1.2;
-  text-transform: uppercase;
-}
-
-.lp-flow-step--end .lp-flow-icon {
-  border-color: rgba(245, 158, 11, 0.6);
-  background: rgba(245, 158, 11, 0.08);
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  border-radius: 12px;
   color: var(--accent);
   box-shadow:
-    0 0 0 4px rgba(245, 158, 11, 0.08),
-    0 0 24px rgba(245, 158, 11, 0.15);
+    0 0 0 4px rgba(245, 158, 11, 0.06),
+    0 0 24px rgba(245, 158, 11, 0.12);
 }
-.lp-flow-step--end .lp-flow-label { color: var(--accent); }
-.lp-flow-step--end .lp-flow-sub   { color: rgba(245, 158, 11, 0.65); }
+.lp-receipt-key-icon svg { width: 28px; height: 28px; }
 
-/* Mobile: vertical timeline */
-@media (max-width: 600px) {
-  .lp-flow {
-    grid-template-columns: 1fr;
-    gap: 18px;
-    padding-left: 12px;
-  }
-  .lp-flow::before {
-    top: 24px;
-    bottom: 24px;
-    left: 36px;
-    right: auto;
-    width: 1px;
-    height: auto;
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.18) 0%,
-      rgba(255, 255, 255, 0.18) 65%,
-      rgba(245, 158, 11, 0.5) 100%
-    );
-  }
-  .lp-flow-step {
-    flex-direction: row;
-    align-items: center;
-    gap: 18px;
-    text-align: left;
-  }
+.lp-receipt-detail {
+  flex: 1;
+  min-width: 0;
 }
-
-.lp-disclosure-note {
+.lp-receipt-h {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  color: var(--text);
+}
+.lp-receipt-col--receive .lp-receipt-h {
+  color: var(--accent);
+}
+.lp-receipt-body {
   margin: 0;
-  font-size: 0.82rem;
+  font-size: 0.86rem;
   line-height: 1.55;
   color: var(--text-dim);
 }
-.lp-disclosure-note strong {
+.lp-receipt-body strong {
   color: var(--text);
   font-weight: 600;
+}
+.lp-receipt-body code {
   font-family: var(--font-mono);
-  font-size: 0.95em;
-  letter-spacing: 0.02em;
+  font-size: 0.86em;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  padding: 1px 6px;
+  border-radius: 3px;
 }
 
-@media (max-width: 600px) {
-  .lp-disclosure { flex-direction: column; align-items: center; gap: 16px; padding: 20px; }
-  .lp-disclosure-cards { flex-direction: row; }
-  .lp-disclosure-body { text-align: center; }
-  .lp-disclosure-flow { justify-content: center; }
+/* Footer: "No Telegram needed + why this model" */
+.lp-receipt-footer {
+  padding: clamp(18px, 2.2vw, 24px) clamp(22px, 2.8vw, 34px);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.012);
+}
+.lp-receipt-why-h {
+  margin: 0 0 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+.lp-receipt-why-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: var(--font-body);
+  flex-shrink: 0;
+}
+.lp-receipt-why-body {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+.lp-receipt-why-body strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+@media (max-width: 720px) {
+  .lp-receipt-top {
+    grid-template-columns: 1fr;
+  }
+  .lp-receipt-divider {
+    width: auto;
+    height: 1px;
+    background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.1) 18%,
+      rgba(255, 255, 255, 0.1) 82%,
+      transparent 100%);
+  }
 }
 
 .lp-fine-print {
