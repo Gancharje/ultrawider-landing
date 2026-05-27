@@ -481,7 +481,7 @@ button[type='submit'][disabled] {
    Plus page-level disclosures:
      .pay-disclosure    — upfront "you pay by card, no TG needed" block
      .pay-conversion-note — footer disclaimer about currency variance
-     .pay-card          — Visa/MC/Amex/Apple Pay tiny tag pills
+     .pay-card          — Visa/MC tiny tag pills
 */
 
 .plan-stars {
@@ -556,8 +556,6 @@ button[type='submit'][disabled] {
 }
 .pay-card--visa  { color: #1a1f71; background: #ffffff; border-color: #ffffff; }
 .pay-card--mc    { color: #ff5f00; background: #ffffff; border-color: #ffffff; }
-.pay-card--amex  { color: #2e77bb; background: #ffffff; border-color: #ffffff; }
-.pay-card--apple { color: #ffffff; background: #000000; border-color: rgba(255,255,255,0.4); font-weight: 500; }
 
 .pay-disclosure-text {
   font-size: 0.92rem;

@@ -2351,7 +2351,7 @@ code, .code-inline {
 
 .lp-section {
   position: relative;
-  padding: clamp(56px, 6.5dvh, 96px) 0;
+  padding: clamp(40px, 5dvh, 72px) 0;
   background: var(--bg);
   border-top: 1px solid var(--border-soft);
   overflow: hidden;
@@ -2381,11 +2381,11 @@ code, .code-inline {
 .lp-head {
   text-align: center;
   max-width: 720px;
-  margin: 0 auto clamp(28px, 3dvh, 44px);
+  margin: 0 auto clamp(20px, 2.4dvh, 32px);
 }
 .lp-head h2 {
-  margin: clamp(12px, 1.4dvh, 18px) 0 clamp(14px, 1.6dvh, 20px);
-  font-size: clamp(2.25rem, 3.5vw + 0.5rem, 3.5rem);
+  margin: clamp(8px, 1dvh, 14px) 0 clamp(10px, 1.2dvh, 16px);
+  font-size: clamp(2rem, 3vw + 0.4rem, 3rem);
   letter-spacing: -0.035em;
   line-height: 1.04;
 }
@@ -2409,7 +2409,7 @@ code, .code-inline {
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 32px 26px 26px;
+  padding: 24px 22px 22px;
   background: rgba(20, 20, 20, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.06);
   border-radius: 18px;
@@ -2559,7 +2559,7 @@ code, .code-inline {
 }
 
 .lp-card-duration {
-  margin: 0 0 20px;
+  margin: 0 0 12px;
   font-family: var(--font-mono);
   font-size: 0.7rem;
   letter-spacing: 0.14em;
@@ -2570,10 +2570,10 @@ code, .code-inline {
 .lp-card-features {
   list-style: none;
   padding: 0;
-  margin: 0 0 24px;
+  margin: 0 0 16px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
   flex-grow: 1;
 }
 .lp-card-features li {
@@ -2651,8 +2651,8 @@ code, .code-inline {
    the removed .lp-card-tagline. */
 .lp-receipt {
   max-width: 1180px;
-  margin: clamp(40px, 4.5dvh, 64px) auto 0;
-  padding: clamp(32px, 4dvh, 48px) 4px 0;
+  margin: clamp(28px, 3dvh, 44px) auto 0;
+  padding: clamp(22px, 2.8dvh, 34px) 4px 0;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
@@ -2675,14 +2675,14 @@ code, .code-inline {
   font-weight: 500;
   letter-spacing: 0.18em;
   color: rgba(245, 158, 11, 0.72);
-  margin-bottom: 20px;
+  margin-bottom: 14px;
 }
 
 /* Lead sentence — display weight, IS the column's mini-headline */
 .lp-receipt-lead {
-  margin: 0 0 18px;
+  margin: 0 0 12px;
   font-family: var(--font-display);
-  font-size: clamp(1.05rem, 0.4vw + 0.95rem, 1.2rem);
+  font-size: clamp(1.02rem, 0.35vw + 0.92rem, 1.15rem);
   font-weight: 600;
   letter-spacing: -0.015em;
   line-height: 1.28;
@@ -2694,9 +2694,9 @@ code, .code-inline {
 }
 
 .lp-receipt-body {
-  margin: 0 0 14px;
-  font-size: 0.92rem;
-  line-height: 1.6;
+  margin: 0 0 10px;
+  font-size: 0.9rem;
+  line-height: 1.55;
   letter-spacing: -0.003em;
   color: rgba(255, 255, 255, 0.66);
 }
@@ -2721,7 +2721,7 @@ code, .code-inline {
   flex-wrap: wrap;
   gap: 7px;
   margin-top: auto;
-  padding-top: 22px;
+  padding-top: 14px;
 }
 .lp-receipt-paycard {
   width: 38px;
@@ -2737,7 +2737,7 @@ code, .code-inline {
 .lp-receipt-more {
   align-self: flex-start;
   margin-top: auto;
-  padding-top: 18px;
+  padding-top: 14px;
   font-family: var(--font-body);
   font-size: 0.86rem;
   font-weight: 500;
@@ -2755,15 +2755,15 @@ code, .code-inline {
 
 /* Variance + recover footer — Apple-style fine-print under hairline */
 .lp-receipt-variance {
-  margin: clamp(28px, 3dvh, 40px) 0 0;
-  padding-top: clamp(20px, 2.5dvh, 28px);
+  margin: clamp(18px, 2.2dvh, 28px) 0 0;
+  padding-top: clamp(14px, 1.8dvh, 20px);
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   text-align: center;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   letter-spacing: 0.04em;
   color: rgba(255, 255, 255, 0.42);
-  line-height: 1.55;
+  line-height: 1.5;
 }
 .lp-receipt-variance a {
   color: rgba(255, 255, 255, 0.58);
