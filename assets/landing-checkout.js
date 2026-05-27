@@ -25,7 +25,6 @@
   var EXTRAS = {
     monthly: {
       period: '/mo',
-      tagline: 'Try Pro for a month',
       features: [
         'Twitch, Vimeo, Kick + most other video sites',
         'Aspect-aware auto-tuning',
@@ -34,7 +33,6 @@
     },
     quarterly: {
       period: '',
-      tagline: 'Three months at a discount',
       features: [
         'Everything in Monthly',
         'Save 11% vs monthly',
@@ -43,7 +41,6 @@
     },
     yearly: {
       period: '/yr',
-      tagline: 'The way most people sponsor',
       features: [
         'Everything in Quarterly',
         'Save ~35% vs monthly',
@@ -52,7 +49,6 @@
     },
     lifetime: {
       period: '',
-      tagline: 'Pay once. Forever.',
       features: [
         'Everything in Yearly',
         'All future updates included',
@@ -88,7 +84,6 @@
     if (isRec) html += '<div class="lp-ribbon">Most popular</div>';
 
     html += '<span class="lp-card-eyebrow">' + p.label + '</span>';
-    html += '<p class="lp-card-tagline">' + ex.tagline + '</p>';
 
     html += '<div class="lp-card-stars"><span aria-hidden="true">⭐</span> ' +
             p.starsAmount.toLocaleString() + ' Stars</div>';
@@ -213,6 +208,24 @@
     });
 
     if (closeBtn) closeBtn.addEventListener('click', closeCheckout);
+
+    // Sponsorship explainer "Read more →" links jump to a specific FAQ
+    // entry and auto-open it. Without this, clicking a hash like
+    // #faq-stars would scroll there but leave the <details> collapsed,
+    // which defeats the purpose of the cue.
+    document.addEventListener('click', function (e) {
+      var trigger = e.target.closest('[data-faq-jump]');
+      if (!trigger) return;
+      var id = trigger.getAttribute('data-faq-jump');
+      var target = id && document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      if (target.tagName === 'DETAILS') target.open = true;
+      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Update the hash so the :target CSS pulse fires and a refresh
+      // re-anchors the user where they were.
+      if (history.replaceState) history.replaceState(null, '', '#' + id);
+    });
 
     form.addEventListener('submit', function (e) {
       e.preventDefault();

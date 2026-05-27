@@ -480,86 +480,85 @@
           </div>
         </div>
 
-        <!-- Sponsorship-framed trust block. The flow arrow makes the
-             mechanics obvious at a glance; the closing line preempts the
-             "wait, am I buying Stars?" reaction by anchoring the model
-             as a familiar SaaS-style sponsorship. -->
-        <!-- Wallet-Pass-style receipt: clean YOU PAY / YOU RECEIVE
-             ledger + dedicated 'No Telegram needed + why this model'
-             footer. Replaces process-diagram approach which read as
-             onboarding-wizard rather than payment. -->
-        <aside class="lp-receipt" aria-label="How your sponsorship works">
-          <div class="lp-receipt-top">
-            <section class="lp-receipt-col lp-receipt-col--pay">
-              <div class="lp-receipt-eyebrow">You pay</div>
-              <div class="lp-receipt-row">
-                <div class="lp-receipt-icons" aria-hidden="true">
-                  <svg class="lp-receipt-pay-icon" viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg" aria-label="Visa">
-                    <rect width="60" height="38" rx="4" fill="#1A1F71"/>
-                    <text x="30" y="25" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-style="italic" font-weight="900" font-size="13" fill="#FFFFFF">VISA</text>
-                  </svg>
-                  <svg class="lp-receipt-pay-icon" viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg" aria-label="Mastercard">
-                    <rect width="60" height="38" rx="4" fill="#FFFFFF"/>
-                    <circle cx="22" cy="19" r="10.5" fill="#EB001B"/>
-                    <circle cx="38" cy="19" r="10.5" fill="#F79E1B"/>
-                    <path d="M 30 10.5 a 10.5 10.5 0 0 1 0 17 a 10.5 10.5 0 0 1 0 -17" fill="#FF5F00"/>
-                  </svg>
-                </div>
-                <div class="lp-receipt-detail">
-                  <h3 class="lp-receipt-h">Card payment</h3>
-                  <p class="lp-receipt-body">
-                    Via <strong>Tazapay</strong> (Singapore). Statement shows
-                    <code>TAZAPAY</code> or <code>JOYTIFY</code>. Card details
-                    stay on Tazapay's PCI-secure form, not ours.
-                  </p>
-                </div>
+        <!-- Sponsorship explainer — editorial 3-column lockup.
+             Columns answer the three questions a careful sponsor will
+             ask BEFORE clicking through to Tazapay:
+               01  how you actually pay (card vs. Stars confusion)
+               02  what arrives, when, and the refund terms
+               03  why the Stars/Tazapay rail exists at all
+             Replaces wallet-pass receipt that read as decorative; this
+             reads as confident prose carrying every trust signal the
+             receipt had, in less vertical space. -->
+        <aside class="lp-receipt" aria-label="How sponsorship works">
+          <div class="lp-receipt-cols">
+            <section class="lp-receipt-col">
+              <span class="lp-receipt-num">01</span>
+              <h3 class="lp-receipt-lead">By card.</h3>
+              <p class="lp-receipt-body">
+                Visa, Mastercard, Amex, Apple&nbsp;Pay. Card details stay
+                on <strong>Tazapay</strong>'s PCI-secure form — a
+                Singapore-based payment gateway. Bank statement shows
+                <code>TAZAPAY</code> or <code>JOYTIFY</code>.
+              </p>
+              <div class="lp-receipt-cards" aria-hidden="true">
+                <svg class="lp-receipt-paycard" viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg" aria-label="Visa">
+                  <rect width="60" height="38" rx="4" fill="#1A1F71"/>
+                  <text x="30" y="25" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-style="italic" font-weight="900" font-size="13" fill="#FFFFFF">VISA</text>
+                </svg>
+                <svg class="lp-receipt-paycard" viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg" aria-label="Mastercard">
+                  <rect width="60" height="38" rx="4" fill="#FFFFFF"/>
+                  <circle cx="22" cy="19" r="10.5" fill="#EB001B"/>
+                  <circle cx="38" cy="19" r="10.5" fill="#F79E1B"/>
+                  <path d="M 30 10.5 a 10.5 10.5 0 0 1 0 17 a 10.5 10.5 0 0 1 0 -17" fill="#FF5F00"/>
+                </svg>
+                <svg class="lp-receipt-paycard" viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg" aria-label="American Express">
+                  <rect width="60" height="38" rx="4" fill="#2E77BB"/>
+                  <text x="30" y="24" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="9" fill="#FFFFFF" letter-spacing="0.3">AMEX</text>
+                </svg>
+                <svg class="lp-receipt-paycard" viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg" aria-label="Apple Pay">
+                  <rect width="60" height="38" rx="4" fill="#000000" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+                  <text x="30" y="24" text-anchor="middle" font-family="-apple-system, SF Pro Display, Helvetica, Arial, sans-serif" font-weight="600" font-size="10" fill="#FFFFFF"> Pay</text>
+                </svg>
               </div>
             </section>
 
-            <div class="lp-receipt-divider" aria-hidden="true"></div>
+            <section class="lp-receipt-col">
+              <span class="lp-receipt-num">02</span>
+              <h3 class="lp-receipt-lead">A Pro license key,<br/>by email, in&nbsp;<span class="lp-receipt-hl">5&nbsp;minutes</span>.</h3>
+              <p class="lp-receipt-body">
+                Activates Pro on Twitch, Vimeo, Kick, and the rest of
+                the supported web.
+              </p>
+              <p class="lp-receipt-body">
+                <strong>14-day full refund.</strong> No auto-renew.
+                Cancel any time.
+              </p>
+            </section>
 
-            <section class="lp-receipt-col lp-receipt-col--receive">
-              <div class="lp-receipt-eyebrow">You receive</div>
-              <div class="lp-receipt-row">
-                <span class="lp-receipt-key-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="5" width="18" height="14" rx="2"/>
-                    <polyline points="3 7 12 13 21 7"/>
-                  </svg>
-                </span>
-                <div class="lp-receipt-detail">
-                  <h3 class="lp-receipt-h">Pro license key</h3>
-                  <p class="lp-receipt-body">
-                    Emailed within <strong>5 minutes</strong>. 14-day full
-                    refund. Cancel anytime — no auto-renew on any tier.
-                  </p>
-                </div>
-              </div>
+            <section class="lp-receipt-col">
+              <span class="lp-receipt-num">03</span>
+              <h3 class="lp-receipt-lead">We're indie.</h3>
+              <p class="lp-receipt-body">
+                Working outside Stripe's and Paddle's territory, so your
+                card pays through <strong>Tazapay</strong>, the value
+                reaches us as <strong>Telegram&nbsp;Stars</strong>, and
+                your license arrives by email.
+              </p>
+              <p class="lp-receipt-body">
+                You never touch Telegram — and no platform tax inflates
+                your bill.
+              </p>
+              <a href="#faq-stars" class="lp-receipt-more" data-faq-jump="faq-stars">
+                Read more <span aria-hidden="true">→</span>
+              </a>
             </section>
           </div>
 
-          <div class="lp-receipt-footer">
-            <h4 class="lp-receipt-why-h">
-              <span class="lp-receipt-why-icon" aria-hidden="true">ⓘ</span>
-              No Telegram account needed
-            </h4>
-            <p class="lp-receipt-why-body">
-              We price in <strong>Telegram Stars</strong> because mainstream
-              SaaS processors (Stripe, Paddle) don't accept indie developers
-              from our region. Stars + Tazapay let us accept any card globally
-              with no platform middleman tax. <strong>Same end result as any
-              SaaS subscription</strong> — your card pays Tazapay, Tazapay
-              delivers Stars to our team, we email you the license. You don't
-              touch Telegram at any point.
-            </p>
-          </div>
+          <p class="lp-receipt-variance">
+            Final $ may vary ±2–5% with your card's currency · Stars count is fixed ·
+            <a href="/recover">Lost your key?</a>
+          </p>
         </aside>
-
-        <p class="lp-fine-print">
-          14-day refund · Cancel anytime · No subscription auto-renew · Final
-          amount may vary ±2–5% with currency conversion · <a href="/recover">Lost
-          your key?</a>
-        </p>
       </div>
     </section>
 
@@ -577,7 +576,7 @@
             <p>Free unlocks the Smoothie warp on YouTube — that's enough for most casual viewers to fall in love with the feature. Pro from ⭐150 Stars (≈ $2.98/month) removes the platform gate: Smoothie works on Twitch, Vimeo, Kick and any other site whose video isn't DRM-protected. See the <a href="#pricing">pricing page</a> for the full comparison.</p>
           </details>
 
-          <details>
+          <details id="faq-stars">
             <summary>Why am I sending Telegram Stars to buy a license?</summary>
             <p>Ultrawider is built by one indie developer outside the standard SaaS payment rails (Stripe, Paddle and friends don't accept us due to geographic restrictions). Telegram Stars + Tazapay let us accept cards from any country with no platform middleman markup. <strong>You pay by card</strong> — Visa, Mastercard, Amex, Apple Pay; no Telegram account needed. The Stars go to our team's TG account as the sponsorship transaction; in return we email your Pro license key within 5–20 minutes. You'll see <code>TAZAPAY</code> or <code>JOYTIFY</code> on your bank statement — that's the Stars charge. Same end result as any SaaS subscription, with 14-day refund if it doesn't work for you.</p>
           </details>

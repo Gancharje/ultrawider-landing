@@ -465,78 +465,76 @@
           </div>
         </div>
 
-        <aside class="lp-receipt" aria-label="Как работает оплата">
-          <div class="lp-receipt-top">
-            <section class="lp-receipt-col lp-receipt-col--pay">
-              <div class="lp-receipt-eyebrow">Вы платите</div>
-              <div class="lp-receipt-row">
-                <div class="lp-receipt-icons" aria-hidden="true">
-                  <svg class="lp-receipt-pay-icon" viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg" aria-label="Visa">
-                    <rect width="60" height="38" rx="4" fill="#1A1F71"/>
-                    <text x="30" y="25" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-style="italic" font-weight="900" font-size="13" fill="#FFFFFF">VISA</text>
-                  </svg>
-                  <svg class="lp-receipt-pay-icon" viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg" aria-label="Mastercard">
-                    <rect width="60" height="38" rx="4" fill="#FFFFFF"/>
-                    <circle cx="22" cy="19" r="10.5" fill="#EB001B"/>
-                    <circle cx="38" cy="19" r="10.5" fill="#F79E1B"/>
-                    <path d="M 30 10.5 a 10.5 10.5 0 0 1 0 17 a 10.5 10.5 0 0 1 0 -17" fill="#FF5F00"/>
-                  </svg>
-                </div>
-                <div class="lp-receipt-detail">
-                  <h3 class="lp-receipt-h">Оплата картой</h3>
-                  <p class="lp-receipt-body">
-                    Через <strong>Tazapay</strong> (Сингапур). На выписке —
-                    <code>TAZAPAY</code> или <code>JOYTIFY</code>. Данные
-                    карты остаются на их PCI-форме, не у нас.
-                  </p>
-                </div>
+        <aside class="lp-receipt" aria-label="Как работает спонсорство">
+          <div class="lp-receipt-cols">
+            <section class="lp-receipt-col">
+              <span class="lp-receipt-num">01</span>
+              <h3 class="lp-receipt-lead">Картой.</h3>
+              <p class="lp-receipt-body">
+                Visa, Mastercard, Amex, Apple&nbsp;Pay. Данные карты
+                остаются на PCI-форме <strong>Tazapay</strong> —
+                платёжный шлюз из Сингапура. На банковской выписке
+                будет <code>TAZAPAY</code> или <code>JOYTIFY</code>.
+              </p>
+              <div class="lp-receipt-cards" aria-hidden="true">
+                <svg class="lp-receipt-paycard" viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg" aria-label="Visa">
+                  <rect width="60" height="38" rx="4" fill="#1A1F71"/>
+                  <text x="30" y="25" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-style="italic" font-weight="900" font-size="13" fill="#FFFFFF">VISA</text>
+                </svg>
+                <svg class="lp-receipt-paycard" viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg" aria-label="Mastercard">
+                  <rect width="60" height="38" rx="4" fill="#FFFFFF"/>
+                  <circle cx="22" cy="19" r="10.5" fill="#EB001B"/>
+                  <circle cx="38" cy="19" r="10.5" fill="#F79E1B"/>
+                  <path d="M 30 10.5 a 10.5 10.5 0 0 1 0 17 a 10.5 10.5 0 0 1 0 -17" fill="#FF5F00"/>
+                </svg>
+                <svg class="lp-receipt-paycard" viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg" aria-label="American Express">
+                  <rect width="60" height="38" rx="4" fill="#2E77BB"/>
+                  <text x="30" y="24" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="9" fill="#FFFFFF" letter-spacing="0.3">AMEX</text>
+                </svg>
+                <svg class="lp-receipt-paycard" viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg" aria-label="Apple Pay">
+                  <rect width="60" height="38" rx="4" fill="#000000" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+                  <text x="30" y="24" text-anchor="middle" font-family="-apple-system, SF Pro Display, Helvetica, Arial, sans-serif" font-weight="600" font-size="10" fill="#FFFFFF"> Pay</text>
+                </svg>
               </div>
             </section>
 
-            <div class="lp-receipt-divider" aria-hidden="true"></div>
+            <section class="lp-receipt-col">
+              <span class="lp-receipt-num">02</span>
+              <h3 class="lp-receipt-lead">Pro-ключ на почту,<br/>за&nbsp;<span class="lp-receipt-hl">5&nbsp;минут</span>.</h3>
+              <p class="lp-receipt-body">
+                Открывает Pro на Twitch, Vimeo, Kick и остальном
+                поддерживаемом вебе.
+              </p>
+              <p class="lp-receipt-body">
+                <strong>Возврат 14 дней.</strong> Без авто-продления.
+                Отмена в любое время.
+              </p>
+            </section>
 
-            <section class="lp-receipt-col lp-receipt-col--receive">
-              <div class="lp-receipt-eyebrow">Вы получаете</div>
-              <div class="lp-receipt-row">
-                <span class="lp-receipt-key-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="3" y="5" width="18" height="14" rx="2"/>
-                    <polyline points="3 7 12 13 21 7"/>
-                  </svg>
-                </span>
-                <div class="lp-receipt-detail">
-                  <h3 class="lp-receipt-h">Pro-лицензия</h3>
-                  <p class="lp-receipt-body">
-                    Приходит на почту за <strong>5 минут</strong>. Возврат
-                    14 дней. Отмена в любое время — без авто-продления.
-                  </p>
-                </div>
-              </div>
+            <section class="lp-receipt-col">
+              <span class="lp-receipt-num">03</span>
+              <h3 class="lp-receipt-lead">Мы — indie.</h3>
+              <p class="lp-receipt-body">
+                Работаем вне территории Stripe и Paddle, поэтому ваша
+                карта проходит через <strong>Tazapay</strong>, ценность
+                приходит к нам в виде <strong>Telegram&nbsp;Stars</strong>,
+                а лицензия — вам на почту.
+              </p>
+              <p class="lp-receipt-body">
+                Telegram вы не открываете ни разу — и комиссия платформы
+                не накручивается на ваш счёт.
+              </p>
+              <a href="#faq-stars" class="lp-receipt-more" data-faq-jump="faq-stars">
+                Подробнее <span aria-hidden="true">→</span>
+              </a>
             </section>
           </div>
 
-          <div class="lp-receipt-footer">
-            <h4 class="lp-receipt-why-h">
-              <span class="lp-receipt-why-icon" aria-hidden="true">ⓘ</span>
-              Аккаунт в Telegram не нужен
-            </h4>
-            <p class="lp-receipt-why-body">
-              Мы берём цену в <strong>Telegram Stars</strong> потому что
-              мейнстрим SaaS-процессоры (Stripe, Paddle) не принимают
-              indie-разработчиков из нашего региона. Stars + Tazapay
-              позволяют принимать карты со всего мира без посредника.
-              <strong>Результат тот же что у любой SaaS-подписки</strong> —
-              ваша карта платит Tazapay, Tazapay передаёт нам Stars, мы
-              отправляем вам ключ на почту. Telegram вы не открываете
-              ни разу.
-            </p>
-          </div>
+          <p class="lp-receipt-variance">
+            Итоговая сумма ±2–5% из-за конверсии валют · Stars фиксированы ·
+            <a href="/recover">Потерял ключ?</a>
+          </p>
         </aside>
-
-        <p class="lp-fine-print">
-          Возврат 14 дней · Отмена в любое время · Без авто-продления ·
-          Финальная сумма ±2–5% из-за конверсии валют · <a href="/recover">Потерял ключ?</a>
-        </p>
       </div>
     </section>
 
@@ -554,7 +552,7 @@
             <p>Free открывает Smoothie-варп только на YouTube — этого достаточно чтобы большинство casual-зрителей полюбили фичу. Pro от ⭐150 Stars (≈ $2.98/мес) снимает ограничение по платформе: Smoothie работает на Twitch, Vimeo, Kick и любых сайтах где видео не защищено DRM. <a href="#pricing">Страница тарифов</a> со сравнением всех планов.</p>
           </details>
 
-          <details>
+          <details id="faq-stars">
             <summary>Почему я отправляю Telegram Stars чтобы купить лицензию?</summary>
             <p>Ultrawider делает один indie-разработчик вне стандартных SaaS-payment-рельсов (Stripe, Paddle и другие не принимают нас из-за географических ограничений). Telegram Stars + Tazapay позволяют принимать карты из любой страны без посредников. <strong>Оплата картой</strong> — Visa, Mastercard, Amex, Apple Pay; <strong>аккаунт в Telegram не нужен</strong>. Stars приходят на наш TG-аккаунт как sponsorship-транзакция; взамен мы отправляем тебе Pro-ключ на почту в течение 5–20 минут. На банковской выписке увидишь <code>TAZAPAY</code> или <code>JOYTIFY</code> — это та самая Stars-оплата. Результат тот же что у обычной SaaS-подписки, с возвратом 14 дней.</p>
           </details>
