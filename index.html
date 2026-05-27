@@ -21,14 +21,17 @@
     href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
   />
   <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="assets/styles.css" />
 
   <link rel="preload" as="video" href="demo/cinematic-hero.mp4" type="video/mp4" />
   <link rel="preload" as="image" href="demo/face-source.jpg" />
 
+  <script src="assets/config.js" defer></script>
   <script src="lang-switch.js" defer></script>
   <script src="assets/aspect-profile.js" defer></script>
   <script src="assets/warp-demo.js" defer></script>
   <script src="assets/math-demo.js" defer></script>
+  <script src="assets/landing-checkout.js" defer></script>
 
   <!-- Aspect-aware hero personalization.
        Reads physical monitor dims via screen.width/height for real
@@ -131,14 +134,14 @@
       <nav class="nav-links">
         <a href="#playground">Playground</a>
         <a href="#math">For geeks</a>
-        <a href="/pricing">Pricing</a>
+        <a href="#pricing">Pricing</a>
         <a href="#faq">FAQ</a>
         <div class="lang-switch" data-current="en">
           <a href="/" class="lang-current">EN</a>
           <span class="lang-sep">/</span>
           <a href="/ru/" class="lang-alt">RU</a>
         </div>
-        <a href="/pricing" class="btn btn-primary btn-sm">Get Pro</a>
+        <a href="#pricing" class="btn btn-primary btn-sm">Get Pro</a>
       </nav>
     </div>
   </header>
@@ -206,7 +209,7 @@
           </p>
 
           <div class="aaa-actions">
-            <a href="/pricing" class="aaa-cta-primary">Get Pro — from $2.98/mo</a>
+            <a href="#pricing" class="aaa-cta-primary">Get Pro — from $2.98/mo</a>
             <a href="#install" class="aaa-cta-secondary">
               <svg class="chrome-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <circle cx="12" cy="12" r="10"/>
@@ -307,7 +310,7 @@
           <span class="playground-tail-dot" aria-hidden="true"></span>
           <span class="playground-tail-free">Free on every YouTube video</span>
           <span class="playground-tail-sep" aria-hidden="true">·</span>
-          <a class="playground-tail-cta" href="/pricing">
+          <a class="playground-tail-cta" href="#pricing">
             Get Pro for every supported site
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <line x1="5" y1="12" x2="19" y2="12"/>
@@ -405,7 +408,7 @@
           · runs in <code class="code-inline">~3 multiply-adds per pixel</code> on the GPU fragment shader.
         </p>
 
-        <a href="/pricing" class="math-scroll" aria-label="Scroll to pricing">
+        <a href="#pricing" class="math-scroll" aria-label="Scroll to pricing">
           <span>You had me at quintic</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <line x1="12" y1="5" x2="12" y2="19"/>
@@ -486,42 +489,92 @@
       </div>
     </section>
 
-    <!-- PRICING TEASER + comparison -->
-    <section class="pricing-teaser">
+    <!-- PRICING — full inline funnel. 4-card sponsorship grid +
+         expandable inline checkout below selected card. Replaces the
+         old pricing-teaser + separate /pricing page navigation. -->
+    <section id="pricing" class="landing-pricing-section">
       <div class="container">
-        <span class="eyebrow">Pricing</span>
-        <h2>Free on YouTube. <span class="text-accent">Pro everywhere.</span></h2>
-        <p class="lede">
-          Try Smoothie free on YouTube as long as you like. Upgrade when
-          you want it on the rest of the web.
-        </p>
-
-        <div class="tier-compare">
-          <div>
-            <h3>Free</h3>
-            <ul>
-              <li class="has">Smoothie warp on YouTube</li>
-              <li class="has">Aspect-aware auto-tune</li>
-              <li class="has">All 4 modes (Off / Smooth / Crop)</li>
-              <li class="lacks">Twitch, Vimeo, RuTube, etc.</li>
-              <li class="lacks">Per-host curve persistence</li>
-              <li class="lacks">Future Pro-only features</li>
-            </ul>
+        <header class="landing-pricing-head">
+          <div class="aaa-eyebrow">
+            <span class="aaa-eyebrow-dot" aria-hidden="true"></span>
+            <span>Sponsor the project</span>
           </div>
-          <div class="tier-compare-pro">
-            <h3>Pro · from ⭐150 Stars (≈ $2.98)</h3>
-            <ul>
-              <li class="has">Everything in Free</li>
-              <li class="has">Twitch, Vimeo, RuTube, more</li>
-              <li class="has">Per-host curve memory</li>
-              <li class="has">All future Pro features</li>
-              <li class="has">14-day refund</li>
-              <li class="has">Cancel anytime · Pay by card</li>
-            </ul>
+          <h2>Free on YouTube. <span class="text-accent">Pro everywhere.</span></h2>
+          <p class="landing-pricing-lede">
+            Smoothie warp on YouTube is free forever — always will be.
+            Sponsor the project to unlock Pro on Twitch, Vimeo, RuTube and
+            every other supported site. Auto curve-tuning for 21:9 / 24:9 /
+            32:9 included. 14-day refund.
+          </p>
+        </header>
+
+        <!-- "You pay by card" upfront disclosure -->
+        <div class="pay-disclosure" role="region" aria-label="How payment works">
+          <div class="pay-disclosure-row">
+            <div class="pay-disclosure-icons" aria-hidden="true">
+              <span class="pay-card pay-card--visa">VISA</span>
+              <span class="pay-card pay-card--mc">MC</span>
+              <span class="pay-card pay-card--amex">AMEX</span>
+              <span class="pay-card pay-card--apple">Pay</span>
+            </div>
+            <div class="pay-disclosure-text">
+              <strong>You pay by card</strong> — Visa, Mastercard, Amex,
+              Apple&nbsp;Pay. <strong>No Telegram account needed.</strong>
+              We price in Telegram Stars (our unit, like loyalty points);
+              Stars never touch you. Card&nbsp;→&nbsp;Tazapay&nbsp;→&nbsp;Stars
+              to&nbsp;us → license&nbsp;key to&nbsp;your&nbsp;email.
+            </div>
           </div>
         </div>
 
-        <a href="/pricing" class="btn btn-primary btn-lg">See all plans →</a>
+        <div class="plans" id="landing-plans"></div>
+
+        <!-- Inline checkout — expands when a card's button is clicked -->
+        <div class="landing-checkout" id="landing-checkout" hidden>
+          <div class="landing-checkout-inner">
+            <button type="button" class="landing-checkout-close" id="landing-checkout-close" aria-label="Close checkout">×</button>
+            <div class="landing-checkout-summary" id="landing-checkout-summary"></div>
+            <form class="landing-checkout-form" id="landing-checkout-form" novalidate>
+              <label for="landing-email">Where should we send your license key?</label>
+              <input type="email" id="landing-email" name="email" required
+                     placeholder="your.email@example.com" autocomplete="email" />
+              <p class="landing-checkout-hint">
+                Activation key arrives within 5–20 minutes after payment is confirmed.
+              </p>
+
+              <div class="landing-checkout-prewarn">
+                <span class="landing-checkout-prewarn-icon" aria-hidden="true">ⓘ</span>
+                <div>
+                  <strong>Heads-up about your bank statement.</strong>
+                  Next step is <strong>Tazapay</strong> (Singapore payment
+                  processor) — your card details stay on Tazapay's PCI-secure
+                  form, not ours. You'll see <code>TAZAPAY</code> or
+                  <code>JOYTIFY</code> on your statement, not "Ultrawider" —
+                  that's the Stars sponsorship transaction. Your license
+                  arrives by email regardless.
+                </div>
+              </div>
+
+              <button type="submit" class="aaa-cta-primary landing-checkout-submit" id="landing-checkout-submit">
+                Continue to payment →
+              </button>
+
+              <p class="landing-checkout-legal">
+                By continuing, you sponsor the project for the chosen period
+                and receive a Pro license in return. You agree to our
+                <a href="/terms.html">Terms</a> and
+                <a href="/refund.html">Refund Policy</a> (14-day full refund).
+              </p>
+            </form>
+            <div class="landing-checkout-error" id="landing-checkout-error" hidden></div>
+          </div>
+        </div>
+
+        <p class="pay-conversion-note">
+          <strong>Final amount</strong> may vary ±2–5% from the dollar figure
+          depending on your card's currency conversion. <strong>The Stars
+          count is fixed.</strong> Lost your key? <a href="/recover">Recover it here</a>.
+        </p>
       </div>
     </section>
 
@@ -536,7 +589,7 @@
         <div class="faq-list">
           <details>
             <summary>What's the difference between Free and Pro?</summary>
-            <p>Free unlocks the Smoothie warp on YouTube — that's enough for most casual viewers to fall in love with the feature. Pro from ⭐150 Stars (≈ $2.98/month) removes the platform gate: Smoothie works on Twitch, Vimeo, RuTube and any other site whose video isn't DRM-protected. See the <a href="/pricing">pricing page</a> for the full comparison.</p>
+            <p>Free unlocks the Smoothie warp on YouTube — that's enough for most casual viewers to fall in love with the feature. Pro from ⭐150 Stars (≈ $2.98/month) removes the platform gate: Smoothie works on Twitch, Vimeo, RuTube and any other site whose video isn't DRM-protected. See the <a href="#pricing">pricing page</a> for the full comparison.</p>
           </details>
 
           <details>
@@ -587,7 +640,7 @@
         <h4>Product</h4>
         <a href="#playground">Playground</a>
         <a href="#math">For geeks</a>
-        <a href="/pricing">Pricing</a>
+        <a href="#pricing">Pricing</a>
         <a href="#faq">FAQ</a>
       </nav>
       <nav class="footer-nav">

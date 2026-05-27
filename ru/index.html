@@ -21,14 +21,17 @@
     href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
   />
   <link rel="stylesheet" href="/style.css" />
+  <link rel="stylesheet" href="/assets/styles.css" />
 
   <link rel="preload" as="video" href="/demo/cinematic-hero.mp4" type="video/mp4" />
   <link rel="preload" as="image" href="/demo/face-source.jpg" />
 
+  <script src="/assets/config.js" defer></script>
   <script src="/lang-switch.js" defer></script>
   <script src="/assets/aspect-profile.js" defer></script>
   <script src="/assets/warp-demo.js" defer></script>
   <script src="/assets/math-demo.js" defer></script>
+  <script src="/assets/landing-checkout.js" defer></script>
 
   <!-- Aspect-aware персонализация хиро. Берём physical screen dims; если
        inner viewport заметно уже screen (DevTools или snapped окно) —
@@ -118,14 +121,14 @@
       <nav class="nav-links">
         <a href="#playground">Демо</a>
         <a href="#math">Для гиков</a>
-        <a href="/pricing">Тарифы</a>
+        <a href="#pricing">Тарифы</a>
         <a href="#faq">Вопросы</a>
         <div class="lang-switch" data-current="ru">
           <a href="/" class="lang-alt">EN</a>
           <span class="lang-sep">/</span>
           <a href="/ru/" class="lang-current">RU</a>
         </div>
-        <a href="/pricing" class="btn btn-primary btn-sm">Получить Pro</a>
+        <a href="#pricing" class="btn btn-primary btn-sm">Получить Pro</a>
       </nav>
     </div>
   </header>
@@ -193,7 +196,7 @@
           </p>
 
           <div class="aaa-actions">
-            <a href="/pricing" class="aaa-cta-primary">Получить Pro — от $2.98/мес</a>
+            <a href="#pricing" class="aaa-cta-primary">Получить Pro — от $2.98/мес</a>
             <a href="#install" class="aaa-cta-secondary">
               <svg class="chrome-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <circle cx="12" cy="12" r="10"/>
@@ -294,7 +297,7 @@
           <span class="playground-tail-dot" aria-hidden="true"></span>
           <span class="playground-tail-free">Бесплатно на любом видео в YouTube</span>
           <span class="playground-tail-sep" aria-hidden="true">·</span>
-          <a class="playground-tail-cta" href="/pricing">
+          <a class="playground-tail-cta" href="#pricing">
             Получи Pro для всех поддерживаемых сайтов
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <line x1="5" y1="12" x2="19" y2="12"/>
@@ -392,7 +395,7 @@
           · работает на <code class="code-inline">~3 multiply-add на пиксель</code> в фрагментном шейдере GPU.
         </p>
 
-        <a href="/pricing" class="math-scroll" aria-label="Перейти к ценам">
+        <a href="#pricing" class="math-scroll" aria-label="Перейти к ценам">
           <span>Окей, продано</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <line x1="12" y1="5" x2="12" y2="19"/>
@@ -473,42 +476,88 @@
       </div>
     </section>
 
-    <!-- PRICING TEASER -->
-    <section class="pricing-teaser">
+    <!-- PRICING — full inline funnel -->
+    <section id="pricing" class="landing-pricing-section">
       <div class="container">
-        <span class="eyebrow">Тарифы</span>
-        <h2>Бесплатно на YouTube. <span class="text-accent">Pro везде.</span></h2>
-        <p class="lede">
-          Попробуйте Smoothie бесплатно на YouTube. Перейдите на Pro
-          когда захотите получить его на остальном вебе.
-        </p>
-
-        <div class="tier-compare">
-          <div>
-            <h3>Free</h3>
-            <ul>
-              <li class="has">Smoothie-варп на YouTube</li>
-              <li class="has">Авто-настройка под экран</li>
-              <li class="has">Все режимы (Off / Smooth / Crop)</li>
-              <li class="lacks">Twitch, Vimeo, RuTube и т.д.</li>
-              <li class="lacks">Память глубины кривой per-host</li>
-              <li class="lacks">Будущие Pro-фичи</li>
-            </ul>
+        <header class="landing-pricing-head">
+          <div class="aaa-eyebrow">
+            <span class="aaa-eyebrow-dot" aria-hidden="true"></span>
+            <span>Поддержите проект</span>
           </div>
-          <div class="tier-compare-pro">
-            <h3>Pro · от ⭐150 Stars (≈ $2.98)</h3>
-            <ul>
-              <li class="has">Всё что в Free</li>
-              <li class="has">Twitch, Vimeo, RuTube и т.д.</li>
-              <li class="has">Запоминание настроек per-host</li>
-              <li class="has">Все будущие Pro-фичи</li>
-              <li class="has">Возврат 14 дней</li>
-              <li class="has">Отмена в любое время · оплата картой</li>
-            </ul>
+          <h2>Бесплатно на YouTube. <span class="text-accent">Pro везде.</span></h2>
+          <p class="landing-pricing-lede">
+            Smoothie-варп на YouTube бесплатен навсегда — и всегда будет.
+            Поддержите проект чтобы открыть Pro на Twitch, Vimeo, RuTube и
+            на любых других поддерживаемых сайтах. Авто-настройка кривой
+            для 21:9 / 24:9 / 32:9 включена. Возврат 14 дней.
+          </p>
+        </header>
+
+        <div class="pay-disclosure" role="region" aria-label="Как работает оплата">
+          <div class="pay-disclosure-row">
+            <div class="pay-disclosure-icons" aria-hidden="true">
+              <span class="pay-card pay-card--visa">VISA</span>
+              <span class="pay-card pay-card--mc">MC</span>
+              <span class="pay-card pay-card--amex">AMEX</span>
+              <span class="pay-card pay-card--apple">Pay</span>
+            </div>
+            <div class="pay-disclosure-text">
+              <strong>Оплата картой</strong> — Visa, Mastercard, Amex,
+              Apple&nbsp;Pay. <strong>Аккаунт в Telegram не нужен.</strong>
+              Stars — наша единица учёта (как баллы лояльности); тебе их
+              не нужно отправлять. Карта&nbsp;→&nbsp;Tazapay&nbsp;→&nbsp;Stars
+              автору → ключ на&nbsp;почту.
+            </div>
           </div>
         </div>
 
-        <a href="/pricing" class="btn btn-primary btn-lg">Смотреть все планы →</a>
+        <div class="plans" id="landing-plans"></div>
+
+        <div class="landing-checkout" id="landing-checkout" hidden>
+          <div class="landing-checkout-inner">
+            <button type="button" class="landing-checkout-close" id="landing-checkout-close" aria-label="Закрыть">×</button>
+            <div class="landing-checkout-summary" id="landing-checkout-summary"></div>
+            <form class="landing-checkout-form" id="landing-checkout-form" novalidate>
+              <label for="landing-email">Куда отправить лицензионный ключ?</label>
+              <input type="email" id="landing-email" name="email" required
+                     placeholder="your.email@example.com" autocomplete="email" />
+              <p class="landing-checkout-hint">
+                Ключ активации придёт в течение 5–20 минут после подтверждения оплаты.
+              </p>
+
+              <div class="landing-checkout-prewarn">
+                <span class="landing-checkout-prewarn-icon" aria-hidden="true">ⓘ</span>
+                <div>
+                  <strong>О банковской выписке.</strong>
+                  Следующий шаг — <strong>Tazapay</strong> (платёжный
+                  процессор из Сингапура) — данные карты остаются на их
+                  PCI-форме, не у нас. На выписке увидишь
+                  <code>TAZAPAY</code> или <code>JOYTIFY</code>, не
+                  "Ultrawider" — это Stars-транзакция. Ключ придёт на
+                  почту независимо.
+                </div>
+              </div>
+
+              <button type="submit" class="aaa-cta-primary landing-checkout-submit" id="landing-checkout-submit">
+                Перейти к оплате →
+              </button>
+
+              <p class="landing-checkout-legal">
+                Продолжая, ты поддерживаешь проект на выбранный период и
+                получаешь Pro-лицензию взамен. Соглашаешься с
+                <a href="/terms.html">Условиями</a> и
+                <a href="/refund.html">Политикой возврата</a> (полный возврат 14 дней).
+              </p>
+            </form>
+            <div class="landing-checkout-error" id="landing-checkout-error" hidden></div>
+          </div>
+        </div>
+
+        <p class="pay-conversion-note">
+          <strong>Финальная сумма</strong> может отличаться ±2–5% от долларовой
+          цифры из-за курса конверсии карты. <strong>Количество Stars
+          фиксированное.</strong> Потерял ключ? <a href="/recover">Восстановить</a>.
+        </p>
       </div>
     </section>
 
@@ -523,7 +572,7 @@
         <div class="faq-list">
           <details>
             <summary>В чём разница между Free и Pro?</summary>
-            <p>Free открывает Smoothie-варп только на YouTube — этого достаточно чтобы большинство casual-зрителей полюбили фичу. Pro от ⭐150 Stars (≈ $2.98/мес) снимает ограничение по платформе: Smoothie работает на Twitch, Vimeo, RuTube и любых сайтах где видео не защищено DRM. <a href="/pricing">Страница тарифов</a> со сравнением всех планов.</p>
+            <p>Free открывает Smoothie-варп только на YouTube — этого достаточно чтобы большинство casual-зрителей полюбили фичу. Pro от ⭐150 Stars (≈ $2.98/мес) снимает ограничение по платформе: Smoothie работает на Twitch, Vimeo, RuTube и любых сайтах где видео не защищено DRM. <a href="#pricing">Страница тарифов</a> со сравнением всех планов.</p>
           </details>
 
           <details>
@@ -574,7 +623,7 @@
         <h4>Продукт</h4>
         <a href="#playground">Демо</a>
         <a href="#math">Для гиков</a>
-        <a href="/pricing">Тарифы</a>
+        <a href="#pricing">Тарифы</a>
         <a href="#faq">FAQ</a>
       </nav>
       <nav class="footer-nav">

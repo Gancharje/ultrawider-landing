@@ -2339,3 +2339,226 @@ code, .code-inline {
   padding: 1px 6px;
   border-radius: 4px;
 }
+
+/* ========================================================================
+   Landing PRICING section — full inline funnel
+   Replaces the old pricing-teaser. Renders 4 sponsorship cards, then
+   expands an inline checkout panel below when one is clicked.
+   ======================================================================== */
+
+.landing-pricing-section {
+  padding: clamp(80px, 9dvh, 128px) 0;
+  background: var(--bg);
+  position: relative;
+  border-top: 1px solid var(--border-soft);
+}
+
+.landing-pricing-head {
+  text-align: center;
+  max-width: 760px;
+  margin: 0 auto clamp(24px, 3dvh, 44px);
+}
+.landing-pricing-head h2 {
+  font-size: clamp(2rem, 3.5vw + 0.25rem, 3.25rem);
+  letter-spacing: -0.025em;
+  margin: clamp(10px, 1.2dvh, 16px) 0 clamp(12px, 1.4dvh, 18px);
+}
+.landing-pricing-lede {
+  font-size: clamp(0.95rem, 0.75vw + 0.55rem, 1.1rem);
+  color: var(--text-dim);
+  line-height: 1.55;
+  margin: 0;
+}
+
+/* Card highlight when user clicked it (inline checkout open for it) */
+.plan.plan--selected {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), 0 24px 60px rgba(245, 158, 11, 0.22);
+  transform: translateY(-2px);
+}
+
+/* ─── Inline checkout panel ─── */
+.landing-checkout {
+  margin: clamp(24px, 3dvh, 40px) auto 0;
+  max-width: 720px;
+  animation: aaa-fade-up 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.landing-checkout[hidden] { display: none; }
+
+.landing-checkout-inner {
+  position: relative;
+  background: var(--bg-elev);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: var(--radius);
+  padding: clamp(20px, 3vw, 32px);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.55),
+    0 0 80px rgba(245, 158, 11, 0.08);
+}
+
+.landing-checkout-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+}
+.landing-checkout-close:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(245, 158, 11, 0.08);
+}
+
+.landing-checkout-summary {
+  padding-bottom: 18px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.landing-checkout-summary-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.landing-checkout-summary-label {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.landing-checkout-summary-price {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 12px;
+  font-family: var(--font-mono);
+}
+.landing-checkout-summary-stars {
+  font-size: 0.85rem;
+  color: var(--accent);
+  font-weight: 600;
+}
+.landing-checkout-summary-usd {
+  font-size: 1.05rem;
+  color: var(--text);
+  font-weight: 700;
+}
+.landing-checkout-summary-dur {
+  margin: 8px 0 0;
+  font-size: 0.82rem;
+  font-family: var(--font-mono);
+  color: var(--text-mute);
+  letter-spacing: 0.04em;
+}
+
+.landing-checkout-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.landing-checkout-form input[type=email] {
+  width: 100%;
+  padding: 14px 16px;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.landing-checkout-form input[type=email]:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.18);
+}
+.landing-checkout-hint {
+  margin: 8px 0 0;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}
+
+.landing-checkout-prewarn {
+  margin: 18px 0;
+  padding: 14px 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  background: rgba(245, 158, 11, 0.05);
+  border: 1px solid rgba(245, 158, 11, 0.22);
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+.landing-checkout-prewarn-icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.8rem;
+  font-family: var(--font-mono);
+  margin-top: 1px;
+}
+.landing-checkout-prewarn strong { color: var(--text); }
+.landing-checkout-prewarn code {
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+.landing-checkout-submit {
+  margin-top: 4px;
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+}
+.landing-checkout-submit:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.landing-checkout-legal {
+  margin: 14px 0 0;
+  font-size: 0.78rem;
+  color: var(--text-mute);
+  line-height: 1.5;
+  text-align: center;
+}
+.landing-checkout-legal a {
+  color: var(--text-dim);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+.landing-checkout-legal a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.landing-checkout-error {
+  margin-top: 14px;
+  padding: 12px 14px;
+  background: rgba(220, 38, 38, 0.08);
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  border-radius: var(--radius-sm);
+  color: #fca5a5;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
