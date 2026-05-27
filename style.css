@@ -2700,34 +2700,126 @@ code, .code-inline {
   font-weight: 700;
 }
 
-.lp-disclosure-flow {
-  margin: 2px 0 4px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 6px 8px;
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  letter-spacing: 0.02em;
+/* Apple-style beaded flow diagram — 4 icons on a hairline connector.
+   No card pills, no arrows between — minimalist "string with beads"
+   visual. End-state icon is amber with subtle ring. */
+.lp-flow {
+  position: relative;
+  list-style: none;
+  padding: 4px 0 0;
+  margin: 14px 0 8px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  align-items: start;
 }
+
+/* The connector line — single hairline drawn behind all icons.
+   Subtle gradient from white-dim to amber at the end-state side. */
+.lp-flow::before {
+  content: "";
+  position: absolute;
+  top: 26px;        /* center of 48px icon (icon-y 4 + 48/2 = 28; -2 to center vertically) */
+  left: calc(12.5% + 24px);   /* right edge of first icon ≈ center of col 1 + 24 */
+  right: calc(12.5% + 24px);  /* left edge of last icon */
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.18) 0%,
+    rgba(255, 255, 255, 0.18) 65%,
+    rgba(245, 158, 11, 0.5) 100%
+  );
+  z-index: 0;
+}
+
 .lp-flow-step {
-  display: inline-block;
-  padding: 4px 10px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 6px;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 12px;
+}
+
+.lp-flow-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  background: var(--bg);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 50%;
   color: var(--text-dim);
+  transition: border-color 0.2s ease, color 0.2s ease;
 }
-.lp-flow-step--end {
-  background: rgba(245, 158, 11, 0.1);
-  border-color: rgba(245, 158, 11, 0.3);
-  color: var(--accent);
+.lp-flow-icon svg { width: 22px; height: 22px; display: block; }
+
+.lp-flow-step:hover .lp-flow-icon {
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.28);
+}
+
+.lp-flow-label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
   font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.02em;
+  line-height: 1.2;
 }
-.lp-flow-arrow {
+.lp-flow-sub {
+  display: block;
+  margin-top: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
   color: var(--text-mute);
-  font-size: 0.9rem;
-  user-select: none;
+  letter-spacing: 0.1em;
+  line-height: 1.2;
+  text-transform: uppercase;
+}
+
+.lp-flow-step--end .lp-flow-icon {
+  border-color: rgba(245, 158, 11, 0.6);
+  background: rgba(245, 158, 11, 0.08);
+  color: var(--accent);
+  box-shadow:
+    0 0 0 4px rgba(245, 158, 11, 0.08),
+    0 0 24px rgba(245, 158, 11, 0.15);
+}
+.lp-flow-step--end .lp-flow-label { color: var(--accent); }
+.lp-flow-step--end .lp-flow-sub   { color: rgba(245, 158, 11, 0.65); }
+
+/* Mobile: vertical timeline */
+@media (max-width: 600px) {
+  .lp-flow {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding-left: 12px;
+  }
+  .lp-flow::before {
+    top: 24px;
+    bottom: 24px;
+    left: 36px;
+    right: auto;
+    width: 1px;
+    height: auto;
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.18) 0%,
+      rgba(255, 255, 255, 0.18) 65%,
+      rgba(245, 158, 11, 0.5) 100%
+    );
+  }
+  .lp-flow-step {
+    flex-direction: row;
+    align-items: center;
+    gap: 18px;
+    text-align: left;
+  }
 }
 
 .lp-disclosure-note {
