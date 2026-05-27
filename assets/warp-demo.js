@@ -193,7 +193,7 @@
     // Aspect-tier-aware default curve strength (matches what extension picks).
     var profile = window.UltrawiderAspect
       ? window.UltrawiderAspect.detectAspectProfile()
-      : { concavityDefault: 0.32, concavityMin: 0.28, concavityMax: 0.4 };
+      : { concavityDefault: 0.34, concavityMin: 0.28, concavityMax: 0.4 };
 
     var currentStrength = profile.concavityDefault;
     var scrollBoost = 0; // 0..1, added on top of user-controlled slider value

@@ -11,10 +11,15 @@
   'use strict';
 
   function aspectProfileFor(ratio) {
+    // Default is true midpoint of [min, max] so the slider knob aligns
+    // with the MEDIUM tick on initial render. The extension uses the
+    // same min/max range but with its own preferred default; this file
+    // governs ONLY the landing demo, so favouring visual alignment
+    // over extension parity is intentional here.
     if (ratio >= 3.0) {
       return {
         tier: 'super-ultrawide-32-9',
-        concavityDefault: 0.2,
+        concavityDefault: 0.22,
         concavityMin: 0.16,
         concavityMax: 0.28,
       };
@@ -22,7 +27,7 @@
     if (ratio >= 2.6) {
       return {
         tier: 'ultrawide-24-9',
-        concavityDefault: 0.26,
+        concavityDefault: 0.28,
         concavityMin: 0.22,
         concavityMax: 0.34,
       };
@@ -30,16 +35,14 @@
     if (ratio >= 2.1) {
       return {
         tier: 'ultrawide-21-9',
-        concavityDefault: 0.32,
+        concavityDefault: 0.34,
         concavityMin: 0.28,
         concavityMax: 0.4,
       };
     }
-    // < 2.1 — visitor on 16:9 laptop or similar. Demo still mathematically
-    // valid; falls back to 21:9 defaults so the warp is visible.
     return {
       tier: 'standard',
-      concavityDefault: 0.32,
+      concavityDefault: 0.34,
       concavityMin: 0.28,
       concavityMax: 0.4,
     };

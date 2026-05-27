@@ -1869,10 +1869,38 @@ strong { color: var(--text); font-weight: 600; }
 }
 .playground-tail-cta:hover svg { transform: translateX(3px); }
 
+/* ─── Playground scroll cue → math section ─────────────────────────
+   Mirrors the hero scroll cue, but lower-contrast (it's secondary to
+   the conversion tail above it). Bob animation on the arrow only. */
+.playground-scroll {
+  margin: clamp(28px, 3.5dvh, 48px) auto 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: rgba(245, 245, 245, 0.4);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  width: max-content;
+  transition: color 0.2s ease;
+}
+.playground-scroll:hover { color: var(--accent); }
+.playground-scroll svg {
+  width: 14px; height: 14px; opacity: 0.7;
+  animation: aaa-scroll-bob 2.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
 @media (max-width: 900px) {
   .playground-section { min-height: auto; padding: 64px 0; }
   .playground-section .container { max-width: 100%; padding: 0 24px; }
   .playground-tail-sep { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .playground-scroll svg { animation: none; }
 }
 
 /* ========================================================================
