@@ -2349,9 +2349,19 @@ code, .code-inline {
    pill-rounded cards, sequential fade-up on render.
    ======================================================================== */
 
+/* The pricing section ALWAYS occupies exactly one viewport — `min-height:
+   100dvh` + flex centering. The base padding/clamps are tuned tight so
+   the content fits a 1080p browser viewport (~940-980px of usable height
+   once Chrome chrome is subtracted). On taller viewports (UWHD 1292+,
+   QHD 1440+) the @media block below restores the generous breathing the
+   editorial composition was originally designed for. */
 .lp-section {
   position: relative;
-  padding: clamp(40px, 5dvh, 72px) 0;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(24px, 3.5dvh, 60px) 0;
   background: var(--bg);
   border-top: 1px solid var(--border-soft);
   overflow: hidden;
@@ -2477,29 +2487,27 @@ code, .code-inline {
   box-shadow: 0 4px 16px rgba(245, 158, 11, 0.5);
 }
 
+/* Card eyebrow row: plan label on the left, Star amount on the right,
+   one line. Replaces the old stacked label + amber Stars pill — same
+   info, ~28px less vertical per card row. */
 .lp-card-eyebrow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
   font-family: var(--font-mono);
   font-size: 0.7rem;
   font-weight: 600;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--text-mute);
-  display: block;
-  margin-bottom: 4px;
 }
-.lp-card--featured .lp-card-eyebrow { color: var(--accent); }
-
-.lp-card-stars {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: var(--font-mono);
-  font-size: 0.74rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
+.lp-card-eyebrow-label { color: var(--text-mute); }
+.lp-card-eyebrow-stars {
   color: var(--accent);
-  margin-bottom: 12px;
+  letter-spacing: 0.06em;
 }
+.lp-card--featured .lp-card-eyebrow-label { color: var(--accent); }
 
 /* Apple-style price layout: large integer dominates, small cents
    above baseline, /mo or /yr subtle next to it. */
@@ -2715,24 +2723,6 @@ code, .code-inline {
   letter-spacing: 0.02em;
 }
 
-/* Card-network logos at the bottom of column 1 — restrained signature */
-.lp-receipt-cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 7px;
-  margin-top: auto;
-  padding-top: 14px;
-}
-.lp-receipt-paycard {
-  width: 38px;
-  height: auto;
-  display: block;
-  opacity: 0.82;
-  border-radius: 3px;
-  transition: opacity 0.2s ease;
-}
-.lp-receipt-paycard:hover { opacity: 1; }
-
 /* "Read more →" link in column 3 — pushed to bottom for baseline align */
 .lp-receipt-more {
   align-self: flex-start;
@@ -2793,8 +2783,60 @@ code, .code-inline {
     grid-template-columns: 1fr;
     gap: 28px;
   }
-  .lp-receipt-cards { margin-top: 18px; padding-top: 0; }
   .lp-receipt-more  { margin-top: 6px; padding-top: 0; }
+}
+
+/* Taller viewports (UWHD ~1292, QHD/UWQHD 1440+): the section already
+   fills 100dvh, but the CONTENT — sized to fit a fullhd browser — looks
+   small with that much air around it. Restore the airy editorial scale
+   the composition was designed for: bigger hero, more generous card
+   padding, more breathing between hero/cards/receipt, larger lead and
+   body in the explainer. */
+@media (min-height: 1250px) {
+  .lp-section {
+    padding: clamp(56px, 6dvh, 112px) 0;
+  }
+  .lp-head {
+    margin-bottom: clamp(36px, 4dvh, 60px);
+  }
+  .lp-head h2 {
+    margin: clamp(14px, 1.4dvh, 20px) 0 clamp(16px, 1.6dvh, 22px);
+    font-size: clamp(2.5rem, 3.4vw + 0.5rem, 3.5rem);
+  }
+  .lp-card {
+    padding: 30px 24px 24px;
+  }
+  .lp-card-features {
+    gap: 11px;
+    margin-bottom: 22px;
+  }
+  .lp-card-duration {
+    margin-bottom: 18px;
+  }
+  .lp-receipt {
+    margin-top: clamp(36px, 4dvh, 64px);
+    padding-top: clamp(28px, 3.5dvh, 56px);
+  }
+  .lp-receipt-num {
+    margin-bottom: 20px;
+  }
+  .lp-receipt-lead {
+    margin-bottom: 16px;
+    font-size: clamp(1.1rem, 0.4vw + 0.95rem, 1.25rem);
+  }
+  .lp-receipt-body {
+    margin-bottom: 13px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+  .lp-receipt-more {
+    padding-top: 22px;
+  }
+  .lp-receipt-variance {
+    margin-top: clamp(28px, 3dvh, 44px);
+    padding-top: clamp(20px, 2.5dvh, 30px);
+    font-size: 0.74rem;
+  }
 }
 
 @keyframes lp-fade-up {

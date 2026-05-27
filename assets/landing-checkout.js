@@ -83,10 +83,12 @@
 
     if (isRec) html += '<div class="lp-ribbon">Most popular</div>';
 
-    html += '<span class="lp-card-eyebrow">' + p.label + '</span>';
-
-    html += '<div class="lp-card-stars"><span aria-hidden="true">⭐</span> ' +
-            p.starsAmount.toLocaleString() + ' Stars</div>';
+    html += '<div class="lp-card-eyebrow">' +
+              '<span class="lp-card-eyebrow-label">' + p.label + '</span>' +
+              '<span class="lp-card-eyebrow-stars">' +
+                p.starsAmount.toLocaleString() + ' ★' +
+              '</span>' +
+            '</div>';
 
     html += '<div class="lp-card-price">';
     html += '<span class="lp-card-price-approx" aria-hidden="true">≈</span>';
