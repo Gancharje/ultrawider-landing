@@ -624,51 +624,154 @@ strong { color: var(--text); font-weight: 600; }
   transform: rotate(-45deg);
 }
 
-/* ---------- FAQ ---------- */
+/* ─── FAQ — Apple-style editorial accordion ───────────────────────────
+   Single-column hairline-divided list. No card chrome, no per-item
+   background pills, no rounded borders around each entry. Each item
+   is just a question, a chevron, and (when open) a paragraph answer —
+   separated by 1px hairlines top/bottom of the list and between items.
+   The structural rhythm is typography + whitespace, not borders. Mirrors
+   the editorial composition of the pricing receipt block. */
 
-.faq-list {
+#faq.section {
+  min-height: 100dvh;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  justify-content: center;
+  padding: clamp(48px, 5.5dvh, 96px) 0;
+}
+
+#faq .section-head {
+  margin-bottom: clamp(32px, 3.6dvh, 56px);
+}
+#faq .section-head .eyebrow {
+  margin-bottom: 12px;
+}
+#faq .section-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 2.6vw + 0.6rem, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  line-height: 1.06;
+  color: var(--text);
+}
+
+.faq-list {
+  max-width: 780px;
+  margin: 0 auto;
+  width: 100%;
+  display: block;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .faq-list details {
-  background: var(--bg-elev);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--radius);
-  padding: 20px 24px;
-  transition: border-color var(--transition);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  transition: none;
 }
-.faq-list details[open] { border-color: var(--border); }
+.faq-list details + details {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+.faq-list details[open] { border-color: transparent; }
 
 .faq-list summary {
   cursor: pointer;
   list-style: none;
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
   align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  font-weight: 600;
-  font-size: 1rem;
-  color: var(--text);
+  gap: 28px;
+  padding: clamp(20px, 2.6dvh, 30px) 4px;
+  font-family: var(--font-display);
+  font-size: clamp(1.02rem, 0.4vw + 0.94rem, 1.18rem);
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  line-height: 1.38;
+  color: rgba(255, 255, 255, 0.92);
+  transition: color 0.22s ease;
 }
 .faq-list summary::-webkit-details-marker { display: none; }
-.faq-list summary::after {
-  content: "+";
-  font-size: 1.4rem;
-  color: var(--accent);
-  font-weight: 400;
-  transition: transform var(--transition);
-  line-height: 1;
-}
-.faq-list details[open] summary::after { content: "−"; }
+.faq-list summary:hover { color: var(--accent); }
+.faq-list details[open] > summary { color: var(--accent); }
 
-.faq-list details p {
-  margin-top: 12px;
-  font-size: 0.95rem;
+/* Chevron — SVG-as-mask so it inherits color via background-color and
+   rotates 180° on [open]. Stays subtle until summary is hovered or
+   opened; matches the receipt block's restrained accent usage. */
+.faq-list summary::after {
+  content: "";
+  width: 17px;
+  height: 17px;
+  background-color: rgba(255, 255, 255, 0.45);
+  -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>") center / contain no-repeat;
+          mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>") center / contain no-repeat;
+  flex-shrink: 0;
+  transition: transform 0.32s cubic-bezier(0.2, 0.8, 0.2, 1),
+              background-color 0.22s ease;
 }
-.faq-list a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
-.faq-list a:hover { color: var(--accent-hover); }
+.faq-list summary:hover::after,
+.faq-list details[open] > summary::after {
+  background-color: var(--accent);
+}
+.faq-list details[open] > summary::after {
+  transform: rotate(180deg);
+}
+
+/* Answer prose — body weight, generous line-height (1.65), right-padded
+   so it doesn't run under the chevron column above. */
+.faq-list details > p {
+  margin: 0 0 clamp(20px, 2.6dvh, 32px);
+  padding-right: clamp(28px, 4vw, 56px);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 400;
+  line-height: 1.65;
+  letter-spacing: -0.003em;
+  color: rgba(255, 255, 255, 0.66);
+}
+.faq-list details > p strong {
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 500;
+}
+.faq-list details > p code {
+  font-family: var(--font-mono);
+  font-size: 0.84em;
+  color: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.05);
+  padding: 1px 6px;
+  border-radius: 3px;
+  letter-spacing: 0.02em;
+}
+.faq-list details > p a {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(245, 158, 11, 0.32);
+  transition: border-color 0.22s ease, color 0.22s ease;
+}
+.faq-list details > p a:hover {
+  border-bottom-color: var(--accent);
+}
+
+/* Tall viewports (UWHD, QHD): give the editorial list more breathing
+   so the FAQ doesn't look squat next to the pricing section above. */
+@media (min-height: 1250px) {
+  #faq.section { padding: clamp(80px, 8dvh, 144px) 0; }
+  #faq .section-head { margin-bottom: clamp(44px, 4.8dvh, 76px); }
+  #faq .section-head h2 {
+    font-size: clamp(2.4rem, 2.6vw + 0.6rem, 3.2rem);
+  }
+  .faq-list summary {
+    padding: clamp(26px, 3dvh, 38px) 4px;
+    font-size: clamp(1.1rem, 0.4vw + 0.94rem, 1.25rem);
+  }
+  .faq-list details > p {
+    margin-bottom: clamp(26px, 3dvh, 38px);
+    font-size: 1rem;
+    line-height: 1.7;
+  }
+}
 
 /* ---------- CTA ---------- */
 
@@ -2766,16 +2869,29 @@ code, .code-inline {
   border-bottom-color: var(--accent);
 }
 
-/* When the explainer's "Read more →" jumps to its FAQ entry, give a
-   subtle amber pulse so the target is unmistakable after the scroll. */
+/* When the explainer's "Read more →" jumps to its FAQ entry, surface
+   the target with an amber left-edge bar that pulses in. Hairline-list
+   FAQ has no card to outline — a thin vertical accent is the cleanest
+   marker, like Apple's "current section" indicators in the sidebar. */
 .faq-list details:target > summary { color: var(--accent); }
 .faq-list details:target {
-  animation: lp-faq-pulse 1.6s ease;
+  position: relative;
 }
-@keyframes lp-faq-pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
-  25%  { box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.32); }
-  100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0); }
+.faq-list details:target::before {
+  content: "";
+  position: absolute;
+  left: -16px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--accent);
+  animation: lp-faq-bar 1.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+  opacity: 0.5;
+}
+@keyframes lp-faq-bar {
+  0%   { opacity: 0; transform: scaleY(0); }
+  25%  { opacity: 1; transform: scaleY(1); }
+  100% { opacity: 0.5; transform: scaleY(1); }
 }
 
 @media (max-width: 960px) {
