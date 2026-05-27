@@ -2647,34 +2647,109 @@ code, .code-inline {
     0 14px 36px rgba(245, 158, 11, 0.45);
 }
 
-/* ─── Below-grid blocks ─── */
+/* ─── Below-grid sponsorship trust block ───────────────────────────
+   Visa/MC logos stacked vertically on the left; sponsorship-framed
+   content on the right: headline, flow arrow, contextual note. */
 .lp-disclosure {
-  max-width: 720px;
+  max-width: 760px;
   margin: clamp(36px, 4dvh, 56px) auto 0;
-  padding: 14px 20px;
+  padding: 22px 26px;
   display: flex;
-  align-items: center;
-  gap: 18px;
+  align-items: flex-start;
+  gap: 24px;
   background: rgba(255, 255, 255, 0.02);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 12px;
-  flex-wrap: wrap;
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
 }
-.lp-disclosure-icons {
-  display: inline-flex;
+
+/* Card logos stacked in a column on the left */
+.lp-disclosure-cards {
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   flex-shrink: 0;
+  padding-top: 2px;
 }
-.lp-disclosure-text {
-  margin: 0;
+.lp-pay-logo {
+  width: 56px;
+  height: auto;
+  display: block;
+  border-radius: 4px;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.06),
+    0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.lp-disclosure-body {
   flex: 1;
-  min-width: 240px;
-  font-size: 0.86rem;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.lp-disclosure-headline {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--text);
+  line-height: 1.4;
+}
+.lp-disclosure-headline strong {
+  color: var(--text);
+  font-weight: 700;
+}
+
+.lp-disclosure-flow {
+  margin: 2px 0 4px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+}
+.lp-flow-step {
+  display: inline-block;
+  padding: 4px 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  color: var(--text-dim);
+}
+.lp-flow-step--end {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.3);
+  color: var(--accent);
+  font-weight: 600;
+}
+.lp-flow-arrow {
+  color: var(--text-mute);
+  font-size: 0.9rem;
+  user-select: none;
+}
+
+.lp-disclosure-note {
+  margin: 0;
+  font-size: 0.82rem;
   line-height: 1.55;
   color: var(--text-dim);
 }
-.lp-disclosure-text strong { color: var(--text); font-weight: 600; }
+.lp-disclosure-note strong {
+  color: var(--text);
+  font-weight: 600;
+  font-family: var(--font-mono);
+  font-size: 0.95em;
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 600px) {
+  .lp-disclosure { flex-direction: column; align-items: center; gap: 16px; padding: 20px; }
+  .lp-disclosure-cards { flex-direction: row; }
+  .lp-disclosure-body { text-align: center; }
+  .lp-disclosure-flow { justify-content: center; }
+}
 
 .lp-fine-print {
   text-align: center;

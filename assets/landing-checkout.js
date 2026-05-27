@@ -27,7 +27,7 @@
       period: '/mo',
       tagline: 'Try Pro for a month',
       features: [
-        'Twitch, Vimeo, Kick + most HTML5 video',
+        'Twitch, Vimeo, Kick + most other video sites',
         'Aspect-aware auto-tuning',
       ],
       cta: 'Sponsor monthly',

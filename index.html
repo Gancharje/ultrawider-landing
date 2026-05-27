@@ -480,20 +480,42 @@
           </div>
         </div>
 
-        <!-- Below-grid disclosure: card brands + Stars/Tazapay flow -->
+        <!-- Sponsorship-framed trust block. The flow arrow makes the
+             mechanics obvious at a glance; the closing line preempts the
+             "wait, am I buying Stars?" reaction by anchoring the model
+             as a familiar SaaS-style sponsorship. -->
         <div class="lp-disclosure">
-          <div class="lp-disclosure-icons" aria-hidden="true">
-            <span class="pay-card pay-card--visa">VISA</span>
-            <span class="pay-card pay-card--mc">MC</span>
-            <span class="pay-card pay-card--amex">AMEX</span>
-            <span class="pay-card pay-card--apple">Pay</span>
+          <div class="lp-disclosure-cards" aria-hidden="true">
+            <svg class="lp-pay-logo" viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg" aria-label="Visa">
+              <rect width="60" height="38" rx="4" fill="#1A1F71"/>
+              <text x="30" y="25" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-style="italic" font-weight="900" font-size="13" fill="#FFFFFF">VISA</text>
+            </svg>
+            <svg class="lp-pay-logo" viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg" aria-label="Mastercard">
+              <rect width="60" height="38" rx="4" fill="#FFFFFF"/>
+              <circle cx="22" cy="19" r="10.5" fill="#EB001B"/>
+              <circle cx="38" cy="19" r="10.5" fill="#F79E1B"/>
+              <path d="M 30 10.5 a 10.5 10.5 0 0 1 0 17 a 10.5 10.5 0 0 1 0 -17" fill="#FF5F00"/>
+            </svg>
           </div>
-          <p class="lp-disclosure-text">
-            <strong>Pay by card.</strong> No Telegram account needed. We
-            price in Telegram Stars and route through Tazapay (Singapore) —
-            you'll see <strong>TAZAPAY</strong> or <strong>JOYTIFY</strong>
-            on your statement; the license arrives by email.
-          </p>
+          <div class="lp-disclosure-body">
+            <p class="lp-disclosure-headline"><strong>Sponsor the project, get Pro.</strong></p>
+            <p class="lp-disclosure-flow">
+              <span class="lp-flow-step">Your card</span>
+              <span class="lp-flow-arrow" aria-hidden="true">→</span>
+              <span class="lp-flow-step">Tazapay (Singapore)</span>
+              <span class="lp-flow-arrow" aria-hidden="true">→</span>
+              <span class="lp-flow-step">Telegram Stars to our team</span>
+              <span class="lp-flow-arrow" aria-hidden="true">→</span>
+              <span class="lp-flow-step lp-flow-step--end">License key to your email</span>
+            </p>
+            <p class="lp-disclosure-note">
+              Same end result as any SaaS subscription — no Telegram
+              account needed, no platform middleman tax. You'll see
+              <strong>TAZAPAY</strong> or <strong>JOYTIFY</strong> on your
+              card statement (that's the Stars transaction); the license
+              arrives by email within 5 minutes.
+            </p>
+          </div>
         </div>
 
         <p class="lp-fine-print">
@@ -530,7 +552,7 @@
 
           <details>
             <summary>Which sites does it work on?</summary>
-            <p>If a site uses a standard HTML5 <code>&lt;video&gt;</code> element without Widevine DRM — yes. Twitch, Vimeo, Kick, most news sites, course platforms, podcast players, and many independent video hosts all work fine. Netflix, HBO Max, Disney+, Prime Video and other major streaming services use Widevine DRM that blocks the pixel access Smoothie needs — those are fundamentally blocked, not by us but by the platforms themselves.</p>
+            <p>Pretty much anywhere that isn't behind a paywall-DRM. Twitch, Vimeo, Kick, most news sites, course platforms, podcast players, and many independent video hosts all work. <strong>Netflix, HBO Max, Disney+, Prime Video</strong> use DRM that blocks the pixel access we need — those are fundamentally blocked, not by us but by the platforms themselves.</p>
           </details>
 
           <details>

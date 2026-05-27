@@ -466,18 +466,37 @@
         </div>
 
         <div class="lp-disclosure">
-          <div class="lp-disclosure-icons" aria-hidden="true">
-            <span class="pay-card pay-card--visa">VISA</span>
-            <span class="pay-card pay-card--mc">MC</span>
-            <span class="pay-card pay-card--amex">AMEX</span>
-            <span class="pay-card pay-card--apple">Pay</span>
+          <div class="lp-disclosure-cards" aria-hidden="true">
+            <svg class="lp-pay-logo" viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg" aria-label="Visa">
+              <rect width="60" height="38" rx="4" fill="#1A1F71"/>
+              <text x="30" y="25" text-anchor="middle" font-family="Arial Black, Arial, sans-serif" font-style="italic" font-weight="900" font-size="13" fill="#FFFFFF">VISA</text>
+            </svg>
+            <svg class="lp-pay-logo" viewBox="0 0 60 38" xmlns="http://www.w3.org/2000/svg" aria-label="Mastercard">
+              <rect width="60" height="38" rx="4" fill="#FFFFFF"/>
+              <circle cx="22" cy="19" r="10.5" fill="#EB001B"/>
+              <circle cx="38" cy="19" r="10.5" fill="#F79E1B"/>
+              <path d="M 30 10.5 a 10.5 10.5 0 0 1 0 17 a 10.5 10.5 0 0 1 0 -17" fill="#FF5F00"/>
+            </svg>
           </div>
-          <p class="lp-disclosure-text">
-            <strong>Оплата картой.</strong> Аккаунт в Telegram не нужен.
-            Цены в Telegram Stars, обработка через Tazapay (Сингапур) —
-            на выписке увидишь <strong>TAZAPAY</strong> или
-            <strong>JOYTIFY</strong>; ключ придёт на почту.
-          </p>
+          <div class="lp-disclosure-body">
+            <p class="lp-disclosure-headline"><strong>Поддержите проект, получите Pro.</strong></p>
+            <p class="lp-disclosure-flow">
+              <span class="lp-flow-step">Ваша карта</span>
+              <span class="lp-flow-arrow" aria-hidden="true">→</span>
+              <span class="lp-flow-step">Tazapay (Сингапур)</span>
+              <span class="lp-flow-arrow" aria-hidden="true">→</span>
+              <span class="lp-flow-step">Telegram Stars автору</span>
+              <span class="lp-flow-arrow" aria-hidden="true">→</span>
+              <span class="lp-flow-step lp-flow-step--end">Ключ на вашу почту</span>
+            </p>
+            <p class="lp-disclosure-note">
+              Тот же результат что у любой SaaS-подписки — аккаунт в
+              Telegram не нужен, без платформенного налога посредников.
+              На выписке увидишь <strong>TAZAPAY</strong> или
+              <strong>JOYTIFY</strong> (это Stars-транзакция); ключ
+              придёт на почту в течение 5 минут.
+            </p>
+          </div>
         </div>
 
         <p class="lp-fine-print">
@@ -513,7 +532,7 @@
 
           <details>
             <summary>На каких сайтах работает?</summary>
-            <p>Если сайт использует стандартный HTML5-элемент <code>&lt;video&gt;</code> без Widevine DRM — да. Twitch, Vimeo, Kick, большинство новостных сайтов, образовательных платформ, подкаст-плееров и независимых видеохостингов работают нормально. Netflix, HBO Max, Disney+, Prime Video и другие большие streaming-сервисы используют Widevine DRM, который блокирует доступ к пикселям, необходимый Smoothie — там варп фундаментально заблокирован, не нами а самими платформами.</p>
+            <p>Практически везде где нет paywall-DRM. Twitch, Vimeo, Kick, большинство новостных сайтов, образовательных платформ, подкаст-плееров и независимых видеохостингов — работают. <strong>Netflix, HBO Max, Disney+, Prime Video</strong> используют DRM, который блокирует доступ к пикселям — там варп фундаментально заблокирован, не нами а самими платформами.</p>
           </details>
 
           <details>
