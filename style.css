@@ -2341,40 +2341,383 @@ code, .code-inline {
 }
 
 /* ========================================================================
-   Landing PRICING section — full inline funnel
-   Replaces the old pricing-teaser. Renders 4 sponsorship cards, then
-   expands an inline checkout panel below when one is clicked.
+   LANDING PRICING — AAA / Apple-tier rebuild
+   Was a generic SaaS 4-card grid; redesigned for cinematic presence
+   matching hero / playground / math sections. Ambient amber glow
+   centered on the featured card, dramatic price typography (massive
+   integer + small cents in Apple-style two-tone), tagline per tier,
+   pill-rounded cards, sequential fade-up on render.
    ======================================================================== */
 
-.landing-pricing-section {
-  padding: clamp(80px, 9dvh, 128px) 0;
-  background: var(--bg);
+.lp-section {
   position: relative;
+  padding: clamp(80px, 9dvh, 132px) 0;
+  background: var(--bg);
   border-top: 1px solid var(--border-soft);
+  overflow: hidden;
+  isolation: isolate;
 }
 
-.landing-pricing-head {
+/* Ambient amber bloom centered behind the featured card */
+.lp-ambient {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -45%);
+  width: clamp(360px, 38vw, 720px);
+  height: clamp(360px, 38vw, 720px);
+  background: radial-gradient(circle, rgba(245, 158, 11, 0.12) 0%, rgba(245, 158, 11, 0.04) 35%, transparent 70%);
+  filter: blur(40px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.lp-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1240px;
+}
+
+.lp-head {
   text-align: center;
-  max-width: 760px;
-  margin: 0 auto clamp(24px, 3dvh, 44px);
+  max-width: 720px;
+  margin: 0 auto clamp(40px, 4.5dvh, 64px);
 }
-.landing-pricing-head h2 {
-  font-size: clamp(2rem, 3.5vw + 0.25rem, 3.25rem);
-  letter-spacing: -0.025em;
-  margin: clamp(10px, 1.2dvh, 16px) 0 clamp(12px, 1.4dvh, 18px);
+.lp-head h2 {
+  margin: clamp(12px, 1.4dvh, 18px) 0 clamp(14px, 1.6dvh, 20px);
+  font-size: clamp(2.25rem, 3.5vw + 0.5rem, 3.5rem);
+  letter-spacing: -0.035em;
+  line-height: 1.04;
 }
-.landing-pricing-lede {
-  font-size: clamp(0.95rem, 0.75vw + 0.55rem, 1.1rem);
+.lp-lede {
+  margin: 0 auto;
+  max-width: 580px;
+  font-size: clamp(1rem, 0.85vw + 0.55rem, 1.15rem);
   color: var(--text-dim);
   line-height: 1.55;
-  margin: 0;
 }
 
-/* Card highlight when user clicked it (inline checkout open for it) */
-.plan.plan--selected {
+/* ─── Card grid ─── */
+.lp-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.lp-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 32px 26px 26px;
+  background: rgba(20, 20, 20, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 18px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: translateY(16px);
+  animation: lp-fade-up 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  transition:
+    transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    border-color 0.2s ease,
+    box-shadow 0.3s ease;
+}
+.lp-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.14);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+}
+
+/* ─── Featured (yearly) card ─── */
+.lp-card--featured {
+  background:
+    linear-gradient(180deg, rgba(30, 22, 8, 0.85) 0%, rgba(20, 14, 4, 0.85) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.45);
+  box-shadow:
+    0 0 0 1px rgba(245, 158, 11, 0.15),
+    0 30px 80px rgba(0, 0, 0, 0.55),
+    0 0 120px rgba(245, 158, 11, 0.08);
+  transform: translateY(0);
+}
+.lp-card--featured:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    0 0 0 1px rgba(245, 158, 11, 0.6),
+    0 40px 100px rgba(0, 0, 0, 0.6),
+    0 0 160px rgba(245, 158, 11, 0.14);
+  border-color: rgba(245, 158, 11, 0.7);
+}
+
+/* When user clicked card → inline checkout open → strong highlight */
+.lp-card--selected {
+  border-color: rgba(245, 158, 11, 0.7) !important;
+  box-shadow:
+    0 0 0 1px rgba(245, 158, 11, 0.5),
+    0 24px 60px rgba(245, 158, 11, 0.18) !important;
+}
+
+/* "Most popular" ribbon at top-center of featured card */
+.lp-ribbon {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-block;
+  padding: 6px 14px;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #0a0807;
+  background: var(--accent);
+  border-radius: 999px;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(245, 158, 11, 0.5);
+}
+
+.lp-card-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  display: block;
+  margin-bottom: 4px;
+}
+.lp-card--featured .lp-card-eyebrow { color: var(--accent); }
+
+.lp-card-tagline {
+  margin: 0 0 18px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.4;
+  min-height: 2.6em;  /* 2 lines worth, prevents card-height jitter */
+}
+
+.lp-card-stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  margin-bottom: 12px;
+}
+
+/* Apple-style price layout: large integer dominates, small cents
+   above baseline, /mo or /yr subtle next to it. */
+.lp-card-price {
+  display: inline-flex;
+  align-items: flex-start;
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1;
+  letter-spacing: -0.035em;
+}
+.lp-card-price-approx {
+  font-size: 1rem;
+  color: var(--text-mute);
+  font-weight: 400;
+  margin-right: 4px;
+  margin-top: 12px;
+}
+.lp-card-price-currency {
+  font-size: 1.6rem;
+  color: var(--text-dim);
+  font-weight: 600;
+  margin-top: 4px;
+  margin-right: 2px;
+}
+.lp-card-price-int {
+  font-size: clamp(2.6rem, 2.4vw + 1rem, 3.4rem);
+}
+.lp-card-price-cents {
+  font-size: 1.05rem;
+  color: var(--text-dim);
+  font-weight: 600;
+  margin-top: 6px;
+  margin-left: 2px;
+}
+.lp-card-price-per {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--text-mute);
+  margin-top: 18px;
+  margin-left: 6px;
+  letter-spacing: 0;
+}
+
+.lp-card-equiv {
+  margin: 0 0 6px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+.lp-card-equiv--placeholder {
+  visibility: hidden;  /* keeps card heights uniform */
+}
+
+.lp-card-duration {
+  margin: 0 0 20px;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+
+.lp-card-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-grow: 1;
+}
+.lp-card-features li {
+  position: relative;
+  padding-left: 22px;
+  font-size: 0.86rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+}
+.lp-card-features li::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 5px;
+  width: 12px;
+  height: 7px;
+  border-left: 1.5px solid var(--accent);
+  border-bottom: 1.5px solid var(--accent);
+  transform: rotate(-45deg);
+  border-radius: 1px;
+}
+
+.lp-card-cta {
+  display: block;
+  width: 100%;
+  padding: 13px 16px;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: transparent;
+  color: var(--text);
+  border-radius: 999px;
+  transition: background 0.18s ease, border-color 0.18s ease,
+              color 0.18s ease, transform 0.18s ease,
+              box-shadow 0.18s ease;
+}
+.lp-card-cta:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.32);
+  transform: translateY(-1px);
+}
+.lp-card--featured .lp-card-cta {
+  background: var(--accent);
+  color: #0a0807;
   border-color: var(--accent);
-  box-shadow: 0 0 0 1px var(--accent), 0 24px 60px rgba(245, 158, 11, 0.22);
-  transform: translateY(-2px);
+  font-weight: 700;
+  box-shadow:
+    0 0 0 1px var(--accent),
+    0 10px 28px rgba(245, 158, 11, 0.32);
+}
+.lp-card--featured .lp-card-cta:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+  color: #0a0807;
+  box-shadow:
+    0 0 0 1px var(--accent-hover),
+    0 14px 36px rgba(245, 158, 11, 0.45);
+}
+
+/* ─── Below-grid blocks ─── */
+.lp-disclosure {
+  max-width: 720px;
+  margin: clamp(36px, 4dvh, 56px) auto 0;
+  padding: 14px 20px;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 12px;
+  flex-wrap: wrap;
+}
+.lp-disclosure-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.lp-disclosure-text {
+  margin: 0;
+  flex: 1;
+  min-width: 240px;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+.lp-disclosure-text strong { color: var(--text); font-weight: 600; }
+
+.lp-fine-print {
+  text-align: center;
+  margin: 14px auto 0;
+  max-width: 760px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: var(--text-mute);
+  line-height: 1.6;
+}
+.lp-fine-print a {
+  color: var(--text-dim);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  transition: color 0.18s ease, border-color 0.18s ease;
+}
+.lp-fine-print a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+@keyframes lp-fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.lp-card--featured { animation-name: lp-fade-up-featured; }
+@keyframes lp-fade-up-featured {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 1024px) {
+  .lp-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .lp-ribbon { font-size: 0.6rem; padding: 5px 12px; }
+}
+@media (max-width: 560px) {
+  .lp-grid { grid-template-columns: 1fr; }
+  .lp-card { padding: 28px 22px 22px; }
+  .lp-disclosure { padding: 14px 18px; gap: 14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lp-card { animation: none; opacity: 1; transform: none; }
 }
 
 /* ─── Inline checkout panel ─── */

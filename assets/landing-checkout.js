@@ -19,40 +19,43 @@
   var ORDER = ['monthly', 'quarterly', 'yearly', 'lifetime'];
   var RECOMMENDED = 'yearly';
 
+  // Tightened to 2 distinct features per card; trust items ("cancel
+  // anytime", "14-day refund") live in the section-wide fine-print
+  // line below the grid — no need to repeat per card.
   var EXTRAS = {
     monthly: {
       period: '/mo',
+      tagline: 'Try Pro for a month',
       features: [
-        'Smoothie on Twitch, Vimeo, Kick + most HTML5 video sites',
-        'Aspect-aware auto-tuning (21:9 / 24:9 / 32:9)',
-        'Cancel anytime',
+        'Twitch, Vimeo, Kick + most HTML5 video',
+        'Aspect-aware auto-tuning',
       ],
       cta: 'Sponsor monthly',
     },
     quarterly: {
       period: '',
+      tagline: 'Three months at a discount',
       features: [
         'Everything in Monthly',
         'Save 11% vs monthly',
-        'Cancel anytime',
       ],
-      cta: 'Sponsor for 3 months',
+      cta: 'Sponsor 3 months',
     },
     yearly: {
       period: '/yr',
+      tagline: 'The way most people sponsor',
       features: [
         'Everything in Quarterly',
-        'Best value — ~35% off monthly',
-        'Cancel anytime',
+        'Save ~35% vs monthly',
       ],
       cta: 'Sponsor yearly',
     },
     lifetime: {
       period: '',
+      tagline: 'Pay once. Forever.',
       features: [
         'Everything in Yearly',
-        'Pay once, never renew',
-        'All future Pro updates included',
+        'All future updates included',
       ],
       cta: 'Sponsor lifetime',
     },
@@ -64,30 +67,56 @@
     return '';
   }
 
-  function planCard(planId, plans) {
+  // Format priceUsd as "$23" + ".84" (sub-sized cents) so the integer
+  // dominates the visual at a glance — Apple-style price layout.
+  function formatPriceParts(priceUsd) {
+    var s = priceUsd.toFixed(2);
+    var dot = s.indexOf('.');
+    return { integer: s.slice(0, dot), cents: s.slice(dot) }; // ".84"
+  }
+
+  function planCard(planId, plans, idx) {
     var p = plans[planId];
     if (!p) return '';
     var ex = EXTRAS[planId] || { period: '', features: [], cta: 'Sponsor' };
     var isRec = planId === RECOMMENDED;
-    var html = '<div class="plan' + (isRec ? ' plan--recommended' : '') +
-      '" data-plan="' + planId + '">';
-    if (isRec) html += '<div class="ribbon">Best value</div>';
-    html += '<h3>' + p.label + '</h3>';
-    html += '<div class="plan-stars"><span class="plan-stars-icon" aria-hidden="true">⭐</span>' +
-            p.starsAmount + ' Stars</div>';
-    html += '<div class="price">≈ $' + p.priceUsd.toFixed(2);
-    if (ex.period) html += '<span>' + ex.period + '</span>';
+    var price = formatPriceParts(p.priceUsd);
+
+    var html = '<div class="lp-card' + (isRec ? ' lp-card--featured' : '') +
+      '" data-plan="' + planId + '" style="animation-delay:' + (idx * 80) + 'ms">';
+
+    if (isRec) html += '<div class="lp-ribbon">Most popular</div>';
+
+    html += '<span class="lp-card-eyebrow">' + p.label + '</span>';
+    html += '<p class="lp-card-tagline">' + ex.tagline + '</p>';
+
+    html += '<div class="lp-card-stars"><span aria-hidden="true">⭐</span> ' +
+            p.starsAmount.toLocaleString() + ' Stars</div>';
+
+    html += '<div class="lp-card-price">';
+    html += '<span class="lp-card-price-approx" aria-hidden="true">≈</span>';
+    html += '<span class="lp-card-price-currency">$</span>';
+    html += '<span class="lp-card-price-int">' + price.integer + '</span>';
+    html += '<span class="lp-card-price-cents">' + price.cents + '</span>';
+    if (ex.period) html += '<span class="lp-card-price-per">' + ex.period + '</span>';
     html += '</div>';
+
     var eff = effectivePerMonth(planId, p);
-    if (eff) html += '<p class="plan-effective">' + eff + '</p>';
-    html += '<p class="plan-duration">License active ' + p.duration + '</p>';
-    html += '<ul class="plan-features">';
+    if (eff) {
+      html += '<p class="lp-card-equiv">' + eff + '</p>';
+    } else {
+      html += '<p class="lp-card-equiv lp-card-equiv--placeholder">&nbsp;</p>';
+    }
+
+    html += '<p class="lp-card-duration">License active ' + p.duration + '</p>';
+
+    html += '<ul class="lp-card-features">';
     for (var i = 0; i < ex.features.length; i++) {
       html += '<li>' + ex.features[i] + '</li>';
     }
     html += '</ul>';
-    html += '<button type="button" data-select="' + planId + '">' + ex.cta + '</button>';
-    html += '<p class="plan-paycue">Pay by card · License by email</p>';
+
+    html += '<button type="button" class="lp-card-cta" data-select="' + planId + '">' + ex.cta + '</button>';
     html += '</div>';
     return html;
   }
@@ -110,7 +139,7 @@
     var closeBtn = document.getElementById('landing-checkout-close');
 
     function render() {
-      root.innerHTML = ORDER.map(function (id) { return planCard(id, plans); }).join('');
+      root.innerHTML = ORDER.map(function (id, i) { return planCard(id, plans, i); }).join('');
     }
     render();
 
@@ -152,8 +181,8 @@
       errBox.hidden = true;
       checkout.hidden = false;
       // Highlight selected card
-      root.querySelectorAll('.plan').forEach(function (el) {
-        el.classList.toggle('plan--selected', el.getAttribute('data-plan') === planId);
+      root.querySelectorAll('.lp-card').forEach(function (el) {
+        el.classList.toggle('lp-card--selected', el.getAttribute('data-plan') === planId);
       });
       // Smooth-scroll into view and focus email field
       setTimeout(function () {
@@ -165,8 +194,8 @@
     function closeCheckout() {
       checkout.hidden = true;
       selectedPlan = null;
-      root.querySelectorAll('.plan--selected').forEach(function (el) {
-        el.classList.remove('plan--selected');
+      root.querySelectorAll('.lp-card--selected').forEach(function (el) {
+        el.classList.remove('lp-card--selected');
       });
     }
 

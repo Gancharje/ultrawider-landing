@@ -422,44 +422,24 @@
     <!-- PRICING — full inline funnel. 4-card sponsorship grid +
          expandable inline checkout below selected card. Replaces the
          old pricing-teaser + separate /pricing page navigation. -->
-    <section id="pricing" class="landing-pricing-section">
-      <div class="container">
-        <header class="landing-pricing-head">
+    <section id="pricing" class="lp-section">
+      <div class="lp-ambient" aria-hidden="true"></div>
+      <div class="container lp-container">
+        <header class="lp-head">
           <div class="aaa-eyebrow">
             <span class="aaa-eyebrow-dot" aria-hidden="true"></span>
             <span>Sponsor the project</span>
           </div>
           <h2>Free on YouTube. <span class="text-accent">Pro everywhere.</span></h2>
-          <p class="landing-pricing-lede">
-            Smoothie warp on YouTube is free forever — always will be.
-            Sponsor the project to unlock Pro on Twitch, Vimeo, Kick and
-            every other supported site. Auto curve-tuning for 21:9 / 24:9 /
-            32:9 included. 14-day refund.
+          <p class="lp-lede">
+            Smoothie's free on YouTube — forever. Sponsor to unlock Pro on
+            every other supported site, auto-tuned for 21:9, 24:9 and 32:9.
           </p>
         </header>
 
-        <!-- "You pay by card" upfront disclosure -->
-        <div class="pay-disclosure" role="region" aria-label="How payment works">
-          <div class="pay-disclosure-row">
-            <div class="pay-disclosure-icons" aria-hidden="true">
-              <span class="pay-card pay-card--visa">VISA</span>
-              <span class="pay-card pay-card--mc">MC</span>
-              <span class="pay-card pay-card--amex">AMEX</span>
-              <span class="pay-card pay-card--apple">Pay</span>
-            </div>
-            <div class="pay-disclosure-text">
-              <strong>You pay by card</strong> — Visa, Mastercard, Amex,
-              Apple&nbsp;Pay. <strong>No Telegram account needed.</strong>
-              We price in Telegram Stars (our unit, like loyalty points);
-              Stars never touch you. Card&nbsp;→&nbsp;Tazapay&nbsp;→&nbsp;Stars
-              to&nbsp;us → license&nbsp;key to&nbsp;your&nbsp;email.
-            </div>
-          </div>
-        </div>
+        <div class="lp-grid" id="landing-plans"></div>
 
-        <div class="plans" id="landing-plans"></div>
-
-        <!-- Inline checkout — expands when a card's button is clicked -->
+        <!-- Inline checkout — expands when a card CTA is clicked -->
         <div class="landing-checkout" id="landing-checkout" hidden>
           <div class="landing-checkout-inner">
             <button type="button" class="landing-checkout-close" id="landing-checkout-close" aria-label="Close checkout">×</button>
@@ -500,10 +480,26 @@
           </div>
         </div>
 
-        <p class="pay-conversion-note">
-          <strong>Final amount</strong> may vary ±2–5% from the dollar figure
-          depending on your card's currency conversion. <strong>The Stars
-          count is fixed.</strong> Lost your key? <a href="/recover">Recover it here</a>.
+        <!-- Below-grid disclosure: card brands + Stars/Tazapay flow -->
+        <div class="lp-disclosure">
+          <div class="lp-disclosure-icons" aria-hidden="true">
+            <span class="pay-card pay-card--visa">VISA</span>
+            <span class="pay-card pay-card--mc">MC</span>
+            <span class="pay-card pay-card--amex">AMEX</span>
+            <span class="pay-card pay-card--apple">Pay</span>
+          </div>
+          <p class="lp-disclosure-text">
+            <strong>Pay by card.</strong> No Telegram account needed. We
+            price in Telegram Stars and route through Tazapay (Singapore) —
+            you'll see <strong>TAZAPAY</strong> or <strong>JOYTIFY</strong>
+            on your statement; the license arrives by email.
+          </p>
+        </div>
+
+        <p class="lp-fine-print">
+          14-day refund · Cancel anytime · No subscription auto-renew · Final
+          amount may vary ±2–5% with currency conversion · <a href="/recover">Lost
+          your key?</a>
         </p>
       </div>
     </section>

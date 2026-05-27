@@ -407,41 +407,23 @@
 
 
     <!-- PRICING — full inline funnel -->
-    <section id="pricing" class="landing-pricing-section">
-      <div class="container">
-        <header class="landing-pricing-head">
+    <section id="pricing" class="lp-section">
+      <div class="lp-ambient" aria-hidden="true"></div>
+      <div class="container lp-container">
+        <header class="lp-head">
           <div class="aaa-eyebrow">
             <span class="aaa-eyebrow-dot" aria-hidden="true"></span>
             <span>Поддержите проект</span>
           </div>
           <h2>Бесплатно на YouTube. <span class="text-accent">Pro везде.</span></h2>
-          <p class="landing-pricing-lede">
-            Smoothie-варп на YouTube бесплатен навсегда — и всегда будет.
-            Поддержите проект чтобы открыть Pro на Twitch, Vimeo, Kick и
-            на любых других поддерживаемых сайтах. Авто-настройка кривой
-            для 21:9 / 24:9 / 32:9 включена. Возврат 14 дней.
+          <p class="lp-lede">
+            Smoothie на YouTube бесплатен навсегда. Поддержите проект чтобы
+            открыть Pro на всех поддерживаемых сайтах — с авто-настройкой под
+            21:9, 24:9 и 32:9.
           </p>
         </header>
 
-        <div class="pay-disclosure" role="region" aria-label="Как работает оплата">
-          <div class="pay-disclosure-row">
-            <div class="pay-disclosure-icons" aria-hidden="true">
-              <span class="pay-card pay-card--visa">VISA</span>
-              <span class="pay-card pay-card--mc">MC</span>
-              <span class="pay-card pay-card--amex">AMEX</span>
-              <span class="pay-card pay-card--apple">Pay</span>
-            </div>
-            <div class="pay-disclosure-text">
-              <strong>Оплата картой</strong> — Visa, Mastercard, Amex,
-              Apple&nbsp;Pay. <strong>Аккаунт в Telegram не нужен.</strong>
-              Stars — наша единица учёта (как баллы лояльности); тебе их
-              не нужно отправлять. Карта&nbsp;→&nbsp;Tazapay&nbsp;→&nbsp;Stars
-              автору → ключ на&nbsp;почту.
-            </div>
-          </div>
-        </div>
-
-        <div class="plans" id="landing-plans"></div>
+        <div class="lp-grid" id="landing-plans"></div>
 
         <div class="landing-checkout" id="landing-checkout" hidden>
           <div class="landing-checkout-inner">
@@ -483,10 +465,24 @@
           </div>
         </div>
 
-        <p class="pay-conversion-note">
-          <strong>Финальная сумма</strong> может отличаться ±2–5% от долларовой
-          цифры из-за курса конверсии карты. <strong>Количество Stars
-          фиксированное.</strong> Потерял ключ? <a href="/recover">Восстановить</a>.
+        <div class="lp-disclosure">
+          <div class="lp-disclosure-icons" aria-hidden="true">
+            <span class="pay-card pay-card--visa">VISA</span>
+            <span class="pay-card pay-card--mc">MC</span>
+            <span class="pay-card pay-card--amex">AMEX</span>
+            <span class="pay-card pay-card--apple">Pay</span>
+          </div>
+          <p class="lp-disclosure-text">
+            <strong>Оплата картой.</strong> Аккаунт в Telegram не нужен.
+            Цены в Telegram Stars, обработка через Tazapay (Сингапур) —
+            на выписке увидишь <strong>TAZAPAY</strong> или
+            <strong>JOYTIFY</strong>; ключ придёт на почту.
+          </p>
+        </div>
+
+        <p class="lp-fine-print">
+          Возврат 14 дней · Отмена в любое время · Без авто-продления ·
+          Финальная сумма ±2–5% из-за конверсии валют · <a href="/recover">Потерял ключ?</a>
         </p>
       </div>
     </section>
