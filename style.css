@@ -1907,134 +1907,289 @@ strong { color: var(--text); font-weight: 600; }
    Math section — animated quintic curve as decorative + explanatory
    ======================================================================== */
 
+/* ─── MATH section — full-viewport interactive shader demo ─────────
+   Header (eyebrow + h2 + lede) sits on top. Below it, a 2-column duo:
+   curve graph on the left, live-warped face on the right. Slider
+   beneath drives both. Equation + Perlin citation footer.
+   The face canvas is 21:9 so the demo PERFORMS the value prop:
+   at strength 0 the 16:9 image is fat-stretched (naïve display
+   behaviour); at 0.34 the warp compensates exactly; at 1 it
+   over-corrects (thin face). */
 .math-section {
-  padding: 120px 0;
+  min-height: 100dvh;
+  padding: clamp(48px, 5dvh, 80px) 0;
   position: relative;
   background: linear-gradient(180deg, var(--bg) 0%, var(--bg-elev) 100%);
   border-top: 1px solid var(--border-soft);
-  border-bottom: 1px solid var(--border-soft);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   overflow: hidden;
 }
 
-.math-grid {
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-  gap: 64px;
-  align-items: center;
-}
-@media (max-width: 900px) {
-  .math-grid { grid-template-columns: 1fr; gap: 40px; }
-  .math-section { padding: 80px 0; }
-}
+.math-container { max-width: min(94vw, 1600px); margin: 0 auto; padding: 0 24px; }
 
-.math-copy .eyebrow {
-  margin-bottom: 16px;
+.math-head {
+  text-align: center;
+  max-width: 820px;
+  margin: 0 auto clamp(20px, 2.5dvh, 36px);
 }
-.math-copy h2 { margin-bottom: 20px; }
-.math-copy p {
-  font-size: 1.05rem;
+.math-head h2 {
+  font-size: clamp(1.85rem, 3vw + 0.25rem, 3rem);
+  letter-spacing: -0.025em;
+  margin: clamp(8px, 1dvh, 14px) 0 clamp(10px, 1.2dvh, 16px);
+}
+.math-lede {
+  font-size: clamp(0.92rem, 0.7vw + 0.5rem, 1.05rem);
   color: var(--text-dim);
-  line-height: 1.65;
-  margin-bottom: 18px;
-}
-.math-copy p:last-child { margin-bottom: 0; }
-.math-copy .text-mono {
-  color: var(--tech);
-  font-size: 0.95em;
-}
-
-.math-equation {
-  display: block;
-  font-family: var(--font-mono);
-  font-size: 0.95rem;
-  color: var(--text);
-  background: rgba(103, 232, 249, 0.06);
-  border: 1px solid rgba(103, 232, 249, 0.18);
-  border-left: 3px solid var(--tech);
-  padding: 16px 20px;
-  border-radius: var(--radius-sm);
-  margin: 24px 0;
-  letter-spacing: 0.02em;
   line-height: 1.55;
+  margin: 0;
 }
-.math-equation .var { color: var(--tech); }
-.math-equation .op  { color: var(--text-mute); }
+.math-cite {
+  color: var(--accent);
+  text-decoration: none;
+  border-bottom: 1px dashed currentColor;
+  transition: color 0.18s ease;
+}
+.math-cite:hover { color: var(--accent-hover); }
 
-.math-visual {
-  position: relative;
-  aspect-ratio: 1 / 1;
-  max-width: 460px;
-  margin: 0 auto;
+/* ─── Graph + face duo ─── */
+.math-duo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr);
+  gap: clamp(20px, 2.5vw, 48px);
+  align-items: stretch;
+  margin-bottom: clamp(16px, 2dvh, 28px);
 }
 
-.quintic-svg {
+.math-graph,
+.math-face {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1dvh, 12px);
+}
+
+.math-graph-cap,
+.math-face-cap {
+  font-family: var(--font-mono);
+  font-size: clamp(0.62rem, 0.5vw + 0.4rem, 0.72rem);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(245, 245, 245, 0.55);
+  text-align: center;
+}
+
+/* Graph SVG square */
+.math-graph-svg {
   width: 100%;
-  height: 100%;
+  height: auto;
+  aspect-ratio: 1 / 1;
+  max-height: clamp(220px, 36dvh, 460px);
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  align-self: center;
   display: block;
-  overflow: visible;
 }
-.quintic-grid { stroke: var(--border); stroke-width: 1; opacity: 0.5; }
-.quintic-axis { stroke: var(--border-hover); stroke-width: 1.5; }
-.quintic-label {
-  fill: var(--text-mute);
+.math-graph-grid { stroke: rgba(255, 255, 255, 0.06); stroke-width: 1; }
+.math-graph-axis { stroke: rgba(255, 255, 255, 0.25); stroke-width: 1.2; }
+.math-graph-axislabel {
+  fill: rgba(245, 245, 245, 0.4);
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-.quintic-identity {
+.math-graph-identity {
   fill: none;
-  stroke: var(--text-mute);
-  stroke-width: 1.5;
+  stroke: rgba(245, 245, 245, 0.3);
+  stroke-width: 1.2;
   stroke-dasharray: 4 4;
-  opacity: 0.6;
 }
-.quintic-curve {
+.math-graph-curve {
   fill: none;
   stroke: var(--accent);
-  stroke-width: 3;
+  stroke-width: 2.4;
   stroke-linecap: round;
-  filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.5));
-  stroke-dasharray: 720;
-  stroke-dashoffset: 720;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.45));
+  transition: d 0.05s linear;
 }
-.quintic-curve.is-revealed {
-  animation: stroke-draw 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-@keyframes stroke-draw {
-  to { stroke-dashoffset: 0; }
-}
-.quintic-tick {
+.math-graph-tick {
   fill: var(--accent);
-  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.8));
-  opacity: 0;
-  transition: opacity 320ms ease 1s;
+  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.7));
 }
-.quintic-curve.is-revealed ~ .quintic-tick { opacity: 1; }
 
-/* Tags pointing to curve regions */
-.quintic-callout {
+/* Face stage — 21:9 to demo the 16:9-into-21:9 warp problem */
+.math-face-stage {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 21 / 9;
+  max-height: clamp(220px, 36dvh, 460px);
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+  align-self: center;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 30px 80px rgba(0, 0, 0, 0.55);
+}
+.math-face-canvas {
   position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.math-face-source {
+  /* hidden source — only used to upload as WebGL texture */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+  left: -9999px;
+}
+.math-face-overlay {
+  position: absolute;
+  top: 12px;
   font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.06em;
+  font-size: clamp(0.55rem, 0.45vw + 0.35rem, 0.65rem);
+  font-weight: 600;
+  letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--text-mute);
-  white-space: nowrap;
+  color: rgba(245, 245, 245, 0.75);
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  pointer-events: none;
 }
-.quintic-callout.callout-center {
-  left: 50%;
-  top: 38%;
-  transform: translateX(-50%);
-  color: var(--text-dim);
-}
-.quintic-callout.callout-edge {
-  left: 100%;
-  bottom: 22%;
-  margin-left: -20px;
+.math-face-overlay--left  { left: 12px; }
+.math-face-overlay--right {
+  right: 12px;
   color: var(--accent);
+  border-color: rgba(245, 158, 11, 0.4);
+  background: rgba(20, 14, 4, 0.65);
 }
-.quintic-callout::before { content: "→ "; opacity: 0.6; }
+
+/* ─── Controls ─── */
+.math-controls {
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto clamp(14px, 1.8dvh, 22px);
+}
+.math-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  border-radius: 3px;
+  background: linear-gradient(90deg,
+    rgba(245, 158, 11, 0.25) 0%,
+    rgba(245, 158, 11, 0.45) 34%,
+    rgba(245, 158, 11, 0.7) 100%);
+  outline: none;
+  cursor: pointer;
+}
+.math-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--accent), 0 0 16px rgba(245, 158, 11, 0.6);
+  cursor: grab;
+  transition: transform 0.15s ease;
+}
+.math-slider::-webkit-slider-thumb:active { cursor: grabbing; transform: scale(1.15); }
+.math-slider::-moz-range-thumb {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  box-shadow: 0 0 0 1px var(--accent), 0 0 16px rgba(245, 158, 11, 0.6);
+  cursor: grab;
+}
+.math-control-marks {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: clamp(0.6rem, 0.4vw + 0.4rem, 0.68rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(245, 245, 245, 0.4);
+}
+.math-control-marks-mid {
+  color: var(--accent);
+  position: relative;
+  left: -6%;  /* tick label sits over the 0.34 position, not 0.5 */
+}
+
+/* ─── Equation + footer ─── */
+.math-equation {
+  display: block;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: clamp(0.78rem, 0.55vw + 0.5rem, 0.95rem);
+  padding: 12px 20px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-soft);
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  max-width: 720px;
+  margin: 0 auto clamp(12px, 1.5dvh, 18px);
+  color: var(--text);
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+.math-equation .var { color: var(--accent); font-style: italic; }
+.math-equation .strength-val {
+  color: var(--accent);
+  font-weight: 700;
+  display: inline-block;
+  min-width: 2.4ch;
+  text-align: center;
+}
+
+.math-footer {
+  text-align: center;
+  font-size: clamp(0.75rem, 0.45vw + 0.5rem, 0.85rem);
+  color: var(--text-mute);
+  margin: 0 auto;
+  max-width: 720px;
+  line-height: 1.5;
+}
+.math-footer a {
+  color: var(--text-dim);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  transition: color 0.18s ease, border-color 0.18s ease;
+}
+.math-footer a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.math-footer code.code-inline {
+  color: var(--accent);
+  background: rgba(245, 158, 11, 0.1);
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 0.92em;
+}
+
+@media (max-width: 900px) {
+  .math-section { min-height: auto; padding: 64px 0; }
+  .math-duo { grid-template-columns: 1fr; gap: 24px; }
+  .math-graph-svg,
+  .math-face-stage { max-height: 320px; }
+  .math-control-marks-mid { position: static; }
+}
 
 /* ========================================================================
    Pricing teaser — compact section linking to /pricing

@@ -23,10 +23,12 @@
   <link rel="stylesheet" href="style.css" />
 
   <link rel="preload" as="video" href="demo/cinematic-hero.mp4" type="video/mp4" />
+  <link rel="preload" as="image" href="demo/face-source.jpg" />
 
   <script src="lang-switch.js" defer></script>
   <script src="assets/aspect-profile.js" defer></script>
   <script src="assets/warp-demo.js" defer></script>
+  <script src="assets/math-demo.js" defer></script>
 
   <!-- Aspect-aware hero personalization.
        Reads physical monitor dims via screen.width/height for real
@@ -324,31 +326,35 @@
       </div>
     </section>
 
-    <!-- MATH — quintic curve as visual + explainer -->
+    <!-- MATH — interactive shader demo. Slider drives both the curve
+         graph AND a live WebGL warp on a face photo. The face is 16:9
+         source rendered into a 21:9 canvas — at strength 0 you see the
+         "fat face" of naive stretch; at 0.34 the warp compensates and
+         the face looks natural; at 1.0 it over-corrects (thin face).
+         This is the product story performed on a real photograph. -->
     <section id="math" class="math-section">
-      <div class="container">
-        <div class="math-grid">
-          <div class="math-copy">
-            <span class="eyebrow">The shader</span>
-            <h2>Quintic smootherstep. <span class="text-accent">No black bars.</span> No flat faces.</h2>
-            <p>
-              The fragment shader remaps every horizontal pixel by blending the
-              identity line with a quintic smootherstep curve. One uniform,
-              <code class="code-inline">u_curveStrength</code>, controls the blend.
-            </p>
-            <code class="math-equation">
-              <span class="op">f(</span><span class="var">x</span><span class="op">) = mix(</span><span class="var">x</span><span class="op">, 6</span><span class="var">x</span><span class="op">⁵ − 15</span><span class="var">x</span><span class="op">⁴ + 10</span><span class="var">x</span><span class="op">³, strength)</span>
-            </code>
-            <p>
-              <strong>f(0) = 0, f(1) = 1</strong> — endpoint preservation
-              guarantees no crop. <span class="text-mono text-accent">C² continuity</span>
-              at the edges means the warp tapers smoothly into the unstretched
-              boundary. Faces in the centre stay round; edges absorb the stretch.
-            </p>
+      <div class="container math-container">
+        <header class="math-head">
+          <div class="aaa-eyebrow">
+            <span class="aaa-eyebrow-dot" aria-hidden="true"></span>
+            <span>The shader · One uniform</span>
           </div>
-          <div class="math-visual" data-quintic>
-            <svg class="quintic-svg" viewBox="0 0 400 400" aria-hidden="true">
-              <g class="quintic-grid">
+          <h2>Quintic smootherstep. <span class="text-accent">Drag and see.</span></h2>
+          <p class="math-lede">
+            Every horizontal pixel is remapped by blending the identity line with
+            <a class="math-cite" href="https://mrl.cs.nyu.edu/~perlin/paper445.pdf" target="_blank" rel="noopener">Ken Perlin's quintic smootherstep</a>
+            — chosen because its second derivative vanishes at the endpoints, so
+            the warp accelerates without a visible "seam" between centre and edge.
+            At the default strength of 0.34, the centre matches a 21:9 monitor's
+            1.31× horizontal stretch exactly: faces stay round.
+          </p>
+        </header>
+
+        <div class="math-duo">
+          <figure class="math-graph">
+            <figcaption class="math-graph-cap">f(x) — quintic curve blend</figcaption>
+            <svg class="math-graph-svg" viewBox="0 0 400 400" aria-hidden="true">
+              <g class="math-graph-grid">
                 <line x1="0" y1="80"  x2="400" y2="80"/>
                 <line x1="0" y1="160" x2="400" y2="160"/>
                 <line x1="0" y1="240" x2="400" y2="240"/>
@@ -358,18 +364,46 @@
                 <line x1="240" y1="0" x2="240" y2="400"/>
                 <line x1="320" y1="0" x2="320" y2="400"/>
               </g>
-              <line class="quintic-axis" x1="0" y1="400" x2="400" y2="400"/>
-              <line class="quintic-axis" x1="0" y1="0"   x2="0"   y2="400"/>
-              <text class="quintic-label" x="200" y="392" text-anchor="middle">Source X →</text>
-              <text class="quintic-label" x="-200" y="14" text-anchor="middle" transform="rotate(-90)">Output X →</text>
-              <line class="quintic-identity" x1="0" y1="400" x2="400" y2="0"/>
-              <path class="quintic-curve" d="M 0 400 L 20 386.2 L 40 371.7 L 60 355.8 L 80 338.2 L 100 318.7 L 120 297.5 L 140 274.7 L 160 250.6 L 180 225.5 L 200 200 L 220 174.5 L 240 149.4 L 260 125.3 L 280 102.5 L 300 81.2 L 320 61.8 L 340 44.4 L 360 28.3 L 380 13.8 L 400 0"/>
-              <circle class="quintic-tick" cx="200" cy="200" r="6"/>
+              <line class="math-graph-axis" x1="0"   y1="400" x2="400" y2="400"/>
+              <line class="math-graph-axis" x1="0"   y1="0"   x2="0"   y2="400"/>
+              <text class="math-graph-axislabel" x="200" y="392" text-anchor="middle">Source X →</text>
+              <text class="math-graph-axislabel" x="-200" y="14" text-anchor="middle" transform="rotate(-90)">Output X →</text>
+              <line class="math-graph-identity" x1="0" y1="400" x2="400" y2="0"/>
+              <path class="math-graph-curve" data-math-curve d=""/>
+              <circle class="math-graph-tick" cx="200" cy="200" r="5"/>
             </svg>
-            <span class="quintic-callout callout-center">Centre held flat</span>
-            <span class="quintic-callout callout-edge">Edges accelerate</span>
+          </figure>
+
+          <figure class="math-face">
+            <figcaption class="math-face-cap">Live warp · 16:9 photo into 21:9 frame</figcaption>
+            <div class="math-face-stage">
+              <canvas class="math-face-canvas" data-math-canvas width="2100" height="900"></canvas>
+              <img class="math-face-source" data-math-source src="demo/face-source.jpg" alt="Portrait used as warp demo source" crossorigin="anonymous" />
+              <span class="math-face-overlay math-face-overlay--left" aria-hidden="true">Naive stretch</span>
+              <span class="math-face-overlay math-face-overlay--right" aria-hidden="true">Smoothie warp</span>
+            </div>
+          </figure>
+        </div>
+
+        <div class="math-controls">
+          <input type="range" class="math-slider" data-math-slider
+                 min="0" max="1" step="0.01" value="0.34"
+                 aria-label="Curve strength — drag to change the warp" />
+          <div class="math-control-marks" aria-hidden="true">
+            <span>0 · off (fat)</span>
+            <span class="math-control-marks-mid">0.34 · natural</span>
+            <span>1.0 · over (thin)</span>
           </div>
         </div>
+
+        <code class="math-equation">
+          f(<span class="var">x</span>) = mix(<span class="var">x</span>, 6<span class="var">x</span>⁵ − 15<span class="var">x</span>⁴ + 10<span class="var">x</span>³, <span class="strength-val" data-math-strength>0.34</span>)
+        </code>
+
+        <p class="math-footer">
+          C² continuity established in <a href="https://mrl.cs.nyu.edu/~perlin/paper445.pdf" target="_blank" rel="noopener">Perlin, <em>Improving Noise</em> (SIGGRAPH 2002)</a>
+          · runs in <code class="code-inline">~3 multiply-adds per pixel</code> on the GPU fragment shader.
+        </p>
       </div>
     </section>
 
