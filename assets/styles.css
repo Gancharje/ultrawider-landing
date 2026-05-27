@@ -471,3 +471,197 @@ button[type='submit'][disabled] {
 /* Status helper */
 .center { text-align: center; }
 .muted { color: var(--text-mute); font-size: 0.85rem; }
+
+/* ─── Sponsor-tier additions (post Joytify-Stars repositioning) ─────────
+   New elements added to .plan cards:
+     .plan-stars        — large amber Stars badge above the dollar price
+     .plan-duration     — "License active 30 days" label under price
+     .plan-paycue       — tiny mono footer "Pay by card · License by email"
+
+   Plus page-level disclosures:
+     .pay-disclosure    — upfront "you pay by card, no TG needed" block
+     .pay-conversion-note — footer disclaimer about currency variance
+     .pay-card          — Visa/MC/Amex/Apple Pay tiny tag pills
+*/
+
+.plan-stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  padding: 4px 10px;
+  border-radius: 999px;
+  align-self: flex-start;
+}
+.plan-stars-icon { line-height: 1; font-size: 0.85rem; }
+
+.plan-duration {
+  font-size: 0.78rem !important;
+  color: var(--text-mute) !important;
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+
+.plan-paycue {
+  font-family: var(--font-mono);
+  font-size: 0.65rem !important;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-mute) !important;
+  text-align: center;
+  margin: 10px 0 0 !important;
+}
+
+/* ─── "You pay by card" upfront disclosure ─── */
+.pay-disclosure {
+  margin: 32px 0 24px;
+  padding: 18px 22px;
+  background: rgba(245, 158, 11, 0.04);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: var(--radius-sm);
+}
+.pay-disclosure-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.pay-disclosure-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.pay-card {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 26px;
+  min-width: 42px;
+  padding: 0 8px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 4px;
+  color: var(--text);
+}
+.pay-card--visa  { color: #1a1f71; background: #ffffff; border-color: #ffffff; }
+.pay-card--mc    { color: #ff5f00; background: #ffffff; border-color: #ffffff; }
+.pay-card--amex  { color: #2e77bb; background: #ffffff; border-color: #ffffff; }
+.pay-card--apple { color: #ffffff; background: #000000; border-color: rgba(255,255,255,0.4); font-weight: 500; }
+
+.pay-disclosure-text {
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  flex: 1;
+  min-width: 280px;
+}
+.pay-disclosure-text strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
+/* ─── Currency conversion note (below cards) ─── */
+.pay-conversion-note {
+  margin: 8px 0 32px;
+  padding: 12px 18px;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+  color: var(--text-mute);
+  text-align: center;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 6px;
+}
+.pay-conversion-note strong {
+  color: var(--text-dim);
+  font-weight: 600;
+}
+.pay-conversion-note code {
+  font-family: var(--font-mono);
+  font-size: 0.8em;
+  background: rgba(245, 158, 11, 0.08);
+  color: var(--accent);
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+@media (max-width: 720px) {
+  .pay-disclosure-row { gap: 14px; }
+  .pay-disclosure-text { font-size: 0.85rem; min-width: 0; }
+  .pay-card { height: 22px; min-width: 36px; font-size: 0.58rem; padding: 0 6px; }
+}
+
+/* ─── /checkout — sponsorship summary + pre-warning ───────────────────── */
+
+.summary-stars {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 0.92rem;
+  color: var(--text);
+}
+.summary-stars .summary-usd {
+  color: var(--accent);
+  font-weight: 600;
+}
+.summary-stars .summary-dur {
+  color: var(--text-mute);
+  font-weight: 400;
+  font-size: 0.85rem;
+}
+
+.checkout-prewarn {
+  margin: 20px 0 24px;
+  padding: 16px 18px;
+  background: rgba(245, 158, 11, 0.05);
+  border: 1px solid rgba(245, 158, 11, 0.22);
+  border-radius: var(--radius-sm);
+}
+.checkout-prewarn-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.checkout-prewarn-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(245, 158, 11, 0.15);
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  margin-top: 2px;
+}
+.checkout-prewarn-text {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+}
+.checkout-prewarn-text strong { color: var(--text); font-weight: 600; }
+.checkout-prewarn-text code {
+  font-family: var(--font-mono);
+  font-size: 0.82em;
+  background: rgba(255,255,255,0.06);
+  color: var(--text);
+  padding: 1px 6px;
+  border-radius: 3px;
+}

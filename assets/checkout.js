@@ -16,7 +16,9 @@
 
   document.getElementById('summary').innerHTML =
     '<h2>Ultrawider Pro — ' + p.label + '</h2>' +
-    '<p>$' + p.price.toFixed(2) + ' · valid for ' + p.duration + '</p>';
+    '<p class="summary-stars">⭐ ' + p.starsAmount + ' Stars · ' +
+    '<span class="summary-usd">≈ $' + p.priceUsd.toFixed(2) + '</span> ' +
+    '<span class="summary-dur">· license active ' + p.duration + '</span></p>';
 
   const form = document.getElementById('checkout-form');
   const btn = document.getElementById('submit-btn');

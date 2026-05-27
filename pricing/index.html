@@ -2,18 +2,18 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Pricing — Ultrawider Pro</title>
+    <title>Sponsor the project — Ultrawider Pro</title>
     <meta
       name="description"
-      content="Ultrawider Pro from $2.99/month — unlock the Smoothie warp on Twitch, Vimeo, RuTube and every supported platform. 14-day refund, cancel anytime."
+      content="Smoothie warp is free on YouTube forever. Sponsor the project via Telegram Stars (paid by card) to unlock Pro on Twitch, Vimeo, RuTube and the rest. From $2.89 · 14-day refund."
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="theme-color" content="#050505" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
     />
     <link rel="stylesheet" href="/style.css" />
     <link rel="stylesheet" href="/assets/styles.css" />
@@ -26,7 +26,8 @@
           <span class="logo-text">Ultrawider</span>
         </a>
         <nav class="nav-links">
-          <a href="/#features">Features</a>
+          <a href="/#playground">Playground</a>
+          <a href="/#math">For geeks</a>
           <a href="/pricing">Pricing</a>
           <a href="/#faq">FAQ</a>
           <a href="/" class="btn btn-ghost btn-sm">Back to home</a>
@@ -37,31 +38,61 @@
     <main>
       <section class="page-hero">
         <div class="container">
-          <span class="eyebrow">Pricing · Pro subscription</span>
-          <h1>Choose your Pro plan</h1>
+          <span class="eyebrow">Sponsor the project</span>
+          <h1>Free on YouTube. <span class="text-accent">Pro everywhere.</span></h1>
           <p class="lead">
-            Every plan unlocks Smoothie warp on Twitch, Vimeo, RuTube and
-            every supported platform — beyond the YouTube free demo. Auto
-            curve-tuning for 21:9 / 24:9 / 32:9 included. 14-day refund.
+            Smoothie warp on YouTube is free forever — and always will be.
+            Sponsor the project to unlock Pro on Twitch, Vimeo, RuTube
+            and every other supported site. Auto curve-tuning for 21:9 /
+            24:9 / 32:9 included. 14-day refund.
           </p>
         </div>
       </section>
 
       <section>
         <div class="container">
+          <!-- "You pay by card" upfront disclosure — kills the
+               confusion about Telegram Stars before it can form. -->
+          <div class="pay-disclosure" role="region" aria-label="How payment works">
+            <div class="pay-disclosure-row">
+              <div class="pay-disclosure-icons" aria-hidden="true">
+                <span class="pay-card pay-card--visa">VISA</span>
+                <span class="pay-card pay-card--mc">MC</span>
+                <span class="pay-card pay-card--amex">AMEX</span>
+                <span class="pay-card pay-card--apple">Pay</span>
+              </div>
+              <div class="pay-disclosure-text">
+                <strong>You pay by card</strong> — Visa, Mastercard, Amex,
+                Apple&nbsp;Pay. <strong>No Telegram account needed.</strong>
+                We price in Telegram Stars (our unit, like loyalty points);
+                Stars never touch you. Card&nbsp;→&nbsp;Tazapay&nbsp;→&nbsp;Stars
+                to&nbsp;us → license&nbsp;key to&nbsp;your&nbsp;email.
+              </div>
+            </div>
+          </div>
+
           <div class="plans" id="plans"></div>
+
+          <p class="pay-conversion-note" aria-live="polite">
+            <strong>Final amount</strong> may vary ±2–5% from the dollar figure
+            depending on your card's currency conversion. <strong>The Stars
+            count is fixed.</strong> You'll see <code>TAZAPAY</code> or
+            <code>JOYTIFY</code> on your bank statement — that's the Stars
+            transaction.
+          </p>
 
           <div class="pricing-how">
             <h2>How it works</h2>
             <ol>
-              <li>Pick a plan and pay by card (Visa, Mastercard, Amex, Apple Pay, Google Pay)</li>
-              <li>Get your license key by email in 5–20 minutes</li>
-              <li>Paste it into the extension popup — or directly in fullscreen HUD</li>
+              <li>Pick a sponsorship tier and pay by card (Visa, Mastercard, Amex, Apple Pay, Google Pay)</li>
+              <li>Tazapay processes the card → Stars go to the developer's TG account</li>
+              <li>License key emailed within 5–20 minutes; paste into the extension</li>
             </ol>
           </div>
 
           <p class="pricing-footnote">
-            <strong>Secure checkout via Tazapay</strong> (Singapore payment processor).
+            <strong>Secure checkout via Tazapay</strong> (Singapore payment processor)
+            via Joytify (Telegram Stars vendor).
             Lost your key? <a href="/recover">Recover it here</a>.
           </p>
         </div>
@@ -79,8 +110,8 @@
         </div>
         <nav class="footer-nav">
           <h4>Product</h4>
-          <a href="/#features">Features</a>
-          <a href="/#how">How it works</a>
+          <a href="/#playground">Playground</a>
+          <a href="/#math">For geeks</a>
           <a href="/pricing">Pricing</a>
           <a href="/#faq">FAQ</a>
         </nav>
@@ -103,9 +134,11 @@
 
     <script src="/assets/config.js"></script>
     <script>
-      // Render plan cards. 4 plans, JS template inline — no framework
-      // needed at this scale. Plan data lives in window.ULTRAWIDER.PLANS
-      // (see /assets/config.js).
+      // Plan card renderer. Reads window.ULTRAWIDER.PLANS for defaults;
+      // tries to fetch live pricing from /api/pricing on load to override
+      // (Joytify packages occasionally re-price; the backend cron job
+      // refreshes the cache hourly). If fetch fails, defaults stand —
+      // no broken page on API outage.
       (function () {
         var RECOMMENDED = 'yearly';
         var ORDER = ['monthly', 'quarterly', 'yearly', 'lifetime'];
@@ -113,17 +146,15 @@
         var params = new URLSearchParams(location.search);
         var installId = params.get('install_id');
 
-        // Per-plan extras NOT in config.js — copy/UX detail that doesn't
-        // belong in shared config. Stays close to the rendering code.
         var EXTRAS = {
           monthly: {
             period: '/mo',
             features: [
               'Smoothie on Twitch, Vimeo, RuTube, more',
-              'Aspect-aware auto-tuning',
+              'Aspect-aware auto-tuning (21:9 / 24:9 / 32:9)',
               'Cancel anytime',
             ],
-            cta: 'Choose monthly',
+            cta: 'Sponsor monthly',
           },
           quarterly: {
             period: '',
@@ -132,60 +163,93 @@
               'Save 11% vs monthly',
               'Cancel anytime',
             ],
-            cta: 'Choose 3 months',
+            cta: 'Sponsor for 3 months',
           },
           yearly: {
             period: '/yr',
             features: [
               'Everything in Quarterly',
-              'Best value — 30% off monthly',
+              'Best value — ~35% off monthly',
               'Cancel anytime',
             ],
-            cta: 'Choose yearly',
+            cta: 'Sponsor yearly',
           },
           lifetime: {
             period: '',
             features: [
               'Everything in Yearly',
               'Pay once, never renew',
-              'All future updates included',
+              'All future Pro updates included',
             ],
-            cta: 'Choose lifetime',
+            cta: 'Sponsor lifetime',
           },
         };
 
         function effectivePerMonth(planId, p) {
-          if (planId === 'quarterly') return '≈ $' + (p.price / 3).toFixed(2) + '/mo';
-          if (planId === 'yearly') return '≈ $' + (p.price / 12).toFixed(2) + '/mo';
+          if (planId === 'quarterly') return '≈ $' + (p.priceUsd / 3).toFixed(2) + '/mo';
+          if (planId === 'yearly')    return '≈ $' + (p.priceUsd / 12).toFixed(2) + '/mo';
           return '';
         }
 
         function planCard(planId) {
           var p = window.ULTRAWIDER.PLANS[planId];
           if (!p) return '';
-          var ex = EXTRAS[planId] || { period: '', features: [], cta: 'Choose' };
+          var ex = EXTRAS[planId] || { period: '', features: [], cta: 'Sponsor' };
           var isRec = planId === RECOMMENDED;
           var html = '<div class="plan' + (isRec ? ' plan--recommended' : '') +
             '" data-plan="' + planId + '">';
           if (isRec) html += '<div class="ribbon">Best value</div>';
           html += '<h3>' + p.label + '</h3>';
-          html += '<div class="price">$' + p.price.toFixed(2);
+
+          html += '<div class="plan-stars"><span class="plan-stars-icon" aria-hidden="true">⭐</span>' +
+                  p.starsAmount + ' Stars</div>';
+
+          html += '<div class="price">≈ $' + p.priceUsd.toFixed(2);
           if (ex.period) html += '<span>' + ex.period + '</span>';
           html += '</div>';
+
           var eff = effectivePerMonth(planId, p);
           if (eff) html += '<p class="plan-effective">' + eff + '</p>';
-          html += '<p>Valid for ' + p.duration + '</p>';
+          html += '<p class="plan-duration">License active ' + p.duration + '</p>';
+
           html += '<ul class="plan-features">';
           for (var i = 0; i < ex.features.length; i++) {
             html += '<li>' + ex.features[i] + '</li>';
           }
           html += '</ul>';
+
           html += '<button type="button" data-select="' + planId + '">' + ex.cta + '</button>';
+          html += '<p class="plan-paycue">Pay by card · License by email</p>';
           html += '</div>';
           return html;
         }
 
-        root.innerHTML = ORDER.map(planCard).join('');
+        function render() {
+          root.innerHTML = ORDER.map(planCard).join('');
+        }
+
+        render();
+
+        // Try to refresh from backend cached Joytify prices.
+        // Fails silently — defaults from config.js stay.
+        var api = window.ULTRAWIDER && window.ULTRAWIDER.API_BASE;
+        if (api && typeof fetch === 'function') {
+          fetch(api + '/api/pricing', { cache: 'no-cache' })
+            .then(function (r) { return r.ok ? r.json() : null; })
+            .then(function (data) {
+              if (!data || !data.plans) return;
+              var anyChanged = false;
+              Object.keys(data.plans).forEach(function (k) {
+                var live = data.plans[k];
+                var cur = window.ULTRAWIDER.PLANS[k];
+                if (!cur || !live) return;
+                if (typeof live.priceUsd === 'number') { cur.priceUsd = live.priceUsd; anyChanged = true; }
+                if (typeof live.starsAmount === 'number') { cur.starsAmount = live.starsAmount; anyChanged = true; }
+              });
+              if (anyChanged) render();
+            })
+            .catch(function () { /* keep defaults */ });
+        }
 
         root.addEventListener('click', function (e) {
           var btn = e.target.closest('[data-select]');

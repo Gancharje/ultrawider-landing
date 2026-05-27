@@ -2,14 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Checkout — Ultrawider Pro</title>
+    <title>Checkout — Sponsor Ultrawider</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="theme-color" content="#050505" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
     />
     <link rel="stylesheet" href="/style.css" />
     <link rel="stylesheet" href="/assets/styles.css" />
@@ -48,12 +48,31 @@
             payment is confirmed.
           </p>
 
+          <!-- Pre-warning about bank statement — kills 90% of post-pay
+               "WTF is JOYTIFY" surprise. Visitor reads this BEFORE
+               clicking through to Tazapay. -->
+          <div class="checkout-prewarn">
+            <div class="checkout-prewarn-row">
+              <span class="checkout-prewarn-icon" aria-hidden="true">ⓘ</span>
+              <div class="checkout-prewarn-text">
+                <strong>Heads-up about your bank statement.</strong>
+                Next step is <strong>Tazapay</strong> (Singapore payment
+                processor) — your card details stay on Tazapay's PCI-secure
+                form, not ours. You'll see
+                <code>TAZAPAY</code> or <code>JOYTIFY</code> on your
+                statement, not "Ultrawider" — that's the Stars sponsorship
+                transaction. Your license arrives by email regardless.
+              </div>
+            </div>
+          </div>
+
           <button type="submit" id="submit-btn">Continue to payment →</button>
 
           <p class="legal">
-            By continuing, you agree to our
+            By continuing, you sponsor the project for the chosen period and
+            receive a Pro license in return. You agree to our
             <a href="/terms.html">Terms</a> and
-            <a href="/refund.html">Refund Policy</a>.
+            <a href="/refund.html">Refund Policy</a> (14-day full refund).
           </p>
         </form>
 
