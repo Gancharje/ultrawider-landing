@@ -17,7 +17,7 @@
     rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
   />
-  <link rel="stylesheet" href="style.css?v=5" />
+  <link rel="stylesheet" href="style.css?v=6" />
   <link rel="stylesheet" href="assets/styles.css" />
 
   <link rel="preload" as="video" href="demo/cinematic-hero.mp4" type="video/mp4" />
@@ -217,7 +217,7 @@
             </a>
           </div>
 
-          <p class="aaa-micro">14-day refund · Cancel anytime · No account required</p>
+          <p class="aaa-micro">One-time support · No auto-renew · No account required</p>
         </div>
       </div>
 
@@ -461,11 +461,16 @@
               </button>
 
               <p class="landing-checkout-legal">
-                By continuing, you sponsor the project for the chosen period
-                and receive a Pro license in return. You agree to our
-                <a href="/terms.html">Terms</a> and
-                <a href="/refund.html">Refund Policy</a> (14-day full refund).
+                By continuing, you make a voluntary sponsorship contribution
+                to Ultrawider and receive a Pro license key as a thank-you.
+                Contributions are non-refundable as a matter of right —
+                see our <a href="/terms.html">Terms</a> and
+                <a href="/refund.html">Support Policy</a>.
               </p>
+              <label class="landing-checkout-ack">
+                <input type="checkbox" id="landing-checkout-ack-input" required />
+                <span>I understand this is a voluntary sponsorship contribution, delivered as a Pro&nbsp;license thank-you perk &mdash; not a consumer&nbsp;product purchase.</span>
+              </label>
             </form>
             <div class="landing-checkout-error" id="landing-checkout-error" hidden></div>
           </div>
@@ -502,8 +507,8 @@
                 the supported web.
               </p>
               <p class="lp-receipt-body">
-                <strong>14-day full refund.</strong> No auto-renew.
-                Cancel any time.
+                <strong>One-time support contribution.</strong> No auto-renew.
+                Need help? Just email&nbsp;us.
               </p>
             </section>
 
@@ -550,7 +555,7 @@
 
           <details id="faq-stars">
             <summary>Why am I sending Telegram Stars to buy a license?</summary>
-            <p>Ultrawider is built by one indie developer outside the standard SaaS payment rails (Stripe, Paddle and friends don't accept us due to geographic restrictions). Telegram Stars + Tazapay let us accept cards from any country with no platform middleman markup. <strong>You pay by card</strong> — Visa or Mastercard; no Telegram account needed. The Stars go to our team's TG account as the sponsorship transaction; in return we email your Pro license key within 5–20 minutes. You'll see <code>TAZAPAY</code> or <code>JOYTIFY</code> on your bank statement — that's the Stars charge. Same end result as any SaaS subscription, with 14-day refund if it doesn't work for you.</p>
+            <p>Ultrawider is built by one indie developer outside the standard SaaS payment rails (Stripe, Paddle and friends don't accept us due to geographic restrictions). Telegram Stars + Tazapay let us accept cards from any country with no platform middleman markup. <strong>You pay by card</strong> — Visa or Mastercard; no Telegram account needed. The Stars go to our team's TG account as the sponsorship transaction; in return we email your Pro license key within 5–20 minutes. You'll see <code>TAZAPAY</code> or <code>JOYTIFY</code> on your bank statement — that's the Stars charge. Because this is a sponsorship contribution (not a subscription sale), contributions are non-refundable as a matter of right — but we'll always make things right if something's actually broken on our end. See <a href="refund.html">Support Policy</a>.</p>
           </details>
 
           <details>
@@ -564,8 +569,8 @@
           </details>
 
           <details>
-            <summary>What if I'm not satisfied?</summary>
-            <p>14-day refund window, no questions asked. Email <a href="mailto:hello@ultrawider.net?subject=Refund%20Request">hello@ultrawider.net</a> with the subject "Refund Request" and your order ID. We process refunds within 7–14 business days back to the original payment method. See our <a href="refund.html">refund policy</a>.</p>
+            <summary>What if Pro doesn't work for me?</summary>
+            <p>Sponsorship contributions are non-refundable as a matter of right — same model as Patreon, GitHub Sponsors, and Buy Me a Coffee. <strong>But we're indie and we care.</strong> If something's genuinely broken (key never arrived, double-charge, Pro doesn't work on supported sites and we can't fix it), email <a href="mailto:hello@ultrawider.net?subject=Support%20Request">hello@ultrawider.net</a> with your order ID — we'll either resolve the issue or issue a goodwill refund at our discretion. We don't refund "I changed my mind" requests, but we won't hold anyone hostage to something that's actually broken either. See our <a href="refund.html">Support Policy</a> for the full picture.</p>
           </details>
 
           <details>
@@ -612,7 +617,7 @@
         <h4>Legal</h4>
         <a href="terms.html">Terms of Service</a>
         <a href="privacy.html">Privacy Policy</a>
-        <a href="refund.html">Refund Policy</a>
+        <a href="refund.html">Support Policy</a>
       </nav>
     </div>
 

@@ -3431,6 +3431,57 @@ code, .code-inline {
   border-bottom-color: var(--accent);
 }
 
+/* Sponsorship acknowledgment — explicit consent that this is a voluntary
+   contribution, not a consumer-product purchase. Customer must tick it
+   before Continue-to-payment activates. Critical for legal positioning:
+   gives us a paper trail of informed consent. */
+.landing-checkout-ack {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 16px 0 4px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.18s ease, background-color 0.18s ease;
+}
+.landing-checkout-ack:hover { border-color: rgba(255, 255, 255, 0.16); }
+.landing-checkout-ack input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  margin: 2px 0 0;
+  border: 1.5px solid rgba(255, 255, 255, 0.32);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.18s ease, border-color 0.18s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.landing-checkout-ack input[type="checkbox"]:checked {
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+.landing-checkout-ack input[type="checkbox"]:checked::after {
+  content: "";
+  display: block;
+  width: 4px;
+  height: 8px;
+  border-right: 2px solid #1a1207;
+  border-bottom: 2px solid #1a1207;
+  transform: rotate(45deg) translate(-1px, -1px);
+}
+.landing-checkout-ack span {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+
 .landing-checkout-error {
   margin-top: 14px;
   padding: 12px 14px;

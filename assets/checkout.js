@@ -36,6 +36,15 @@
     const email = document.getElementById('email').value.trim();
     if (!email) return;
 
+    // Require explicit sponsorship acknowledgment — paper trail of
+    // informed consent that this is a contribution, not a consumer-
+    // product purchase.
+    const ackEl = document.getElementById('checkout-ack-input');
+    if (ackEl && !ackEl.checked) {
+      showError('Please tick the box to confirm you understand this is a sponsorship contribution.');
+      return;
+    }
+
     btn.disabled = true;
     btn.textContent = 'Creating your order…';
     err.hidden = true;

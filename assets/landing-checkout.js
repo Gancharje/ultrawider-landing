@@ -237,6 +237,14 @@
         showError('Please enter a valid email address.');
         return;
       }
+      // Require explicit sponsorship acknowledgment — gives us a paper
+      // trail of informed consent that this is a contribution, not a
+      // consumer-product purchase.
+      var ackEl = document.getElementById('landing-checkout-ack-input');
+      if (ackEl && !ackEl.checked) {
+        showError('Please tick the box to confirm you understand this is a sponsorship contribution.');
+        return;
+      }
       submit.disabled = true;
       submit.textContent = 'Creating your order…';
       errBox.hidden = true;
