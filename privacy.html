@@ -11,8 +11,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
   <link rel="stylesheet" href="style.css?v=10" />
+  <script src="assets/config.js"></script>
+  <script src="assets/error-instrumentation.js"></script>
+  <script src="assets/metrika.js" defer></script>
 </head>
 <body>
+<noscript><div><img src="https://mc.yandex.ru/watch/109480276" style="position:absolute;left:-9999px" alt="" /></div></noscript>
 
   <header class="site-header">
     <div class="container nav">
@@ -33,7 +37,7 @@
 
       <span class="eyebrow">Legal</span>
       <h1>Privacy Policy</h1>
-      <p class="legal-meta">Last updated: 20 May 2026 · Effective: 20 May 2026</p>
+      <p class="legal-meta">Last updated: 28 May 2026 · Effective: 28 May 2026</p>
 
       <p>
         This Privacy Policy describes how Akimov Pavel Andreevich, a
@@ -67,7 +71,35 @@
       <h3>2.2 Information collected automatically</h3>
       <ul>
         <li><strong>Anonymous installation count</strong> — provided by the Chrome Web Store statistics dashboard. Not tied to your identity.</li>
-        <li><strong>Crash and error reports</strong> — technical details (extension version, browser version, error stack) without page URLs or video content, used to diagnose bugs. Optional and disabled by default in Pro builds.</li>
+        <li>
+          <strong>Crash and error reports</strong> — when the extension or
+          the website encounters an unhandled JavaScript error, we
+          automatically send a technical report containing: the error
+          message and stack trace, the page URL (origin and path only,
+          query string stripped of any tokens), the browser/OS string,
+          and an <strong>anonymous install ID</strong> (a random UUID
+          generated at first install, not linked to your email or any
+          other identifier). Crash reports are <strong>always sent</strong>
+          regardless of telemetry opt-in, because we need this signal to
+          ship fixes. They contain no PII, no video content, no
+          credentials, and no licence key. Behavioural telemetry (feature
+          usage, mode-change events) remains opt-in and is disabled by
+          default.
+        </li>
+        <li>
+          <strong>Anonymous website analytics</strong> — the
+          <a href="https://ultrawider.net">ultrawider.net</a> website (NOT
+          the extension) loads <strong>Yandex.Metrica</strong> to measure
+          page views, scroll depth, and clicks so we can improve the
+          landing experience. Metrica may set cookies and record a
+          session replay ("Webvisor"). It does <strong>not</strong> link
+          back to your licence, your email, or anything you do inside the
+          extension. You can block it with any tracker-blocker, with
+          your browser's "Do Not Track" header, or by visiting the
+          <a href="https://yandex.com/support/metrica/general/opt-out.html" target="_blank" rel="noopener">Yandex.Metrica opt-out page</a>.
+          The Chrome extension itself ships no analytics — Chrome Web
+          Store policy forbids it.
+        </li>
         <li><strong>Server logs</strong> — when you visit ultrawider.net or hit our licence-check endpoint, our hosting provider may log standard request metadata (IP, user-agent, timestamp) for security and abuse prevention. Kept for no more than 30 days.</li>
       </ul>
 
@@ -107,9 +139,11 @@
       <h2>5. Third parties</h2>
       <p>We rely on a small number of vendors:</p>
       <ul>
-        <li><strong>Prodamus</strong> — payment aggregation and processing.</li>
+        <li><strong>Prodamus / Tazapay</strong> — payment aggregation and processing.</li>
         <li><strong>Google Chrome Web Store</strong> — distribution of the extension. Subject to Google's policies.</li>
-        <li><strong>Hosting provider</strong> — serves this website and the licence-check endpoint.</li>
+        <li><strong>Hosting provider (Fly.io)</strong> — serves this website and the licence-check endpoint.</li>
+        <li><strong>Yandex.Metrica</strong> (LLC «YANDEX», Russia) — anonymous analytics on the website only. <a href="https://yandex.com/legal/confidential/" target="_blank" rel="noopener">Privacy notice</a>.</li>
+        <li><strong>Resend</strong> — transactional email delivery (licence emails, recovery emails).</li>
       </ul>
       <p>
         We do not sell or rent personal information to third parties, and we
@@ -117,11 +151,18 @@
       </p>
 
       <h2>6. Cookies and similar technologies</h2>
+      <p>ultrawider.net uses:</p>
+      <ul>
+        <li><strong>One first-party cookie</strong> (<code>ultrawider_lang</code>) to remember your language preference (EN/RU) between visits.</li>
+        <li>
+          <strong>Yandex.Metrica cookies</strong> (<code>_ym_uid</code>, <code>_ym_d</code>, <code>_ym_isad</code>,
+          <code>_ym_visorc</code>) — anonymous analytics described in §2.2 above. Lifetime: up to 1 year.
+        </li>
+      </ul>
       <p>
-        ultrawider.net uses a single first-party cookie called
-        <code>ultrawider_lang</code> to remember your language preference
-        (EN/RU) between visits. We do not use third-party tracking cookies
-        or advertising pixels.
+        We do not use advertising pixels, retargeting pixels, or any
+        cross-context behavioural advertising. The browser extension
+        itself does not set cookies.
       </p>
 
       <h2>7. International transfers</h2>
