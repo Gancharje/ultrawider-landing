@@ -3298,6 +3298,10 @@ code, .code-inline {
 
 .landing-checkout-summary {
   padding-bottom: 18px;
+  /* Reserve room on the right for the absolute-positioned close (×)
+     button so the price never sits under it. Close button is 32px wide
+     at right:14px; this gives ~50px clearance. */
+  padding-right: 50px;
   margin-bottom: 18px;
   border-bottom: 1px solid var(--border-soft);
 }
@@ -3454,7 +3458,10 @@ code, .code-inline {
   flex-shrink: 0;
   width: 16px;
   height: 16px;
-  margin: 2px 0 0;
+  /* Nudge down to align checkbox center with the cap-height of the
+     adjacent body text (Inter at 0.82rem, line-height 1.5). 4px puts
+     the checkbox top roughly at the "I" stem top of the first line. */
+  margin: 4px 0 0;
   border: 1.5px solid rgba(255, 255, 255, 0.32);
   border-radius: 4px;
   cursor: pointer;

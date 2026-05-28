@@ -372,7 +372,8 @@ button[type='submit'][disabled] {
   flex-shrink: 0;
   width: 16px;
   height: 16px;
-  margin: 2px 0 0;
+  /* Nudge down to align checkbox cap with first text line cap. */
+  margin: 4px 0 0;
   border: 1.5px solid rgba(255, 255, 255, 0.32);
   border-radius: 4px;
   cursor: pointer;
