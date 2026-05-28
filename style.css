@@ -225,31 +225,43 @@ strong { color: var(--text); font-weight: 600; }
   box-shadow: 0 12px 30px rgba(245,158,11,0.36);
 }
 
-/* ─── Header CTA button — Apple-flat pill ────────────────────────────
-   Stripped to absolute minimum: solid color, pill shape, dark text on
-   amber, darker amber on hover. NO gradient, NO inset highlight, NO
-   shadow, NO transform — Apple's actual "Buy" button on apple.com/shop.
-   The only thing that signals interactivity is the background-color
-   shift on hover. Restraint to the bone. */
+/* ─── Header CTA button — outlined amber pill, fills on hover ─────────
+   Out: solid orange oval with muddy "gray" text (the dark brown #1a1207
+   visually washes into the amber and reads as a low-contrast grayish
+   smudge). In: dark background with a clean 1.5px amber border + amber
+   text — premium "subtle CTA" pattern (Apple Pay, Linear sign-up,
+   Stripe pricing). On hover the pill fills solid amber, text inverts
+   to deep black, the whole thing lifts. Reads as designed control,
+   not marketing decoration. */
 .btn-cta {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 18px;
-  background: var(--accent);
-  color: #1a1207;
+  padding: 7px 18px;
+  background: transparent;
+  color: var(--accent);
   font-family: var(--font-body);
-  font-size: 0.86rem;
+  font-size: 0.88rem;
   font-weight: 600;
   letter-spacing: -0.005em;
   border-radius: 980px;
-  border: 0;
+  border: 1.5px solid rgba(245, 158, 11, 0.55);
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
-  transition: background-color 0.16s ease;
+  transition:
+    background-color 0.18s cubic-bezier(0.32, 0.72, 0, 1),
+    color 0.18s ease,
+    border-color 0.18s ease,
+    transform 0.18s cubic-bezier(0.32, 0.72, 0, 1);
 }
-.btn-cta:hover { background: #d97706; }
+.btn-cta:hover {
+  background: var(--accent);
+  color: #0a0807;
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+.btn-cta:active { transform: translateY(0); }
 .btn-cta:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
@@ -758,26 +770,31 @@ strong { color: var(--text); font-weight: 600; }
    - JS in index.html wraps each <details> > <p> on DOMContentLoaded
    - Easing: cubic-bezier(0.32, 0.72, 0, 1) — Apple's "smooth" curve
      (gentle start, settles softly) */
+/* PURE row-growth reveal — no opacity/transform tricks.
+
+   Previous iterations layered opacity 0→1 + translateY on top of the
+   grid-template-rows transition. That fought the natural reveal:
+   text stayed INVISIBLE while the row was opening, then suddenly
+   appeared all at once after the delay. Felt like "computer lag,
+   then a dump of text" (user's exact description).
+
+   The correct mechanism: keep the text always-rendered, always-opaque.
+   The grid row growing from 0fr → 1fr + overflow:hidden on the wrapper
+   IS the line-by-line top-down reveal — only the portion of the
+   paragraph that fits inside the growing row is visible at each
+   frame. As the row gradually unclips, more lines come into view
+   from the TOP downward, smoothly, line by line. This is exactly
+   what the user described as "сверху вниз постепенно плавно". */
 .faq-list details > .faq-answer {
   display: grid;
   grid-template-rows: 0fr;
   overflow: hidden;
-  transition: grid-template-rows 0.55s cubic-bezier(0.32, 0.72, 0, 1);
+  transition: grid-template-rows 0.6s cubic-bezier(0.32, 0.72, 0, 1);
 }
 .faq-list details[open] > .faq-answer {
   grid-template-rows: 1fr;
 }
 
-/* Answer prose. min-height:0 is REQUIRED so the 0fr grid row actually
-   collapses (without it the child claims its natural min-content height
-   and the row never reaches 0).
-
-   Opening: prose starts at opacity 0 + translateY(-20px) — clearly OFF
-   the visible row. After a 0.25s delay (row is well underway expanding),
-   it slides down 20px while fading to opacity 1 over 0.55s. The user
-   sees: panel opens FIRST, prose drops in like a curtain SECOND.
-   Closing: instant fade-out (no delay) so the text disappears as the
-   row collapses, not after. */
 .faq-list details > .faq-answer > p {
   min-height: 0;
   margin: 0 0 clamp(20px, 2.6dvh, 32px);
@@ -788,18 +805,6 @@ strong { color: var(--text); font-weight: 600; }
   line-height: 1.65;
   letter-spacing: -0.003em;
   color: rgba(255, 255, 255, 0.66);
-  opacity: 0;
-  transform: translateY(-20px);
-  transition:
-    opacity 0.2s ease,
-    transform 0.25s cubic-bezier(0.32, 0.72, 0, 1);
-}
-.faq-list details[open] > .faq-answer > p {
-  opacity: 1;
-  transform: translateY(0);
-  transition:
-    opacity 0.55s cubic-bezier(0.32, 0.72, 0, 1) 0.25s,
-    transform 0.6s cubic-bezier(0.32, 0.72, 0, 1) 0.25s;
 }
 .faq-list details > .faq-answer > p strong {
   color: rgba(255, 255, 255, 0.92);
