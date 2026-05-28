@@ -17,7 +17,7 @@
     rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
   />
-  <link rel="stylesheet" href="style.css?v=9" />
+  <link rel="stylesheet" href="style.css?v=10" />
   <link rel="stylesheet" href="assets/styles.css" />
 
   <link rel="preload" as="video" href="demo/cinematic-hero.mp4" type="video/mp4" />
@@ -443,6 +443,13 @@
                 Activation key arrives within 5–20 minutes after payment is confirmed.
               </p>
 
+              <label class="landing-checkout-ack">
+                <input type="checkbox" id="landing-checkout-ack-input" required />
+                <span>I understand this is a voluntary sponsorship contribution, delivered as a Pro&nbsp;license thank-you perk &mdash; not a consumer&nbsp;product purchase.</span>
+              </label>
+
+              <div class="landing-checkout-error" id="landing-checkout-error" hidden></div>
+
               <button type="submit" class="aaa-cta-primary landing-checkout-submit" id="landing-checkout-submit">
                 Continue to payment →
               </button>
@@ -454,12 +461,7 @@
                 see our <a href="/terms.html">Terms</a> and
                 <a href="/refund.html">Support Policy</a>.
               </p>
-              <label class="landing-checkout-ack">
-                <input type="checkbox" id="landing-checkout-ack-input" required />
-                <span>I understand this is a voluntary sponsorship contribution, delivered as a Pro&nbsp;license thank-you perk &mdash; not a consumer&nbsp;product purchase.</span>
-              </label>
             </form>
-            <div class="landing-checkout-error" id="landing-checkout-error" hidden></div>
           </div>
         </div>
 
