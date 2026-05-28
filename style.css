@@ -225,52 +225,36 @@ strong { color: var(--text); font-weight: 600; }
   box-shadow: 0 12px 30px rgba(245,158,11,0.36);
 }
 
-/* ─── Header CTA button — premium Apple-style amber pill ───────────────
-   Standalone class (no .btn base). Pill shape, inset white border for
-   glass feel, layered warm glow for depth. Hover lifts and intensifies
-   glow; active flattens. The look should read as "primary CTA worth
-   clicking" without screaming for attention. */
+/* ─── Header CTA button — Apple-clean amber pill ──────────────────────
+   Solid color, crisp edge, no glow halo, no double-stroke. The look
+   that Apple/Stripe ship for "Buy" buttons: confident solid fill, tiny
+   lift on hover, single subtle shadow to lift it off the surface.
+   Restraint > decoration. */
 .btn-cta {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 9px 20px;
+  padding: 8px 18px;
   background: var(--accent);
   color: #1a1207;
   font-family: var(--font-body);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 600;
   letter-spacing: -0.005em;
   border-radius: 999px;
-  border: 1px solid transparent;
+  border: 0;
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.08) inset,
-    0 1px 0 rgba(255, 255, 255, 0.16) inset,
-    0 8px 22px -8px rgba(245, 158, 11, 0.55),
-    0 0 38px -12px rgba(245, 158, 11, 0.45);
   transition:
-    transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1),
-    box-shadow 0.25s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1),
     background-color 0.18s ease;
 }
 .btn-cta:hover {
   background: #fbbf24;
   transform: translateY(-1px);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.12) inset,
-    0 1px 0 rgba(255, 255, 255, 0.2) inset,
-    0 14px 34px -10px rgba(245, 158, 11, 0.7),
-    0 0 64px -14px rgba(245, 158, 11, 0.55);
 }
-.btn-cta:active {
-  transform: translateY(0);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.08) inset,
-    0 4px 12px -4px rgba(245, 158, 11, 0.5);
-}
+.btn-cta:active { transform: translateY(0); }
 .btn-cta:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
@@ -779,14 +763,21 @@ strong { color: var(--text); font-weight: 600; }
 .faq-list details > .faq-answer {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 0.38s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transition: grid-template-rows 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .faq-list details[open] > .faq-answer {
   grid-template-rows: 1fr;
 }
 
 /* Answer prose — body weight, generous line-height (1.65), right-padded
-   so it doesn't run under the chevron column above. */
+   so it doesn't run under the chevron column above.
+
+   Opening: opacity + translateY fade in WITH A 0.1s DELAY so the row
+   visibly starts expanding before the text appears. This produces the
+   "text gracefully slides in as the panel opens" effect that closes
+   the gap between the height animation and content reveal.
+   Closing: defaults (base rule) — text fades out immediately as the
+   row begins to collapse, so the panel collapse looks unified. */
 .faq-list details > .faq-answer > p {
   overflow: hidden;
   min-height: 0;
@@ -798,6 +789,18 @@ strong { color: var(--text); font-weight: 600; }
   line-height: 1.65;
   letter-spacing: -0.003em;
   color: rgba(255, 255, 255, 0.66);
+  opacity: 0;
+  transform: translateY(-6px);
+  transition:
+    opacity 0.22s ease,
+    transform 0.26s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.faq-list details[open] > .faq-answer > p {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.34s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s,
+    transform 0.34s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s;
 }
 .faq-list details > .faq-answer > p strong {
   color: rgba(255, 255, 255, 0.92);
@@ -865,34 +868,6 @@ strong { color: var(--text); font-weight: 600; }
 
 .account-head-center { text-align: center; }
 .account-head-center h1 br { display: inline; }
-
-/* Contact page — Ultrawider brand mark above the heading, sized to act
-   as a visual anchor (logo functions as the page's hero element). */
-.contact-brand {
-  display: inline-flex;
-  align-items: center;
-  gap: 14px;
-  margin: 0 auto clamp(28px, 3.6dvh, 48px);
-  padding: 12px 22px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.02);
-}
-.contact-brand-mark {
-  display: inline-block;
-  width: 18px;
-  height: 18px;
-  background: linear-gradient(135deg, var(--accent) 0%, #fbbf24 100%);
-  border-radius: 4px;
-  box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
-}
-.contact-brand-text {
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--text);
-}
 
 .account-back {
   display: inline-flex;
@@ -1055,47 +1030,80 @@ strong { color: var(--text); font-weight: 600; }
   border-bottom-color: var(--accent);
 }
 
-/* Contact page — same composition as recover, plus a CTA twin-button
-   block under the lede (Install — Free, Get Pro). */
-.account-actions {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 12px;
-  margin: clamp(28px, 3.5dvh, 44px) 0 0;
-}
-.account-actions .btn-cta { padding: 12px 22px; font-size: 0.95rem; }
-.account-actions-secondary {
+/* Outlined pill — secondary CTA paired with .btn-cta. Used in the footer
+   brand block (Install — Free + Get Pro). Same pill shape, hairline
+   border, transparent background; hover firms up the border and tints. */
+.btn-ghost-pill {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 11px 22px;
+  padding: 8px 18px;
   font-family: var(--font-body);
-  font-size: 0.95rem;
+  font-size: 0.88rem;
   font-weight: 600;
   letter-spacing: -0.005em;
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(255, 255, 255, 0.88);
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 999px;
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
   transition:
-    color 0.22s ease,
-    background-color 0.22s ease,
-    border-color 0.22s ease,
-    transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+    color 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-.account-actions-secondary:hover {
+.btn-ghost-pill:hover {
   color: var(--text);
-  background: rgba(255, 255, 255, 0.05);
-  border-color: rgba(255, 255, 255, 0.28);
+  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.32);
   transform: translateY(-1px);
 }
-.account-actions-secondary svg {
-  width: 16px;
-  height: 16px;
+.btn-ghost-pill svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+/* Footer brand-block CTA row — Install + Get Pro, stacked below the
+   "Built for ultrawide." tagline. */
+.footer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+/* Footer contact mini-block — tiny mono label + amber-on-hover email.
+   Sits below the CTA row in the brand column. Pattern mirrors the
+   pricing receipt's "Read more → FAQ" link tone. */
+.footer-contact { margin-top: 22px; }
+.footer-contact-label {
+  display: block;
+  margin-bottom: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+}
+.footer-contact-email {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: -0.005em;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.footer-contact-email:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
 }
 
 .account-contact-email {
