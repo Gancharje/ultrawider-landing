@@ -225,36 +225,50 @@ strong { color: var(--text); font-weight: 600; }
   box-shadow: 0 12px 30px rgba(245,158,11,0.36);
 }
 
-/* ─── Header CTA button — Apple-clean amber pill ──────────────────────
-   Solid color, crisp edge, no glow halo, no double-stroke. The look
-   that Apple/Stripe ship for "Buy" buttons: confident solid fill, tiny
-   lift on hover, single subtle shadow to lift it off the surface.
-   Restraint > decoration. */
+/* ─── Header CTA button — Apple-square physical pill ──────────────────
+   Out: pill+glow that read as "cheap SaaS upgrade". In: tactile,
+   square-ish (9px radius) like Apple's actual control buttons (Buy,
+   Add to Cart). Linear-gradient amber for vertical depth, inner-top
+   highlight, single tight drop-shadow. No outer glow halo. Reads as
+   a real, designed button, not marketing decoration. */
 .btn-cta {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 8px 18px;
-  background: var(--accent);
+  padding: 8px 16px;
+  background: linear-gradient(180deg, #fbbf24 0%, #ea9408 100%);
   color: #1a1207;
   font-family: var(--font-body);
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   font-weight: 600;
   letter-spacing: -0.005em;
-  border-radius: 999px;
+  border-radius: 9px;
   border: 0;
   text-decoration: none;
   cursor: pointer;
   white-space: nowrap;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.22) inset,
+    0 1px 1.5px rgba(0, 0, 0, 0.5);
   transition:
-    transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1),
-    background-color 0.18s ease;
+    transform 0.16s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.16s ease,
+    filter 0.16s ease;
 }
 .btn-cta:hover {
-  background: #fbbf24;
+  filter: brightness(1.06);
   transform: translateY(-1px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.28) inset,
+    0 3px 6px rgba(0, 0, 0, 0.5);
 }
-.btn-cta:active { transform: translateY(0); }
+.btn-cta:active {
+  transform: translateY(0);
+  filter: brightness(0.96);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.18) inset,
+    0 1px 1px rgba(0, 0, 0, 0.5);
+}
 .btn-cta:focus-visible {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
@@ -755,31 +769,34 @@ strong { color: var(--text); font-weight: 600; }
 }
 
 /* Smooth open/close animation via grid-template-rows trick:
-   - .faq-answer wrapper is a 1-col grid that animates from 0fr → 1fr
-   - inner <p> uses overflow:hidden + min-height:0 so the grid row
-     can fully collapse without the paragraph leaking out
+   - .faq-answer wrapper is a 1-col grid animating from 0fr → 1fr
+   - `overflow: hidden` lives on the WRAPPER (not the <p>), so the inner
+     paragraph keeps natural typography rendering during the transition
+     while the clipping is handled cleanly at the grid-row boundary
    - CSS Grid Level 2 supports transitions between fr values
-   - JS in index.html wraps each <details> > <p> on DOMContentLoaded */
+   - JS in index.html wraps each <details> > <p> on DOMContentLoaded
+   - Easing: cubic-bezier(0.32, 0.72, 0, 1) — Apple's "smooth" curve
+     (gentle start, settles softly) */
 .faq-list details > .faq-answer {
   display: grid;
   grid-template-rows: 0fr;
-  transition: grid-template-rows 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  overflow: hidden;
+  transition: grid-template-rows 0.5s cubic-bezier(0.32, 0.72, 0, 1);
 }
 .faq-list details[open] > .faq-answer {
   grid-template-rows: 1fr;
 }
 
-/* Answer prose — body weight, generous line-height (1.65), right-padded
-   so it doesn't run under the chevron column above.
+/* Answer prose. min-height:0 is REQUIRED so the 0fr grid row actually
+   collapses (without it the child claims its natural min-content height
+   and the row never reaches 0).
 
-   Opening: opacity + translateY fade in WITH A 0.1s DELAY so the row
-   visibly starts expanding before the text appears. This produces the
-   "text gracefully slides in as the panel opens" effect that closes
-   the gap between the height animation and content reveal.
-   Closing: defaults (base rule) — text fades out immediately as the
-   row begins to collapse, so the panel collapse looks unified. */
+   Opening: text fades in + slides down with a 0.18s DELAY after the row
+   starts expanding. This produces the "gradual slide-in" feel the user
+   wants — the panel visibly opens FIRST, then the prose drops in.
+   Closing: defaults (no delay, faster fade) so the text vanishes in
+   step with the row collapse instead of lingering behind. */
 .faq-list details > .faq-answer > p {
-  overflow: hidden;
   min-height: 0;
   margin: 0 0 clamp(20px, 2.6dvh, 32px);
   padding-right: clamp(28px, 4vw, 56px);
@@ -790,17 +807,17 @@ strong { color: var(--text); font-weight: 600; }
   letter-spacing: -0.003em;
   color: rgba(255, 255, 255, 0.66);
   opacity: 0;
-  transform: translateY(-6px);
+  transform: translateY(-10px);
   transition:
-    opacity 0.22s ease,
-    transform 0.26s cubic-bezier(0.2, 0.8, 0.2, 1);
+    opacity 0.18s ease,
+    transform 0.22s cubic-bezier(0.32, 0.72, 0, 1);
 }
 .faq-list details[open] > .faq-answer > p {
   opacity: 1;
   transform: translateY(0);
   transition:
-    opacity 0.34s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s,
-    transform 0.34s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s;
+    opacity 0.45s cubic-bezier(0.32, 0.72, 0, 1) 0.18s,
+    transform 0.5s cubic-bezier(0.32, 0.72, 0, 1) 0.18s;
 }
 .faq-list details > .faq-answer > p strong {
   color: rgba(255, 255, 255, 0.92);
@@ -1030,54 +1047,8 @@ strong { color: var(--text); font-weight: 600; }
   border-bottom-color: var(--accent);
 }
 
-/* Outlined pill — secondary CTA paired with .btn-cta. Used in the footer
-   brand block (Install — Free + Get Pro). Same pill shape, hairline
-   border, transparent background; hover firms up the border and tints. */
-.btn-ghost-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 18px;
-  font-family: var(--font-body);
-  font-size: 0.88rem;
-  font-weight: 600;
-  letter-spacing: -0.005em;
-  color: rgba(255, 255, 255, 0.88);
-  background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 999px;
-  text-decoration: none;
-  cursor: pointer;
-  white-space: nowrap;
-  transition:
-    color 0.2s ease,
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
-}
-.btn-ghost-pill:hover {
-  color: var(--text);
-  background: rgba(255, 255, 255, 0.04);
-  border-color: rgba(255, 255, 255, 0.32);
-  transform: translateY(-1px);
-}
-.btn-ghost-pill svg {
-  width: 14px;
-  height: 14px;
-  flex-shrink: 0;
-}
-
-/* Footer brand-block CTA row — Install + Get Pro, stacked below the
-   "Built for ultrawide." tagline. */
-.footer-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 18px;
-}
-
 /* Footer contact mini-block — tiny mono label + amber-on-hover email.
-   Sits below the CTA row in the brand column. Pattern mirrors the
+   Sits in the brand column under the tagline. Pattern mirrors the
    pricing receipt's "Read more → FAQ" link tone. */
 .footer-contact { margin-top: 22px; }
 .footer-contact-label {
