@@ -9,9 +9,6 @@
   <meta property="og:description" content="Quintic content-aware warp turns 16:9 video into true 21:9 without distorting faces. Watch the shader run in your browser." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://ultrawider.net" />
-  <link rel="alternate" hreflang="en" href="https://ultrawider.net/" />
-  <link rel="alternate" hreflang="ru" href="https://ultrawider.net/ru/" />
-  <link rel="alternate" hreflang="x-default" href="https://ultrawider.net/" />
   <title>Ultrawider — Stop watching letterbox bars</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -27,7 +24,6 @@
   <link rel="preload" as="image" href="demo/face-source.jpg" />
 
   <script src="assets/config.js" defer></script>
-  <script src="lang-switch.js" defer></script>
   <script src="assets/aspect-profile.js" defer></script>
   <script src="assets/warp-demo.js" defer></script>
   <script src="assets/math-demo.js" defer></script>
@@ -136,12 +132,7 @@
         <a href="#math">For geeks</a>
         <a href="#pricing">Pricing</a>
         <a href="#faq">FAQ</a>
-        <div class="lang-switch" data-current="en">
-          <a href="/" class="lang-current">EN</a>
-          <span class="lang-sep">/</span>
-          <a href="/ru/" class="lang-alt">RU</a>
-        </div>
-        <a href="#pricing" class="btn btn-primary btn-sm">Get Pro</a>
+        <a href="#pricing" class="btn-cta">Get Pro</a>
       </nav>
     </div>
   </header>
@@ -611,7 +602,7 @@
       <nav class="footer-nav">
         <h4>Account</h4>
         <a href="/recover">Recover license</a>
-        <a href="mailto:hello@ultrawider.net">Contact support</a>
+        <a href="/contact">Contact support</a>
       </nav>
       <nav class="footer-nav">
         <h4>Legal</h4>
@@ -621,20 +612,8 @@
       </nav>
     </div>
 
-    <div class="container footer-legal">
-      <div class="footer-operator">
-        <p>
-          <strong>Self-employed individual:</strong> Akimov Pavel Andreevich<br/>
-          <strong>INN:</strong> 482424418541<br/>
-          <strong>City:</strong> Lipetsk, Russia<br/>
-          <strong>Contact:</strong> <a href="mailto:hello@ultrawider.net">hello@ultrawider.net</a>
-        </p>
-      </div>
-    </div>
-
     <div class="container footer-bottom">
       <span>© 2026 Ultrawider. All rights reserved.</span>
-      <span class="text-mono text-mute" style="margin-left: 12px;">Hero footage: Mixkit (free, no attribution required)</span>
     </div>
   </footer>
 
@@ -677,6 +656,18 @@
         }, { threshold: 0.05 });
         io2.observe(hero);
       }
+
+      // FAQ smooth open/close — wrap each answer <p> in a grid-row that
+      // animates between 0fr (collapsed) and 1fr (expanded). The grid-
+      // template-rows transition is what makes height animate without
+      // needing a fixed max-height. Each detail also gets a 'will-change'
+      // hint so the GPU upgrades the row to its own layer during animation.
+      document.querySelectorAll('.faq-list details > p').forEach(function (p) {
+        var wrap = document.createElement('div');
+        wrap.className = 'faq-answer';
+        p.parentNode.insertBefore(wrap, p);
+        wrap.appendChild(p);
+      });
     })();
   </script>
 

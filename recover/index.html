@@ -3,16 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <title>Recover your key — Ultrawider</title>
+    <meta name="description" content="Lost your Ultrawider Pro license key? Enter the email you used at checkout — we'll resend the most recent active key." />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="theme-color" content="#050505" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
     />
     <link rel="stylesheet" href="/style.css" />
-    <link rel="stylesheet" href="/assets/styles.css" />
   </head>
   <body>
     <header class="site-header">
@@ -22,35 +22,49 @@
           <span class="logo-text">Ultrawider</span>
         </a>
         <nav class="nav-links">
-          <a href="/pricing" class="btn btn-ghost btn-sm">View plans</a>
+          <a href="/#playground">Playground</a>
+          <a href="/#math">For geeks</a>
+          <a href="/#pricing">Pricing</a>
+          <a href="/#faq">FAQ</a>
+          <a href="/#pricing" class="btn-cta">Get Pro</a>
         </nav>
       </div>
     </header>
 
-    <main class="checkout-page">
-      <div class="container container-narrow">
-        <a href="/pricing" class="back">← Back to plans</a>
-        <h1>Recover your license key</h1>
-        <p>
-          Enter the email you used at checkout. We'll re-send the most
-          recent active license key for that address.
-        </p>
+    <main class="account-page">
+      <div class="account-container">
+        <a href="/#pricing" class="account-back" aria-label="Back to plans">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+          Back to plans
+        </a>
 
-        <form id="form" style="margin-top: 1.5rem;">
-          <label for="email">Your email</label>
+        <header class="account-head">
+          <span class="account-eyebrow">Account</span>
+          <h1>Recover your license key.</h1>
+          <p class="account-lede">
+            Enter the email you used at checkout. We'll resend the most
+            recent active license key to that address.
+          </p>
+        </header>
+
+        <form class="account-form" id="form" novalidate>
+          <label class="account-label" for="email">Your email</label>
           <input
+            class="account-input"
             type="email"
             id="email"
             required
             placeholder="your.email@example.com"
             autocomplete="email"
           />
-          <button type="submit">Send my key</button>
+          <button class="account-submit" type="submit">Send my key</button>
         </form>
 
-        <div id="msg" hidden style="margin-top: 1rem;"></div>
+        <div class="account-msg" id="msg" hidden></div>
 
-        <p class="muted" style="margin-top: 2rem;">
+        <p class="account-fallback">
           Still no luck? Email
           <a id="contact-link" href="mailto:hello@ultrawider.net">hello@ultrawider.net</a>
           and we'll dig it out manually.
@@ -70,29 +84,38 @@
         document.getElementById('contact-link').href =
           'mailto:' + window.ULTRAWIDER.CONTACT_EMAIL;
 
-        // Pre-fill from query string if email link came from a delivered email
-        const params = new URLSearchParams(location.search);
-        const presetEmail = params.get('email');
+        var params = new URLSearchParams(location.search);
+        var presetEmail = params.get('email');
         if (presetEmail) document.getElementById('email').value = presetEmail;
 
-        document.getElementById('form').addEventListener('submit', async function (e) {
+        var form = document.getElementById('form');
+        var input = document.getElementById('email');
+        var msg = document.getElementById('msg');
+
+        form.addEventListener('submit', async function (e) {
           e.preventDefault();
-          const email = document.getElementById('email').value.trim();
-          const msg = document.getElementById('msg');
+          var email = (input.value || '').trim();
+          if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            msg.hidden = false;
+            msg.className = 'account-msg account-msg--error';
+            msg.textContent = 'Please enter a valid email address.';
+            return;
+          }
+
           msg.hidden = false;
+          msg.className = 'account-msg';
           msg.textContent = 'Sending…';
-          msg.className = '';
 
           try {
-            // TODO: hit /api/recover once backend wires it. For now, just
-            // show a generic "check your email" message — operator can
-            // manually resend from admin until /api/recover ships.
+            // TODO: hit /api/recover once backend wires it. For now show
+            // a generic "check your inbox" message — operator can manually
+            // resend from admin until the endpoint ships.
             await new Promise(function (r) { setTimeout(r, 500); });
             msg.textContent =
               "If we have any active licenses for that email, we'll resend them within a few minutes. Check your inbox + spam folder.";
           } catch (err) {
-            msg.className = 'error';
-            msg.textContent = 'Could not reach our servers — try again later.';
+            msg.className = 'account-msg account-msg--error';
+            msg.textContent = "Couldn't reach our servers — try again in a minute.";
           }
         });
       })();

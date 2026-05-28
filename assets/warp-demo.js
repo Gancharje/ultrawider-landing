@@ -113,6 +113,13 @@
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 
+    // Paint the backbuffer black on init — without this, on browsers
+    // where the WebGL canvas defaults to transparent-but-rendered-white
+    // (some Chromium builds), the right half of the divider briefly
+    // flashes white before the first warp() call binds a video frame.
+    gl.clearColor(0, 0, 0, 1);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+
     function warp(source, dstWidth, dstHeight, curveStrength) {
       if (canvas.width !== dstWidth || canvas.height !== dstHeight) {
         canvas.width = dstWidth;

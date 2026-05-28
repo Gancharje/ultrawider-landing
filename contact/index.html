@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Contact — Ultrawider</title>
+    <meta name="description" content="Got a question about Ultrawider? Email hello@ultrawider.net — every message gets a human reply, usually within a day." />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#050505" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    />
+    <link rel="stylesheet" href="/style.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav">
+        <a href="/" class="logo">
+          <span class="logo-mark"></span>
+          <span class="logo-text">Ultrawider</span>
+        </a>
+        <nav class="nav-links">
+          <a href="/#playground">Playground</a>
+          <a href="/#math">For geeks</a>
+          <a href="/#pricing">Pricing</a>
+          <a href="/#faq">FAQ</a>
+          <a href="/#pricing" class="btn-cta">Get Pro</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="account-page">
+      <div class="account-container account-container-wide">
+        <a href="/" class="account-back" aria-label="Back to home">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+          Back to home
+        </a>
+
+        <div class="contact-brand" aria-hidden="true">
+          <span class="contact-brand-mark"></span>
+          <span class="contact-brand-text">Ultrawider</span>
+        </div>
+
+        <header class="account-head account-head-center">
+          <span class="account-eyebrow">Contact</span>
+          <h1>Got a question?<br/>We're&nbsp;here.</h1>
+          <p class="account-lede">
+            We're a small indie team — every email gets a human reply,
+            usually within a day. Often faster. No tickets, no queues.
+          </p>
+        </header>
+
+        <a href="mailto:hello@ultrawider.net" class="account-contact-email" id="contact-email">
+          hello@ultrawider.net
+        </a>
+        <span class="account-contact-hint">Click to compose</span>
+
+        <div class="account-actions">
+          <a href="https://chromewebstore.google.com/detail/ultrawider" class="account-actions-secondary" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9"/>
+              <circle cx="12" cy="12" r="3"/>
+              <line x1="12" y1="9" x2="20.5" y2="9"/>
+              <line x1="7.5" y1="13.5" x2="3.5" y2="20.5"/>
+              <line x1="16.5" y1="13.5" x2="20.5" y2="20.5"/>
+            </svg>
+            Install — Free
+          </a>
+          <a href="/#pricing" class="btn-cta">Get Pro — from $2.98/mo</a>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-bottom">
+        <span>© 2026 Ultrawider · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a href="/refund.html">Refund</a></span>
+      </div>
+    </footer>
+
+    <script src="/assets/config.js"></script>
+    <script>
+      (function () {
+        var emailLink = document.getElementById('contact-email');
+        if (window.ULTRAWIDER && window.ULTRAWIDER.CONTACT_EMAIL) {
+          emailLink.textContent = window.ULTRAWIDER.CONTACT_EMAIL;
+          emailLink.href = 'mailto:' + window.ULTRAWIDER.CONTACT_EMAIL;
+        }
+      })();
+    </script>
+  </body>
+</html>
