@@ -17,7 +17,7 @@
     rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
   />
-  <link rel="stylesheet" href="style.css?v=8" />
+  <link rel="stylesheet" href="style.css?v=9" />
   <link rel="stylesheet" href="assets/styles.css" />
 
   <link rel="preload" as="video" href="demo/cinematic-hero.mp4" type="video/mp4" />
@@ -672,6 +672,65 @@
         p.parentNode.insertBefore(outer, p);
         outer.appendChild(inner);
         inner.appendChild(p);
+      });
+
+      // JS-controlled toggle — defers [open] removal until AFTER the
+      // close transition completes, so closing animates as smoothly as
+      // opening. The visual state is driven by an `.is-open` class on
+      // <details>; the native [open] attribute only controls whether
+      // the browser renders the slot at all. Why this is needed: when
+      // [open] is removed natively, the browser hides the slot's
+      // children IMMEDIATELY, bypassing any CSS transition on the
+      // wrapper — that's why closing used to "snap" abruptly while
+      // opening eased smoothly. Decoupling also fixes the re-open
+      // glitch the user noticed: after the abrupt close, the next
+      // open could start from a half-broken state because the
+      // transition never completed.
+      document.querySelectorAll('.faq-list details').forEach(function (details) {
+        var summary = details.querySelector('summary');
+        if (!summary) return;
+        if (details.hasAttribute('open')) details.classList.add('is-open');
+
+        summary.addEventListener('click', function (e) {
+          e.preventDefault();
+          var wrapper = details.querySelector('.faq-answer');
+          if (!wrapper) {
+            details.open = !details.open;
+            return;
+          }
+          // Cancel any pending close listener — handles re-clicks mid
+          // transition cleanly (otherwise the stale listener would
+          // strip [open] from a now-reopening details).
+          if (wrapper._faqCloseListener) {
+            wrapper.removeEventListener('transitionend', wrapper._faqCloseListener);
+            wrapper._faqCloseListener = null;
+          }
+
+          if (details.classList.contains('is-open')) {
+            // Close: drop .is-open (starts collapse transition); wait
+            // for transitionend then drop [open] so the slot stops
+            // rendering. Filter on propertyName to ignore unrelated
+            // transitions bubbling up from descendants.
+            details.classList.remove('is-open');
+            var onEnd = function (ev) {
+              if (ev.target !== wrapper) return;
+              if (ev.propertyName !== 'grid-template-rows') return;
+              wrapper.removeEventListener('transitionend', onEnd);
+              wrapper._faqCloseListener = null;
+              details.removeAttribute('open');
+            };
+            wrapper._faqCloseListener = onEnd;
+            wrapper.addEventListener('transitionend', onEnd);
+          } else {
+            // Open: set [open] so the browser renders the slot, then
+            // on the next frame add .is-open so the transition runs
+            // from the natural starting state (0fr) to 1fr.
+            details.setAttribute('open', '');
+            requestAnimationFrame(function () {
+              details.classList.add('is-open');
+            });
+          }
+        });
       });
     })();
   </script>

@@ -212,9 +212,10 @@
     if (closeBtn) closeBtn.addEventListener('click', closeCheckout);
 
     // Sponsorship explainer "Read more →" links jump to a specific FAQ
-    // entry and auto-open it. Without this, clicking a hash like
-    // #faq-stars would scroll there but leave the <details> collapsed,
-    // which defeats the purpose of the cue.
+    // entry and auto-open it. Use the same [open] + .is-open pairing
+    // the FAQ click-handler in index.html uses, so the open animation
+    // runs from the natural starting state (0fr → 1fr) rather than
+    // snapping straight to expanded.
     document.addEventListener('click', function (e) {
       var trigger = e.target.closest('[data-faq-jump]');
       if (!trigger) return;
@@ -222,7 +223,12 @@
       var target = id && document.getElementById(id);
       if (!target) return;
       e.preventDefault();
-      if (target.tagName === 'DETAILS') target.open = true;
+      if (target.tagName === 'DETAILS' && !target.classList.contains('is-open')) {
+        target.setAttribute('open', '');
+        requestAnimationFrame(function () {
+          target.classList.add('is-open');
+        });
+      }
       target.scrollIntoView({ behavior: 'smooth', block: 'center' });
       // Update the hash so the :target CSS pulse fires and a refresh
       // re-anchors the user where they were.
