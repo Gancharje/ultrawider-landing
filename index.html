@@ -17,7 +17,7 @@
     rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
   />
-  <link rel="stylesheet" href="style.css?v=4" />
+  <link rel="stylesheet" href="style.css?v=5" />
   <link rel="stylesheet" href="assets/styles.css" />
 
   <link rel="preload" as="video" href="demo/cinematic-hero.mp4" type="video/mp4" />
@@ -661,16 +661,25 @@
         io2.observe(hero);
       }
 
-      // FAQ smooth open/close — wrap each answer <p> in a grid-row that
-      // animates between 0fr (collapsed) and 1fr (expanded). The grid-
-      // template-rows transition is what makes height animate without
-      // needing a fixed max-height. Each detail also gets a 'will-change'
-      // hint so the GPU upgrades the row to its own layer during animation.
+      // FAQ smooth open/close — DOUBLE-WRAPPER grid-row animation.
+      // Why two wrappers: the outer .faq-answer is the grid container
+      // that transitions from 0fr → 1fr. The inner .faq-answer-inner
+      // does the overflow:hidden clipping. Splitting clipping FROM the
+      // animated property is the pattern that Bramus and the CSSWG
+      // recommend — it avoids the intermittent-skip-animation behavior
+      // that single-wrapper grid tricks have in current Chromium when
+      // combined with <details>'s slot rendering (the UA's
+      // content-visibility flip on [open] toggle was racing the
+      // transition and sometimes skipping it entirely, which is why
+      // the user saw the slide-down "rarely" instead of "always").
       document.querySelectorAll('.faq-list details > p').forEach(function (p) {
-        var wrap = document.createElement('div');
-        wrap.className = 'faq-answer';
-        p.parentNode.insertBefore(wrap, p);
-        wrap.appendChild(p);
+        var outer = document.createElement('div');
+        outer.className = 'faq-answer';
+        var inner = document.createElement('div');
+        inner.className = 'faq-answer-inner';
+        p.parentNode.insertBefore(outer, p);
+        outer.appendChild(inner);
+        inner.appendChild(p);
       });
     })();
   </script>

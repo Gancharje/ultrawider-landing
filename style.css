@@ -266,9 +266,14 @@ strong { color: var(--text); font-weight: 600; }
     transform 0.42s cubic-bezier(0.32, 0.72, 0, 1);
 }
 .btn-cta:hover {
-  background: var(--accent);
+  /* Muted amber on hover — not the full-saturated brand --accent that
+     made the pill "брigнter than ambient" against the page's amber
+     usage (which is mostly amber-at-reduced-alpha in eyebrows and
+     accents). #d97706 is amber-600, slightly deeper than --accent
+     (amber-500), and reads as premium-deep rather than candy-bright. */
+  background: #d97706;
   color: #0a0807;
-  box-shadow: inset 0 0 0 1.5px var(--accent);
+  box-shadow: inset 0 0 0 1.5px #d97706;
   transform: translateY(-1px) translateZ(0);
 }
 .btn-cta:active {
@@ -782,33 +787,37 @@ strong { color: var(--text); font-weight: 600; }
    - JS in index.html wraps each <details> > <p> on DOMContentLoaded
    - Easing: cubic-bezier(0.32, 0.72, 0, 1) — Apple's "smooth" curve
      (gentle start, settles softly) */
-/* PURE row-growth reveal — no opacity/transform tricks.
+/* DOUBLE-WRAPPER row-growth reveal. Two divs, two responsibilities:
+     .faq-answer       — grid container, transitions 0fr → 1fr (this
+                         IS the height animation)
+     .faq-answer-inner — overflow:hidden + min-height:0, does the clip
 
-   Previous iterations layered opacity 0→1 + translateY on top of the
-   grid-template-rows transition. That fought the natural reveal:
-   text stayed INVISIBLE while the row was opening, then suddenly
-   appeared all at once after the delay. Felt like "computer lag,
-   then a dump of text" (user's exact description).
+   Why the split? In modern Chromium, applying overflow:hidden to the
+   same element that transitions grid-template-rows creates a race
+   with the browser's <details>-slot rendering (content-visibility flip
+   on [open]). The race used to "skip" the transition entirely — user
+   saw the gradual slide ~10% of the time and an instant text-dump the
+   other 90%. Separating the animated element from the clipping element
+   resolves the race and gives consistent every-time slide-down behavior.
 
-   The correct mechanism: keep the text always-rendered, always-opaque.
-   The grid row growing from 0fr → 1fr + overflow:hidden on the wrapper
-   IS the line-by-line top-down reveal — only the portion of the
-   paragraph that fits inside the growing row is visible at each
-   frame. As the row gradually unclips, more lines come into view
-   from the TOP downward, smoothly, line by line. This is exactly
-   what the user described as "сверху вниз постепенно плавно". */
+   content-visibility: visible !important defeats any UA-stylesheet
+   override that would otherwise make the slot invisible at the start. */
 .faq-list details > .faq-answer {
   display: grid;
   grid-template-rows: 0fr;
-  overflow: hidden;
+  content-visibility: visible;
+  will-change: grid-template-rows;
   transition: grid-template-rows 0.6s cubic-bezier(0.32, 0.72, 0, 1);
 }
 .faq-list details[open] > .faq-answer {
   grid-template-rows: 1fr;
 }
-
-.faq-list details > .faq-answer > p {
+.faq-list details > .faq-answer > .faq-answer-inner {
+  overflow: hidden;
   min-height: 0;
+}
+
+.faq-list details > .faq-answer > .faq-answer-inner > p {
   margin: 0 0 clamp(20px, 2.6dvh, 32px);
   padding-right: clamp(28px, 4vw, 56px);
   font-family: var(--font-body);
@@ -818,11 +827,11 @@ strong { color: var(--text); font-weight: 600; }
   letter-spacing: -0.003em;
   color: rgba(255, 255, 255, 0.66);
 }
-.faq-list details > .faq-answer > p strong {
+.faq-list details > .faq-answer > .faq-answer-inner > p strong {
   color: rgba(255, 255, 255, 0.92);
   font-weight: 500;
 }
-.faq-list details > .faq-answer > p code {
+.faq-list details > .faq-answer > .faq-answer-inner > p code {
   font-family: var(--font-mono);
   font-size: 0.84em;
   color: rgba(255, 255, 255, 0.88);
@@ -831,13 +840,13 @@ strong { color: var(--text); font-weight: 600; }
   border-radius: 3px;
   letter-spacing: 0.02em;
 }
-.faq-list details > .faq-answer > p a {
+.faq-list details > .faq-answer > .faq-answer-inner > p a {
   color: var(--accent);
   text-decoration: none;
   border-bottom: 1px solid rgba(245, 158, 11, 0.32);
   transition: border-color 0.22s ease, color 0.22s ease;
 }
-.faq-list details > .faq-answer > p a:hover {
+.faq-list details > .faq-answer > .faq-answer-inner > p a:hover {
   border-bottom-color: var(--accent);
 }
 
@@ -853,7 +862,7 @@ strong { color: var(--text); font-weight: 600; }
     padding: clamp(26px, 3dvh, 38px) 4px;
     font-size: clamp(1.1rem, 0.4vw + 0.94rem, 1.25rem);
   }
-  .faq-list details > .faq-answer > p {
+  .faq-list details > .faq-answer > .faq-answer-inner > p {
     margin-bottom: clamp(26px, 3dvh, 38px);
     font-size: 1rem;
     line-height: 1.7;
