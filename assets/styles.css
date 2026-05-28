@@ -396,7 +396,8 @@ button[type='submit'][disabled] {
   transform: rotate(45deg) translate(-1px, -1px);
 }
 .checkout-ack span {
-  font-size: 0.82rem;
+  /* Match the 16px checkbox height for visual parity. */
+  font-size: 1rem;
   line-height: 1.5;
   color: var(--text-dim);
 }
