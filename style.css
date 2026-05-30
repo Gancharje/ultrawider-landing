@@ -1541,15 +1541,20 @@ strong { color: var(--text); font-weight: 600; }
   flex-shrink: 0;
 }
 
+.playground-control-track-wrap {
+  flex: 1;
+  position: relative;
+}
 .playground-control input[type="range"] {
   -webkit-appearance: none;
   appearance: none;
-  flex: 1;
+  width: 100%;
   height: 4px;
   background: rgba(255, 255, 255, 0.1);
   border-radius: 2px;
   outline: none;
   cursor: pointer;
+  display: block;
 }
 .playground-control input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
@@ -1577,16 +1582,34 @@ strong { color: var(--text); font-weight: 600; }
   cursor: grab;
 }
 
+/* Marks sit inside the same wrapper as the slider input so they share
+   the same horizontal extent. Each span is absolutely positioned with
+   transform translateX(-50%) so its text-center lands exactly under
+   the corresponding thumb stop:
+   - Subtle:  left 8px (≈ thumb radius)            → thumb at value=min
+   - Medium:  left 50%                              → thumb at value-mid
+   - Strong:  left calc(100% - 8px)                 → thumb at value=max
+   Without this each label rode the wrap's flex/margin edge instead of
+   the actual thumb track. */
 .playground-control-marks {
-  display: flex;
-  justify-content: space-between;
-  margin: 4px 12px 0;
+  position: relative;
+  height: 0.9rem;
+  margin: 6px 0 0;
   font-size: 0.65rem;
   font-weight: 600;
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--text-mute);
 }
+.playground-control-marks span {
+  position: absolute;
+  top: 0;
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+.playground-control-marks span:nth-child(1) { left: 8px; }
+.playground-control-marks span:nth-child(2) { left: 50%; }
+.playground-control-marks span:nth-child(3) { left: calc(100% - 8px); }
 
 /* Bullets row underneath the playground — replaces the per-li bullet
    list pattern (.hero-bullets ul) since hero-copy-centered doesn't have
