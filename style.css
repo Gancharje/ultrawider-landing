@@ -1583,18 +1583,17 @@ strong { color: var(--text); font-weight: 600; }
 }
 
 /* Marks sit inside the same wrapper as the slider input so they share
-   the same horizontal extent. Each span is absolutely positioned with
-   transform translateX(-50%) so its text-center lands exactly under
-   the corresponding thumb stop:
-   - Subtle:  left 8px (≈ thumb radius)            → thumb at value=min
-   - Medium:  left 50%                              → thumb at value-mid
-   - Strong:  left calc(100% - 8px)                 → thumb at value=max
-   Without this each label rode the wrap's flex/margin edge instead of
-   the actual thumb track. */
+   the same horizontal extent. Outer labels anchor to the wrap's edges
+   (SUBTLE left-aligned at 0, STRONG right-aligned at 0) so they don't
+   overflow the slider track — translateX(-50%) on text wider than the
+   thumb-radius pushed them visually into adjacent UI. Only MEDIUM is
+   geometrically centered, which is enough to convey the scale. The
+   margin-top adds breathing room so the thumb (16px circle, extends
+   above/below the 4px rail) doesn't collide with label text. */
 .playground-control-marks {
   position: relative;
   height: 0.9rem;
-  margin: 6px 0 0;
+  margin: 14px 0 0;
   font-size: 0.65rem;
   font-weight: 600;
   letter-spacing: 0.1em;
@@ -1604,12 +1603,11 @@ strong { color: var(--text); font-weight: 600; }
 .playground-control-marks span {
   position: absolute;
   top: 0;
-  transform: translateX(-50%);
   white-space: nowrap;
 }
-.playground-control-marks span:nth-child(1) { left: 8px; }
-.playground-control-marks span:nth-child(2) { left: 50%; }
-.playground-control-marks span:nth-child(3) { left: calc(100% - 8px); }
+.playground-control-marks span:nth-child(1) { left: 0; }
+.playground-control-marks span:nth-child(2) { left: 50%; transform: translateX(-50%); }
+.playground-control-marks span:nth-child(3) { right: 0; }
 
 /* Bullets row underneath the playground — replaces the per-li bullet
    list pattern (.hero-bullets ul) since hero-copy-centered doesn't have
