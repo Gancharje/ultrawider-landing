@@ -1527,25 +1527,32 @@ strong { color: var(--text); font-weight: 600; }
   padding: 10px 16px 12px;
 }
 
+/* CSS grid: name + slider on row 1; marks (Subtle/Medium/Strong) on
+   row 2 in the SAME column as the slider input. This way:
+   - the name vertically aligns with the slider rail (centered);
+   - marks sit ONE ROW BELOW under the slider, not at the same height
+     as the name;
+   - marks span exactly the slider's horizontal extent so MEDIUM truly
+     lines up with the thumb's mid-position. */
 .playground-control {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto 1fr;
   align-items: center;
-  gap: 12px;
+  column-gap: 12px;
+  row-gap: 6px;
 }
 .playground-control-name {
+  grid-column: 1;
+  grid-row: 1;
   font-size: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-dim);
-  flex-shrink: 0;
-}
-
-.playground-control-track-wrap {
-  flex: 1;
-  position: relative;
 }
 .playground-control input[type="range"] {
+  grid-column: 2;
+  grid-row: 1;
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
@@ -1556,6 +1563,11 @@ strong { color: var(--text); font-weight: 600; }
   cursor: pointer;
   display: block;
 }
+.playground-control input[type="range"]:focus,
+.playground-control input[type="range"]:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
 .playground-control input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
@@ -1564,7 +1576,6 @@ strong { color: var(--text); font-weight: 600; }
   background: var(--accent);
   border: 2px solid var(--bg);
   border-radius: 50%;
-  box-shadow: 0 0 0 1px var(--accent), 0 0 12px var(--accent-glow);
   cursor: grab;
   transition: transform 120ms cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -1578,22 +1589,21 @@ strong { color: var(--text); font-weight: 600; }
   background: var(--accent);
   border: 2px solid var(--bg);
   border-radius: 50%;
-  box-shadow: 0 0 0 1px var(--accent), 0 0 12px var(--accent-glow);
   cursor: grab;
 }
 
-/* Marks sit inside the same wrapper as the slider input so they share
-   the same horizontal extent. Outer labels anchor to the wrap's edges
-   (SUBTLE left-aligned at 0, STRONG right-aligned at 0) so they don't
-   overflow the slider track — translateX(-50%) on text wider than the
-   thumb-radius pushed them visually into adjacent UI. Only MEDIUM is
-   geometrically centered, which is enough to convey the scale. The
-   margin-top adds breathing room so the thumb (16px circle, extends
-   above/below the 4px rail) doesn't collide with label text. */
+/* Marks live in the SAME grid column as the slider input (row 2) so
+   they automatically span the exact horizontal extent of the slider
+   track. Outer labels anchor to the column's edges (SUBTLE left at 0,
+   STRONG right at 0). Only MEDIUM is geometrically centered, which is
+   enough to convey the scale. translateX(-50%) on the outer labels
+   was pushing wide words into adjacent UI — anchoring fixes that. */
 .playground-control-marks {
+  grid-column: 2;
+  grid-row: 2;
   position: relative;
   height: 0.9rem;
-  margin: 14px 0 0;
+  margin: 6px 0 0;
   font-size: 0.65rem;
   font-weight: 600;
   letter-spacing: 0.1em;
