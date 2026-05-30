@@ -81,11 +81,25 @@
           and an <strong>anonymous install ID</strong> (a random UUID
           generated at first install, not linked to your email or any
           other identifier). Crash reports are <strong>always sent</strong>
-          regardless of telemetry opt-in, because we need this signal to
-          ship fixes. They contain no PII, no video content, no
-          credentials, and no licence key. Behavioural telemetry (feature
-          usage, mode-change events) remains opt-in and is disabled by
-          default.
+          regardless of telemetry preferences, because we need this
+          signal to ship fixes. They contain no PII, no video content,
+          no credentials, and no licence key.
+        </li>
+        <li>
+          <strong>Behavioural telemetry</strong> (extension only) — when
+          the extension loads on a page, when you open a video in
+          fullscreen with our HUD visible, and when you select a viewing
+          mode, the extension sends an anonymous event containing: your
+          install ID, the page hostname (e.g. <code>youtube.com</code> —
+          NOT the URL or video ID), your monitor's aspect-ratio tier
+          (16:9, 21:9, 24:9, or 32:9), and screen dimensions. We use
+          this to understand which sites our users actually want
+          ultrawide support on and to find compatibility gaps.
+          <br><br>
+          <strong>This is enabled by default.</strong> You can opt out at
+          any time by opening the Ultrawider popup (toolbar icon) and
+          unchecking «Анонимная телеметрия» / "Anonymous telemetry".
+          We send no behavioural events while opted out.
         </li>
         <li>
           <strong>Anonymous website analytics</strong> — the
