@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Your subscription — Ultrawider</title>
+    <meta name="description" content="Manage your Ultrawider Pro subscription — view your license key, expiry, and re-send delivery email." />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#050505" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    />
+    <link rel="stylesheet" href="/style.css?v=12" />
+    <script src="/assets/config.js?v=12"></script>
+    <script src="/assets/error-instrumentation.js?v=12"></script>
+    <script src="/assets/metrika.js?v=12" defer></script>
+    <script src="/assets/audience-stats.js?v=12" defer></script>
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/109480276" style="position:absolute;left:-9999px" alt="" /></div></noscript>
+    <header class="site-header">
+      <div class="container nav">
+        <a href="/" class="logo">
+          <span class="logo-mark"></span>
+          <span class="logo-text">Ultrawider</span>
+        </a>
+        <nav class="nav-links">
+          <a href="/#playground">Playground</a>
+          <a href="/#math">For geeks</a>
+          <a href="/#pricing">Pricing</a>
+          <a href="/#faq">FAQ</a>
+          <a href="/#pricing" class="btn-cta">Get Pro</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="account-page" style="max-width: 640px; margin: 0 auto; padding: 80px 24px 120px;">
+      <span class="eyebrow" style="color: var(--text-mute); font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;">Subscription</span>
+      <h1 style="font-family: var(--font-display); font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 600; margin: 8px 0 24px;">Your Ultrawider Pro</h1>
+
+      <!-- Loaded state -->
+      <div
+        id="key-card"
+        style="display: none; background: rgba(245, 158, 11, 0.06); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 12px; padding: 20px 22px; margin-bottom: 32px;"
+      >
+        <div style="font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px;">License key</div>
+        <div id="key-display" style="font-family: var(--font-mono); font-size: 1.1rem; letter-spacing: 0.08em; color: var(--text); word-break: break-all;"></div>
+        <div style="margin-top: 14px; font-size: 0.85rem; color: var(--text-dim);">
+          Keep this key safe — you'll need it to activate Pro on any new device.
+        </div>
+      </div>
+
+      <!-- No-key state -->
+      <div
+        id="no-key-card"
+        style="background: var(--bg-elev); border: 1px solid var(--border-soft); border-radius: 12px; padding: 20px 22px; margin-bottom: 32px;"
+      >
+        <div style="font-size: 1rem; color: var(--text); margin-bottom: 8px; font-weight: 500;">No key in URL</div>
+        <div style="font-size: 0.9rem; color: var(--text-dim); line-height: 1.55;">
+          To see your subscription details, open the Ultrawider extension popup → click <strong>Manage subscription</strong>.
+          Or recover your key by email below.
+        </div>
+      </div>
+
+      <h2 style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; margin: 32px 0 14px;">Common actions</h2>
+
+      <div style="display: grid; gap: 12px;">
+        <a
+          href="/recover"
+          style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: var(--bg-elev); border: 1px solid var(--border-soft); border-radius: 10px; color: var(--text); text-decoration: none; transition: border-color 0.2s ease;"
+          onmouseover="this.style.borderColor='var(--accent)'"
+          onmouseout="this.style.borderColor='var(--border-soft)'"
+        >
+          <div>
+            <div style="font-weight: 500;">Lost your key?</div>
+            <div style="font-size: 0.82rem; color: var(--text-dim); margin-top: 2px;">Recover by email — we'll re-send your most recent active key</div>
+          </div>
+          <span style="color: var(--accent); font-family: var(--font-mono);">→</span>
+        </a>
+
+        <a
+          href="/contact"
+          style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: var(--bg-elev); border: 1px solid var(--border-soft); border-radius: 10px; color: var(--text); text-decoration: none; transition: border-color 0.2s ease;"
+          onmouseover="this.style.borderColor='var(--accent)'"
+          onmouseout="this.style.borderColor='var(--border-soft)'"
+        >
+          <div>
+            <div style="font-weight: 500;">Need help?</div>
+            <div style="font-size: 0.82rem; color: var(--text-dim); margin-top: 2px;">Email support — refunds, device transfers, billing questions</div>
+          </div>
+          <span style="color: var(--accent); font-family: var(--font-mono);">→</span>
+        </a>
+
+        <a
+          href="/#pricing"
+          style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: var(--bg-elev); border: 1px solid var(--border-soft); border-radius: 10px; color: var(--text); text-decoration: none; transition: border-color 0.2s ease;"
+          onmouseover="this.style.borderColor='var(--accent)'"
+          onmouseout="this.style.borderColor='var(--border-soft)'"
+        >
+          <div>
+            <div style="font-weight: 500;">Upgrade plan</div>
+            <div style="font-size: 0.82rem; color: var(--text-dim); margin-top: 2px;">Switch to a longer plan — quarterly, yearly or lifetime</div>
+          </div>
+          <span style="color: var(--accent); font-family: var(--font-mono);">→</span>
+        </a>
+      </div>
+
+      <p style="margin-top: 36px; font-size: 0.82rem; color: var(--text-mute); line-height: 1.6;">
+        Your license is bound to up to 3 devices. To transfer to a new device, simply activate on the new one — the least recently used device will be unbound automatically.
+      </p>
+    </main>
+
+    <footer class="site-footer" style="margin-top: 80px;">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="logo">
+            <span class="logo-mark"></span>
+            <span class="logo-text">Ultrawider</span>
+          </a>
+          <p class="footer-tag">Built for ultrawide.</p>
+        </div>
+        <nav class="footer-nav">
+          <h4>Product</h4>
+          <a href="/#features">Features</a>
+          <a href="/#how">How it works</a>
+          <a href="/#pricing">Pricing</a>
+          <a href="/#faq">FAQ</a>
+        </nav>
+        <nav class="footer-nav">
+          <h4>Account</h4>
+          <a href="/recover">Recover key</a>
+          <a href="/contact">Support</a>
+        </nav>
+      </div>
+      <div class="container footer-bottom">
+        <span>© 2026 Ultrawider. All rights reserved.</span>
+      </div>
+    </footer>
+
+    <script>
+      // License key is passed via URL fragment (#key=XXXX) to keep it
+      // out of Referer headers and server access logs. Mask middle so
+      // shoulder-surfers can't capture it from a screen recording.
+      (function () {
+        var hash = location.hash.replace(/^#/, '');
+        var params = new URLSearchParams(hash);
+        var key = params.get('key');
+        if (!key) return;
+        // Show first 4 and last 4 chars, dot-mask the middle.
+        var clean = key.replace(/[^A-F0-9]/gi, '').toUpperCase();
+        if (clean.length < 8) return;
+        var masked = clean.slice(0, 4) + '-····-····-' + clean.slice(-4);
+        document.getElementById('key-display').textContent = masked;
+        document.getElementById('key-card').style.display = 'block';
+        document.getElementById('no-key-card').style.display = 'none';
+      })();
+    </script>
+  </body>
+</html>
