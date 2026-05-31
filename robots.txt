@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /account
+Disallow: /checkout
+Disallow: /order
+
+Sitemap: https://ultrawider.net/sitemap.xml
