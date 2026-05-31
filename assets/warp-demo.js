@@ -179,44 +179,33 @@
       return;
     }
 
-    // Mobile fallback — playground UX is finicky on small screens.
-    var isMobile = window.matchMedia('(max-width: 720px)').matches;
-    if (isMobile) {
-      root.classList.add('playground-fallback');
-      // iOS Safari sometimes refuses to autoplay even with muted +
-      // playsinline (Low Power Mode, autoplay-block setting,
-      // background-tab restore). Try play() explicitly; if it gets
-      // rejected, wire a one-time tap listener so the very first
-      // touch starts the demo. Failure mode without this: visitor
-      // sees the poster frame frozen and concludes the demo is broken.
-      var tryPlay = function () {
-        var p = video.play();
-        if (p && typeof p.catch === 'function') {
-          p.catch(function () {
-            var resume = function () {
-              video.play().catch(function () {});
-              root.removeEventListener('touchstart', resume);
-              root.removeEventListener('click', resume);
-            };
-            root.addEventListener('touchstart', resume, { once: true, passive: true });
-            root.addEventListener('click', resume, { once: true });
-          });
-        }
-      };
-      if (video.readyState >= 2) tryPlay();
-      else video.addEventListener('loadeddata', tryPlay, { once: true });
-      return;
-    }
+    // iOS Safari sometimes refuses to autoplay even with muted +
+    // playsinline (Low Power Mode, autoplay-block setting,
+    // background-tab restore). Try play() explicitly; if rejected,
+    // wire a one-time tap listener so the very first touch kicks
+    // playback. Without this the visitor sees a frozen poster on
+    // real iOS and assumes the demo is broken.
+    var tryPlay = function () {
+      var p = video.play();
+      if (p && typeof p.catch === 'function') {
+        p.catch(function () {
+          var resume = function () {
+            video.play().catch(function () {});
+            root.removeEventListener('touchstart', resume);
+            root.removeEventListener('click', resume);
+          };
+          root.addEventListener('touchstart', resume, { once: true, passive: true });
+          root.addEventListener('click', resume, { once: true });
+        });
+      }
+    };
+    if (video.readyState >= 2) tryPlay();
+    else video.addEventListener('loadeddata', tryPlay, { once: true });
 
-    // Desktop WebGL path needs CORS-safe canvas reads. The video is
-    // same-origin so crossOrigin is technically unnecessary, but Chrome
-    // is stricter about CORS on canvas.captureStream and similar APIs.
-    // Set it BEFORE the renderer touches the video — re-load if
-    // necessary so the fetch picks up the attribute.
-    if (video.crossOrigin !== 'anonymous') {
-      video.crossOrigin = 'anonymous';
-      try { video.load(); } catch (_) {}
-    }
+    // No crossOrigin needed — video is same-origin (served from
+    // ultrawider.net same as the page). Adding it would trigger a
+    // re-fetch + autoplay denial on iOS Safari for no benefit.
+    // Canvas texImage2D works on same-origin video without it.
 
     // Reduced-motion preference disables scroll-driven warp.
     var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

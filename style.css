@@ -1666,78 +1666,52 @@ strong { color: var(--text); font-weight: 600; }
 }
 .playground-fallback-message p { margin: 0; color: inherit; }
 
-/* Fallback (no WebGL or mobile): hide the INTERACTIVE chrome (canvas,
-   draggable divider, slider controls) but KEEP the labels + a static
-   mid-line so the visitor still sees the «Without ↔ Ultrawider» story.
-   Previously this rule also hid .playground-labels which left users
-   with a featureless static video and zero indication that the box
-   was meant to be a demo at all. */
+/* Fallback (WebGL unavailable — rare, only ancient browsers without
+   WebGL1 even): hide the interactive chrome, leave raw video. */
 .playground.playground-fallback .playground-canvas,
 .playground.playground-fallback .playground-divider,
+.playground.playground-fallback .playground-labels,
 .playground.playground-fallback .playground-controls {
   display: none;
 }
 .playground.playground-fallback .playground-video {
-  /* In fallback mode, fill the frame rather than letterboxing — we don't
-     have the warp to compensate, so cover gives the best visual at least. */
   object-fit: cover;
 }
-/* Static mid-line — replaces the draggable divider in fallback so the
-   visitor still sees a «before / after» split, just non-interactive. */
-.playground.playground-fallback::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 50%;
-  width: 2px;
-  margin-left: -1px;
-  background: linear-gradient(180deg, transparent 0%, var(--accent) 12%, var(--accent) 88%, transparent 100%);
-  opacity: 0.6;
-  pointer-events: none;
-}
-/* Override the .playground-fallback hint that mobile is non-interactive
-   so the static mid-line + labels still tell the visual story. */
-.playground.playground-fallback .playground-labels { display: flex; }
 
 @media (max-width: 720px) {
   .hero-playground { padding: 40px 0 64px; }
   .playground {
-    /* On phones the 21:9 frame is too short to read controls; switch to
-       16:9 letterbox of the source and hide warp UI (handled by JS via
-       .playground-fallback class). Static mid-line + labels are kept
-       visible so the visitor still sees the «before/after» story. */
+    /* On phones the 21:9 frame is too short to read; switch to 16:9
+       so the demo has enough vertical room. Divider is still
+       draggable (touch-drag works as on desktop). */
     aspect-ratio: 16 / 9;
     position: relative;
   }
   .playground-labels { top: 10px; padding: 0 12px; }
-  .playground-label { font-size: 0.62rem; padding: 4px 10px; backdrop-filter: blur(8px); background: rgba(10,10,10,0.55); }
-  .playground-controls { left: 12px; right: 12px; bottom: 10px; padding: 8px 12px; }
-  .playground-divider-handle { width: 44px; height: 44px; margin: -22px 0 0 -22px; } /* 44px tap target */
-}
-/* Small inline hint that the live interactive version exists on
-   desktop — shown only in the fallback path so desktop users with
-   real WebGL never see it. */
-@media (max-width: 720px) {
-  .playground.playground-fallback::before {
-    content: 'Tap a desktop to drag the divider and tune the curve →';
-    position: absolute;
-    bottom: 10px;
-    left: 12px;
-    right: 12px;
-    padding: 8px 12px;
-    background: rgba(10, 10, 10, 0.65);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(245, 158, 11, 0.25);
-    border-radius: 8px;
-    color: rgba(245, 245, 245, 0.85);
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.04em;
-    text-align: center;
-    z-index: 4;
-    pointer-events: none;
+  .playground-label {
+    font-size: 0.62rem;
+    padding: 4px 10px;
+    backdrop-filter: blur(8px);
+    background: rgba(10, 10, 10, 0.55);
   }
+  /* Hide the curve-strength slider on mobile — keep it simple,
+     curve is fixed at the aspect-tier default. The draggable
+     divider alone conveys the before/after story. */
+  .playground-controls { display: none; }
+  /* Bigger tap target for finger-drag (44×44 Apple HIG min). */
+  .playground-divider-handle { width: 44px; height: 44px; margin: -22px 0 0 -22px; }
+  .playground-divider-handle svg { width: 22px; height: 22px; }
+  /* Visual hint that the divider is touch-draggable — pulsing amber
+     glow ring around the handle so the visitor sees there's something
+     to grab without reading copy. */
+  .playground-divider-handle {
+    box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.6);
+    animation: playground-pulse 2.4s ease-in-out infinite;
+  }
+}
+@keyframes playground-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.55); }
+  50%      { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
 }
 
 /* prefers-reduced-motion: disable the playground entry transition */
