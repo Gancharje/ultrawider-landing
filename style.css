@@ -190,7 +190,13 @@ strong { color: var(--text); font-weight: 600; }
 .nav-links .btn { color: #0a0a0a; }
 
 @media (max-width: 640px) {
-  .nav-links a:not(.btn) { display: none; }
+  /* Hide secondary nav links on mobile but keep the conversion CTA
+     visible (it's .btn-cta, not .btn, so the old selector hid it too —
+     mobile users lost the only path to /pricing). Section-link nav
+     items are reachable via in-page scroll anyway. */
+  .nav-links a:not(.btn):not(.btn-cta) { display: none; }
+  .nav-links { gap: 14px; }
+  .nav-links .btn-cta { padding: 9px 16px; font-size: 0.85rem; }
 }
 
 /* ---------- Buttons ---------- */
@@ -1660,11 +1666,14 @@ strong { color: var(--text); font-weight: 600; }
 }
 .playground-fallback-message p { margin: 0; color: inherit; }
 
-/* Fallback (no WebGL or mobile): hide playground chrome, leave the
-   raw video visible as plain hero media. */
+/* Fallback (no WebGL or mobile): hide the INTERACTIVE chrome (canvas,
+   draggable divider, slider controls) but KEEP the labels + a static
+   mid-line so the visitor still sees the «Without ↔ Ultrawider» story.
+   Previously this rule also hid .playground-labels which left users
+   with a featureless static video and zero indication that the box
+   was meant to be a demo at all. */
 .playground.playground-fallback .playground-canvas,
 .playground.playground-fallback .playground-divider,
-.playground.playground-fallback .playground-labels,
 .playground.playground-fallback .playground-controls {
   display: none;
 }
@@ -1673,19 +1682,62 @@ strong { color: var(--text); font-weight: 600; }
      have the warp to compensate, so cover gives the best visual at least. */
   object-fit: cover;
 }
+/* Static mid-line — replaces the draggable divider in fallback so the
+   visitor still sees a «before / after» split, just non-interactive. */
+.playground.playground-fallback::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  margin-left: -1px;
+  background: linear-gradient(180deg, transparent 0%, var(--accent) 12%, var(--accent) 88%, transparent 100%);
+  opacity: 0.6;
+  pointer-events: none;
+}
+/* Override the .playground-fallback hint that mobile is non-interactive
+   so the static mid-line + labels still tell the visual story. */
+.playground.playground-fallback .playground-labels { display: flex; }
 
 @media (max-width: 720px) {
   .hero-playground { padding: 40px 0 64px; }
   .playground {
     /* On phones the 21:9 frame is too short to read controls; switch to
        16:9 letterbox of the source and hide warp UI (handled by JS via
-       .playground-fallback class). */
+       .playground-fallback class). Static mid-line + labels are kept
+       visible so the visitor still sees the «before/after» story. */
     aspect-ratio: 16 / 9;
+    position: relative;
   }
   .playground-labels { top: 10px; padding: 0 12px; }
-  .playground-label { font-size: 0.65rem; padding: 4px 10px; }
+  .playground-label { font-size: 0.62rem; padding: 4px 10px; backdrop-filter: blur(8px); background: rgba(10,10,10,0.55); }
   .playground-controls { left: 12px; right: 12px; bottom: 10px; padding: 8px 12px; }
-  .playground-divider-handle { width: 36px; height: 36px; margin: -18px 0 0 -18px; }
+  .playground-divider-handle { width: 44px; height: 44px; margin: -22px 0 0 -22px; } /* 44px tap target */
+}
+/* Small inline hint that the live interactive version exists on
+   desktop — shown only in the fallback path so desktop users with
+   real WebGL never see it. */
+@media (max-width: 720px) {
+  .playground.playground-fallback::before {
+    content: 'Tap a desktop to drag the divider and tune the curve →';
+    position: absolute;
+    bottom: 10px;
+    left: 12px;
+    right: 12px;
+    padding: 8px 12px;
+    background: rgba(10, 10, 10, 0.65);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    border-radius: 8px;
+    color: rgba(245, 245, 245, 0.85);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.04em;
+    text-align: center;
+    z-index: 4;
+    pointer-events: none;
+  }
 }
 
 /* prefers-reduced-motion: disable the playground entry transition */
@@ -2150,12 +2202,38 @@ strong { color: var(--text); font-weight: 600; }
 }
 
 @media (max-width: 600px) {
-  /* On mobile, hide zone copy; bars stay visible (still 11.9%) for the
-     visual story. Zone width ≈ 38px on a 320 viewport = enough to read. */
-  .aaa-stage-zone-pct,
+  /* Bars still visible (11.9% each side) for the visual story.
+     Keep the «-12%» percentage label inside the bar even on mobile —
+     it's the punchline of the «your videos didn't [fit]» joke.
+     Drop only the longer secondary copy that can't fit. */
+  .aaa-stage-zone-pct { font-size: 0.7rem; display: block; }
   .aaa-stage-zone-label,
   .aaa-stage-zone-spec { display: none; }
   .aaa-hero-scroll { font-size: 0.6rem; margin-top: 12px; }
+
+  /* CTAs: stack and go full-width on phones — current inline-pill
+     layout reads as tentative on a 390px viewport. */
+  .aaa-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+  .aaa-cta-primary,
+  .aaa-cta-secondary {
+    width: 100%;
+    justify-content: center;
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  /* Avoid the «You bought an / ultrawide.» orphan word — balanced
+     wrap distributes lines more evenly. Supported in all modern
+     mobile browsers; falls back to default wrap elsewhere. */
+  .aaa-headline { text-wrap: balance; }
+
+  /* Tighten micro-copy so it doesn't push the fold down further. */
+  .aaa-micro { font-size: 0.7rem; opacity: 0.7; }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -76,15 +76,12 @@
   var body = JSON.stringify(payload);
 
   function send() {
-    try {
-      if (navigator.sendBeacon) {
-        var blob = new Blob([body], { type: 'application/json' });
-        if (navigator.sendBeacon(url, blob)) {
-          markSent();
-          return;
-        }
-      }
-    } catch (_) { /* fall through */ }
+    // Plain fetch with credentials:'omit' — sendBeacon would send
+    // cookies/credentials by default, which trips CORS preflight on
+    // api.ultrawider.net (Access-Control-Allow-Credentials not set
+    // since we don't need cookies on this endpoint). keepalive:true
+    // lets the request survive a tab close mid-flight, matching the
+    // behaviour we wanted from sendBeacon.
     try {
       fetch(url, {
         method: 'POST',
@@ -92,6 +89,7 @@
         body: body,
         keepalive: true,
         mode: 'cors',
+        credentials: 'omit',
       }).then(markSent).catch(function () {});
     } catch (_) { /* swallow */ }
   }

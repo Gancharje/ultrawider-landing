@@ -36,13 +36,10 @@
 
   function send(payload) {
     var body = JSON.stringify(payload);
-    try {
-      if (navigator.sendBeacon) {
-        var blob = new Blob([body], { type: 'application/json' });
-        navigator.sendBeacon(ENDPOINT, blob);
-        return;
-      }
-    } catch (_) { /* fall through to fetch */ }
+    // Plain fetch with credentials:'omit' — sendBeacon would send
+    // cookies by default which trips CORS preflight. keepalive:true
+    // gives us the same «survives tab close» behaviour without the
+    // credentials baggage.
     try {
       fetch(ENDPOINT, {
         method: 'POST',
@@ -50,6 +47,7 @@
         body: body,
         keepalive: true,
         mode: 'cors',
+        credentials: 'omit',
       }).catch(function () { /* swallow */ });
     } catch (_) { /* swallow */ }
   }
