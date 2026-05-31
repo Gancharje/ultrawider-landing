@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Your subscription — Ultrawider</title>
-    <meta name="description" content="Manage your Ultrawider Pro subscription — view your license key, expiry, and re-send delivery email." />
+    <meta name="description" content="Manage your Ultrawider Pro subscription — view your license key, recover lost keys, contact support." />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#050505" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -12,11 +12,115 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
     />
-    <link rel="stylesheet" href="/style.css?v=12" />
-    <script src="/assets/config.js?v=12"></script>
-    <script src="/assets/error-instrumentation.js?v=12"></script>
-    <script src="/assets/metrika.js?v=12" defer></script>
-    <script src="/assets/audience-stats.js?v=12" defer></script>
+    <link rel="stylesheet" href="/style.css?v=13" />
+    <style>
+      /* Account page-specific layout. .account-container caps width;
+         children are normal block-flow. */
+      .account-key-card {
+        background: rgba(245, 158, 11, 0.06);
+        border: 1px solid rgba(245, 158, 11, 0.25);
+        border-radius: 12px;
+        padding: 20px 22px;
+        margin-bottom: 32px;
+      }
+      .account-key-card-label {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 8px;
+      }
+      .account-key-card-value {
+        font-family: var(--font-mono);
+        font-size: 1.15rem;
+        letter-spacing: 0.08em;
+        color: var(--text);
+        word-break: break-all;
+      }
+      .account-key-card-hint {
+        margin-top: 14px;
+        font-size: 0.88rem;
+        color: var(--text-dim);
+        line-height: 1.5;
+      }
+      .account-no-key {
+        background: var(--bg-elev);
+        border: 1px solid var(--border-soft);
+        border-radius: 12px;
+        padding: 20px 22px;
+        margin-bottom: 32px;
+      }
+      .account-no-key-title {
+        font-size: 1rem;
+        color: var(--text);
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+      .account-no-key-body {
+        font-size: 0.92rem;
+        color: var(--text-dim);
+        line-height: 1.55;
+      }
+      .account-actions-heading {
+        font-family: var(--font-display);
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin: 0 0 14px;
+      }
+      .account-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .account-action {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 16px 20px;
+        background: var(--bg-elev);
+        border: 1px solid var(--border-soft);
+        border-radius: 10px;
+        color: var(--text);
+        text-decoration: none;
+        transition: border-color 0.2s ease, transform 0.15s ease;
+      }
+      .account-action:hover {
+        border-color: var(--accent);
+        transform: translateY(-1px);
+      }
+      .account-action-text {
+        flex: 1;
+        min-width: 0;
+      }
+      .account-action-title {
+        font-weight: 500;
+        font-size: 0.95rem;
+      }
+      .account-action-sub {
+        font-size: 0.82rem;
+        color: var(--text-dim);
+        margin-top: 4px;
+        line-height: 1.4;
+      }
+      .account-action-arrow {
+        color: var(--accent);
+        font-family: var(--font-mono);
+        font-size: 1.1rem;
+        flex-shrink: 0;
+      }
+      .account-foot {
+        margin-top: 36px;
+        font-size: 0.84rem;
+        color: var(--text-mute);
+        line-height: 1.6;
+      }
+    </style>
+    <script src="/assets/config.js?v=13"></script>
+    <script src="/assets/error-instrumentation.js?v=13"></script>
+    <script src="/assets/metrika.js?v=13" defer></script>
+    <script src="/assets/audience-stats.js?v=13" defer></script>
   </head>
   <body>
     <noscript><div><img src="https://mc.yandex.ru/watch/109480276" style="position:absolute;left:-9999px" alt="" /></div></noscript>
@@ -36,83 +140,66 @@
       </div>
     </header>
 
-    <main class="account-page" style="max-width: 640px; margin: 0 auto; padding: 80px 24px 120px;">
-      <span class="eyebrow" style="color: var(--text-mute); font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;">Subscription</span>
-      <h1 style="font-family: var(--font-display); font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 600; margin: 8px 0 24px;">Your Ultrawider Pro</h1>
-
-      <!-- Loaded state -->
-      <div
-        id="key-card"
-        style="display: none; background: rgba(245, 158, 11, 0.06); border: 1px solid rgba(245, 158, 11, 0.25); border-radius: 12px; padding: 20px 22px; margin-bottom: 32px;"
-      >
-        <div style="font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--accent); margin-bottom: 8px;">License key</div>
-        <div id="key-display" style="font-family: var(--font-mono); font-size: 1.1rem; letter-spacing: 0.08em; color: var(--text); word-break: break-all;"></div>
-        <div style="margin-top: 14px; font-size: 0.85rem; color: var(--text-dim);">
-          Keep this key safe — you'll need it to activate Pro on any new device.
+    <main class="account-page">
+      <div class="account-container">
+        <div class="account-head">
+          <span class="account-eyebrow">Subscription</span>
+          <h1>Your Ultrawider Pro</h1>
         </div>
-      </div>
 
-      <!-- No-key state -->
-      <div
-        id="no-key-card"
-        style="background: var(--bg-elev); border: 1px solid var(--border-soft); border-radius: 12px; padding: 20px 22px; margin-bottom: 32px;"
-      >
-        <div style="font-size: 1rem; color: var(--text); margin-bottom: 8px; font-weight: 500;">No key in URL</div>
-        <div style="font-size: 0.9rem; color: var(--text-dim); line-height: 1.55;">
-          To see your subscription details, open the Ultrawider extension popup → click <strong>Manage subscription</strong>.
-          Or recover your key by email below.
+        <div id="key-card" class="account-key-card" hidden>
+          <div class="account-key-card-label">License key</div>
+          <div id="key-display" class="account-key-card-value"></div>
+          <div class="account-key-card-hint">
+            Keep this key safe — you'll need it to activate Pro on any new device.
+          </div>
         </div>
+
+        <div id="no-key-card" class="account-no-key">
+          <div class="account-no-key-title">No key in URL</div>
+          <div class="account-no-key-body">
+            To see your subscription details, open the Ultrawider extension popup → click
+            <strong>Manage subscription</strong>. Or recover your key by email below.
+          </div>
+        </div>
+
+        <h2 class="account-actions-heading">Common actions</h2>
+
+        <div class="account-actions">
+          <a href="/recover" class="account-action">
+            <div class="account-action-text">
+              <div class="account-action-title">Lost your key?</div>
+              <div class="account-action-sub">Recover by email — we'll re-send your most recent active key</div>
+            </div>
+            <span class="account-action-arrow">→</span>
+          </a>
+
+          <a href="/contact" class="account-action">
+            <div class="account-action-text">
+              <div class="account-action-title">Need help?</div>
+              <div class="account-action-sub">Email support — refunds, device transfers, billing questions</div>
+            </div>
+            <span class="account-action-arrow">→</span>
+          </a>
+
+          <a href="/#pricing" class="account-action">
+            <div class="account-action-text">
+              <div class="account-action-title">Upgrade plan</div>
+              <div class="account-action-sub">Switch to a longer plan — quarterly, yearly, or lifetime</div>
+            </div>
+            <span class="account-action-arrow">→</span>
+          </a>
+        </div>
+
+        <p class="account-foot">
+          Your license is bound to up to 3 devices. To transfer to a new device,
+          simply activate on the new one — the least recently used device will be
+          unbound automatically.
+        </p>
       </div>
-
-      <h2 style="font-family: var(--font-display); font-size: 1.3rem; font-weight: 600; margin: 32px 0 14px;">Common actions</h2>
-
-      <div style="display: grid; gap: 12px;">
-        <a
-          href="/recover"
-          style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: var(--bg-elev); border: 1px solid var(--border-soft); border-radius: 10px; color: var(--text); text-decoration: none; transition: border-color 0.2s ease;"
-          onmouseover="this.style.borderColor='var(--accent)'"
-          onmouseout="this.style.borderColor='var(--border-soft)'"
-        >
-          <div>
-            <div style="font-weight: 500;">Lost your key?</div>
-            <div style="font-size: 0.82rem; color: var(--text-dim); margin-top: 2px;">Recover by email — we'll re-send your most recent active key</div>
-          </div>
-          <span style="color: var(--accent); font-family: var(--font-mono);">→</span>
-        </a>
-
-        <a
-          href="/contact"
-          style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: var(--bg-elev); border: 1px solid var(--border-soft); border-radius: 10px; color: var(--text); text-decoration: none; transition: border-color 0.2s ease;"
-          onmouseover="this.style.borderColor='var(--accent)'"
-          onmouseout="this.style.borderColor='var(--border-soft)'"
-        >
-          <div>
-            <div style="font-weight: 500;">Need help?</div>
-            <div style="font-size: 0.82rem; color: var(--text-dim); margin-top: 2px;">Email support — refunds, device transfers, billing questions</div>
-          </div>
-          <span style="color: var(--accent); font-family: var(--font-mono);">→</span>
-        </a>
-
-        <a
-          href="/#pricing"
-          style="display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; background: var(--bg-elev); border: 1px solid var(--border-soft); border-radius: 10px; color: var(--text); text-decoration: none; transition: border-color 0.2s ease;"
-          onmouseover="this.style.borderColor='var(--accent)'"
-          onmouseout="this.style.borderColor='var(--border-soft)'"
-        >
-          <div>
-            <div style="font-weight: 500;">Upgrade plan</div>
-            <div style="font-size: 0.82rem; color: var(--text-dim); margin-top: 2px;">Switch to a longer plan — quarterly, yearly or lifetime</div>
-          </div>
-          <span style="color: var(--accent); font-family: var(--font-mono);">→</span>
-        </a>
-      </div>
-
-      <p style="margin-top: 36px; font-size: 0.82rem; color: var(--text-mute); line-height: 1.6;">
-        Your license is bound to up to 3 devices. To transfer to a new device, simply activate on the new one — the least recently used device will be unbound automatically.
-      </p>
     </main>
 
-    <footer class="site-footer" style="margin-top: 80px;">
+    <footer class="site-footer">
       <div class="container footer-grid">
         <div class="footer-brand">
           <a href="/" class="logo">
@@ -140,21 +227,22 @@
     </footer>
 
     <script>
-      // License key is passed via URL fragment (#key=XXXX) to keep it
-      // out of Referer headers and server access logs. Mask middle so
-      // shoulder-surfers can't capture it from a screen recording.
+      // License key arrives via URL fragment (#key=XXXX) — fragment is
+      // NOT sent in HTTP requests or Referer, so the key never leaks
+      // to server logs or downstream sites. Read client-side, mask
+      // middle so shoulder-surfers can't capture the full key from a
+      // screen recording.
       (function () {
         var hash = location.hash.replace(/^#/, '');
         var params = new URLSearchParams(hash);
         var key = params.get('key');
         if (!key) return;
-        // Show first 4 and last 4 chars, dot-mask the middle.
         var clean = key.replace(/[^A-F0-9]/gi, '').toUpperCase();
         if (clean.length < 8) return;
         var masked = clean.slice(0, 4) + '-····-····-' + clean.slice(-4);
         document.getElementById('key-display').textContent = masked;
-        document.getElementById('key-card').style.display = 'block';
-        document.getElementById('no-key-card').style.display = 'none';
+        document.getElementById('key-card').hidden = false;
+        document.getElementById('no-key-card').hidden = true;
       })();
     </script>
   </body>
