@@ -1681,10 +1681,12 @@ strong { color: var(--text); font-weight: 600; }
 @media (max-width: 720px) {
   .hero-playground { padding: 40px 0 64px; }
   .playground {
-    /* On phones the 21:9 frame is too short to read; switch to 16:9
-       so the demo has enough vertical room. Divider is still
-       draggable (touch-drag works as on desktop). */
-    aspect-ratio: 16 / 9;
+    /* MUST stay 21:9 even on phones: the whole point of the demo is
+       letterbox-bars (raw 16:9 video in 21:9 stage = visible black
+       bars on sides) appearing/disappearing as you drag the divider
+       across the warp. Switching to 16:9 stage made both halves
+       identical visually — warp had nothing to compensate for. */
+    aspect-ratio: 21 / 9;
     position: relative;
   }
   .playground-labels { top: 10px; padding: 0 12px; }
