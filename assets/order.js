@@ -5,8 +5,12 @@
  */
 (function () {
   const params = new URLSearchParams(location.search);
+  // localStorage fallback: checkout persists the last order id there so
+  // this page still works after the payment tab / browser was closed.
   const orderId =
-    params.get('id') || sessionStorage.getItem('ultrawider_last_order');
+    params.get('id') ||
+    sessionStorage.getItem('ultrawider_last_order') ||
+    localStorage.getItem('ultrawider_last_order');
 
   if (!orderId) {
     location.href = '/pricing';
@@ -26,6 +30,16 @@
     document.getElementById('processing').hidden = true;
     document.getElementById('failed').hidden = false;
     document.getElementById('failure-reason').textContent = msg;
+    // Keep the order id visible + a prefilled support mailto so a
+    // charged-but-expired customer can reach us with everything we need.
+    const idEl = document.getElementById('failed-order-id');
+    if (idEl) idEl.textContent = orderId;
+    const mail = document.getElementById('support-mail');
+    if (mail) {
+      mail.href =
+        'mailto:' + window.ULTRAWIDER.CONTACT_EMAIL +
+        '?subject=' + encodeURIComponent('Order ' + orderId + ' — payment issue');
+    }
   }
   function formatKey(k) {
     if (!k) return '';
@@ -35,8 +49,11 @@
   async function pollOnce() {
     pollCount++;
     if (pollCount > MAX_POLLS) {
+      // Never claim "no charge was made" — we can't know that from here.
       showFailed(
-        'Timed out waiting for confirmation. If your card was charged, your key was emailed anyway — check your inbox. Otherwise no charge was made.',
+        'Timed out waiting for confirmation. If your card was charged, your key was emailed anyway — check your inbox and spam. No email? Write ' +
+          window.ULTRAWIDER.CONTACT_EMAIL + ' with order ID ' + orderId +
+          ' — we check payments even after expiry.',
       );
       return;
     }
@@ -55,7 +72,14 @@
         return;
       }
       if (data.order_status === 'failed' || data.order_status === 'expired') {
-        showFailed('Payment was not completed. No charge was made.');
+        // Never claim "no charge was made" — the payment can land after
+        // the order expires, and telling a charged customer nothing
+        // happened is how we lose them.
+        showFailed(
+          'This order expired before payment was confirmed. If your card was NOT charged — nothing happened, you can start over. If your card WAS charged — email ' +
+            window.ULTRAWIDER.CONTACT_EMAIL + ' with order ID ' + orderId +
+            " and we'll issue your key right away (we check payments even after expiry).",
+        );
         return;
       }
       setTimeout(pollOnce, POLL_INTERVAL_MS);

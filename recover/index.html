@@ -117,15 +117,24 @@
           msg.textContent = 'Sending…';
 
           try {
-            // TODO: hit /api/recover once backend wires it. For now show
-            // a generic "check your inbox" message — operator can manually
-            // resend from admin until the endpoint ships.
-            await new Promise(function (r) { setTimeout(r, 500); });
+            // Backend always answers {ok:true} — deliberately no
+            // account-existence oracle, so the success copy stays honest
+            // ("if that email has any licenses").
+            var resp = await fetch(window.ULTRAWIDER.API_BASE + '/api/recover', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email: email }),
+            });
+            if (!resp.ok) throw new Error('server error (' + resp.status + ')');
+            msg.className = 'account-msg';
             msg.textContent =
-              "If we have any active licenses for that email, we'll resend them within a few minutes. Check your inbox + spam folder.";
+              "If that email has any licenses, we've sent them. Check spam. " +
+              'No email after 10 minutes? Write ' + window.ULTRAWIDER.CONTACT_EMAIL + '.';
           } catch (err) {
             msg.className = 'account-msg account-msg--error';
-            msg.textContent = "Couldn't reach our servers — try again in a minute.";
+            msg.textContent =
+              "Couldn't reach our servers — try again in a minute, or email " +
+              window.ULTRAWIDER.CONTACT_EMAIL + " and we'll dig your key out manually.";
           }
         });
       })();

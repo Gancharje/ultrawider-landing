@@ -19,6 +19,13 @@
   var ORDER = ['monthly', 'quarterly', 'yearly', 'lifetime'];
   var RECOMMENDED = 'yearly';
 
+  // Funnel goals — metrika.js (deferred, earlier in head) defines
+  // UW_METRIKA before our init runs; guard anyway so an exotic load
+  // order can't break checkout.
+  function goal(name, params) {
+    try { if (window.UW_METRIKA) window.UW_METRIKA.goal(name, params); } catch (_e) {}
+  }
+
   // Tightened to 2 distinct features per card; trust items ("cancel
   // anytime", "14-day refund") live in the section-wide fine-print
   // line below the grid — no need to repeat per card.
@@ -134,6 +141,7 @@
     var errBox   = document.getElementById('landing-checkout-error');
     var emailIn  = document.getElementById('landing-email');
     var closeBtn = document.getElementById('landing-checkout-close');
+    var interstitial = document.getElementById('landing-interstitial');
 
     function render() {
       root.innerHTML = ORDER.map(function (id, i) { return planCard(id, plans, i); }).join('');
@@ -165,7 +173,11 @@
     function openCheckout(planId) {
       var p = plans[planId];
       if (!p) return;
+      goal('checkout_view');
       selectedPlan = planId;
+      // Reset any leftover interstitial state from a previous order.
+      if (interstitial) interstitial.hidden = true;
+      form.hidden = false;
       summary.innerHTML =
         '<div class="landing-checkout-summary-top">' +
           '<span class="landing-checkout-summary-label">' + p.label + ' sponsorship</span>' +
@@ -194,6 +206,43 @@
       root.querySelectorAll('.lp-card--selected').forEach(function (el) {
         el.classList.remove('lp-card--selected');
       });
+    }
+
+    // Interstitial between "order created" and the Joytify redirect —
+    // sets expectations (top-up-store look, Stars = key) while we still
+    // control the page, and hands the customer their order id.
+    function showInterstitial(orderId, paymentUrl) {
+      if (!interstitial) {
+        // Markup missing (stale HTML cache) — old behaviour as fallback.
+        location.assign(paymentUrl);
+        return;
+      }
+      var p = plans[selectedPlan] || {};
+      document.getElementById('landing-int-stars').textContent = p.starsAmount || '';
+      document.getElementById('landing-int-usd').textContent =
+        typeof p.priceUsd === 'number' ? p.priceUsd.toFixed(2) : '…';
+      document.getElementById('landing-int-order-id').textContent = orderId;
+      var orderLink = document.getElementById('landing-int-order-link');
+      orderLink.href = '/order?id=' + encodeURIComponent(orderId);
+      orderLink.textContent = 'ultrawider.net/order?id=' + orderId;
+
+      form.hidden = true;
+      interstitial.hidden = false;
+      interstitial.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      document.getElementById('landing-int-continue').onclick = function () {
+        goal('checkout_redirect');
+        location.assign(paymentUrl);
+      };
+      var copyLink = document.getElementById('landing-int-copy');
+      copyLink.onclick = function (e) {
+        e.preventDefault();
+        try {
+          navigator.clipboard.writeText(paymentUrl);
+          copyLink.textContent = 'Copied!';
+          setTimeout(function () { copyLink.textContent = 'copy payment link'; }, 1500);
+        } catch (_e) { /* clipboard unavailable — Continue still works */ }
+      };
     }
 
     function showError(msg) {
@@ -251,6 +300,7 @@
         showError('Please tick the box to confirm you understand this is a sponsorship contribution.');
         return;
       }
+      goal('checkout_submit');
       submit.disabled = true;
       submit.textContent = 'Creating your order…';
       errBox.hidden = true;
@@ -278,8 +328,16 @@
           try {
             sessionStorage.setItem('ultrawider_last_order', data.order_id);
             sessionStorage.setItem('ultrawider_order_url', '/order?id=' + data.order_id);
+            // localStorage copy survives the tab — /order can offer the
+            // last order even after a browser restart.
+            localStorage.setItem('ultrawider_last_order', data.order_id);
           } catch (_e) { /* private mode etc — ignore */ }
-          location.assign(data.payment_url);
+          // Reset the submit button in case the visitor comes back.
+          submit.disabled = false;
+          submit.textContent = 'Continue to payment →';
+          // NOT an instant redirect: branded interstitial first, so the
+          // Joytify hand-off doesn't read as a scam.
+          showInterstitial(data.order_id, data.payment_url);
         })
         .catch(function (e) {
           var contact = (window.ULTRAWIDER && window.ULTRAWIDER.CONTACT_EMAIL) || 'hello@ultrawider.net';

@@ -15,7 +15,7 @@
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
     />
     <link rel="stylesheet" href="/style.css?v=10" />
-    <link rel="stylesheet" href="/assets/styles.css?v=10" />
+    <link rel="stylesheet" href="/assets/styles.css?v=14" />
     <script src="/assets/config.js"></script>
     <script src="/assets/error-instrumentation.js"></script>
     <script src="/assets/metrika.js" defer></script>
@@ -88,6 +88,32 @@
         </form>
 
         <div id="error" class="error" hidden></div>
+
+        <!-- Pre-redirect interstitial — revealed after the order is
+             created, BEFORE sending the visitor to Joytify. The payment
+             page looks like a gaming top-up store, so expectations get
+             set here, on our domain, while the context is still ours. -->
+        <div id="interstitial" class="checkout-interstitial" hidden>
+          <h2>One last step — payment via our processor</h2>
+          <p>
+            You'll be taken to <strong>Joytify</strong>, our payment
+            partner, to complete a purchase of
+            <strong><span id="int-stars"></span> Telegram Stars</strong>
+            (≈ $<span id="int-usd"></span>). That purchase IS your
+            Ultrawider Pro key — we redeem the Stars on our side
+            automatically. The page may look like a gaming top-up store;
+            that's expected.
+          </p>
+          <p class="checkout-interstitial-order">
+            Your order ID: <code id="int-order-id"></code> — save it.
+            Track status any time at
+            <a id="int-order-link" href="/order">ultrawider.net/order</a>
+          </p>
+          <button type="button" class="primary" id="int-continue">Continue to payment →</button>
+          <p class="checkout-interstitial-copy">
+            <a href="#" id="int-copy-link">copy payment link</a>
+          </p>
+        </div>
       </div>
     </main>
 
@@ -98,6 +124,6 @@
     </footer>
 
     <script src="/assets/config.js"></script>
-    <script src="/assets/checkout.js"></script>
+    <script src="/assets/checkout.js?v=14"></script>
   </body>
 </html>

@@ -715,3 +715,55 @@ button[type='submit'][disabled] {
   padding: 1px 6px;
   border-radius: 3px;
 }
+
+/* Pre-redirect interstitial — shown after order creation, before the
+   Joytify hand-off. Same card language as .summary; used on /checkout
+   and inside the landing inline-checkout panel. */
+.checkout-interstitial {
+  background: var(--bg-elev);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-top: 8px;
+}
+.checkout-interstitial h2 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 10px;
+  letter-spacing: -0.01em;
+}
+.checkout-interstitial p {
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--text-dim);
+  margin: 0 0 12px;
+}
+.checkout-interstitial p strong { color: var(--text); font-weight: 600; }
+.checkout-interstitial-order code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  color: var(--accent);
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: 4px;
+  padding: 2px 6px;
+  /* One click selects the whole id — customers will paste it into email. */
+  user-select: all;
+}
+.checkout-interstitial-order a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+.checkout-interstitial-copy {
+  text-align: center;
+  margin: 12px 0 0;
+}
+.checkout-interstitial-copy a {
+  color: var(--text-dim);
+  font-size: 0.85rem;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.checkout-interstitial-copy a:hover { color: var(--accent); }

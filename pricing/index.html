@@ -5,12 +5,12 @@
     <title>Ultrawider Pro — Unlock 21:9 Video Warp on Twitch, Vimeo, Kick</title>
     <meta
       name="description"
-      content="Free on YouTube forever. Unlock Ultrawider Pro on Twitch, Vimeo, Kick and every site from $2.98/mo. One-time payment via Telegram Stars — no auto-renew, 30-day goodwill refunds."
+      content="Free on YouTube forever. Unlock Ultrawider Pro on Twitch, Vimeo, Kick and every site from ~$3/mo. One-time payment via Telegram Stars — no auto-renew, 30-day goodwill refunds."
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#050505" />
     <meta property="og:title" content="Ultrawider Pro — Unlock 21:9 Warp Everywhere" />
-    <meta property="og:description" content="Free on YouTube. Pro unlocks 21:9 / 32:9 warp on Twitch, Vimeo, Kick from $2.98/mo. No auto-renew." />
+    <meta property="og:description" content="Free on YouTube. Pro unlocks 21:9 / 32:9 warp on Twitch, Vimeo, Kick from ~$3/mo. No auto-renew." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://ultrawider.net/pricing" />
     <link rel="canonical" href="https://ultrawider.net/pricing" />
@@ -21,7 +21,7 @@
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
     />
     <link rel="stylesheet" href="/style.css?v=10" />
-    <link rel="stylesheet" href="/assets/styles.css" />
+    <link rel="stylesheet" href="/assets/styles.css?v=14" />
     <script src="/assets/config.js"></script>
     <script src="/assets/error-instrumentation.js"></script>
     <script src="/assets/metrika.js" defer></script>
@@ -153,6 +153,16 @@
         var root = document.getElementById('plans');
         var params = new URLSearchParams(location.search);
         var installId = params.get('install_id');
+
+        // Funnel goal: metrika.js is deferred and runs AFTER this classic
+        // script — wait for DOMContentLoaded when UW_METRIKA exists.
+        (function () {
+          function fire() {
+            if (window.UW_METRIKA) window.UW_METRIKA.goal('pricing_view');
+          }
+          if (window.UW_METRIKA) fire();
+          else document.addEventListener('DOMContentLoaded', fire);
+        })();
 
         var EXTRAS = {
           monthly: {

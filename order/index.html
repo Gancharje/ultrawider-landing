@@ -15,7 +15,7 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
     />
     <link rel="stylesheet" href="/style.css?v=10" />
-    <link rel="stylesheet" href="/assets/styles.css?v=10" />
+    <link rel="stylesheet" href="/assets/styles.css?v=14" />
     <script src="/assets/config.js"></script>
     <script src="/assets/error-instrumentation.js"></script>
     <script src="/assets/metrika.js" defer></script>
@@ -79,9 +79,12 @@
           <div id="failed" hidden>
             <h1>Payment didn't go through</h1>
             <p id="failure-reason"></p>
+            <!-- Order id stays visible — it's what support needs to match
+                 a late-landing payment to this order. -->
+            <p class="muted">Order ID: <code id="failed-order-id"></code></p>
             <a href="/pricing" class="primary">Try again</a>
             <p class="muted" style="margin-top: 16px;">
-              Or <a href="mailto:hello@ultrawider.net">email us</a> — we'll help sort it out.
+              Or <a id="support-mail" href="mailto:hello@ultrawider.net">email us</a> — we'll help sort it out.
             </p>
           </div>
         </div>
@@ -95,6 +98,6 @@
     </footer>
 
     <script src="/assets/config.js"></script>
-    <script src="/assets/order.js"></script>
+    <script src="/assets/order.js?v=14"></script>
   </body>
 </html>

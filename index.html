@@ -28,7 +28,7 @@
   <script src="assets/error-instrumentation.js?v=12"></script>
   <script src="assets/metrika.js?v=12" defer></script>
   <script src="assets/audience-stats.js?v=12" defer></script>
-  <link rel="stylesheet" href="assets/styles.css?v=12" />
+  <link rel="stylesheet" href="assets/styles.css?v=14" />
 
   <link rel="preload" as="video" href="demo/cinematic-hero.mp4" type="video/mp4" />
   <link rel="preload" as="image" href="demo/face-source.jpg" />
@@ -37,7 +37,7 @@
   <script src="assets/aspect-profile.js?v=12" defer></script>
   <script src="assets/warp-demo.js?v=12" defer></script>
   <script src="assets/math-demo.js?v=12" defer></script>
-  <script src="assets/landing-checkout.js?v=12" defer></script>
+  <script src="assets/landing-checkout.js?v=14" defer></script>
 
   <!-- Aspect-aware hero personalization.
        Reads physical monitor dims via screen.width/height for real
@@ -211,7 +211,7 @@
           </p>
 
           <div class="aaa-actions">
-            <a href="#pricing" class="aaa-cta-primary">Get Pro — from $2.98/mo</a>
+            <a href="#pricing" class="aaa-cta-primary">Get Pro — from ~$3/mo</a>
             <a href="#install" class="aaa-cta-secondary">
               <svg class="chrome-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <circle cx="12" cy="12" r="10"/>
@@ -473,6 +473,33 @@
                 <a href="/refund.html">Support Policy</a>.
               </p>
             </form>
+
+            <!-- Pre-redirect interstitial — same expectations reset as
+                 /checkout: revealed after the order is created, before
+                 the Joytify hand-off. -->
+            <div class="checkout-interstitial" id="landing-interstitial" hidden>
+              <h2>One last step — payment via our processor</h2>
+              <p>
+                You'll be taken to <strong>Joytify</strong>, our payment
+                partner, to complete a purchase of
+                <strong><span id="landing-int-stars"></span> Telegram Stars</strong>
+                (≈ $<span id="landing-int-usd"></span>). That purchase IS
+                your Ultrawider Pro key — we redeem the Stars on our side
+                automatically. The page may look like a gaming top-up
+                store; that's expected.
+              </p>
+              <p class="checkout-interstitial-order">
+                Your order ID: <code id="landing-int-order-id"></code> — save it.
+                Track status any time at
+                <a id="landing-int-order-link" href="/order">ultrawider.net/order</a>
+              </p>
+              <button type="button" class="aaa-cta-primary landing-checkout-submit" id="landing-int-continue">
+                Continue to payment →
+              </button>
+              <p class="checkout-interstitial-copy">
+                <a href="#" id="landing-int-copy">copy payment link</a>
+              </p>
+            </div>
           </div>
         </div>
 
@@ -550,7 +577,7 @@
         <div class="faq-list">
           <details>
             <summary>What's the difference between Free and Pro?</summary>
-            <p>Free unlocks the Smoothie warp on YouTube — that's enough for most casual viewers to fall in love with the feature. Pro from ⭐150 Stars (≈ $2.98/month) removes the platform gate: Smoothie works on Twitch, Vimeo, Kick and any other site whose video isn't DRM-protected. See the <a href="#pricing">pricing page</a> for the full comparison.</p>
+            <p>Free unlocks the Smoothie warp on YouTube — that's enough for most casual viewers to fall in love with the feature. Pro from ⭐150 Stars (≈ $3/month, exact price shown at checkout) removes the platform gate: Smoothie works on Twitch, Vimeo, Kick and any other site whose video isn't DRM-protected. See the <a href="#pricing">pricing page</a> for the full comparison.</p>
           </details>
 
           <details id="faq-stars">

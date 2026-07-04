@@ -39,7 +39,7 @@
 
       <span class="eyebrow">Legal</span>
       <h1>Privacy Policy</h1>
-      <p class="legal-meta">Last updated: 28 May 2026 · Effective: 28 May 2026</p>
+      <p class="legal-meta">Last updated: 5 July 2026 · Effective: 5 July 2026</p>
 
       <p>
         This Privacy Policy describes how Akimov Pavel Andreevich, a
@@ -77,14 +77,15 @@
           <strong>Crash and error reports</strong> — when the extension or
           the website encounters an unhandled JavaScript error, we
           automatically send a technical report containing: the error
-          message and stack trace, the page URL (origin and path only,
-          query string stripped of any tokens), the browser/OS string,
-          and an <strong>anonymous install ID</strong> (a random UUID
+          message and stack trace, the page <strong>hostname only</strong>
+          (e.g. <code>youtube.com</code> — never the full URL, path, or
+          query string), the browser/OS string, and an
+          <strong>anonymous install ID</strong> (a random UUID
           generated at first install, not linked to your email or any
           other identifier). Crash reports are <strong>always sent</strong>
-          regardless of telemetry preferences, because we need this
-          signal to ship fixes. They contain no PII, no video content,
-          no credentials, and no licence key.
+          regardless of the telemetry toggle, because we need this
+          signal to keep the product working. They contain no URLs,
+          no PII, no video content, no credentials, and no licence key.
         </li>
         <li>
           <strong>Behavioural telemetry</strong> (extension only) — when
@@ -97,10 +98,15 @@
           this to understand which sites our users actually want
           ultrawide support on and to find compatibility gaps.
           <br><br>
-          <strong>This is enabled by default.</strong> You can opt out at
-          any time by opening the Ultrawider popup (toolbar icon) and
-          unchecking «Анонимная телеметрия» / "Anonymous telemetry".
-          We send no behavioural events while opted out.
+          <strong>This is OFF by default</strong> — behavioural telemetry
+          is strictly opt-in starting with v1.0.1. You can turn it on or
+          off at any time by opening the Ultrawider popup (toolbar icon)
+          and toggling «Анонимная телеметрия» / "Anonymous telemetry".
+          The toggle controls <strong>only</strong> these usage-analytics
+          events; the anonymous crash and error reports described above
+          are always sent (hostname only, no URLs) because we need them
+          to keep the product working. We send no behavioural events
+          unless you opt in.
         </li>
         <li>
           <strong>Anonymous website analytics</strong> — the
