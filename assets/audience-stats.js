@@ -40,13 +40,28 @@
   var dpr = window.devicePixelRatio || 1;
   var tier = classifyAspect(screenW, screenH);
 
+  // Source attribution: full utm_source wins, short ?ref=/-?r= (what we
+  // put in reddit/HN/YT links — less spammy than full UTM strings) fills
+  // the same slot. Persisted per-session so store-button clicks on later
+  // pages keep the original source even after the query string is gone.
+  var srcParam = param('utm_source') || param('ref') || param('r') || '';
+  try {
+    if (srcParam) sessionStorage.setItem('_uw_src', srcParam);
+    else srcParam = sessionStorage.getItem('_uw_src') || '';
+  } catch (_) { /* sessionStorage blocked → per-page attribution only */ }
+  try {
+    if (document.referrer && !sessionStorage.getItem('_uw_ref')) {
+      sessionStorage.setItem('_uw_ref', document.referrer);
+    }
+  } catch (_) {}
+
   var payload = {
     aspect_tier: tier,
     screen_w: screenW,
     screen_h: screenH,
     dpr: dpr,
     referrer: document.referrer || '',
-    utm_source: param('utm_source') || '',
+    utm_source: srcParam,
     utm_medium: param('utm_medium') || '',
     utm_campaign: param('utm_campaign') || '',
     landing_path: location.pathname || '/',
@@ -105,4 +120,47 @@
   } else {
     setTimeout(send, 1000);
   }
+
+  // ── store-button click beacons ────────────────────────────────────
+  // Delegated listener: any anchor leading to a store (or the checkout
+  // flow) fires one beacon with the session's source attribution. This
+  // is what turns the admin channels table from "visits" into
+  // "visits → intent" per traffic source. Never blocks navigation.
+  function classifyTarget(href) {
+    if (!href) return null;
+    if (href.indexOf('chromewebstore.google.com') !== -1 || href.indexOf('chrome.google.com/webstore') !== -1) return 'chrome';
+    if (href.indexOf('microsoftedge.microsoft.com') !== -1) return 'edge';
+    if (href.indexOf('addons.mozilla.org') !== -1) return 'firefox';
+    if (href.indexOf('/checkout') !== -1) return 'checkout';
+    if (href.indexOf('#pricing') !== -1) return 'pricing';
+    return null;
+  }
+
+  document.addEventListener('click', function (e) {
+    var a = e.target && e.target.closest ? e.target.closest('a[href]') : null;
+    if (!a) return;
+    var target = classifyTarget(a.getAttribute('href') || '');
+    if (!target) return;
+    var src = '';
+    var ref = '';
+    try {
+      src = sessionStorage.getItem('_uw_src') || '';
+      ref = sessionStorage.getItem('_uw_ref') || document.referrer || '';
+    } catch (_) { ref = document.referrer || ''; }
+    try {
+      fetch(API_BASE + '/api/landing-click', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          target: target,
+          referrer: ref,
+          utm_source: src,
+          landing_path: location.pathname || '/',
+        }),
+        keepalive: true,
+        mode: 'cors',
+        credentials: 'omit',
+      }).catch(function () {});
+    } catch (_) { /* never interfere with the click */ }
+  }, { capture: true, passive: true });
 })();
