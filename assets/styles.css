@@ -767,3 +767,25 @@ button[type='submit'][disabled] {
   text-underline-offset: 3px;
 }
 .checkout-interstitial-copy a:hover { color: var(--accent); }
+
+/* ── Store links row (hero, under CTA buttons) ──────────────────────
+   Real store badges replaced the dead #install anchor. Firefox entry
+   is a non-link until the AMO listing is approved. */
+.store-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+  font-size: 0.85rem;
+}
+.store-links a {
+  color: var(--text-dim);
+  text-decoration: none;
+  border-bottom: 1px dotted var(--border-soft);
+  transition: color var(--transition), border-color var(--transition);
+}
+.store-links a:hover { color: var(--accent); border-color: var(--accent); }
+.store-sep { color: var(--text-mute); }
+.store-soon { color: var(--text-mute); cursor: default; }
