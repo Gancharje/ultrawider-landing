@@ -16,8 +16,12 @@
  */
 (function () {
   if (typeof window === 'undefined' || typeof document === 'undefined') return;
+  // Dedup PER PATH, not per session: the funnel needs /pricing and
+  // /checkout counted as steps, not only as entry pages. Refreshing the
+  // same page still doesn't double-count.
+  var sentKey = '_uw_audience_sent:' + (location.pathname || '/');
   try {
-    if (sessionStorage.getItem('_uw_audience_sent') === '1') return;
+    if (sessionStorage.getItem(sentKey) === '1') return;
   } catch (_) { /* sessionStorage blocked → just send once per page load */ }
 
   function classifyAspect(w, h) {
@@ -110,7 +114,7 @@
   }
 
   function markSent() {
-    try { sessionStorage.setItem('_uw_audience_sent', '1'); } catch (_) {}
+    try { sessionStorage.setItem(sentKey, '1'); } catch (_) {}
   }
 
   // Defer until after the page has painted so we don't compete with
