@@ -44,6 +44,40 @@
   var dpr = window.devicePixelRatio || 1;
   var tier = classifyAspect(screenW, screenH);
 
+  // ── extension presence probe ──────────────────────────────────────
+  // The extension exposes web-accessible resources; loading its icon
+  // from the page succeeds only when it's installed. Works in Chromium
+  // with known ids; Firefox randomizes the moz-extension UUID per
+  // install, so there the flag stays null (server falls back to a path
+  // heuristic). Result cached per session for the click beacons.
+  var EXT_IDS = (window.ULTRAWIDER && window.ULTRAWIDER.EXT_IDS) || [
+    'fpbkljincbjlmfefgcefcbjjppehkamo', // Chrome Web Store
+  ];
+  function probeExtension(cb) {
+    try {
+      var cached = sessionStorage.getItem('_uw_ext');
+      if (cached === '1' || cached === '0') { cb(Number(cached)); return; }
+    } catch (_) {}
+    var isChromium = /Chrome\//.test(navigator.userAgent);
+    if (!isChromium || !EXT_IDS.length) { cb(null); return; }
+    var pending = EXT_IDS.length;
+    var settled = false;
+    function settle(v) {
+      if (settled) return;
+      settled = true;
+      try { if (v !== null) sessionStorage.setItem('_uw_ext', String(v)); } catch (_) {}
+      cb(v);
+    }
+    EXT_IDS.forEach(function (id) {
+      var img = new Image();
+      var timer = setTimeout(function () { fail(); }, 1500);
+      img.onload = function () { clearTimeout(timer); settle(1); };
+      img.onerror = function () { clearTimeout(timer); fail(); };
+      img.src = 'chrome-extension://' + id + '/assets/icon-128.png';
+      function fail() { if (--pending === 0) settle(0); }
+    });
+  }
+
   // Source attribution: full utm_source wins, short ?ref=/-?r= (what we
   // put in reddit/HN/YT links — less spammy than full UTM strings) fills
   // the same slot. Persisted per-session so store-button clicks on later
@@ -118,11 +152,24 @@
   }
 
   // Defer until after the page has painted so we don't compete with
-  // the hero render. requestIdleCallback if available, else 1s timeout.
+  // the hero render; probe the extension first so the visit row carries
+  // has_ext (probe resolves in <100ms locally, 1.5s worst case).
+  function probeThenSend() {
+    probeExtension(function (flag) {
+      if (flag !== null) {
+        try {
+          var patched = JSON.parse(body);
+          patched.has_ext = flag;
+          body = JSON.stringify(patched);
+        } catch (_) {}
+      }
+      send();
+    });
+  }
   if (window.requestIdleCallback) {
-    requestIdleCallback(send, { timeout: 2000 });
+    requestIdleCallback(probeThenSend, { timeout: 2000 });
   } else {
-    setTimeout(send, 1000);
+    setTimeout(probeThenSend, 1000);
   }
 
   // ── store-button click beacons ────────────────────────────────────
@@ -147,20 +194,25 @@
     if (!target) return;
     var src = '';
     var ref = '';
+    var extFlag = null;
     try {
       src = sessionStorage.getItem('_uw_src') || '';
       ref = sessionStorage.getItem('_uw_ref') || document.referrer || '';
+      var e = sessionStorage.getItem('_uw_ext');
+      if (e === '1' || e === '0') extFlag = Number(e);
     } catch (_) { ref = document.referrer || ''; }
+    var clickPayload = {
+      target: target,
+      referrer: ref,
+      utm_source: src,
+      landing_path: location.pathname || '/',
+    };
+    if (extFlag !== null) clickPayload.has_ext = extFlag;
     try {
       fetch(API_BASE + '/api/landing-click', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          target: target,
-          referrer: ref,
-          utm_source: src,
-          landing_path: location.pathname || '/',
-        }),
+        body: JSON.stringify(clickPayload),
         keepalive: true,
         mode: 'cors',
         credentials: 'omit',
