@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>How to Remove Black Bars on an Ultrawide Monitor (2026 Guide)</title>
+  <meta name="description" content="Four real ways to make 16:9 video fill a 21:9 or 32:9 ultrawide monitor — player zoom, GPU scaling, linear stretch, and non-linear warp — with honest trade-offs of each." />
+  <link rel="canonical" href="https://ultrawider.net/black-bars.html" />
+  <meta property="og:title" content="How to Remove Black Bars on an Ultrawide Monitor (2026 Guide)" />
+  <meta property="og:description" content="Four real ways to make 16:9 video fill an ultrawide screen, with honest trade-offs of each." />
+  <meta property="og:url" content="https://ultrawider.net/black-bars.html" />
+  <meta property="og:type" content="article" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <script src="assets/audience-stats.js?v=15" defer></script>
+  <style>
+    :root {
+      --bg: #0a0908; --panel: #14110c; --line: rgba(245,158,11,0.16);
+      --line-soft: rgba(247,245,242,0.09); --text: #f5f2ed; --dim: #b3a996;
+      --accent: #f59e0b; --accent-ink: #14100a; --good: #10b981; --bad: #ef4444;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font: 17px/1.7 system-ui, "Segoe UI", Roboto, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .wrap { max-width: 760px; margin: 0 auto; padding: 40px 22px 90px; }
+    a { color: var(--accent); }
+    .crumb { font-size: 14px; color: var(--dim); }
+    .crumb a { text-decoration: none; }
+    h1 { font-size: 34px; line-height: 1.2; letter-spacing: -0.02em; margin: 14px 0 10px; }
+    .sub { color: var(--dim); margin: 0 0 30px; }
+    h2 { font-size: 23px; margin: 42px 0 12px; letter-spacing: -0.01em; }
+    h3 { font-size: 18px; margin: 26px 0 8px; }
+    p, li { color: var(--dim); }
+    strong { color: var(--text); }
+    .tldr {
+      border: 1px solid var(--line); background: rgba(245,158,11,0.05);
+      border-radius: 12px; padding: 18px 20px; margin: 0 0 8px;
+    }
+    .tldr p { margin: 0; }
+    .method {
+      border: 1px solid var(--line-soft); border-radius: 12px;
+      padding: 20px 22px; margin: 18px 0; background: var(--panel);
+    }
+    .method h3 { margin-top: 0; }
+    .pro, .con { padding-left: 24px; position: relative; margin: 6px 0; list-style: none; }
+    .pro::before { content: "✓"; color: var(--good); position: absolute; left: 0; }
+    .con::before { content: "✕"; color: var(--bad); position: absolute; left: 0; }
+    ul.pc { padding: 0; margin: 12px 0 0; }
+    table { border-collapse: collapse; width: 100%; font-size: 15px; margin: 16px 0; }
+    th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line-soft); color: var(--dim); }
+    th { color: var(--text); font-size: 13px; text-transform: uppercase; letter-spacing: 0.06em; }
+    td:first-child { color: var(--text); }
+    .table-wrap { overflow-x: auto; }
+    .cta {
+      margin: 40px 0 10px; border: 1px solid var(--line); border-radius: 14px;
+      background: linear-gradient(180deg, rgba(245,158,11,0.08), rgba(245,158,11,0.02));
+      padding: 26px 26px 22px;
+    }
+    .cta h2 { margin: 0 0 8px; }
+    .btn {
+      display: inline-block; background: var(--accent); color: var(--accent-ink);
+      font-weight: 700; text-decoration: none; padding: 12px 22px; border-radius: 10px;
+      margin: 10px 12px 4px 0;
+    }
+    .btn.ghost { background: transparent; color: var(--accent); border: 1px solid var(--line); }
+    .faq dt { color: var(--text); font-weight: 600; margin-top: 18px; }
+    .faq dd { margin: 6px 0 0; color: var(--dim); }
+    .foot { margin-top: 60px; font-size: 14px; color: var(--dim); border-top: 1px solid var(--line-soft); padding-top: 18px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="crumb"><a href="/">Ultrawider</a> › Guides</div>
+    <h1>How to Remove Black Bars on an Ultrawide Monitor</h1>
+    <p class="sub">The 2026 guide to making 16:9 video fill a 21:9 or 32:9 screen — four real methods, with the honest trade-offs of each.</p>
+
+    <div class="tldr">
+      <p><strong>Short answer:</strong> black bars exist because nearly all video is produced in 16:9, and your monitor isn't. You can crop the video, stretch it, or warp it non-linearly. Cropping loses the edges, linear stretching makes faces ~30% wider, and non-linear warping keeps the center of the image untouched while stretching only the edges — which is the only method where people on screen still look like themselves.</p>
+    </div>
+
+    <h2>Why you get black bars in the first place</h2>
+    <p>A 21:9 monitor is about 31% wider than the 16:9 frame almost every YouTube video, stream, and broadcast is delivered in. A 32:9 super ultrawide is 100% wider. When a 16:9 video plays fullscreen, your display fills the missing width with black pillars — on a 34" ultrawide that's roughly a quarter of the panel doing nothing; on a 49" it's half.</p>
+    <p>Games solve this natively: they just render more world at the sides. Video can't — the pixels beyond 16:9 were never filmed. So every solution is some way of <em>inventing</em> that missing width. The four methods below differ only in <strong>where they hide the damage</strong>.</p>
+
+    <h2>Method 1: Zoom / crop (built into some players)</h2>
+    <div class="method">
+      <h3>Scale the video until it fills the width, cut off the top and bottom</h3>
+      <p>Some video players (VLC, MPC-HC, some TV apps) have a "crop to fill" or zoom mode. The image fills the screen and geometry stays perfectly correct — you just see less of it.</p>
+      <ul class="pc">
+        <li class="pro">Zero distortion — circles stay circles</li>
+        <li class="pro">Works on any content, including DRM-protected sites</li>
+        <li class="con">You lose ~25% of the image on 21:9 (top and bottom)</li>
+        <li class="con">Subtitles, HUDs and lower-thirds often get cut off</li>
+        <li class="con">Barely available in browsers, where most video actually lives</li>
+      </ul>
+    </div>
+
+    <h2>Method 2: GPU display scaling</h2>
+    <div class="method">
+      <h3>Force the whole display to stretch via NVIDIA/AMD drivers</h3>
+      <p>NVIDIA Control Panel → "Adjust desktop size and position" → Full-screen scaling (AMD: GPU Scaling → Full Panel). This stretches <em>everything</em>, not just the video.</p>
+      <ul class="pc">
+        <li class="pro">System-wide, works in any app</li>
+        <li class="con">Linear stretch: everything becomes ~30% wider, including faces, text and your desktop</li>
+        <li class="con">Meant for lower-than-native game resolutions, not for watching video — you have to toggle it manually every time</li>
+      </ul>
+    </div>
+
+    <h2>Method 3: Linear-stretch browser extensions</h2>
+    <div class="method">
+      <h3>Stretch the video element with CSS</h3>
+      <p>The classic ultrawide extensions apply a uniform horizontal scale to the video. Simple, reliable — and the reason "everyone looks fat" is the most common complaint about watching stretched video.</p>
+      <ul class="pc">
+        <li class="pro">One click, works on most sites</li>
+        <li class="pro">No pixel access needed, so DRM sites work too</li>
+        <li class="con">Uniform distortion: a face in the center gets exactly as stretched as the edges — people look ~30% wider</li>
+        <li class="con">Your brain never fully tunes it out, especially on close-ups and news anchors</li>
+      </ul>
+    </div>
+
+    <h2>Method 4: Non-linear warp (what we build)</h2>
+    <div class="method">
+      <h3>Keep the center of the frame untouched, stretch only the edges</h3>
+      <p>Old TVs called a crude version of this "smart stretch". The modern version runs a warp curve over the video in a WebGL shader: the <strong>central ~60% of the frame maps 1:1</strong> — mathematically zero distortion where faces, players and action live — while the outer edges absorb all of the stretch, where peripheral vision barely registers it.</p>
+      <p>That's what <a href="/">Ultrawider</a> does. It detects your exact aspect ratio (21:9, 32:9, anything), computes the right curve, and applies it the moment a video goes fullscreen. When a site blocks pixel access (DRM), it falls back to a clean crop automatically.</p>
+      <ul class="pc">
+        <li class="pro">Faces and center content stay geometrically correct</li>
+        <li class="pro">Fills the entire panel — no bars, no cropped subtitles</li>
+        <li class="pro">Works per-site with remembered preferences</li>
+        <li class="con">Needs pixel access, so pure-DRM sites (Netflix-class) get crop mode instead</li>
+        <li class="con">The outer edges are technically distorted — you're choosing <em>where</em> the distortion goes, not whether it exists</li>
+      </ul>
+    </div>
+
+    <h2>Which method should you use?</h2>
+    <div class="table-wrap">
+    <table>
+      <tr><th>Method</th><th>Faces look right</th><th>Full image kept</th><th>Works in browser</th><th>DRM sites</th></tr>
+      <tr><td>Zoom / crop</td><td>✓ perfect</td><td>✕ loses 25%</td><td>rarely</td><td>✓</td></tr>
+      <tr><td>GPU scaling</td><td>✕ 30% wider</td><td>✓</td><td>✓ (stretches everything)</td><td>✓</td></tr>
+      <tr><td>Linear stretch ext.</td><td>✕ 30% wider</td><td>✓</td><td>✓</td><td>✓</td></tr>
+      <tr><td>Non-linear warp</td><td>✓ center untouched</td><td>✓</td><td>✓</td><td>crop fallback</td></tr>
+    </table>
+    </div>
+    <p>If you only watch on one desktop player, use its crop mode. If you watch video in a browser — which is where YouTube, Twitch, sports and courses actually live — a non-linear warp is the only option that fills the screen <em>and</em> keeps people looking human.</p>
+
+    <div class="cta">
+      <h2>Try the non-linear warp — free on YouTube</h2>
+      <p>Ultrawider is free on YouTube forever (no account, no key). An interactive geometry demo on the homepage shows exactly how the warp curve works.</p>
+      <a class="btn" href="https://chromewebstore.google.com/detail/fpbkljincbjlmfefgcefcbjjppehkamo" target="_blank" rel="noopener">Add to Chrome</a>
+      <a class="btn ghost" href="https://microsoftedge.microsoft.com/addons/detail/mpjkkafkfjgealcigbiigiaeljokclkg" target="_blank" rel="noopener">Add to Edge</a>
+      <a class="btn ghost" href="/">See the live demo</a>
+    </div>
+
+    <h2>FAQ</h2>
+    <dl class="faq">
+      <dt>Why is all video still 16:9 when ultrawide monitors exist?</dt>
+      <dd>Because 16:9 is the production and delivery standard — cameras, editing pipelines, YouTube's encoder and TV broadcasts all target it. Ultrawide owners are a fast-growing but still small share of viewers, so nobody masters content for 21:9. That's unlikely to change soon; the fix has to happen on your side of the screen.</dd>
+      <dt>Does stretching video hurt quality?</dt>
+      <dd>Cropping discards pixels; stretching (linear or non-linear) resamples them. On a good scaler the sharpness cost is negligible compared to compression artifacts already in the stream. The visible difference between methods is geometry, not sharpness.</dd>
+      <dt>Why do some sites only offer crop mode?</dt>
+      <dd>Sites with DRM (Widevine and friends) block reading video pixels entirely, and a warp shader needs to read them. Cropping is pure CSS scaling, so it works everywhere.</dd>
+      <dt>Does this work on 32:9 super ultrawides?</dt>
+      <dd>Yes — the warp curve is computed from your actual aspect ratio. On 32:9 the edges absorb more stretch, but the center stays 1:1 just the same. Crop mode on 32:9 costs too much image to be practical, which makes the warp approach even more relevant there.</dd>
+    </dl>
+
+    <div class="foot">
+      <a href="/">Ultrawider</a> — fills ultrawide monitors with any video. Free on YouTube. · <a href="/pricing/">Pricing</a> · <a href="/privacy">Privacy</a>
+    </div>
+  </div>
+</body>
+</html>
