@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cancel Your Ultrawider Pro Subscription — Self-Serve</title>
+    <meta name="description" content="Cancel your Ultrawider Pro subscription yourself in seconds. Enter the email you paid with and your license key — we stop the next renewal and you keep Pro until the paid period ends." />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#050505" />
+    <meta property="og:title" content="Cancel Your Ultrawider Pro Subscription" />
+    <meta property="og:description" content="Self-serve cancellation for Ultrawider Pro — stops the next renewal, you keep Pro until the paid period ends." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ultrawider.net/cancel" />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href="https://ultrawider.net/cancel" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16.png" />
+    <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+    <link rel="stylesheet" href="/style.css?v=13" />
+    <script src="/assets/config.js"></script>
+    <script src="/assets/error-instrumentation.js"></script>
+    <script src="/assets/metrika.js" defer></script>
+    <script src="/assets/audience-stats.js" defer></script>
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/109480276" style="position:absolute;left:-9999px" alt="" /></div></noscript>
+    <header class="site-header">
+      <div class="container nav">
+        <a href="/" class="logo">
+          <span class="logo-mark"></span>
+          <span class="logo-text">Ultrawider</span>
+        </a>
+        <nav class="nav-links">
+          <a href="/#playground">Playground</a>
+          <a href="/#math">For geeks</a>
+          <a href="/#pricing">Pricing</a>
+          <a href="/#faq">FAQ</a>
+          <a href="/#pricing" class="btn-cta">Get Pro</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="account-page">
+      <div class="account-container">
+        <a href="/account" class="account-back" aria-label="Back to your subscription">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+          Back to your subscription
+        </a>
+
+        <header class="account-head">
+          <span class="account-eyebrow">Subscription</span>
+          <h1>Cancel your Ultrawider Pro subscription.</h1>
+          <p class="account-lede">
+            Enter the email you paid with and your license key. We'll stop
+            the next renewal right away.
+          </p>
+        </header>
+
+        <form class="account-form" id="form" novalidate>
+          <label class="account-label" for="email">Email you paid with</label>
+          <input
+            class="account-input"
+            type="email"
+            id="email"
+            required
+            placeholder="your.email@example.com"
+            autocomplete="email"
+          />
+          <label class="account-label" for="key">License key</label>
+          <input
+            class="account-input"
+            type="text"
+            id="key"
+            required
+            placeholder="XXXX-XXXX-XXXX-XXXX"
+            autocomplete="off"
+            spellcheck="false"
+            inputmode="latin"
+          />
+          <p class="account-hint">
+            The 16-character key from your license email — with or without dashes.
+          </p>
+          <button class="account-submit" type="submit" id="submit">Cancel subscription</button>
+        </form>
+
+        <div class="account-msg" id="msg" hidden></div>
+
+        <p class="account-reassure">
+          Cancelling stops the next renewal — you keep Pro until the end of
+          the period you already paid for. Lifetime licenses have nothing to
+          cancel.
+        </p>
+
+        <p class="account-fallback">
+          Prefer email? Write
+          <a id="contact-link" href="mailto:hello@ultrawider.net?subject=Cancel%20subscription">hello@ultrawider.net</a>
+          and we'll cancel it for you.
+        </p>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-bottom">
+        <span>© 2026 Ultrawider · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a href="/refund.html">Support</a></span>
+      </div>
+    </footer>
+
+    <style>
+      /* Page-specific bits not already in the shared account styles. */
+      .account-hint {
+        margin: -6px 0 4px;
+        font-size: 0.84rem;
+        color: var(--text-mute);
+        line-height: 1.5;
+      }
+      .account-reassure {
+        margin-top: 22px;
+        padding: 14px 16px;
+        background: rgba(245, 158, 11, 0.06);
+        border: 1px solid rgba(245, 158, 11, 0.22);
+        border-radius: 10px;
+        font-size: 0.9rem;
+        color: var(--text-dim);
+        line-height: 1.55;
+      }
+    </style>
+
+    <script src="/assets/config.js"></script>
+    <script>
+      (function () {
+        document.getElementById('contact-link').href =
+          'mailto:' + window.ULTRAWIDER.CONTACT_EMAIL + '?subject=Cancel%20subscription';
+
+        // Metrika loads deferred (after this classic script) — fire the
+        // page-view goal once it's available.
+        (function () {
+          function fire() {
+            if (window.UW_METRIKA) window.UW_METRIKA.goal('cancel_view');
+          }
+          if (window.UW_METRIKA) fire();
+          else document.addEventListener('DOMContentLoaded', fire);
+        })();
+
+        // Prefill from ?email= / ?key= (e.g. a deep-link from the extension
+        // or the /account page). Key may arrive with dashes.
+        var params = new URLSearchParams(location.search);
+        if (params.get('email')) document.getElementById('email').value = params.get('email');
+        if (params.get('key')) document.getElementById('key').value = params.get('key');
+
+        var form = document.getElementById('form');
+        var emailIn = document.getElementById('email');
+        var keyIn = document.getElementById('key');
+        var btn = document.getElementById('submit');
+        var msg = document.getElementById('msg');
+
+        function show(text, kind) {
+          msg.hidden = false;
+          msg.className = 'account-msg' + (kind ? ' account-msg--' + kind : '');
+          msg.textContent = text;
+        }
+
+        function goal(name) {
+          try { if (window.UW_METRIKA) window.UW_METRIKA.goal(name); } catch (_e) {}
+        }
+
+        form.addEventListener('submit', async function (e) {
+          e.preventDefault();
+          var email = (emailIn.value || '').trim();
+          // Accept the key with or without dashes/spaces — the backend gets
+          // exactly what the user typed; we only validate length here.
+          var rawKey = (keyIn.value || '').trim();
+          var cleanKey = rawKey.replace(/[^A-Za-z0-9]/g, '');
+
+          if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            show('Please enter the email address you paid with.', 'error');
+            emailIn.focus();
+            return;
+          }
+          if (cleanKey.length !== 16) {
+            show('That license key looks off — it should be 16 characters (dashes optional).', 'error');
+            keyIn.focus();
+            return;
+          }
+
+          goal('cancel_submit');
+          btn.disabled = true;
+          var prevLabel = btn.textContent;
+          btn.textContent = 'Cancelling…';
+          show('Cancelling…');
+
+          try {
+            var resp = await fetch(window.ULTRAWIDER.API_BASE + '/api/subscription/cancel', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email: email, key: rawKey }),
+            });
+            var body = await resp.json().catch(function () { return {}; });
+
+            if (resp.ok && body && body.ok) {
+              goal('cancel_success');
+              show(
+                body.message ||
+                  "Done — your subscription won't renew. You keep Pro until the end of the period you already paid for.",
+                'ok'
+              );
+              // `.account-form { display:flex }` beats the [hidden] attribute,
+              // so hide via inline style too — otherwise the frozen
+              // "Cancelling…" button lingers under the success message.
+              form.hidden = true;
+              form.style.display = 'none';
+              return;
+            }
+
+            // 400 / 404 / 502 all return a user-friendly { message } — show it.
+            show(
+              (body && body.message) ||
+                'Something went wrong (' + resp.status + '). Please try again or email ' +
+                  window.ULTRAWIDER.CONTACT_EMAIL + '.',
+              'error'
+            );
+            btn.disabled = false;
+            btn.textContent = prevLabel;
+          } catch (err) {
+            show(
+              "Couldn't reach our servers — try again in a minute, or email " +
+                window.ULTRAWIDER.CONTACT_EMAIL + " and we'll cancel it for you.",
+              'error'
+            );
+            btn.disabled = false;
+            btn.textContent = prevLabel;
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
