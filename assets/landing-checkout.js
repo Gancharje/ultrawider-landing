@@ -1,14 +1,14 @@
 /**
  * Landing-page pricing + inline checkout.
  *
- * Renders the sponsorship cards inside [data-landing-plans], then handles
+ * Renders the plan cards inside [data-landing-plans], then handles
  * the click-to-expand inline checkout flow without a page navigation:
  *
- *   1. Visitor clicks "Sponsor monthly/yearly"
+ *   1. Visitor clicks "Subscribe monthly/yearly" (or "Get Lifetime")
  *   2. Inline checkout panel slides into view BELOW the cards with the
- *      selected plan's summary + an email input
- *   3. Submit → POST /api/checkout/lava → redirect straight to Lava.top's
- *      branded card / PayPal checkout page (data.payment_url)
+ *      selected plan's summary + an email input + card/PayPal choice
+ *   3. Submit → POST /api/checkout/lava → open Lava.top's branded
+ *      card / PayPal checkout page (data.payment_url) in a NEW TAB
  *
  * Prices come from window.ULTRAWIDER.PLANS (static, authoritative).
  */
@@ -35,7 +35,7 @@
         'Twitch, Vimeo, Kick + most other video sites',
         'Aspect-aware auto-tuning',
       ],
-      cta: 'Sponsor monthly',
+      cta: 'Subscribe monthly',
     },
     yearly: {
       period: '/yr',
@@ -43,7 +43,7 @@
         'Everything in Monthly',
         '≈ $2/mo · Save 60% vs monthly',
       ],
-      cta: 'Sponsor yearly',
+      cta: 'Subscribe yearly',
     },
     lifetime: {
       period: '',
@@ -71,7 +71,7 @@
   function planCard(planId, plans, idx) {
     var p = plans[planId];
     if (!p) return '';
-    var ex = EXTRAS[planId] || { period: '', features: [], cta: 'Sponsor' };
+    var ex = EXTRAS[planId] || { period: '', features: [], cta: 'Get Pro' };
     var isRec = planId === RECOMMENDED;
     var price = formatPriceParts(p.priceUsd);
 
@@ -146,18 +146,22 @@
       goal('checkout_view');
       selectedPlan = planId;
       form.hidden = false;
-      var billLine = planId === 'lifetime'
-        ? 'One-time payment · yours forever · secure card / PayPal checkout'
-        : 'Billed ' + planId + ', cancel anytime · secure card / PayPal checkout';
+      // Reset submit state in case the visitor is starting a second order.
+      submit.disabled = false;
+      submit.textContent = 'Continue to payment →';
+      var isLifetime = planId === 'lifetime';
+      var billLine = isLifetime
+        ? 'One-time payment · yours forever · no renewals'
+        : 'Auto-renews ' + planId + ' · cancel anytime';
       summary.innerHTML =
         '<div class="landing-checkout-summary-top">' +
-          '<span class="landing-checkout-summary-label">' + p.label + ' sponsorship</span>' +
+          '<span class="landing-checkout-summary-label">Ultrawider Pro — ' + p.label + '</span>' +
           '<span class="landing-checkout-summary-price">' +
             '<span class="landing-checkout-summary-usd">$' + p.priceUsd.toFixed(2) + '</span>' +
           '</span>' +
         '</div>' +
-        '<p class="landing-checkout-summary-bill">' + billLine + '</p>' +
-        '<p class="landing-checkout-summary-dur">License active ' + p.duration + '</p>';
+        '<p class="landing-checkout-summary-bill">' + billLine + ' · secure card / PayPal checkout</p>' +
+        '<p class="landing-checkout-summary-dur">A Pro license key by email in ~5 minutes.</p>';
       errBox.hidden = true;
       checkout.hidden = false;
       // Highlight selected card
@@ -194,7 +198,7 @@
 
     if (closeBtn) closeBtn.addEventListener('click', closeCheckout);
 
-    // Sponsorship explainer "Read more →" links jump to a specific FAQ
+    // Checkout explainer "Read more →" links jump to a specific FAQ
     // entry and auto-open it. Use the same [open] + .is-open pairing
     // the FAQ click-handler in index.html uses, so the open animation
     // runs from the natural starting state (0fr → 1fr) rather than
@@ -226,14 +230,6 @@
         showError('Please enter a valid email address.');
         return;
       }
-      // Require explicit sponsorship acknowledgment — gives us a paper
-      // trail of informed consent that this is a contribution, not a
-      // consumer-product purchase.
-      var ackEl = document.getElementById('landing-checkout-ack-input');
-      if (ackEl && !ackEl.checked) {
-        showError('Please tick the box to confirm you understand this is a sponsorship contribution.');
-        return;
-      }
       goal('checkout_submit');
       submit.disabled = true;
       submit.textContent = 'Creating your order…';
@@ -241,12 +237,17 @@
 
       var installId = new URLSearchParams(location.search).get('install_id');
 
+      // Card → UNLIMINT, PayPal → PAYPAL. Card is the default selection.
+      var payMethodEl = form.querySelector('input[name="landing-pay-method"]:checked');
+      var paymentProvider = (payMethodEl && payMethodEl.value === 'paypal') ? 'PAYPAL' : 'UNLIMINT';
+
       fetch(api + '/api/checkout/lava', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           plan: selectedPlan,
           email: email,
+          paymentProvider: paymentProvider,
           install_id: installId || undefined,
         }),
       })
@@ -266,13 +267,19 @@
             // last order even after a browser restart.
             localStorage.setItem('ultrawider_last_order', data.order_id);
           } catch (_e) { /* private mode etc — ignore */ }
-          // Reset the submit button in case the visitor comes back.
-          submit.disabled = false;
-          submit.textContent = 'Continue to payment →';
-          // Lava.top's checkout page is branded and trustworthy — redirect
-          // straight there, no interstitial.
+          // Keep the visitor on the landing: open Lava.top's checkout in a
+          // NEW TAB, then swap the form for a short confirmation.
           goal('checkout_redirect');
-          location.assign(data.payment_url);
+          var win = window.open(data.payment_url, '_blank', 'noopener');
+          form.hidden = true;
+          errBox.hidden = true;
+          summary.innerHTML =
+            '<div class="landing-checkout-confirm">' +
+              '<h3>Checkout opened in a new tab.</h3>' +
+              '<p>Your Pro key will arrive by email within ~5 minutes of payment.</p>' +
+              (win ? '' :
+                '<p><a href="' + data.payment_url + '" target="_blank" rel="noopener">Open the payment page →</a></p>') +
+            '</div>';
         })
         .catch(function (e) {
           var contact = (window.ULTRAWIDER && window.ULTRAWIDER.CONTACT_EMAIL) || 'hello@ultrawider.net';

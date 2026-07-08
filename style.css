@@ -1381,15 +1381,39 @@ strong { color: var(--text); font-weight: 600; }
 
 /* ---------- The playground ---------- */
 
+/* Monitor bezel — wraps the screen so the black letterbox bars read
+   against a physical frame instead of vanishing into the page black.
+   A few px of padding reveals the bezel around the screen; the screen
+   (.playground) fills the content box exactly, so demo geometry
+   (divider %, clip-path) is untouched. Amber outer glow is static so
+   prefers-reduced-motion needs no special-case. */
+.playground-monitor {
+  position: relative;
+  padding: 14px;
+  border-radius: calc(var(--radius) + 12px);
+  /* Dark-grey bezel, a touch lighter than the page black, with a subtle
+     top-to-bottom gradient so it catches light like a real monitor. */
+  background: linear-gradient(180deg, #1c1c1e 0%, #141210 55%, #100e0a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.06),
+    0 0 0 1px rgba(0, 0, 0, 0.6),
+    0 30px 80px -22px rgba(0, 0, 0, 0.8),
+    /* on-brand amber outer glow — low opacity, tasteful, not gaudy */
+    0 0 56px -8px rgba(245, 158, 11, 0.22),
+    0 0 130px -24px rgba(245, 158, 11, 0.14);
+}
+
 .playground {
   position: relative;
   width: 100%;
   aspect-ratio: 21 / 9;
   background: #000;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(0, 0, 0, 0.9);
   border-radius: var(--radius);
   overflow: hidden;
-  box-shadow: var(--shadow-lg);
+  /* Recessed screen: soft inner shadow sinks the panel into the bezel. */
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.8), inset 0 2px 14px rgba(0, 0, 0, 0.55);
   /* Defensive: avoid clipping interactive controls below */
   isolation: isolate;
   user-select: none;
@@ -1680,6 +1704,7 @@ strong { color: var(--text); font-weight: 600; }
 
 @media (max-width: 720px) {
   .hero-playground { padding: 40px 0 64px; }
+  .playground-monitor { padding: 8px; border-radius: calc(var(--radius-sm) + 8px); }
   .playground {
     /* MUST stay 21:9 even on phones: the whole point of the demo is
        letterbox-bars (raw 16:9 video in 21:9 stage = visible black
@@ -3520,61 +3545,66 @@ code, .code-inline {
   border-bottom-color: var(--accent);
 }
 
-/* Sponsorship acknowledgment — explicit consent that this is a voluntary
-   contribution, not a consumer-product purchase. Customer must tick it
-   before Continue-to-payment activates. Critical for legal positioning:
-   gives us a paper trail of informed consent. */
-.landing-checkout-ack {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
+/* Payment-method choice (Card / PayPal). Card is the default. Sends
+   paymentProvider (UNLIMINT / PAYPAL) with the checkout POST. */
+.pay-method {
+  border: 0;
   margin: 16px 0 4px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.pay-method legend {
+  padding: 0;
+  margin-bottom: 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.pay-method-opt {
+  flex: 1 1 0;
+  min-width: 120px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   padding: 12px 14px;
   background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   cursor: pointer;
   transition: border-color 0.18s ease, background-color 0.18s ease;
 }
-.landing-checkout-ack:hover { border-color: rgba(255, 255, 255, 0.16); }
-.landing-checkout-ack input[type="checkbox"] {
-  appearance: none;
-  -webkit-appearance: none;
-  flex-shrink: 0;
+.pay-method-opt:hover { border-color: rgba(255, 255, 255, 0.24); }
+.pay-method-opt:has(input:checked) {
+  border-color: var(--accent);
+  background: rgba(245, 158, 11, 0.08);
+}
+.pay-method-opt input[type="radio"] {
+  accent-color: var(--accent);
   width: 16px;
   height: 16px;
-  /* Nudge down to align checkbox center with the cap-height of the
-     adjacent body text (Inter at 0.82rem, line-height 1.5). 4px puts
-     the checkbox top roughly at the "I" stem top of the first line. */
-  margin: 4px 0 0;
-  border: 1.5px solid rgba(255, 255, 255, 0.32);
-  border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.18s ease, border-color 0.18s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
 }
-.landing-checkout-ack input[type="checkbox"]:checked {
-  background-color: var(--accent);
-  border-color: var(--accent);
+.pay-method-opt span {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
 }
-.landing-checkout-ack input[type="checkbox"]:checked::after {
-  content: "";
-  display: block;
-  width: 4px;
-  height: 8px;
-  border-right: 2px solid #1a1207;
-  border-bottom: 2px solid #1a1207;
-  transform: rotate(45deg) translate(-1px, -1px);
+
+/* Post-checkout confirmation shown in place of the form once the Lava.top
+   tab is opened. */
+.landing-checkout-confirm h3 {
+  margin: 0 0 8px;
+  font-size: 1.15rem;
+  color: var(--text);
 }
-.landing-checkout-ack span {
-  /* Match the 16px checkbox height for visual parity — text was
-     reading as "smaller" than the control next to it. */
-  font-size: 1rem;
-  line-height: 1.5;
+.landing-checkout-confirm p {
+  margin: 0 0 8px;
   color: var(--text-dim);
+  line-height: 1.55;
 }
+.landing-checkout-confirm a { color: var(--accent); }
 
 .landing-checkout-error {
   margin-top: 14px;

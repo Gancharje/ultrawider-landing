@@ -73,17 +73,26 @@
             </div>
           </div>
 
-          <label class="checkout-ack">
-            <input type="checkbox" id="checkout-ack-input" required />
-            <span>I understand this is a voluntary sponsorship contribution, delivered as a Pro license thank-you perk &mdash; not a consumer-product purchase. Contributions are non-refundable as a matter of right.</span>
-          </label>
+          <fieldset class="pay-method" id="checkout-pay-method">
+            <legend>Payment method</legend>
+            <label class="pay-method-opt">
+              <input type="radio" name="checkout-pay-method" value="card" checked />
+              <span>Card</span>
+            </label>
+            <label class="pay-method-opt">
+              <input type="radio" name="checkout-pay-method" value="paypal" />
+              <span>PayPal</span>
+            </label>
+          </fieldset>
 
           <button type="submit" id="submit-btn">Continue to payment →</button>
 
           <p class="legal">
-            By continuing, you make a voluntary sponsorship contribution to
-            Ultrawider and receive a Pro license key as a thank-you. You
-            agree to our
+            By continuing you start an Ultrawider Pro subscription (monthly or
+            yearly, auto-renewing) — or, for Lifetime, a one-time purchase —
+            billed by card or PayPal via Lava.top. Cancel anytime — email
+            hello@ultrawider.net and we'll stop the renewal; you keep Pro
+            until the paid period ends. You agree to our
             <a href="/terms.html">Terms</a> and
             <a href="/refund.html">Support Policy</a>.
           </p>

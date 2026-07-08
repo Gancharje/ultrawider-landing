@@ -214,8 +214,10 @@
           </p>
 
           <div class="aaa-actions">
-            <a href="#pricing" class="aaa-cta-primary">Get Pro — from ~$3/mo</a>
-            <a href="https://chromewebstore.google.com/detail/ultrawider-%E2%80%94-fill-ultrawi/fpbkljincbjlmfefgcefcbjjppehkamo" target="_blank" rel="noopener" class="aaa-cta-secondary">
+            <a href="#pricing" class="aaa-cta-primary">Get Pro — from $2/mo</a>
+            <a id="install-cta" data-install-cta
+               href="https://chromewebstore.google.com/detail/ultrawider-%E2%80%94-fill-ultrawi/fpbkljincbjlmfefgcefcbjjppehkamo"
+               target="_blank" rel="noopener" class="aaa-cta-secondary">
               <svg class="chrome-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <circle cx="12" cy="12" r="10"/>
                 <circle cx="12" cy="12" r="4"/>
@@ -231,19 +233,15 @@
             </a>
           </div>
 
-          <div class="store-links">
-            <a href="https://chromewebstore.google.com/detail/ultrawider-%E2%80%94-fill-ultrawi/fpbkljincbjlmfefgcefcbjjppehkamo" target="_blank" rel="noopener">Chrome Web Store</a>
+          <div class="store-links" data-store-links>
+            <a data-store="chrome" href="https://chromewebstore.google.com/detail/ultrawider-%E2%80%94-fill-ultrawi/fpbkljincbjlmfefgcefcbjjppehkamo" target="_blank" rel="noopener">Chrome Web Store</a>
             <span class="store-sep" aria-hidden="true">·</span>
-            <a href="https://microsoftedge.microsoft.com/addons/detail/ultrawider-%E2%80%94-fill-ultrawi/mpjkkafkfjgealcigbiigiaeljokclkg" target="_blank" rel="noopener">Edge Add-ons</a>
+            <a data-store="edge" href="https://microsoftedge.microsoft.com/addons/detail/ultrawider-%E2%80%94-fill-ultrawi/mpjkkafkfjgealcigbiigiaeljokclkg" target="_blank" rel="noopener">Edge Add-ons</a>
             <span class="store-sep" aria-hidden="true">·</span>
-            <span class="store-soon">Firefox — coming soon</span>
+            <a data-store="firefox" href="https://addons.mozilla.org/firefox/addon/ultrawider-21-9-video-fill/" target="_blank" rel="noopener">Firefox</a>
           </div>
 
-          <div style="margin-top: 14px;">
-            <a href="https://www.producthunt.com/products/ultrawider?embed=true&amp;utm_source=badge-featured&amp;utm_medium=badge&amp;utm_campaign=badge-ultrawider" target="_blank" rel="noopener noreferrer"><img alt="Ultrawider - Fill your ultrawide monitor with any video, faces stay round | Product Hunt" width="250" height="54" loading="lazy" src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1189948&amp;theme=dark&amp;t=1783408583815"></a>
-          </div>
-
-          <p class="aaa-micro">One-time support · No auto-renew · No account required</p>
+          <p class="aaa-micro">Card or PayPal · Cancel anytime · No account required</p>
         </div>
       </div>
 
@@ -268,6 +266,7 @@
           </p>
         </header>
 
+        <div class="playground-monitor">
         <div class="playground" data-playground>
           <video
             class="playground-video"
@@ -321,6 +320,7 @@
           <div class="playground-fallback-message" data-fallback hidden>
             <p>Live WebGL playground isn't available on your browser. See the math below ↓</p>
           </div>
+        </div>
         </div>
 
         <p class="playground-tail">
@@ -436,21 +436,21 @@
     </section>
 
 
-    <!-- PRICING — full inline funnel. 4-card sponsorship grid +
-         expandable inline checkout below selected card. Replaces the
-         old pricing-teaser + separate /pricing page navigation. -->
+    <!-- PRICING — full inline funnel. 3-plan grid (monthly / yearly /
+         lifetime) + expandable inline checkout below selected card.
+         Replaces the old pricing-teaser + separate /pricing page. -->
     <section id="pricing" class="lp-section">
       <div class="lp-ambient" aria-hidden="true"></div>
       <div class="container lp-container">
         <header class="lp-head">
           <div class="aaa-eyebrow">
             <span class="aaa-eyebrow-dot" aria-hidden="true"></span>
-            <span>Sponsor the project</span>
+            <span>Get Ultrawider Pro</span>
           </div>
           <h2>Free on YouTube. <span class="text-accent">Pro everywhere.</span></h2>
           <p class="lp-lede">
-            Smoothie's free on YouTube — forever. Sponsor to unlock Pro on
-            every other supported site, auto-tuned for 21:9, 24:9 and 32:9.
+            Smoothie's free on YouTube — forever. Go Pro to unlock every
+            other supported site, auto-tuned for 21:9, 24:9 and 32:9.
           </p>
         </header>
 
@@ -469,10 +469,17 @@
                 Activation key arrives within 5–20 minutes after payment is confirmed.
               </p>
 
-              <label class="landing-checkout-ack">
-                <input type="checkbox" id="landing-checkout-ack-input" required />
-                <span>I understand this is a voluntary sponsorship contribution, delivered as a Pro&nbsp;license thank-you perk &mdash; not a consumer&nbsp;product purchase.</span>
-              </label>
+              <fieldset class="pay-method" id="landing-pay-method">
+                <legend>Payment method</legend>
+                <label class="pay-method-opt">
+                  <input type="radio" name="landing-pay-method" value="card" checked />
+                  <span>Card</span>
+                </label>
+                <label class="pay-method-opt">
+                  <input type="radio" name="landing-pay-method" value="paypal" />
+                  <span>PayPal</span>
+                </label>
+              </fieldset>
 
               <div class="landing-checkout-error" id="landing-checkout-error" hidden></div>
 
@@ -481,26 +488,25 @@
               </button>
 
               <p class="landing-checkout-legal">
-                By continuing, you make a voluntary sponsorship contribution
-                to Ultrawider and receive a Pro license key as a thank-you.
-                Contributions are non-refundable as a matter of right —
-                see our <a href="/terms.html">Terms</a> and
+                By continuing you start an Ultrawider Pro subscription (monthly
+                or yearly, auto-renewing) — or, for Lifetime, a one-time
+                purchase — billed by card or PayPal via Lava.top. Cancel
+                anytime — email hello@ultrawider.net and we'll stop the
+                renewal; you keep Pro until the paid period ends. See our
+                <a href="/terms.html">Terms</a> and
                 <a href="/refund.html">Support Policy</a>.
               </p>
             </form>
           </div>
         </div>
 
-        <!-- Sponsorship explainer — editorial 3-column lockup.
-             Columns answer the three questions a careful sponsor will
+        <!-- Checkout explainer — editorial 3-column lockup.
+             Columns answer the three questions a careful buyer will
              ask BEFORE clicking through to Lava.top:
                01  how you actually pay (card / PayPal)
-               02  what arrives, when, and the refund terms
-               03  why the sponsorship model exists at all
-             Replaces wallet-pass receipt that read as decorative; this
-             reads as confident prose carrying every trust signal the
-             receipt had, in less vertical space. -->
-        <aside class="lp-receipt" aria-label="How sponsorship works">
+               02  what arrives, when
+               03  how billing / cancellation works -->
+        <aside class="lp-receipt" aria-label="How checkout works">
           <div class="lp-receipt-cols">
             <section class="lp-receipt-col">
               <span class="lp-receipt-num">01</span>
@@ -509,7 +515,7 @@
                 <strong>Visa</strong>, <strong>Mastercard</strong> or
                 <strong>PayPal</strong>. Card details stay on
                 <strong>Lava.top</strong>'s secure, PCI-compliant checkout
-                page. Cancel anytime — no auto-renew surprises.
+                page — they never touch us.
               </p>
             </section>
 
@@ -521,22 +527,22 @@
                 the supported web.
               </p>
               <p class="lp-receipt-body">
-                <strong>One-time support contribution.</strong> No auto-renew.
-                Need help? Just email&nbsp;us.
+                <strong>Monthly &amp; yearly auto-renew.</strong> Lifetime
+                is a one-time payment. Need help? Just email&nbsp;us.
               </p>
             </section>
 
             <section class="lp-receipt-col">
               <span class="lp-receipt-num">03</span>
-              <h3 class="lp-receipt-lead">We're indie.</h3>
+              <h3 class="lp-receipt-lead">Cancel anytime.</h3>
               <p class="lp-receipt-body">
-                A voluntary sponsorship keeps Ultrawider going. In return
-                you get a Pro license as a thank-you perk — billed
-                through <strong>Lava.top</strong> by card or PayPal, with
-                your key emailed straight to you.
+                Monthly and yearly plans renew automatically until you
+                cancel — email <strong>hello@ultrawider.net</strong> and
+                we'll stop the renewal; you keep Pro until the paid period
+                ends.
               </p>
               <p class="lp-receipt-body">
-                No auto-renew traps, no platform tax inflating your bill.
+                No hidden fees, no platform tax inflating your bill.
               </p>
               <a href="#faq-stars" class="lp-receipt-more" data-faq-jump="faq-stars">
                 Read more <span aria-hidden="true">→</span>
@@ -567,8 +573,13 @@
           </details>
 
           <details id="faq-stars">
-            <summary>How does the sponsorship and payment work?</summary>
-            <p>Ultrawider is built by one indie developer. A monthly ($5) or yearly ($24) sponsorship keeps the project alive, and in return you get a Pro license key as a thank-you perk. <strong>You pay by card or PayPal</strong> — Visa, Mastercard or PayPal — through <strong>Lava.top</strong>'s secure checkout page. Your Pro license key is emailed within 5–20 minutes. You can cancel anytime; there are no auto-renew traps. Because this is a sponsorship contribution (not a consumer-product sale), contributions are non-refundable as a matter of right — but we'll always make things right if something's actually broken on our end. See <a href="refund.html">Support Policy</a>.</p>
+            <summary>How does payment work?</summary>
+            <p>Ultrawider Pro is a subscription: <strong>$5/month</strong> or <strong>$24/year</strong> (both auto-renew until you cancel), or a one-time <strong>$49 lifetime</strong> license that never renews. <strong>You pay by card or PayPal</strong> — Visa, Mastercard or PayPal — through <strong>Lava.top</strong>, our payment processor. Your Pro license key is emailed within 5–20 minutes. You can cancel anytime (see below). If something's genuinely broken on our end we'll make it right — see <a href="refund.html">Support Policy</a>.</p>
+          </details>
+
+          <details>
+            <summary>How do I cancel?</summary>
+            <p>Cancel anytime — email <a href="mailto:hello@ultrawider.net?subject=Cancel%20subscription">hello@ultrawider.net</a> and we'll stop the renewal; you keep Pro until the paid period ends. The one-time Lifetime license has nothing to cancel — it never renews.</p>
           </details>
 
           <details>
@@ -583,12 +594,12 @@
 
           <details>
             <summary>What if Pro doesn't work for me?</summary>
-            <p>Sponsorship contributions are non-refundable as a matter of right — same model as Patreon, GitHub Sponsors, and Buy Me a Coffee. <strong>But we're indie and we care.</strong> If something's genuinely broken (key never arrived, double-charge, Pro doesn't work on supported sites and we can't fix it), email <a href="mailto:hello@ultrawider.net?subject=Support%20Request">hello@ultrawider.net</a> with your order ID — we'll either resolve the issue or issue a goodwill refund at our discretion. We don't refund "I changed my mind" requests, but we won't hold anyone hostage to something that's actually broken either. See our <a href="refund.html">Support Policy</a> for the full picture.</p>
+            <p><strong>We're indie and we care.</strong> If something's genuinely broken (key never arrived, double-charge, Pro doesn't work on supported sites and we can't fix it), email <a href="mailto:hello@ultrawider.net?subject=Support%20Request">hello@ultrawider.net</a> with your order ID — we'll either resolve the issue or issue a goodwill refund at our discretion. We don't refund "I changed my mind" requests, but we won't hold anyone hostage to something that's actually broken either. See our <a href="refund.html">Support Policy</a> for the full picture.</p>
           </details>
 
           <details>
             <summary>Does it work in all browsers?</summary>
-            <p>Chrome 110+ and any Chromium-based browser of the same vintage (Brave, Opera, Vivaldi, Arc) via the <a href="https://chromewebstore.google.com/detail/ultrawider-%E2%80%94-fill-ultrawi/fpbkljincbjlmfefgcefcbjjppehkamo" target="_blank" rel="noopener">Chrome Web Store</a>, and Microsoft Edge via <a href="https://microsoftedge.microsoft.com/addons/detail/ultrawider-%E2%80%94-fill-ultrawi/mpjkkafkfjgealcigbiigiaeljokclkg" target="_blank" rel="noopener">Edge Add-ons</a>. Firefox support is coming soon (in review). Safari is not supported; the live playground on this page works in any modern browser with WebGL2.</p>
+            <p>Chrome 110+ and any Chromium-based browser of the same vintage (Brave, Opera, Vivaldi, Arc) via the <a href="https://chromewebstore.google.com/detail/ultrawider-%E2%80%94-fill-ultrawi/fpbkljincbjlmfefgcefcbjjppehkamo" target="_blank" rel="noopener">Chrome Web Store</a>, Microsoft Edge via <a href="https://microsoftedge.microsoft.com/addons/detail/ultrawider-%E2%80%94-fill-ultrawi/mpjkkafkfjgealcigbiigiaeljokclkg" target="_blank" rel="noopener">Edge Add-ons</a>, and Firefox via <a href="https://addons.mozilla.org/firefox/addon/ultrawider-21-9-video-fill/" target="_blank" rel="noopener">addons.mozilla.org</a>. Safari is not supported; the live playground on this page works in any modern browser with WebGL2.</p>
           </details>
 
           <details>
@@ -758,6 +769,46 @@
           }
         });
       });
+    })();
+  </script>
+
+  <!-- Browser-aware install CTA. Detects the visitor's browser and points
+       the primary "Install — Free" button at the matching store, while the
+       store-links row below always shows all three so nobody's excluded.
+       Detection order matters: YaBrowser and Edge both contain "Chrome" in
+       their UA, so they must be checked BEFORE the generic Chrome fallback.
+       Yandex ships from the Chrome Web Store, so it maps to Chrome. -->
+  <script>
+    (function () {
+      var STORES = {
+        chrome:  'https://chromewebstore.google.com/detail/ultrawider-%E2%80%94-fill-ultrawi/fpbkljincbjlmfefgcefcbjjppehkamo',
+        edge:    'https://microsoftedge.microsoft.com/addons/detail/ultrawider-%E2%80%94-fill-ultrawi/mpjkkafkfjgealcigbiigiaeljokclkg',
+        firefox: 'https://addons.mozilla.org/firefox/addon/ultrawider-21-9-video-fill/'
+      };
+
+      function detectStore() {
+        var ua = navigator.userAgent || '';
+        // YaBrowser is Chromium → Chrome Web Store (checked before Edge/Chrome).
+        if (/YaBrowser/i.test(ua)) return 'chrome';
+        // Edge (Chromium) reports "Edg/"; legacy Edge reports "Edge/".
+        if (/\bEdg(e|A|iOS)?\//i.test(ua) || ua.indexOf('Edg') !== -1) return 'edge';
+        // Firefox (desktop + Android "Fxios" on iOS uses Firefox too).
+        if (/Firefox|FxiOS/i.test(ua)) return 'firefox';
+        return 'chrome';
+      }
+
+      var store = detectStore();
+
+      // Point the primary Install button at the matching store.
+      var cta = document.querySelector('[data-install-cta]');
+      if (cta && STORES[store]) {
+        cta.setAttribute('href', STORES[store]);
+        cta.setAttribute('data-detected-store', store);
+      }
+
+      // Highlight the visitor's store in the explicit three-store row.
+      var current = document.querySelector('.store-links a[data-store="' + store + '"]');
+      if (current) current.classList.add('is-current');
     })();
   </script>
 

@@ -5,12 +5,12 @@
     <title>Ultrawider Pro — Unlock 21:9 Video Warp on Twitch, Vimeo, Kick</title>
     <meta
       name="description"
-      content="Free on YouTube forever. Unlock Ultrawider Pro on Twitch, Vimeo, Kick and every site from $5/mo (or $24/yr). Pay by card or PayPal — cancel anytime, no auto-renew, 30-day goodwill refunds."
+      content="Free on YouTube forever. Unlock Ultrawider Pro on Twitch, Vimeo, Kick and every site from $5/mo (or $24/yr, auto-renews) or $49 lifetime. Pay by card or PayPal — cancel anytime, 30-day goodwill refunds."
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#050505" />
     <meta property="og:title" content="Ultrawider Pro — Unlock 21:9 Warp Everywhere" />
-    <meta property="og:description" content="Free on YouTube. Pro unlocks 21:9 / 32:9 warp on Twitch, Vimeo, Kick from ~$3/mo. No auto-renew." />
+    <meta property="og:description" content="Free on YouTube. Pro unlocks 21:9 / 32:9 warp on Twitch, Vimeo, Kick from ~$2/mo. Cancel anytime." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://ultrawider.net/pricing" />
     <link rel="canonical" href="https://ultrawider.net/pricing" />
@@ -48,13 +48,14 @@
     <main>
       <section class="page-hero">
         <div class="container">
-          <span class="eyebrow">Sponsor the project</span>
+          <span class="eyebrow">Get Ultrawider Pro</span>
           <h1>Free on YouTube. <span class="text-accent">Pro everywhere.</span></h1>
           <p class="lead">
             Smoothie warp on YouTube is free forever — and always will be.
-            Sponsor the project to unlock Pro on Twitch, Vimeo, Kick
-            and every other supported site. Auto curve-tuning for 21:9 /
-            24:9 / 32:9 included. One-time contribution, no auto-renew.
+            Go Pro to unlock Twitch, Vimeo, Kick and every other supported
+            site. Auto curve-tuning for 21:9 / 24:9 / 32:9 included. Monthly
+            or yearly subscription, or a one-time lifetime license — cancel
+            anytime.
           </p>
         </div>
       </section>
@@ -71,7 +72,8 @@
               <div class="pay-disclosure-text">
                 <strong>Pay by card or PayPal</strong> — Visa, Mastercard or PayPal.
                 Checkout runs on <strong>Lava.top</strong>'s secure, branded
-                payment page. Cancel anytime, no auto-renew surprises;
+                payment page. Monthly &amp; yearly auto-renew until you cancel
+                — cancel anytime by emailing hello@ultrawider.net;
                 license&nbsp;key lands in&nbsp;your&nbsp;email.
               </div>
             </div>
@@ -88,10 +90,16 @@
           <div class="pricing-how">
             <h2>How it works</h2>
             <ol>
-              <li>Pick a sponsorship tier and pay by card or PayPal on Lava.top</li>
-              <li>Your sponsorship supports the project; you get Pro as a thank-you</li>
+              <li>Pick a plan and pay by card or PayPal on Lava.top</li>
+              <li>Your subscription unlocks Pro across every supported site</li>
               <li>License key emailed within 5–20 minutes; paste into the extension</li>
             </ol>
+            <p class="pricing-cancel-note">
+              Monthly and yearly plans auto-renew until you cancel. Cancel
+              anytime — email <a href="mailto:hello@ultrawider.net?subject=Cancel%20subscription">hello@ultrawider.net</a>
+              and we'll stop the renewal; you keep Pro until the paid period
+              ends. Lifetime is a one-time payment that never renews.
+            </p>
           </div>
 
           <p class="pricing-footnote">
@@ -164,7 +172,7 @@
               'Aspect-aware auto-tuning (21:9 / 24:9 / 32:9)',
               'Cancel anytime',
             ],
-            cta: 'Sponsor monthly',
+            cta: 'Subscribe monthly',
           },
           yearly: {
             period: '/yr',
@@ -173,7 +181,7 @@
               '≈ $2/mo · Save 60% vs monthly',
               'Cancel anytime',
             ],
-            cta: 'Sponsor yearly',
+            cta: 'Subscribe yearly',
           },
           lifetime: {
             period: '',
@@ -194,7 +202,7 @@
         function planCard(planId) {
           var p = window.ULTRAWIDER.PLANS[planId];
           if (!p) return '';
-          var ex = EXTRAS[planId] || { period: '', features: [], cta: 'Sponsor' };
+          var ex = EXTRAS[planId] || { period: '', features: [], cta: 'Get Pro' };
           var isRec = planId === RECOMMENDED;
           var html = '<div class="plan' + (isRec ? ' plan--recommended' : '') +
             '" data-plan="' + planId + '">';

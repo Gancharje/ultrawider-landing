@@ -1,7 +1,7 @@
 /**
  * Checkout page logic: pull plan + install_id from query, render summary,
- * submit email to backend (POST /api/checkout/lava), then redirect the
- * visitor straight to Lava.top's branded card / PayPal checkout page.
+ * submit email to backend (POST /api/checkout/lava), then open Lava.top's
+ * branded card / PayPal checkout page in a new tab.
  */
 (function () {
   const params = new URLSearchParams(location.search);
@@ -30,15 +30,17 @@
   goal('checkout_view');
 
   function renderSummary(note) {
-    const billLine = plan === 'lifetime'
-      ? 'One-time payment · yours forever · secure card / PayPal checkout'
-      : 'Billed ' + plan + ', cancel anytime · secure card / PayPal checkout';
+    const isLifetime = plan === 'lifetime';
+    const billLine = isLifetime
+      ? 'One-time payment · yours forever · no renewals'
+      : 'Auto-renews ' + plan + ' · cancel anytime';
     document.getElementById('summary').innerHTML =
       '<h2>Ultrawider Pro — ' + p.label + '</h2>' +
       '<p class="summary-price">' +
         '<span class="summary-usd">$' + p.priceUsd.toFixed(2) + '</span> ' +
         '<span class="summary-dur">· license active ' + p.duration + '</span></p>' +
-      '<p class="summary-bill">' + billLine + '</p>' +
+      '<p class="summary-bill">' + billLine + ' · secure card / PayPal checkout</p>' +
+      '<p class="summary-bill">A Pro license key by email in ~5 minutes.</p>' +
       (note ? '<p class="hint">' + note + '</p>' : '');
   }
   renderSummary();
@@ -59,19 +61,14 @@
     const email = document.getElementById('email').value.trim();
     if (!email) return;
 
-    // Require explicit sponsorship acknowledgment — paper trail of
-    // informed consent that this is a contribution, not a consumer-
-    // product purchase.
-    const ackEl = document.getElementById('checkout-ack-input');
-    if (ackEl && !ackEl.checked) {
-      showError('Please tick the box to confirm you understand this is a sponsorship contribution.');
-      return;
-    }
-
     goal('checkout_submit');
     btn.disabled = true;
     btn.textContent = 'Creating your order…';
     err.hidden = true;
+
+    // Card → UNLIMINT, PayPal → PAYPAL. Card is the default selection.
+    const payMethodEl = document.querySelector('input[name="checkout-pay-method"]:checked');
+    const paymentProvider = (payMethodEl && payMethodEl.value === 'paypal') ? 'PAYPAL' : 'UNLIMINT';
 
     try {
       const resp = await fetch(window.ULTRAWIDER.API_BASE + '/api/checkout/lava', {
@@ -80,6 +77,7 @@
         body: JSON.stringify({
           plan: plan,
           email: email,
+          paymentProvider: paymentProvider,
           install_id: installId || undefined,
         }),
       });
@@ -105,10 +103,19 @@
       // localStorage copy survives the tab — /order can offer the last
       // order even after a browser restart.
       try { localStorage.setItem('ultrawider_last_order', data.order_id); } catch (_e) {}
-      // Lava.top's checkout page is branded and trustworthy — redirect
-      // straight there, no interstitial.
+      // Keep the visitor here: open Lava.top's checkout in a NEW TAB and
+      // swap the form for a short confirmation.
       goal('checkout_redirect');
-      location.assign(data.payment_url);
+      const win = window.open(data.payment_url, '_blank', 'noopener');
+      form.hidden = true;
+      err.hidden = true;
+      document.getElementById('summary').innerHTML =
+        '<div class="checkout-confirm">' +
+          '<h2>Checkout opened in a new tab.</h2>' +
+          '<p>Your Pro key will arrive by email within ~5 minutes of payment.</p>' +
+          (win ? '' :
+            '<p><a href="' + data.payment_url + '" target="_blank" rel="noopener">Open the payment page →</a></p>') +
+        '</div>';
     } catch (e) {
       showError(
         "Couldn't reach our servers. Check your connection and try again, or email " +

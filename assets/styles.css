@@ -350,57 +350,18 @@ button[type='submit'][disabled] {
 }
 .legal a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
 
-/* Sponsorship acknowledgment — same pattern as .landing-checkout-ack on
-   the homepage inline checkout. Customer must tick to acknowledge the
-   sponsorship-not-purchase nature before Continue activates. */
-.checkout-ack {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  margin: 18px 0 4px;
-  padding: 12px 14px;
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
-  cursor: pointer;
-  transition: border-color 0.18s ease, background-color 0.18s ease;
+/* Post-checkout confirmation shown in place of the form once the Lava.top
+   tab is opened. */
+.checkout-confirm h2 {
+  margin: 0 0 8px;
+  font-size: 1.25rem;
 }
-.checkout-ack:hover { border-color: rgba(255, 255, 255, 0.16); }
-.checkout-ack input[type="checkbox"] {
-  appearance: none;
-  -webkit-appearance: none;
-  flex-shrink: 0;
-  width: 16px;
-  height: 16px;
-  /* Nudge down to align checkbox cap with first text line cap. */
-  margin: 4px 0 0;
-  border: 1.5px solid rgba(255, 255, 255, 0.32);
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.18s ease, border-color 0.18s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-.checkout-ack input[type="checkbox"]:checked {
-  background-color: var(--accent);
-  border-color: var(--accent);
-}
-.checkout-ack input[type="checkbox"]:checked::after {
-  content: "";
-  display: block;
-  width: 4px;
-  height: 8px;
-  border-right: 2px solid #1a1207;
-  border-bottom: 2px solid #1a1207;
-  transform: rotate(45deg) translate(-1px, -1px);
-}
-.checkout-ack span {
-  /* Match the 16px checkbox height for visual parity. */
-  font-size: 1rem;
-  line-height: 1.5;
+.checkout-confirm p {
+  margin: 0 0 8px;
   color: var(--text-dim);
+  line-height: 1.55;
 }
+.checkout-confirm a { color: var(--accent); }
 .legal a:hover { color: var(--accent-hover); }
 
 /* ─── Error / notice ───────────────────────────────────────────────── */
@@ -769,8 +730,10 @@ button[type='submit'][disabled] {
 .checkout-interstitial-copy a:hover { color: var(--accent); }
 
 /* ── Store links row (hero, under CTA buttons) ──────────────────────
-   Real store badges replaced the dead #install anchor. Firefox entry
-   is a non-link until the AMO listing is approved. */
+   All three stores (Chrome / Edge / Firefox) are always shown so no
+   browser is excluded. A small inline script (see index.html) detects
+   the visitor's browser, repoints the primary Install button, and adds
+   .is-current to the matching entry here. */
 .store-links {
   display: flex;
   align-items: center;
@@ -787,5 +750,5 @@ button[type='submit'][disabled] {
   transition: color var(--transition), border-color var(--transition);
 }
 .store-links a:hover { color: var(--accent); border-color: var(--accent); }
+.store-links a.is-current { color: var(--accent); border-bottom-color: var(--accent); }
 .store-sep { color: var(--text-mute); }
-.store-soon { color: var(--text-mute); cursor: default; }

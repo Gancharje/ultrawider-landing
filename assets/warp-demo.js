@@ -55,7 +55,7 @@
   // Minimal WebGL renderer — single program, single quad, single texture
   // ─────────────────────────────────────────────────────────────────────
 
-  function createRenderer(canvas) {
+  function createRenderer(canvas, onFatal) {
     var glOptions = {
       preserveDrawingBuffer: false,
       antialias: false,
@@ -65,6 +65,17 @@
       canvas.getContext('webgl2', glOptions) ||
       canvas.getContext('webgl', glOptions);
     if (!gl) return null;
+
+    // GL resources — (re)created by buildResources(). Every one of these
+    // becomes invalid after a webglcontextlost/restored cycle, so they're
+    // rebuilt from scratch on restore rather than reused.
+    var program = null;
+    var positionLoc = -1;
+    var frameTexLoc = null;
+    var curveStrengthLoc = null;
+    var quadBuffer = null;
+    var frameTex = null;
+    var contextLost = false;
 
     function compileShader(type, source) {
       var sh = gl.createShader(type);
@@ -78,49 +89,90 @@
       return sh;
     }
 
-    var vs = compileShader(gl.VERTEX_SHADER, VS_SOURCE);
-    var fs = compileShader(gl.FRAGMENT_SHADER, FS_SOURCE);
-    if (!vs || !fs) return null;
+    // Compile/link the program and allocate the quad buffer + frame
+    // texture. Called once on init and again on webglcontextrestored.
+    // Returns false if anything failed (caller falls back to plain video).
+    function buildResources() {
+      var vs = compileShader(gl.VERTEX_SHADER, VS_SOURCE);
+      var fs = compileShader(gl.FRAGMENT_SHADER, FS_SOURCE);
+      if (!vs || !fs) return false;
 
-    var program = gl.createProgram();
-    gl.attachShader(program, vs);
-    gl.attachShader(program, fs);
-    gl.linkProgram(program);
-    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-      console.warn('Smoothie program link failed:', gl.getProgramInfoLog(program));
-      return null;
+      program = gl.createProgram();
+      gl.attachShader(program, vs);
+      gl.attachShader(program, fs);
+      gl.linkProgram(program);
+      if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+        console.warn('Smoothie program link failed:', gl.getProgramInfoLog(program));
+        program = null;
+        return false;
+      }
+      gl.deleteShader(vs);
+      gl.deleteShader(fs);
+
+      positionLoc = gl.getAttribLocation(program, 'a_position');
+      frameTexLoc = gl.getUniformLocation(program, 'u_texture');
+      curveStrengthLoc = gl.getUniformLocation(program, 'u_curveStrength');
+
+      // Quad covering NDC [-1..1] in both axes (TRIANGLE_STRIP).
+      quadBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, quadBuffer);
+      gl.bufferData(
+        gl.ARRAY_BUFFER,
+        new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]),
+        gl.STATIC_DRAW,
+      );
+
+      frameTex = gl.createTexture();
+      gl.bindTexture(gl.TEXTURE_2D, frameTex);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+      gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+      // Paint the backbuffer black on init — without this, on browsers
+      // where the WebGL canvas defaults to transparent-but-rendered-white
+      // (some Chromium builds), the right half of the divider briefly
+      // flashes white before the first warp() call binds a video frame.
+      gl.clearColor(0, 0, 0, 1);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      return true;
     }
-    gl.deleteShader(vs);
-    gl.deleteShader(fs);
 
-    var positionLoc = gl.getAttribLocation(program, 'a_position');
-    var frameTexLoc = gl.getUniformLocation(program, 'u_texture');
-    var curveStrengthLoc = gl.getUniformLocation(program, 'u_curveStrength');
+    if (!buildResources()) return null;
 
-    // Quad covering NDC [-1..1] in both axes (TRIANGLE_STRIP).
-    var quadBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, quadBuffer);
-    gl.bufferData(
-      gl.ARRAY_BUFFER,
-      new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]),
-      gl.STATIC_DRAW,
+    // ─── WebGL context-loss recovery
+    // Chromium drops the GL context on GPU reset, driver crash, tab
+    // backgrounding on some drivers, or memory pressure — leaving the
+    // canvas blank (and, before the CSS black background, white).
+    // preventDefault() on the lost event is REQUIRED, otherwise the
+    // browser never fires webglcontextrestored. On restore we rebuild
+    // every GL object (all old handles are dead) and the render loop
+    // resumes drawing on its own. If the rebuild fails we hand off to
+    // the plain-<video> fallback rather than show a dead canvas.
+    canvas.addEventListener(
+      'webglcontextlost',
+      function (e) {
+        e.preventDefault();
+        contextLost = true;
+      },
+      false,
+    );
+    canvas.addEventListener(
+      'webglcontextrestored',
+      function () {
+        if (buildResources()) {
+          contextLost = false;
+        } else {
+          contextLost = true;
+          if (typeof onFatal === 'function') onFatal();
+        }
+      },
+      false,
     );
 
-    var frameTex = gl.createTexture();
-    gl.bindTexture(gl.TEXTURE_2D, frameTex);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
-    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-
-    // Paint the backbuffer black on init — without this, on browsers
-    // where the WebGL canvas defaults to transparent-but-rendered-white
-    // (some Chromium builds), the right half of the divider briefly
-    // flashes white before the first warp() call binds a video frame.
-    gl.clearColor(0, 0, 0, 1);
-    gl.clear(gl.COLOR_BUFFER_BIT);
-
     function warp(source, dstWidth, dstHeight, curveStrength) {
+      // Context gone (or never rebuilt) — skip; canvas stays CSS-black.
+      if (contextLost || !program) return;
       if (canvas.width !== dstWidth || canvas.height !== dstHeight) {
         canvas.width = dstWidth;
         canvas.height = dstHeight;
@@ -150,9 +202,9 @@
     }
 
     function destroy() {
-      gl.deleteTexture(frameTex);
-      gl.deleteBuffer(quadBuffer);
-      gl.deleteProgram(program);
+      if (frameTex) gl.deleteTexture(frameTex);
+      if (quadBuffer) gl.deleteBuffer(quadBuffer);
+      if (program) gl.deleteProgram(program);
       var lose = gl.getExtension('WEBGL_lose_context');
       if (lose) lose.loseContext();
     }
@@ -210,7 +262,15 @@
     // Reduced-motion preference disables scroll-driven warp.
     var prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    var renderer = createRenderer(canvas);
+    // onFatal fires if the GL context is lost AND can't be restored —
+    // stop the render loop and reveal the raw <video> (object-fit:cover)
+    // instead of a dead canvas. `stopped` is declared below (var-hoisted)
+    // and only read when this callback actually runs, well after setup.
+    var renderer = createRenderer(canvas, function () {
+      stopped = true;
+      root.classList.add('playground-fallback');
+      if (fallback) fallback.hidden = false;
+    });
     if (!renderer) {
       // WebGL not available — show plain video, hide canvas.
       root.classList.add('playground-fallback');
