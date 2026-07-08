@@ -488,42 +488,15 @@
                 <a href="/refund.html">Support Policy</a>.
               </p>
             </form>
-
-            <!-- Pre-redirect interstitial — same expectations reset as
-                 /checkout: revealed after the order is created, before
-                 the Joytify hand-off. -->
-            <div class="checkout-interstitial" id="landing-interstitial" hidden>
-              <h2>One last step — payment via our processor</h2>
-              <p>
-                You'll be taken to <strong>Joytify</strong>, our payment
-                partner, to complete a purchase of
-                <strong><span id="landing-int-stars"></span> Telegram Stars</strong>
-                (≈ $<span id="landing-int-usd"></span>). That purchase IS
-                your Ultrawider Pro key — we redeem the Stars on our side
-                automatically. The page may look like a gaming top-up
-                store; that's expected.
-              </p>
-              <p class="checkout-interstitial-order">
-                Your order ID: <code id="landing-int-order-id"></code> — save it.
-                Track status any time at
-                <a id="landing-int-order-link" href="/order">ultrawider.net/order</a>
-              </p>
-              <button type="button" class="aaa-cta-primary landing-checkout-submit" id="landing-int-continue">
-                Continue to payment →
-              </button>
-              <p class="checkout-interstitial-copy">
-                <a href="#" id="landing-int-copy">copy payment link</a>
-              </p>
-            </div>
           </div>
         </div>
 
         <!-- Sponsorship explainer — editorial 3-column lockup.
              Columns answer the three questions a careful sponsor will
-             ask BEFORE clicking through to Tazapay:
-               01  how you actually pay (card vs. Stars confusion)
+             ask BEFORE clicking through to Lava.top:
+               01  how you actually pay (card / PayPal)
                02  what arrives, when, and the refund terms
-               03  why the Stars/Tazapay rail exists at all
+               03  why the sponsorship model exists at all
              Replaces wallet-pass receipt that read as decorative; this
              reads as confident prose carrying every trust signal the
              receipt had, in less vertical space. -->
@@ -531,13 +504,12 @@
           <div class="lp-receipt-cols">
             <section class="lp-receipt-col">
               <span class="lp-receipt-num">01</span>
-              <h3 class="lp-receipt-lead">By card.</h3>
+              <h3 class="lp-receipt-lead">By card or PayPal.</h3>
               <p class="lp-receipt-body">
-                <strong>Visa</strong> and <strong>Mastercard</strong>.
-                Card details stay on <strong>Tazapay</strong>'s
-                PCI-secure form — a Singapore-based payment gateway.
-                Bank statement shows <code>TAZAPAY</code> or
-                <code>JOYTIFY</code>.
+                <strong>Visa</strong>, <strong>Mastercard</strong> or
+                <strong>PayPal</strong>. Card details stay on
+                <strong>Lava.top</strong>'s secure, PCI-compliant checkout
+                page. Cancel anytime — no auto-renew surprises.
               </p>
             </section>
 
@@ -558,14 +530,13 @@
               <span class="lp-receipt-num">03</span>
               <h3 class="lp-receipt-lead">We're indie.</h3>
               <p class="lp-receipt-body">
-                Working outside Stripe's and Paddle's territory, so your
-                card pays through <strong>Tazapay</strong>, the value
-                reaches us as <strong>Telegram&nbsp;Stars</strong>, and
-                your license arrives by email.
+                A voluntary sponsorship keeps Ultrawider going. In return
+                you get a Pro license as a thank-you perk — billed
+                through <strong>Lava.top</strong> by card or PayPal, with
+                your key emailed straight to you.
               </p>
               <p class="lp-receipt-body">
-                You never touch Telegram — and no platform tax inflates
-                your bill.
+                No auto-renew traps, no platform tax inflating your bill.
               </p>
               <a href="#faq-stars" class="lp-receipt-more" data-faq-jump="faq-stars">
                 Read more <span aria-hidden="true">→</span>
@@ -574,7 +545,7 @@
           </div>
 
           <p class="lp-receipt-variance">
-            Final $ may vary ±2–5% with your card's currency · Stars count is fixed ·
+            Final $ may vary slightly with your card's currency conversion ·
             <a href="/recover">Lost your key?</a>
           </p>
         </aside>
@@ -592,12 +563,12 @@
         <div class="faq-list">
           <details>
             <summary>What's the difference between Free and Pro?</summary>
-            <p>Free unlocks the Smoothie warp on YouTube — that's enough for most casual viewers to fall in love with the feature. Pro from ⭐150 Stars (≈ $3/month, exact price shown at checkout) removes the platform gate: Smoothie works on Twitch, Vimeo, Kick and any other site whose video isn't DRM-protected. See the <a href="#pricing">pricing page</a> for the full comparison.</p>
+            <p>Free unlocks the Smoothie warp on YouTube — that's enough for most casual viewers to fall in love with the feature. Pro from $5/month (or $24/year, ≈ $2/mo) removes the platform gate: Smoothie works on Twitch, Vimeo, Kick and any other site whose video isn't DRM-protected. See the <a href="#pricing">pricing page</a> for the full comparison.</p>
           </details>
 
           <details id="faq-stars">
-            <summary>Why am I sending Telegram Stars to buy a license?</summary>
-            <p>Ultrawider is built by one indie developer outside the standard SaaS payment rails (Stripe, Paddle and friends don't accept us due to geographic restrictions). Telegram Stars + Tazapay let us accept cards from any country with no platform middleman markup. <strong>You pay by card</strong> — Visa or Mastercard; no Telegram account needed. The Stars go to our team's TG account as the sponsorship transaction; in return we email your Pro license key within 5–20 minutes. You'll see <code>TAZAPAY</code> or <code>JOYTIFY</code> on your bank statement — that's the Stars charge. Because this is a sponsorship contribution (not a subscription sale), contributions are non-refundable as a matter of right — but we'll always make things right if something's actually broken on our end. See <a href="refund.html">Support Policy</a>.</p>
+            <summary>How does the sponsorship and payment work?</summary>
+            <p>Ultrawider is built by one indie developer. A monthly ($5) or yearly ($24) sponsorship keeps the project alive, and in return you get a Pro license key as a thank-you perk. <strong>You pay by card or PayPal</strong> — Visa, Mastercard or PayPal — through <strong>Lava.top</strong>'s secure checkout page. Your Pro license key is emailed within 5–20 minutes. You can cancel anytime; there are no auto-renew traps. Because this is a sponsorship contribution (not a consumer-product sale), contributions are non-refundable as a matter of right — but we'll always make things right if something's actually broken on our end. See <a href="refund.html">Support Policy</a>.</p>
           </details>
 
           <details>
@@ -622,7 +593,7 @@
 
           <details>
             <summary>How is my payment processed?</summary>
-            <p>Payments go through <strong>Tazapay</strong> (Singapore) handling Visa and Mastercard. After payment your license key arrives by email within 5–20 minutes. Paste it into the extension popup or fullscreen HUD to activate.</p>
+            <p>Payments go through <strong>Lava.top</strong>'s secure checkout, handling Visa, Mastercard and PayPal. After payment your license key arrives by email within 5–20 minutes. Paste it into the extension popup or fullscreen HUD to activate.</p>
           </details>
         </div>
       </div>

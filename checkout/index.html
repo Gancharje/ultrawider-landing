@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <title>Checkout — Activate Ultrawider Pro on Every Site</title>
-    <meta name="description" content="Complete checkout to activate Ultrawider Pro — 21:9 / 32:9 video warp on Twitch, Vimeo, Kick and every supported site. Pay once via Telegram Stars." />
+    <meta name="description" content="Complete checkout to activate Ultrawider Pro — 21:9 / 32:9 video warp on Twitch, Vimeo, Kick and every supported site. Pay by card or PayPal, cancel anytime." />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#050505" />
     <meta name="robots" content="noindex" />
@@ -59,17 +59,16 @@
             payment is confirmed.
           </p>
 
-          <!-- Pre-warning about bank statement — kills the post-pay
-               "WTF is JOYTIFY" surprise. Visitor reads this BEFORE
-               clicking through to Tazapay. -->
+          <!-- Pre-warning about bank statement — sets the descriptor
+               expectation BEFORE clicking through to Lava.top. -->
           <div class="checkout-prewarn">
             <div class="checkout-prewarn-row">
               <span class="checkout-prewarn-icon" aria-hidden="true">ⓘ</span>
               <div class="checkout-prewarn-text">
-                <strong>Heads-up about your bank statement.</strong>
-                You'll see <code>TAZAPAY</code> or <code>JOYTIFY</code>
-                on it — that's our payment processor (Tazapay, Singapore),
-                not "Ultrawider". Card details never touch us.
+                <strong>Heads-up about your statement.</strong>
+                You'll see <code>LAVA.TOP</code> on your card or PayPal
+                statement — that's our checkout provider, not "Ultrawider".
+                Card details never touch us.
               </div>
             </div>
           </div>
@@ -91,32 +90,6 @@
         </form>
 
         <div id="error" class="error" hidden></div>
-
-        <!-- Pre-redirect interstitial — revealed after the order is
-             created, BEFORE sending the visitor to Joytify. The payment
-             page looks like a gaming top-up store, so expectations get
-             set here, on our domain, while the context is still ours. -->
-        <div id="interstitial" class="checkout-interstitial" hidden>
-          <h2>One last step — payment via our processor</h2>
-          <p>
-            You'll be taken to <strong>Joytify</strong>, our payment
-            partner, to complete a purchase of
-            <strong><span id="int-stars"></span> Telegram Stars</strong>
-            (≈ $<span id="int-usd"></span>). That purchase IS your
-            Ultrawider Pro key — we redeem the Stars on our side
-            automatically. The page may look like a gaming top-up store;
-            that's expected.
-          </p>
-          <p class="checkout-interstitial-order">
-            Your order ID: <code id="int-order-id"></code> — save it.
-            Track status any time at
-            <a id="int-order-link" href="/order">ultrawider.net/order</a>
-          </p>
-          <button type="button" class="primary" id="int-continue">Continue to payment →</button>
-          <p class="checkout-interstitial-copy">
-            <a href="#" id="int-copy-link">copy payment link</a>
-          </p>
-        </div>
       </div>
     </main>
 

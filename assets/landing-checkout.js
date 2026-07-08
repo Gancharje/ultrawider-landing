@@ -1,22 +1,21 @@
 /**
  * Landing-page pricing + inline checkout.
  *
- * Renders 4 sponsorship cards inside [data-landing-plans], then handles
+ * Renders the sponsorship cards inside [data-landing-plans], then handles
  * the click-to-expand inline checkout flow without a page navigation:
  *
- *   1. Visitor clicks "Sponsor monthly/yearly/etc"
+ *   1. Visitor clicks "Sponsor monthly/yearly"
  *   2. Inline checkout panel slides into view BELOW the cards with the
  *      selected plan's summary + an email input
- *   3. Submit → POST /api/checkout → redirect to /order?id=<order_id>
- *      (the order page handles payment polling + license display)
+ *   3. Submit → POST /api/checkout/lava → redirect straight to Lava.top's
+ *      branded card / PayPal checkout page (data.payment_url)
  *
- * Reads live prices from /api/pricing if reachable; falls back to
- * window.ULTRAWIDER.PLANS cold-load defaults otherwise.
+ * Prices come from window.ULTRAWIDER.PLANS (static, authoritative).
  */
 (function () {
   'use strict';
 
-  var ORDER = ['monthly', 'quarterly', 'yearly', 'lifetime'];
+  var ORDER = ['monthly', 'yearly', 'lifetime'];
   var RECOMMENDED = 'yearly';
 
   // Funnel goals — metrika.js (deferred, earlier in head) defines
@@ -38,35 +37,26 @@
       ],
       cta: 'Sponsor monthly',
     },
-    quarterly: {
-      period: '',
-      features: [
-        'Everything in Monthly',
-        'Save 11% vs monthly',
-      ],
-      cta: 'Sponsor 3 months',
-    },
     yearly: {
       period: '/yr',
       features: [
-        'Everything in Quarterly',
-        'Save ~35% vs monthly',
+        'Everything in Monthly',
+        '≈ $2/mo · Save 60% vs monthly',
       ],
       cta: 'Sponsor yearly',
     },
     lifetime: {
       period: '',
       features: [
-        'Everything in Yearly',
+        'One payment — yours forever',
         'All future updates included',
       ],
-      cta: 'Sponsor lifetime',
+      cta: 'Get Lifetime',
     },
   };
 
   function effectivePerMonth(planId, p) {
-    if (planId === 'quarterly') return '≈ $' + (p.priceUsd / 3).toFixed(2) + '/mo';
-    if (planId === 'yearly')    return '≈ $' + (p.priceUsd / 12).toFixed(2) + '/mo';
+    if (planId === 'yearly') return '≈ $' + (p.priceUsd / 12).toFixed(2) + '/mo';
     return '';
   }
 
@@ -92,9 +82,6 @@
 
     html += '<div class="lp-card-eyebrow">' +
               '<span class="lp-card-eyebrow-label">' + p.label + '</span>' +
-              '<span class="lp-card-eyebrow-stars">' +
-                p.starsAmount.toLocaleString() + ' ★' +
-              '</span>' +
             '</div>';
 
     html += '<div class="lp-card-price">';
@@ -141,32 +128,15 @@
     var errBox   = document.getElementById('landing-checkout-error');
     var emailIn  = document.getElementById('landing-email');
     var closeBtn = document.getElementById('landing-checkout-close');
-    var interstitial = document.getElementById('landing-interstitial');
 
     function render() {
       root.innerHTML = ORDER.map(function (id, i) { return planCard(id, plans, i); }).join('');
     }
     render();
 
-    // Refresh from /api/pricing — overrides config.js defaults if available.
+    // Static config.js prices are authoritative — no live /api/pricing
+    // override. API_BASE is still used for the checkout POST below.
     var api = window.ULTRAWIDER && window.ULTRAWIDER.API_BASE;
-    if (api && typeof fetch === 'function') {
-      fetch(api + '/api/pricing', { cache: 'no-cache' })
-        .then(function (r) { return r.ok ? r.json() : null; })
-        .then(function (data) {
-          if (!data || !data.plans) return;
-          var changed = false;
-          Object.keys(data.plans).forEach(function (k) {
-            var live = data.plans[k];
-            var cur = plans[k];
-            if (!cur || !live) return;
-            if (typeof live.priceUsd === 'number') { cur.priceUsd = live.priceUsd; changed = true; }
-            if (typeof live.starsAmount === 'number') { cur.starsAmount = live.starsAmount; changed = true; }
-          });
-          if (changed) render();
-        })
-        .catch(function () { /* keep defaults */ });
-    }
 
     var selectedPlan = null;
 
@@ -175,17 +145,18 @@
       if (!p) return;
       goal('checkout_view');
       selectedPlan = planId;
-      // Reset any leftover interstitial state from a previous order.
-      if (interstitial) interstitial.hidden = true;
       form.hidden = false;
+      var billLine = planId === 'lifetime'
+        ? 'One-time payment · yours forever · secure card / PayPal checkout'
+        : 'Billed ' + planId + ', cancel anytime · secure card / PayPal checkout';
       summary.innerHTML =
         '<div class="landing-checkout-summary-top">' +
           '<span class="landing-checkout-summary-label">' + p.label + ' sponsorship</span>' +
           '<span class="landing-checkout-summary-price">' +
-            '<span class="landing-checkout-summary-stars">⭐ ' + p.starsAmount + ' Stars</span>' +
-            '<span class="landing-checkout-summary-usd">≈ $' + p.priceUsd.toFixed(2) + '</span>' +
+            '<span class="landing-checkout-summary-usd">$' + p.priceUsd.toFixed(2) + '</span>' +
           '</span>' +
         '</div>' +
+        '<p class="landing-checkout-summary-bill">' + billLine + '</p>' +
         '<p class="landing-checkout-summary-dur">License active ' + p.duration + '</p>';
       errBox.hidden = true;
       checkout.hidden = false;
@@ -206,43 +177,6 @@
       root.querySelectorAll('.lp-card--selected').forEach(function (el) {
         el.classList.remove('lp-card--selected');
       });
-    }
-
-    // Interstitial between "order created" and the Joytify redirect —
-    // sets expectations (top-up-store look, Stars = key) while we still
-    // control the page, and hands the customer their order id.
-    function showInterstitial(orderId, paymentUrl) {
-      if (!interstitial) {
-        // Markup missing (stale HTML cache) — old behaviour as fallback.
-        location.assign(paymentUrl);
-        return;
-      }
-      var p = plans[selectedPlan] || {};
-      document.getElementById('landing-int-stars').textContent = p.starsAmount || '';
-      document.getElementById('landing-int-usd').textContent =
-        typeof p.priceUsd === 'number' ? p.priceUsd.toFixed(2) : '…';
-      document.getElementById('landing-int-order-id').textContent = orderId;
-      var orderLink = document.getElementById('landing-int-order-link');
-      orderLink.href = '/order?id=' + encodeURIComponent(orderId);
-      orderLink.textContent = 'ultrawider.net/order?id=' + orderId;
-
-      form.hidden = true;
-      interstitial.hidden = false;
-      interstitial.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-      document.getElementById('landing-int-continue').onclick = function () {
-        goal('checkout_redirect');
-        location.assign(paymentUrl);
-      };
-      var copyLink = document.getElementById('landing-int-copy');
-      copyLink.onclick = function (e) {
-        e.preventDefault();
-        try {
-          navigator.clipboard.writeText(paymentUrl);
-          copyLink.textContent = 'Copied!';
-          setTimeout(function () { copyLink.textContent = 'copy payment link'; }, 1500);
-        } catch (_e) { /* clipboard unavailable — Continue still works */ }
-      };
     }
 
     function showError(msg) {
@@ -307,7 +241,7 @@
 
       var installId = new URLSearchParams(location.search).get('install_id');
 
-      fetch(api + '/api/checkout', {
+      fetch(api + '/api/checkout/lava', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -335,9 +269,10 @@
           // Reset the submit button in case the visitor comes back.
           submit.disabled = false;
           submit.textContent = 'Continue to payment →';
-          // NOT an instant redirect: branded interstitial first, so the
-          // Joytify hand-off doesn't read as a scam.
-          showInterstitial(data.order_id, data.payment_url);
+          // Lava.top's checkout page is branded and trustworthy — redirect
+          // straight there, no interstitial.
+          goal('checkout_redirect');
+          location.assign(data.payment_url);
         })
         .catch(function (e) {
           var contact = (window.ULTRAWIDER && window.ULTRAWIDER.CONTACT_EMAIL) || 'hello@ultrawider.net';

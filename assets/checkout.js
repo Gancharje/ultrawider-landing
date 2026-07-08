@@ -1,9 +1,7 @@
 /**
  * Checkout page logic: pull plan + install_id from query, render summary,
- * refresh live prices from /api/pricing, submit email to backend, then
- * show a branded interstitial BEFORE handing the visitor off to Joytify —
- * the payment page looks like a gaming top-up store, so expectations must
- * be set on our domain first.
+ * submit email to backend (POST /api/checkout/lava), then redirect the
+ * visitor straight to Lava.top's branded card / PayPal checkout page.
  */
 (function () {
   const params = new URLSearchParams(location.search);
@@ -32,31 +30,18 @@
   goal('checkout_view');
 
   function renderSummary(note) {
+    const billLine = plan === 'lifetime'
+      ? 'One-time payment · yours forever · secure card / PayPal checkout'
+      : 'Billed ' + plan + ', cancel anytime · secure card / PayPal checkout';
     document.getElementById('summary').innerHTML =
       '<h2>Ultrawider Pro — ' + p.label + '</h2>' +
-      '<p class="summary-stars">⭐ ' + p.starsAmount + ' Stars · ' +
-      '<span class="summary-usd">≈ $' + p.priceUsd.toFixed(2) + '</span> ' +
-      '<span class="summary-dur">· license active ' + p.duration + '</span></p>' +
+      '<p class="summary-price">' +
+        '<span class="summary-usd">$' + p.priceUsd.toFixed(2) + '</span> ' +
+        '<span class="summary-dur">· license active ' + p.duration + '</span></p>' +
+      '<p class="summary-bill">' + billLine + '</p>' +
       (note ? '<p class="hint">' + note + '</p>' : '');
   }
   renderSummary();
-
-  // config.js prices are cold-load defaults; the card is charged whatever
-  // Joytify currently lists (backend scrapes hourly). Show the live price
-  // so the summary matches the actual charge. On fetch failure the
-  // defaults stand — flagged as approximate.
-  fetch(window.ULTRAWIDER.API_BASE + '/api/pricing', { cache: 'no-cache' })
-    .then(function (r) { return r.ok ? r.json() : null; })
-    .then(function (data) {
-      const live = data && data.plans && data.plans[plan];
-      if (!live) throw new Error('no live pricing');
-      if (typeof live.priceUsd === 'number') p.priceUsd = live.priceUsd;
-      if (typeof live.starsAmount === 'number') p.starsAmount = live.starsAmount;
-      renderSummary();
-    })
-    .catch(function () {
-      renderSummary('≈, final price shown at payment');
-    });
 
   const form = document.getElementById('checkout-form');
   const btn = document.getElementById('submit-btn');
@@ -67,41 +52,6 @@
     err.hidden = false;
     btn.disabled = false;
     btn.textContent = 'Continue to payment →';
-  }
-
-  // Interstitial between "order created" and the Joytify redirect. Gives
-  // the customer the order id + what-to-expect copy while the context is
-  // still trustworthy (our domain, our design).
-  function showInterstitial(orderId, paymentUrl) {
-    const box = document.getElementById('interstitial');
-    document.getElementById('int-stars').textContent = p.starsAmount;
-    document.getElementById('int-usd').textContent = p.priceUsd.toFixed(2);
-    document.getElementById('int-order-id').textContent = orderId;
-    const orderLink = document.getElementById('int-order-link');
-    orderLink.href = '/order?id=' + encodeURIComponent(orderId);
-    orderLink.textContent = 'ultrawider.net/order?id=' + orderId;
-
-    form.hidden = true;
-    err.hidden = true;
-    box.hidden = false;
-    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-    document.getElementById('int-continue').addEventListener('click', function () {
-      goal('checkout_redirect');
-      location.assign(paymentUrl);
-    });
-
-    const copyLink = document.getElementById('int-copy-link');
-    copyLink.addEventListener('click', function (e) {
-      e.preventDefault();
-      try {
-        navigator.clipboard.writeText(paymentUrl);
-        copyLink.textContent = 'Copied!';
-        setTimeout(function () {
-          copyLink.textContent = 'copy payment link';
-        }, 1500);
-      } catch (_e) { /* clipboard unavailable — link still works via Continue */ }
-    });
   }
 
   form.addEventListener('submit', async function (e) {
@@ -124,7 +74,7 @@
     err.hidden = true;
 
     try {
-      const resp = await fetch(window.ULTRAWIDER.API_BASE + '/api/checkout', {
+      const resp = await fetch(window.ULTRAWIDER.API_BASE + '/api/checkout/lava', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -155,9 +105,10 @@
       // localStorage copy survives the tab — /order can offer the last
       // order even after a browser restart.
       try { localStorage.setItem('ultrawider_last_order', data.order_id); } catch (_e) {}
-      // NOT an instant redirect: show the branded interstitial first so
-      // the Joytify hand-off doesn't read as a scam.
-      showInterstitial(data.order_id, data.payment_url);
+      // Lava.top's checkout page is branded and trustworthy — redirect
+      // straight there, no interstitial.
+      goal('checkout_redirect');
+      location.assign(data.payment_url);
     } catch (e) {
       showError(
         "Couldn't reach our servers. Check your connection and try again, or email " +

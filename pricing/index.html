@@ -5,7 +5,7 @@
     <title>Ultrawider Pro — Unlock 21:9 Video Warp on Twitch, Vimeo, Kick</title>
     <meta
       name="description"
-      content="Free on YouTube forever. Unlock Ultrawider Pro on Twitch, Vimeo, Kick and every site from ~$3/mo. One-time payment via Telegram Stars — no auto-renew, 30-day goodwill refunds."
+      content="Free on YouTube forever. Unlock Ultrawider Pro on Twitch, Vimeo, Kick and every site from $5/mo (or $24/yr). Pay by card or PayPal — cancel anytime, no auto-renew, 30-day goodwill refunds."
     />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#050505" />
@@ -61,8 +61,7 @@
 
       <section>
         <div class="container">
-          <!-- "You pay by card" upfront disclosure — kills the
-               confusion about Telegram Stars before it can form. -->
+          <!-- "You pay by card or PayPal" upfront disclosure. -->
           <div class="pay-disclosure" role="region" aria-label="How payment works">
             <div class="pay-disclosure-row">
               <div class="pay-disclosure-icons" aria-hidden="true">
@@ -70,11 +69,10 @@
                 <span class="pay-card pay-card--mc">MC</span>
               </div>
               <div class="pay-disclosure-text">
-                <strong>You pay by card</strong> — Visa or Mastercard.
-                <strong>No Telegram account needed.</strong>
-                We price in Telegram Stars (our unit, like loyalty points);
-                Stars never touch you. Card&nbsp;→&nbsp;Tazapay&nbsp;→&nbsp;Stars
-                to&nbsp;us → license&nbsp;key to&nbsp;your&nbsp;email.
+                <strong>Pay by card or PayPal</strong> — Visa, Mastercard or PayPal.
+                Checkout runs on <strong>Lava.top</strong>'s secure, branded
+                payment page. Cancel anytime, no auto-renew surprises;
+                license&nbsp;key lands in&nbsp;your&nbsp;email.
               </div>
             </div>
           </div>
@@ -82,25 +80,22 @@
           <div class="plans" id="plans"></div>
 
           <p class="pay-conversion-note" aria-live="polite">
-            <strong>Final amount</strong> may vary ±2–5% from the dollar figure
-            depending on your card's currency conversion. <strong>The Stars
-            count is fixed.</strong> You'll see <code>TAZAPAY</code> or
-            <code>JOYTIFY</code> on your bank statement — that's the Stars
-            transaction.
+            <strong>Final amount</strong> may vary slightly from the dollar
+            figure depending on your card's currency conversion. You'll see
+            <code>LAVA.TOP</code> on your bank or PayPal statement.
           </p>
 
           <div class="pricing-how">
             <h2>How it works</h2>
             <ol>
-              <li>Pick a sponsorship tier and pay by card (Visa or Mastercard)</li>
-              <li>Tazapay processes the card → Stars go to the developer's TG account</li>
+              <li>Pick a sponsorship tier and pay by card or PayPal on Lava.top</li>
+              <li>Your sponsorship supports the project; you get Pro as a thank-you</li>
               <li>License key emailed within 5–20 minutes; paste into the extension</li>
             </ol>
           </div>
 
           <p class="pricing-footnote">
-            <strong>Secure checkout via Tazapay</strong> (Singapore payment processor)
-            via Joytify (Telegram Stars vendor).
+            <strong>Secure checkout via Lava.top</strong> — card &amp; PayPal.
             Lost your key? <a href="/recover">Recover it here</a>.
           </p>
         </div>
@@ -142,14 +137,11 @@
 
     <script src="/assets/config.js"></script>
     <script>
-      // Plan card renderer. Reads window.ULTRAWIDER.PLANS for defaults;
-      // tries to fetch live pricing from /api/pricing on load to override
-      // (Joytify packages occasionally re-price; the backend cron job
-      // refreshes the cache hourly). If fetch fails, defaults stand —
-      // no broken page on API outage.
+      // Plan card renderer. Reads window.ULTRAWIDER.PLANS (static,
+      // authoritative — $5/mo, $24/yr). Lava.top supports monthly + yearly.
       (function () {
         var RECOMMENDED = 'yearly';
-        var ORDER = ['monthly', 'quarterly', 'yearly', 'lifetime'];
+        var ORDER = ['monthly', 'yearly', 'lifetime'];
         var root = document.getElementById('plans');
         var params = new URLSearchParams(location.search);
         var installId = params.get('install_id');
@@ -174,20 +166,11 @@
             ],
             cta: 'Sponsor monthly',
           },
-          quarterly: {
-            period: '',
-            features: [
-              'Everything in Monthly',
-              'Save 11% vs monthly',
-              'Cancel anytime',
-            ],
-            cta: 'Sponsor for 3 months',
-          },
           yearly: {
             period: '/yr',
             features: [
-              'Everything in Quarterly',
-              'Best value — ~35% off monthly',
+              'Everything in Monthly',
+              '≈ $2/mo · Save 60% vs monthly',
               'Cancel anytime',
             ],
             cta: 'Sponsor yearly',
@@ -195,17 +178,16 @@
           lifetime: {
             period: '',
             features: [
-              'Everything in Yearly',
-              'Pay once, never renew',
-              'All future Pro updates included',
+              'One payment — yours forever',
+              'All future updates included',
+              'No renewal, ever',
             ],
-            cta: 'Sponsor lifetime',
+            cta: 'Get Lifetime',
           },
         };
 
         function effectivePerMonth(planId, p) {
-          if (planId === 'quarterly') return '≈ $' + (p.priceUsd / 3).toFixed(2) + '/mo';
-          if (planId === 'yearly')    return '≈ $' + (p.priceUsd / 12).toFixed(2) + '/mo';
+          if (planId === 'yearly') return '≈ $' + (p.priceUsd / 12).toFixed(2) + '/mo';
           return '';
         }
 
@@ -218,9 +200,6 @@
             '" data-plan="' + planId + '">';
           if (isRec) html += '<div class="ribbon">Best value</div>';
           html += '<h3>' + p.label + '</h3>';
-
-          html += '<div class="plan-stars"><span class="plan-stars-icon" aria-hidden="true">⭐</span>' +
-                  p.starsAmount + ' Stars</div>';
 
           html += '<div class="price">≈ $' + p.priceUsd.toFixed(2);
           if (ex.period) html += '<span>' + ex.period + '</span>';
@@ -237,7 +216,7 @@
           html += '</ul>';
 
           html += '<button type="button" data-select="' + planId + '">' + ex.cta + '</button>';
-          html += '<p class="plan-paycue">Pay by card · License by email</p>';
+          html += '<p class="plan-paycue">Card / PayPal &middot; License by email</p>';
           html += '</div>';
           return html;
         }
@@ -248,26 +227,8 @@
 
         render();
 
-        // Try to refresh from backend cached Joytify prices.
-        // Fails silently — defaults from config.js stay.
-        var api = window.ULTRAWIDER && window.ULTRAWIDER.API_BASE;
-        if (api && typeof fetch === 'function') {
-          fetch(api + '/api/pricing', { cache: 'no-cache' })
-            .then(function (r) { return r.ok ? r.json() : null; })
-            .then(function (data) {
-              if (!data || !data.plans) return;
-              var anyChanged = false;
-              Object.keys(data.plans).forEach(function (k) {
-                var live = data.plans[k];
-                var cur = window.ULTRAWIDER.PLANS[k];
-                if (!cur || !live) return;
-                if (typeof live.priceUsd === 'number') { cur.priceUsd = live.priceUsd; anyChanged = true; }
-                if (typeof live.starsAmount === 'number') { cur.starsAmount = live.starsAmount; anyChanged = true; }
-              });
-              if (anyChanged) render();
-            })
-            .catch(function () { /* keep defaults */ });
-        }
+        // Static config.js prices are authoritative ($5/mo, $24/yr) —
+        // no live /api/pricing override.
 
         root.addEventListener('click', function (e) {
           var btn = e.target.closest('[data-select]');
