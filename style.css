@@ -586,7 +586,7 @@ strong { color: var(--text); font-weight: 600; }
 
 .pricing-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   align-items: stretch;
 }
@@ -2905,7 +2905,9 @@ code, .code-inline {
 /* ─── Card grid ─── */
 .lp-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  /* 3 plans now (monthly / yearly / lifetime) — 3 equal columns fill the
+     container width instead of leaving an empty 4th column on the right. */
+  grid-template-columns: repeat(3, 1fr);
   gap: 18px;
   align-items: stretch;
 }
