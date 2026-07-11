@@ -660,12 +660,10 @@
   function onFsExit() {
     teardownFsWatchers();
     hideCaption();
-    var done = $('wl-stage-done');
     var cta = $('stage-fs-cta');
     var hint = $('wl-stage-hint');
     var skip = $('uw-skip');
     if (state.ahaSeen) {
-      if (done) done.hidden = false;
       if (hint) hint.hidden = true;
       if (skip) skip.hidden = true;
       // Keep the stage re-enterable as a playground (relabel, don't hide) —

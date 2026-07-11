@@ -335,14 +335,6 @@
   50%      { transform: translate(3px, -3px); }
 }
 
-/* Post-success badge shown on the stage after exiting fullscreen */
-.wl-stage-done {
-  margin: 14px 0 0;
-  text-align: center;
-  font-size: 0.92rem;
-  color: #86efac;
-}
-
 /* ─── A2 fallback · static 3-frame annotated strip ─────────────────── */
 
 .wl-fallback {
