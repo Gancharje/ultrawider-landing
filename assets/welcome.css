@@ -1080,3 +1080,79 @@ main.account-page { flex: 1; }
   color: var(--text-dim);
   font-size: 0.92rem;
 }
+
+/* ═══ v3.2 · step-2 card composition + big share row ═══════════════════ */
+
+/* Step 2: landing-grade composition — eyebrow + title head, text column
+   left / CTA column right, rescue docked at the card bottom. Everything
+   left-aligned; no orphan blocks. */
+.wl-step2 { text-align: left; padding: 28px 30px 18px; }
+.wl-eyebrow2 {
+  display: block;
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.wl-step2-title { margin: 0 0 18px; font-size: 1.35rem; }
+.wl-step2-body {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 28px;
+  align-items: center;
+}
+@media (max-width: 760px) {
+  .wl-step2-body { grid-template-columns: 1fr; }
+  .wl-step2-cta { justify-self: start; }
+}
+.wl-step2-lead { margin: 0 0 12px; color: var(--text); font-size: 1rem; }
+.wl-step2 .wl-pro-line { margin: 0 0 8px; max-width: none; text-align: left; font-size: 0.9rem; }
+.wl-step2 .wl-pro-drm { margin: 0; max-width: none; text-align: left; font-size: 0.8rem; }
+.wl-step2-cta .wl-handoff-btn { margin: 0; white-space: nowrap; }
+.wl-step2-rescue {
+  margin-top: 22px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-soft, rgba(245, 158, 11, 0.14));
+}
+.wl-step2-rescue summary {
+  cursor: pointer;
+  color: var(--text-dim);
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+.wl-step2-rescue ol { color: var(--text-dim); font-size: 0.9rem; padding-left: 20px; margin: 12px 0 4px; }
+
+/* Privacy: one quiet, consistently left-aligned line under the card. */
+#uw-after > .wl-privacy { text-align: left; margin: 14px 4px 0; }
+
+/* Share row: the URL is the hero of the card — big chip + big copy button. */
+.wl-share-row {
+  display: flex;
+  align-items: stretch;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.wl-url-chip--lg {
+  flex: 1 1 auto;
+  display: inline-flex;
+  align-items: center;
+  font-size: 1.02rem;
+  padding: 13px 16px;
+  border-radius: 12px;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.wl-cta-copy {
+  display: inline-flex !important;
+  align-items: center;
+  gap: 8px;
+  padding: 13px 22px !important;
+  font-size: 1rem !important;
+}
+.wl-cta-copy svg { width: 17px; height: 17px; }
+.wl-share-note { margin: 10px 0 0; font-size: 0.85rem; color: var(--text-mute); }

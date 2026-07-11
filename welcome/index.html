@@ -45,13 +45,13 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="stylesheet" href="/style.css?v=13" />
-    <link rel="stylesheet" href="/assets/welcome.css?v=4" />
+    <link rel="stylesheet" href="/assets/welcome.css?v=5" />
     <script src="/assets/config.js"></script>
     <script src="/assets/error-instrumentation.js"></script>
     <script src="/assets/metrika.js" defer></script>
     <script src="/assets/aspect-profile.js" defer></script>
     <script src="/assets/warp-demo.js" defer></script>
-    <script src="/assets/welcome.js?v=4" defer></script>
+    <script src="/assets/welcome.js?v=5" defer></script>
   </head>
   <body>
     <noscript><div><img src="https://mc.yandex.ru/watch/109480276" style="position:absolute;left:-9999px" alt="" /></div></noscript>
@@ -223,38 +223,46 @@
              stage delivered its aha (or the fallback/skip path fired) — one
              screen, one action at a time. -->
         <div id="uw-after" hidden>
-        <!-- Step 2 · YouTube handoff + quiet Pro line — ONE cohesive card -->
-        <section id="uw-handoff" class="lp-card wl-card wl-after-card">
-          <h3 class="wl-card-title">Now set YouTube — same click, one time</h3>
-          <a
-            id="yt-handoff-btn"
-            class="aaa-cta-primary wl-handoff-btn"
-            href="https://www.youtube.com/watch?v=LXb3EKWsInQ"
-            target="_blank"
-            rel="noopener"
-          >
-            Open a video on YouTube
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>
-          <p class="wl-handoff-note">
-            Fullscreen → <strong>Smoothie</strong>. Ultrawider remembers it
-            per site — set once, works forever.
-          </p>
-          <hr class="wl-after-sep" />
-          <p class="wl-pro-line" id="uw-pro">
-            YouTube is free forever. Twitch, Kick, Vimeo + more are
-            <strong>Pro</strong> — $5/mo · $24/yr · $49 once, card or PayPal.
-            <a id="pricing-link" href="/pricing?src=welcome">See pricing →</a>
-          </p>
-          <p class="wl-pro-drm">
-            Netflix, Disney+ and other DRM video can never work — we don't
-            sell what we can't do.
-          </p>
-        </section>
-
-        <!-- Trust footer — compact line + details -->
-        <section id="uw-trust" class="wl-trust">
-          <details id="rescue-details">
+        <!-- Step 2 — one composed card, landing-grade: eyebrow + title,
+             text column left, CTA column right, rescue details docked at
+             the bottom of the SAME card. No orphan blocks, no mixed
+             alignment. -->
+        <section id="uw-handoff" class="lp-card wl-card wl-step2">
+          <div class="wl-step2-head">
+            <span class="wl-eyebrow2">Step 2 · The last one</span>
+            <h3 class="wl-step2-title">Set YouTube — same click, one time</h3>
+          </div>
+          <div class="wl-step2-body">
+            <div class="wl-step2-text">
+              <p class="wl-step2-lead">
+                Open any video, press fullscreen, click
+                <strong class="text-accent">Smoothie</strong>. Ultrawider
+                remembers it per site — set once, works forever.
+              </p>
+              <p class="wl-pro-line" id="uw-pro">
+                YouTube is free forever. Twitch, Kick, Vimeo + more are
+                <strong>Pro</strong> — $5/mo · $24/yr · $49 once, card or
+                PayPal. <a id="pricing-link" href="/pricing?src=welcome">See pricing →</a>
+              </p>
+              <p class="wl-pro-drm">
+                Netflix, Disney+ and other DRM video can never work — we
+                don't sell what we can't do.
+              </p>
+            </div>
+            <div class="wl-step2-cta">
+              <a
+                id="yt-handoff-btn"
+                class="aaa-cta-primary wl-handoff-btn"
+                href="https://www.youtube.com/watch?v=LXb3EKWsInQ"
+                target="_blank"
+                rel="noopener"
+              >
+                Open a video on YouTube
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </a>
+            </div>
+          </div>
+          <details id="rescue-details" class="wl-step2-rescue">
             <summary>Popup didn't appear?</summary>
             <ol>
               <li>Make sure the video is actually <strong>fullscreen</strong> (press the ⛶ button in the player, or double-click the video).</li>
@@ -264,12 +272,12 @@
               <li>Still nothing? Email <a id="rescue-mail" href="mailto:hello@ultrawider.net?subject=Popup%20didn%27t%20appear">hello@ultrawider.net</a> — a human answers.</li>
             </ol>
           </details>
-          <p class="wl-privacy">
-            This page sent our server: browser type, extension version, screen
-            shape and your anonymous install id — no cookies, no browsing
-            history.
-          </p>
         </section>
+        <p class="wl-privacy">
+          This page sent our server: browser type, extension version, screen
+          shape and your anonymous install id — no cookies, no browsing
+          history.
+        </p>
         </div><!-- /#uw-after -->
       </section>
 
@@ -324,15 +332,15 @@
               Your home rig, the office machine, a friend's setup — the link
               is the whole pitch:
             </p>
-            <div class="wl-card-actions">
-              <span class="wl-url-chip">ultrawider.net</span>
-              <button type="button" id="copy-link-btn" class="aaa-cta-primary wl-cta-sm">
+            <div class="wl-share-row">
+              <span class="wl-url-chip wl-url-chip--lg" id="share-url-chip">ultrawider.net</span>
+              <button type="button" id="copy-link-btn" class="aaa-cta-primary wl-cta-copy">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
                 <span id="copy-link-label">Copy</span>
               </button>
             </div>
-            <p class="wl-demo-line">
-              or see <a id="std-demo-link" href="https://ultrawider.net/#playground" target="_blank" rel="noopener">the live demo →</a>
+            <p class="wl-share-note">
+              Your personal link — we'll see when someone opens it.
             </p>
           </div>
         </div>

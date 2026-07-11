@@ -966,21 +966,27 @@
       fb.addEventListener('click', function () { sendEvent('feedback_click'); });
     }
 
-    // Card 2 — take it to the ultrawide: copy the LANDING link / mailto self
+    // Card 2 — the personal share link. The ?r= tag ties landing visits back
+    // to THIS installer (audience-stats stores it as utm_source), so we can
+    // see both halves: link_copied here, and the visit it produced later.
+    var refCode = 'w-' + String(state.iid || 'welcome').replace(/[^A-Za-z0-9]/g, '').slice(0, 8).toLowerCase();
+    var shareUrl = LANDING_URL + '?r=' + refCode;
+    var chip = $('share-url-chip');
+    if (chip) chip.textContent = shareUrl.replace(/^https?:\/\//, '');
     var copyBtn = $('copy-link-btn');
     if (copyBtn) {
       copyBtn.addEventListener('click', function () {
         var ok = false;
         try {
           if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(LANDING_URL).catch(function () {});
+            navigator.clipboard.writeText(shareUrl).catch(function () {});
             ok = true;
           }
         } catch (_) {}
         if (!ok) {
           try {
             var ta = document.createElement('textarea');
-            ta.value = LANDING_URL;
+            ta.value = shareUrl;
             ta.style.position = 'fixed';
             ta.style.opacity = '0';
             document.body.appendChild(ta);
@@ -992,13 +998,7 @@
         var label = $('copy-link-label');
         if (label) label.textContent = 'Copied ✓';
         copyBtn.classList.add('is-copied');
-        sendEvent('link_copied');
-      });
-    }
-    var demo = $('std-demo-link');
-    if (demo) {
-      demo.addEventListener('click', function () {
-        sendEvent('sim_demo_engaged', { via: 'demo_link' });
+        sendEvent('link_copied', { ref: refCode });
       });
     }
   }
