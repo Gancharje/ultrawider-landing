@@ -611,9 +611,15 @@
     hideCaption();
     var done = $('wl-stage-done');
     var cta = $('stage-fs-cta');
+    var hint = $('wl-stage-hint');
+    var skip = $('uw-skip');
     if (state.ahaSeen) {
       if (done) done.hidden = false;
       if (cta) cta.hidden = true;
+      if (hint) hint.hidden = true;
+      if (skip) skip.hidden = true;
+      // The aha happened — NOW show the next step (YouTube handoff).
+      revealAfter(true);
     } else if (!state.tutorialFailed && cta) {
       cta.innerHTML = cta.innerHTML.replace('Fill this video', 'Try again');
     }
@@ -675,6 +681,21 @@
     });
   }
 
+  /** Progressive disclosure: the YouTube handoff / Pro strip / trust footer
+   *  stay hidden until the stage has done its job (aha), can't run
+   *  (fallback), or the visitor explicitly skips. One screen, one action. */
+  function revealAfter(scroll) {
+    var after = $('uw-after');
+    if (!after || !after.hidden) return;
+    after.hidden = false;
+    if (scroll) {
+      try {
+        var handoff = $('uw-handoff');
+        if (handoff) handoff.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      } catch (_) {}
+    }
+  }
+
   function showFallbackCard() {
     var live = $('live-stage');
     var grant = $('grant-card');
@@ -682,6 +703,8 @@
     if (live) live.hidden = true;
     if (grant) grant.hidden = true;
     if (fb) fb.hidden = false;
+    // The fallback's own instructions end at "open YouTube" — show the way.
+    revealAfter(false);
   }
 
   // ─── Stage renderer (A2 slot) ───────────────────────────────────────
@@ -784,8 +807,17 @@
   function wireUwSections() {
     if (wiredUwSections) return;
     wiredUwSections = true;
-    onceVisible($('uw-brief'), function () { sendEvent('brief_view'); });
+    // brief_view now = the stage hint entering view (the 3-card pre-brief
+    // was folded into one line under the stage — page opens ON the action).
+    onceVisible($('wl-stage-hint'), function () { sendEvent('brief_view'); });
     onceVisible($('uw-pro'), function () { sendEvent('pro_panel_view'); });
+    var skip = $('uw-skip');
+    if (skip) {
+      skip.addEventListener('click', function () {
+        skip.hidden = true;
+        revealAfter(true);
+      });
+    }
     var yt = $('yt-handoff-btn');
     if (yt) {
       yt.addEventListener('click', function () {

@@ -30,6 +30,50 @@
   text-align: center;
 }
 
+/* Compact installed-confirmation row: the page's real hero is the stage,
+   so the header collapses to one line (icon + sentence). */
+.wl-installed-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.wl-check--sm {
+  width: 34px;
+  height: 34px;
+  margin-bottom: 0;
+  flex: none;
+}
+.wl-check--sm svg { width: 18px; height: 18px; }
+.wl-installed-title {
+  font-size: clamp(1.15rem, 1.2vw + 0.8rem, 1.5rem) !important;
+  margin: 0 !important;
+}
+.wl-installed-sub {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text-dim);
+  margin-top: 2px;
+}
+@media (min-width: 720px) {
+  .wl-installed-sub { display: inline; margin-left: 10px; }
+}
+
+/* One hint line + skip link under the stage (replaces the 3-card brief). */
+.wl-stage-hint {
+  text-align: center;
+  color: var(--text-dim);
+  font-size: 1rem;
+  margin: 16px auto 0;
+  max-width: 640px;
+}
+.wl-stage-skip-row {
+  text-align: center;
+  margin: 10px 0 0;
+}
+
 .wl-check {
   display: inline-flex;
   align-items: center;

@@ -70,12 +70,13 @@
     <main class="wl-main">
       <!-- ── Shared shell: headline + detection chip ─────────────────── -->
       <section class="wl-hero container">
-        <div id="wl-headline-installed" hidden>
-          <span class="wl-check" aria-hidden="true">
+        <!-- Compact confirmation: the page's hero is the STAGE below, not
+             this header. One line, then straight to the one action. -->
+        <div id="wl-headline-installed" class="wl-installed-row" hidden>
+          <span class="wl-check wl-check--sm" aria-hidden="true">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
           </span>
-          <h1>Ultrawider is installed.</h1>
-          <p class="wl-hero-sub" id="wl-installed-sub">One click and it's working. Let's do that click right now.</p>
+          <h1 class="wl-installed-title">Ultrawider is installed. <span class="wl-installed-sub">One click left — it's on the video below.</span></h1>
         </div>
 
         <div id="wl-headline-noext" hidden>
@@ -104,28 +105,9 @@
 
       <!-- ── ULTRAWIDE flow (uw_live + uw_grant_needed share this) ───── -->
       <section id="flow-uw" class="wl-flow container" hidden>
-        <!-- A1 · Pre-brief -->
-        <div id="uw-brief">
-          <div class="wl-steps">
-            <div class="wl-step">
-              <span class="wl-step-num">1</span>
-              <p>Press <strong>fullscreen</strong> on the video below.</p>
-            </div>
-            <div class="wl-step">
-              <span class="wl-step-num">2</span>
-              <p>A small popup appears — <strong>that's Ultrawider</strong> (hover it to keep it open).</p>
-            </div>
-            <div class="wl-step">
-              <span class="wl-step-num">3</span>
-              <p>Click <strong class="text-accent">Smoothie</strong>. Watch the bars vanish.</p>
-            </div>
-          </div>
-          <p class="wl-brief-line">
-            <strong>This is the entire product.</strong> One click, once per site, remembered forever.
-          </p>
-        </div>
-
-        <!-- A2 · Stage slot: live tutorial OR Firefox grant card OR fallback -->
+        <!-- Stage slot: live tutorial OR Firefox grant card OR fallback.
+             The stage IS the hero — no instruction cards above it; the
+             in-fullscreen captions do the guiding, one hint line below. -->
         <div id="stage-slot">
           <!-- Live stage — the extension's REAL HUD will mount into
                #live-stage-screen when it goes fullscreen. Always
@@ -146,6 +128,13 @@
                 </div>
               </div>
             </div>
+            <p class="wl-stage-hint" id="wl-stage-hint">
+              In fullscreen a small popup appears — click
+              <strong class="text-accent">Smoothie</strong>. That's the whole product.
+            </p>
+            <p class="wl-stage-skip-row">
+              <button type="button" id="uw-skip" class="wl-chip-link">Skip — I'll set it up on YouTube directly →</button>
+            </p>
             <p class="wl-stage-done" id="wl-stage-done" hidden>
               Done here — your screen filled. Next stop: YouTube ↓
             </p>
@@ -216,6 +205,10 @@
           </div>
         </div>
 
+        <!-- Progressive disclosure: everything below appears only AFTER the
+             stage delivered its aha (or the fallback/skip path fired) — one
+             screen, one action at a time. -->
+        <div id="uw-after" hidden>
         <!-- A3 · YouTube handoff -->
         <section id="uw-handoff" class="wl-handoff">
           <a
@@ -275,6 +268,7 @@
             history.
           </p>
         </section>
+        </div><!-- /#uw-after -->
       </section>
 
       <!-- ── 16:9 flow (std_16x9) ────────────────────────────────────── -->
