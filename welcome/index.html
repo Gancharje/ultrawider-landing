@@ -45,13 +45,13 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="stylesheet" href="/style.css?v=13" />
-    <link rel="stylesheet" href="/assets/welcome.css?v=3" />
+    <link rel="stylesheet" href="/assets/welcome.css?v=4" />
     <script src="/assets/config.js"></script>
     <script src="/assets/error-instrumentation.js"></script>
     <script src="/assets/metrika.js" defer></script>
     <script src="/assets/aspect-profile.js" defer></script>
     <script src="/assets/warp-demo.js" defer></script>
-    <script src="/assets/welcome.js?v=3" defer></script>
+    <script src="/assets/welcome.js?v=4" defer></script>
   </head>
   <body>
     <noscript><div><img src="https://mc.yandex.ru/watch/109480276" style="position:absolute;left:-9999px" alt="" /></div></noscript>
@@ -169,6 +169,15 @@
                  Used when the live tutorial can't run (kill-switch off,
                  no handshake, fullscreen denied, HUD timeout). -->
             <div id="fallback-card" class="wl-fallback" hidden>
+              <!-- Store-first: if we can't see the extension on this page,
+                   the mechanics lesson is useless until it's installed. -->
+              <div class="wl-fallback-install" id="fallback-install">
+                <p><strong>We can't see the extension on this page.</strong> Not installed yet? Get it first, then come back:</p>
+                <div class="wl-card-actions">
+                  <a id="fallback-store-link" class="aaa-cta-primary wl-cta-sm" href="https://chromewebstore.google.com/detail/ultrawider-%E2%80%94-fill-ultrawi/fpbkljincbjlmfefgcefcbjjppehkamo" target="_blank" rel="noopener">Install from the store</a>
+                  <button type="button" id="fallback-reload" class="wl-status-toggle">Already installed? Reload this page</button>
+                </div>
+              </div>
               <h3 class="wl-fallback-title">Here's exactly what you'll see</h3>
               <p class="wl-fallback-sub">Annotated mock-up — the real popup appears when you fullscreen a video.</p>
               <div class="wl-frames">
@@ -214,8 +223,9 @@
              stage delivered its aha (or the fallback/skip path fired) — one
              screen, one action at a time. -->
         <div id="uw-after" hidden>
-        <!-- A3 · YouTube handoff -->
-        <section id="uw-handoff" class="wl-handoff">
+        <!-- Step 2 · YouTube handoff + quiet Pro line — ONE cohesive card -->
+        <section id="uw-handoff" class="lp-card wl-card wl-after-card">
+          <h3 class="wl-card-title">Now set YouTube — same click, one time</h3>
           <a
             id="yt-handoff-btn"
             class="aaa-cta-primary wl-handoff-btn"
@@ -227,35 +237,22 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
           <p class="wl-handoff-note">
-            Ultrawider remembers per site. <strong>One more click on YouTube
-            and it's set for life:</strong> fullscreen → Smoothie.
+            Fullscreen → <strong>Smoothie</strong>. Ultrawider remembers it
+            per site — set once, works forever.
           </p>
-        </section>
-
-        <!-- A4 · Pro strip — one clean card, after the free win -->
-        <section id="uw-pro" class="lp-card wl-card wl-pro">
-          <div class="wl-pro-cols">
-            <div class="wl-pro-col">
-              <h4>YouTube</h4>
-              <p>Free forever, no catch.</p>
-            </div>
-            <div class="wl-pro-col">
-              <h4>Twitch, Kick, Vimeo + more</h4>
-              <p class="wl-pro-price">Pro · $5/mo · $24/yr · $49 once · card or PayPal</p>
-            </div>
-          </div>
-          <p class="wl-pro-note">
-            You'll see the same Smoothie button there with a
-            <span class="wl-pro-star">⭐</span> — that's Pro.
+          <hr class="wl-after-sep" />
+          <p class="wl-pro-line" id="uw-pro">
+            YouTube is free forever. Twitch, Kick, Vimeo + more are
+            <strong>Pro</strong> — $5/mo · $24/yr · $49 once, card or PayPal.
+            <a id="pricing-link" href="/pricing?src=welcome">See pricing →</a>
           </p>
           <p class="wl-pro-drm">
             Netflix, Disney+ and other DRM video can never work — we don't
             sell what we can't do.
           </p>
-          <a id="pricing-link" class="wl-pro-link" href="/pricing?src=welcome">See pricing →</a>
         </section>
 
-        <!-- A5 · Trust footer — compact line + details -->
+        <!-- Trust footer — compact line + details -->
         <section id="uw-trust" class="wl-trust">
           <details id="rescue-details">
             <summary>Popup didn't appear?</summary>
@@ -322,21 +319,17 @@
           </div>
 
           <div class="lp-card wl-card" id="std-share-card">
-            <h3 class="wl-card-title">Have an ultrawide at home or work?</h3>
+            <h3 class="wl-card-title">Know an ultrawide somewhere?</h3>
             <p class="wl-card-sub">
-              On a 21:9 / 32:9 it fills the black bars — the centre stays
-              perfectly undistorted.
+              Your home rig, the office machine, a friend's setup — the link
+              is the whole pitch:
             </p>
             <div class="wl-card-actions">
+              <span class="wl-url-chip">ultrawider.net</span>
               <button type="button" id="copy-link-btn" class="aaa-cta-primary wl-cta-sm">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-                <span id="copy-link-label">Copy link</span>
+                <span id="copy-link-label">Copy</span>
               </button>
-              <a
-                id="email-mailto-link"
-                class="aaa-cta-secondary wl-cta-sm"
-                href="mailto:?subject=Ultrawider%20for%20your%20ultrawide%20monitor&amp;body=https%3A%2F%2Fultrawider.net%20%E2%80%94%20fills%2016%3A9%20video%20on%20ultrawide%20monitors%2C%20free%20on%20YouTube"
-              >Email it to yourself</a>
             </div>
             <p class="wl-demo-line">
               or see <a id="std-demo-link" href="https://ultrawider.net/#playground" target="_blank" rel="noopener">the live demo →</a>
@@ -347,16 +340,8 @@
 
       <!-- ── Organic flow (uw_no_ext) — compact ──────────────────────── -->
       <section id="flow-noext" class="wl-flow container" hidden>
-        <div>
-          <p class="wl-noext-lede">
-            Fullscreen a video, click <strong class="text-accent">Smoothie</strong>
-            in the popup that appears, and the black side-bars are gone — edges
-            stretched, faces untouched. Free on YouTube, forever. Here's a live
-            simulation:
-          </p>
-          <div id="noext-sim-slot"></div>
-        </div>
-
+        <!-- Install FIRST — explaining the mechanics without the extension
+             is pointless. The page becomes a live tutorial once it's in. -->
         <div class="wl-noext-cta-row">
           <a id="noext-install-cta" data-install-cta
              href="https://chromewebstore.google.com/detail/ultrawider-%E2%80%94-fill-ultrawi/fpbkljincbjlmfefgcefcbjjppehkamo"
@@ -364,6 +349,20 @@
             Install — Free
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
+          <p class="wl-noext-note">
+            Install, then come back — this page turns into a live one-minute
+            setup on your own screen.
+          </p>
+        </div>
+
+        <div>
+          <p class="wl-noext-lede">
+            What it does: fullscreen a video, click
+            <strong class="text-accent">Smoothie</strong> in the popup, and the
+            black side-bars are gone — edges stretched, faces untouched. Free
+            on YouTube, forever. Live simulation:
+          </p>
+          <div id="noext-sim-slot"></div>
         </div>
 
         <div class="store-links" data-store-links>

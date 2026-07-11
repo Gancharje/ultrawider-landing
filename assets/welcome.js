@@ -529,6 +529,24 @@
     cap.hidden = false;
     cap.classList.toggle('wl-caption--success', !!(opts && opts.success));
     if (arrow) arrow.style.display = opts && opts.arrow ? '' : 'none';
+    // Optional explicit exit button — the caption itself is pointer-events:
+    // none (it must never block the HUD), the button opts back in.
+    var btn = $('wl-caption-btn');
+    if (opts && opts.action) {
+      if (!btn) {
+        btn = document.createElement('button');
+        btn.type = 'button';
+        btn.id = 'wl-caption-btn';
+        btn.className = 'wl-caption-btn';
+        btn.setAttribute('data-wl-own', '');
+        btn.addEventListener('click', exitFs);
+        cap.appendChild(btn);
+      }
+      btn.textContent = opts.action;
+      btn.hidden = false;
+    } else if (btn) {
+      btn.hidden = true;
+    }
   }
 
   function hideCaption() {
@@ -561,15 +579,14 @@
     state.ahaTs = Date.now();
     clearTimeout(liveTutorial.hudTimer);
     sendEvent('aha_reached', { ms_since_load: state.ahaTs - state.loadTs });
+    // Let them PLAY: no click-to-exit (a wrap-level click listener used to
+    // exit fullscreen the moment they touched the HUD's slider), a long
+    // grace timer, and an explicit Done button + Esc hint instead.
     setCaption(
-      'That’s it. Your screen, filled. 🟠 Now let’s set <strong>YouTube</strong>.',
-      { success: true, arrow: false }
+      'That’s it — your screen, filled. 🟠 Try the popup: switch modes, drag <strong>Curve strength</strong>.',
+      { success: true, arrow: false, action: 'Done — continue ↓' }
     );
-    var wrap = $('live-stage-screen');
-    if (wrap) {
-      wrap.addEventListener('click', exitFs, { once: true });
-    }
-    liveTutorial.successTimer = setTimeout(exitFs, 4000);
+    liveTutorial.successTimer = setTimeout(exitFs, 25000);
   }
 
   function onHudDetected() {
@@ -585,6 +602,16 @@
 
   function watchFullscreenStage(wrap, video) {
     state.fsTs = Date.now();
+    if (state.ahaSeen) {
+      // Re-entry after the aha: they're just playing. No timers, no arrows —
+      // only the exit affordance (first exit was automatic; without this
+      // hint nobody knows Esc is the way out the second time).
+      setCaption('Playground mode — press <strong>Esc</strong> or hit Done to leave.', {
+        arrow: false,
+        action: 'Done — continue ↓',
+      });
+      return;
+    }
     setCaption(
       'A small popup appears — <strong>that’s Ultrawider</strong>. Click <strong>Smoothie</strong>.',
       { arrow: true }
@@ -639,9 +666,14 @@
     var skip = $('uw-skip');
     if (state.ahaSeen) {
       if (done) done.hidden = false;
-      if (cta) cta.hidden = true;
       if (hint) hint.hidden = true;
       if (skip) skip.hidden = true;
+      // Keep the stage re-enterable as a playground (relabel, don't hide) —
+      // re-entry auto-activates Smoothie from the saved host preference.
+      if (cta && !cta.dataset.replay) {
+        cta.dataset.replay = '1';
+        cta.innerHTML = cta.innerHTML.replace(/Fill this video[^<]*/, 'Fullscreen again — play with it ');
+      }
       // The aha happened — NOW show the next step (YouTube handoff).
       revealAfter(true);
     } else if (!state.tutorialFailed && cta) {
@@ -720,6 +752,12 @@
     }
   }
 
+  var STORE_URLS = {
+    chrome: 'https://chromewebstore.google.com/detail/ultrawider-%E2%80%94-fill-ultrawi/fpbkljincbjlmfefgcefcbjjppehkamo',
+    edge: 'https://microsoftedge.microsoft.com/addons/detail/ultrawider-%E2%80%94-fill-ultrawi/mpjkkafkfjgealcigbiigiaeljokclkg',
+    firefox: 'https://addons.mozilla.org/firefox/addon/ultrawider-21-9-video-fill/',
+  };
+
   function showFallbackCard() {
     var live = $('live-stage');
     var grant = $('grant-card');
@@ -727,6 +765,14 @@
     if (live) live.hidden = true;
     if (grant) grant.hidden = true;
     if (fb) fb.hidden = false;
+    // Store-first block: no extension visible → send them to install.
+    var store = $('fallback-store-link');
+    if (store && STORE_URLS[state.browser]) store.href = STORE_URLS[state.browser];
+    var reload = $('fallback-reload');
+    if (reload && !reload.dataset.wired) {
+      reload.dataset.wired = '1';
+      reload.addEventListener('click', function () { location.reload(); });
+    }
     // The fallback's own instructions end at "open YouTube" — show the way.
     revealAfter(false);
   }
@@ -949,12 +995,6 @@
         sendEvent('link_copied');
       });
     }
-    var mailto = $('email-mailto-link');
-    if (mailto) {
-      mailto.addEventListener('click', function () {
-        sendEvent('email_link_requested', { via: 'mailto' });
-      });
-    }
     var demo = $('std-demo-link');
     if (demo) {
       demo.addEventListener('click', function () {
@@ -967,14 +1007,9 @@
     if (wiredNoextSections) return;
     wiredNoextSections = true;
     // Browser-aware install row — same pattern as the landing hero.
-    var STORES = {
-      chrome: 'https://chromewebstore.google.com/detail/ultrawider-%E2%80%94-fill-ultrawi/fpbkljincbjlmfefgcefcbjjppehkamo',
-      edge: 'https://microsoftedge.microsoft.com/addons/detail/ultrawider-%E2%80%94-fill-ultrawi/mpjkkafkfjgealcigbiigiaeljokclkg',
-      firefox: 'https://addons.mozilla.org/firefox/addon/ultrawider-21-9-video-fill/',
-    };
     var store = state.browser;
     var cta = $('noext-install-cta');
-    if (cta && STORES[store]) cta.setAttribute('href', STORES[store]);
+    if (cta && STORE_URLS[store]) cta.setAttribute('href', STORE_URLS[store]);
     var current = document.querySelector('#flow-noext .store-links a[data-store="' + store + '"]');
     if (current) current.classList.add('is-current');
   }

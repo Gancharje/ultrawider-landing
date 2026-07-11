@@ -1013,3 +1013,70 @@
   transition: border-color 0.15s, transform 0.15s;
 }
 .gb-btn:hover { border-color: rgba(245, 158, 11, 0.55); transform: translateY(-1px); }
+
+/* ═══ v3.1 · owner polish round 2 ══════════════════════════════════════ */
+
+/* Footer must sit at the viewport bottom, not float mid-void. */
+body { min-height: 100dvh; display: flex; flex-direction: column; }
+main.wl-main { flex: 1; }
+main.account-page { flex: 1; }
+
+/* Post-aha block: ONE cohesive card instead of a pile of boxes. */
+.wl-after-card { text-align: center; padding: 32px 28px; }
+.wl-after-card .wl-card-title { margin-bottom: 18px; }
+.wl-after-card .wl-handoff-btn { margin: 0 auto; }
+.wl-handoff-note { margin: 14px auto 0; max-width: 560px; color: var(--text-dim); font-size: 0.95rem; }
+.wl-after-sep {
+  border: none;
+  border-top: 1px solid var(--border-soft, rgba(245, 158, 11, 0.14));
+  margin: 22px auto;
+  max-width: 480px;
+}
+.wl-pro-line { margin: 0 auto 8px; max-width: 640px; color: var(--text-dim); font-size: 0.92rem; }
+.wl-pro-line strong { color: var(--text); }
+.wl-pro-line a { color: var(--accent); }
+.wl-pro-drm { margin: 0 auto; max-width: 640px; color: var(--text-mute); font-size: 0.82rem; }
+
+/* Share card: URL chip + Copy with breathing room between icon and label. */
+.wl-url-chip {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.9rem;
+  color: var(--text);
+  background: #100e0a;
+  border: 1px solid var(--border-soft, rgba(245, 158, 11, 0.18));
+  border-radius: 10px;
+  padding: 10px 14px;
+}
+.wl-cta-sm { display: inline-flex !important; align-items: center; gap: 8px; }
+
+/* In-fullscreen caption: explicit exit affordance. The caption stays
+   pointer-events:none; only the button opts back in. */
+.wl-caption-btn {
+  pointer-events: auto;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #1a1207;
+  background: var(--accent);
+  border: none;
+  border-radius: 999px;
+  padding: 9px 18px;
+  margin-left: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.wl-caption-btn:hover { background: var(--accent-hover, #fbbf24); }
+
+/* Fallback store-first block + noext install-first note. */
+.wl-fallback-install {
+  margin-bottom: 22px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border-soft, rgba(245, 158, 11, 0.14));
+}
+.wl-fallback-install p { margin: 0 0 12px; color: var(--text-dim); }
+.wl-fallback-install strong { color: var(--text); }
+.wl-noext-note {
+  margin: 12px 0 0;
+  color: var(--text-dim);
+  font-size: 0.92rem;
+}
