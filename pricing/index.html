@@ -21,7 +21,7 @@
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
     />
     <link rel="stylesheet" href="/style.css?v=14" />
-    <link rel="stylesheet" href="/assets/styles.css?v=16" />
+    <link rel="stylesheet" href="/assets/styles.css?v=17" />
     <script src="/assets/config.js"></script>
     <script src="/assets/error-instrumentation.js"></script>
     <script src="/assets/metrika.js" defer></script>
@@ -62,14 +62,29 @@
 
       <section>
         <div class="container">
-          <div class="plans" id="plans"></div>
-
-          <div class="pay-methods" aria-label="Accepted payment methods">
-            <span class="pay-chip"><img src="/assets/pay-visa.svg" alt="Visa" class="pay-logo pay-logo--visa" /></span>
-            <span class="pay-chip"><img src="/assets/pay-mastercard.svg" alt="Mastercard" class="pay-logo pay-logo--mc" /></span>
-            <span class="pay-chip pay-chip--pp"><img src="/assets/pay-paypal.svg" alt="PayPal" class="pay-logo pay-logo--pp" /></span>
-            <span class="pay-methods-note">Secure checkout on Lava.top &middot; license key by email</span>
+          <!-- Single "how payment works" block — everything a buyer needs
+               to know before clicking, in one place above the cards. -->
+          <div class="pay-disclosure" role="region" aria-label="How payment works">
+            <div class="pay-disclosure-row">
+              <div class="pay-disclosure-icons">
+                <span class="pay-chip"><img src="/assets/pay-visa.svg" alt="Visa" class="pay-logo pay-logo--visa" /></span>
+                <span class="pay-chip"><img src="/assets/pay-mastercard.svg" alt="Mastercard" class="pay-logo pay-logo--mc" /></span>
+                <span class="pay-chip"><img src="/assets/pay-paypal.svg" alt="PayPal" class="pay-logo pay-logo--pp" /></span>
+              </div>
+              <div class="pay-disclosure-text">
+                <strong>Pay by card or PayPal</strong> — secure checkout on
+                <strong>Lava.top</strong>'s branded payment page. Your license
+                key is emailed within 5&ndash;20&nbsp;minutes — paste it into the
+                extension. Monthly &amp; yearly auto-renew until you cancel —
+                cancel anytime, self-serve, at <a href="/cancel">ultrawider.net/cancel</a>
+                (or email <a href="mailto:hello@ultrawider.net?subject=Cancel%20subscription">hello@ultrawider.net</a>);
+                you keep Pro until the paid period ends. Lifetime is a one-time
+                payment that never renews.
+              </div>
+            </div>
           </div>
+
+          <div class="plans" id="plans"></div>
 
           <p class="pay-conversion-note" aria-live="polite">
             <strong>Final amount</strong> may vary slightly from the dollar
@@ -77,24 +92,7 @@
             <code>LAVA.TOP</code> on your bank or PayPal statement.
           </p>
 
-          <div class="pricing-how">
-            <h2>How it works</h2>
-            <ol>
-              <li>Pick a plan and pay by card or PayPal on Lava.top</li>
-              <li>Your subscription unlocks Pro across every supported site</li>
-              <li>License key emailed within 5–20 minutes; paste into the extension</li>
-            </ol>
-            <p class="pricing-cancel-note">
-              Monthly and yearly plans auto-renew until you cancel. Cancel
-              anytime, self-serve, at <a href="/cancel">ultrawider.net/cancel</a>
-              (or email <a href="mailto:hello@ultrawider.net?subject=Cancel%20subscription">hello@ultrawider.net</a>);
-              cancelling stops the renewal and you keep Pro until the paid
-              period ends. Lifetime is a one-time payment that never renews.
-            </p>
-          </div>
-
           <p class="pricing-footnote">
-            <strong>Secure checkout via Lava.top</strong> — card &amp; PayPal.
             Lost your key? <a href="/recover">Recover it here</a>.
           </p>
         </div>

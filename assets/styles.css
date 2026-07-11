@@ -189,30 +189,8 @@
   white-space: nowrap;
 }
 
-/* ─── "How it works" small list on /pricing ────────────────────────── */
-
-.pricing-how {
-  max-width: 580px;
-  margin: 48px auto 0;
-  text-align: center;
-}
-.pricing-how h2 {
-  font-size: 1.4rem;
-  margin: 0 0 16px;
-}
-.pricing-how ol {
-  text-align: left;
-  color: var(--text-dim);
-  padding-left: 1.2rem;
-  margin: 0;
-}
-.pricing-how li {
-  margin: 0.5rem 0;
-  font-size: 0.95rem;
-}
-
 .pricing-footnote {
-  margin-top: 56px;
+  margin-top: 40px;
   text-align: center;
   font-size: 0.85rem;
   color: var(--text-mute);
@@ -543,7 +521,7 @@ button[type='submit'][disabled] {
 /* ─── Pricing-page additions ────────────────────────────────────────────
      .plan-stars        — large amber Stars badge above the dollar price
      .plan-duration     — "License active 30 days" label under price
-     .pay-methods       — Visa/MC/PayPal brand-logo chips under the grid
+     .pay-disclosure    — "how payment works" block with Visa/MC/PayPal chips
      .pay-conversion-note — footer disclaimer about currency variance
 */
 
@@ -571,14 +549,26 @@ button[type='submit'][disabled] {
   letter-spacing: 0.04em;
 }
 
-/* ─── Payment methods row (real brand logos, under the plan grid) ─── */
-.pay-methods {
+/* ─── "How payment works" disclosure (real brand logos, above grid) ─── */
+.pay-disclosure {
+  max-width: 960px;
+  margin: 32px auto 0;
+  padding: 20px 24px;
+  background: rgba(245, 158, 11, 0.04);
+  border: 1px solid rgba(245, 158, 11, 0.2);
+  border-radius: var(--radius-sm);
+}
+.pay-disclosure-row {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
+  gap: 22px;
   flex-wrap: wrap;
-  margin: 0 0 12px;
+}
+.pay-disclosure-icons {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
 }
 .pay-chip {
   display: inline-flex;
@@ -593,15 +583,17 @@ button[type='submit'][disabled] {
 .pay-logo--visa { height: 12px; width: auto; }
 .pay-logo--mc   { height: 18px; width: auto; }
 .pay-logo--pp   { height: 16px; width: auto; }
-.pay-methods-note {
-  margin-left: 10px;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.05em;
-  color: var(--text-mute);
+.pay-disclosure-text {
+  font-size: 0.92rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+  flex: 1;
+  min-width: 280px;
+  overflow-wrap: anywhere;
 }
-@media (max-width: 560px) {
-  .pay-methods-note { width: 100%; text-align: center; margin: 6px 0 0; }
+.pay-disclosure-text strong {
+  color: var(--text);
+  font-weight: 600;
 }
 
 /* ─── Currency conversion note (below cards) ─── */
