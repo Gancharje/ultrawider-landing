@@ -31,6 +31,16 @@
     if (msg.indexOf('chrome-extension://') !== -1) return true;
     if (msg.indexOf('moz-extension://') !== -1) return true;
     if (msg.indexOf('ResizeObserver loop') !== -1) return true;
+    // Benign media lifecycle rejections: the browser aborts a <video>
+    // fetch / play() promise when the user navigates away, scrolls a
+    // lazy player out, or autoplay is interrupted. Not actionable —
+    // Firefox words it "The fetching process for the media resource
+    // was aborted…", Chrome "The play() request was interrupted…".
+    if (msg.indexOf('media resource was aborted') !== -1) return true;
+    if (msg.indexOf('play() request was interrupted') !== -1) return true;
+    if (msg.indexOf('The operation was aborted') !== -1) return true;
+    if (msg.indexOf('AbortError') !== -1) return true;
+    if (msg.indexOf('media resource load canceled') !== -1) return true;
     return false;
   }
 
