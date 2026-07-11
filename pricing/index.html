@@ -20,8 +20,8 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
     />
-    <link rel="stylesheet" href="/style.css?v=10" />
-    <link rel="stylesheet" href="/assets/styles.css?v=14" />
+    <link rel="stylesheet" href="/style.css?v=14" />
+    <link rel="stylesheet" href="/assets/styles.css?v=16" />
     <script src="/assets/config.js"></script>
     <script src="/assets/error-instrumentation.js"></script>
     <script src="/assets/metrika.js" defer></script>
@@ -62,24 +62,14 @@
 
       <section>
         <div class="container">
-          <!-- "You pay by card or PayPal" upfront disclosure. -->
-          <div class="pay-disclosure" role="region" aria-label="How payment works">
-            <div class="pay-disclosure-row">
-              <div class="pay-disclosure-icons" aria-hidden="true">
-                <span class="pay-card pay-card--visa">VISA</span>
-                <span class="pay-card pay-card--mc">MC</span>
-              </div>
-              <div class="pay-disclosure-text">
-                <strong>Pay by card or PayPal</strong> — Visa, Mastercard or PayPal.
-                Checkout runs on <strong>Lava.top</strong>'s secure, branded
-                payment page. Monthly &amp; yearly auto-renew until you cancel
-                — cancel anytime, self-serve, at <a href="/cancel">ultrawider.net/cancel</a>
-                (or email hello@ultrawider.net); license&nbsp;key lands in&nbsp;your&nbsp;email.
-              </div>
-            </div>
-          </div>
-
           <div class="plans" id="plans"></div>
+
+          <div class="pay-methods" aria-label="Accepted payment methods">
+            <span class="pay-chip"><img src="/assets/pay-visa.svg" alt="Visa" class="pay-logo pay-logo--visa" /></span>
+            <span class="pay-chip"><img src="/assets/pay-mastercard.svg" alt="Mastercard" class="pay-logo pay-logo--mc" /></span>
+            <span class="pay-chip pay-chip--pp"><img src="/assets/pay-paypal.svg" alt="PayPal" class="pay-logo pay-logo--pp" /></span>
+            <span class="pay-methods-note">Secure checkout on Lava.top &middot; license key by email</span>
+          </div>
 
           <p class="pay-conversion-note" aria-live="polite">
             <strong>Final amount</strong> may vary slightly from the dollar
@@ -225,7 +215,6 @@
           html += '</ul>';
 
           html += '<button type="button" data-select="' + planId + '">' + ex.cta + '</button>';
-          html += '<p class="plan-paycue">Card / PayPal &middot; License by email</p>';
           html += '</div>';
           return html;
         }

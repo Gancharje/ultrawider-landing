@@ -37,21 +37,21 @@
 
 .plans {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin: 48px 0 32px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 960px;
+  margin: 48px auto 28px;
   align-items: stretch;
 }
 
-@media (max-width: 1024px) { .plans { grid-template-columns: repeat(2, 1fr); gap: 16px; } }
-@media (max-width: 560px)  { .plans { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { .plans { grid-template-columns: 1fr; gap: 16px; max-width: 460px; } }
 
 .plan {
   position: relative;
   background: var(--bg-elev);
   border: 1px solid var(--border-soft);
   border-radius: var(--radius);
-  padding: 28px 24px;
+  padding: 32px 28px;
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -84,7 +84,7 @@
 }
 
 .plan .price {
-  font-size: 2.5rem;
+  font-size: 2.75rem;
   font-weight: 800;
   letter-spacing: -0.03em;
   margin: 0;
@@ -540,16 +540,11 @@ button[type='submit'][disabled] {
 .center { text-align: center; }
 .muted { color: var(--text-mute); font-size: 0.85rem; }
 
-/* ─── Sponsor-tier additions (post Joytify-Stars repositioning) ─────────
-   New elements added to .plan cards:
+/* ─── Pricing-page additions ────────────────────────────────────────────
      .plan-stars        — large amber Stars badge above the dollar price
      .plan-duration     — "License active 30 days" label under price
-     .plan-paycue       — tiny mono footer "Pay by card · License by email"
-
-   Plus page-level disclosures:
-     .pay-disclosure    — upfront "you pay by card, no TG needed" block
+     .pay-methods       — Visa/MC/PayPal brand-logo chips under the grid
      .pay-conversion-note — footer disclaimer about currency variance
-     .pay-card          — Visa/MC tiny tag pills
 */
 
 .plan-stars {
@@ -576,65 +571,37 @@ button[type='submit'][disabled] {
   letter-spacing: 0.04em;
 }
 
-.plan-paycue {
-  font-family: var(--font-mono);
-  font-size: 0.65rem !important;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-mute) !important;
-  text-align: center;
-  margin: 10px 0 0 !important;
-}
-
-/* ─── "You pay by card" upfront disclosure ─── */
-.pay-disclosure {
-  margin: 32px 0 24px;
-  padding: 18px 22px;
-  background: rgba(245, 158, 11, 0.04);
-  border: 1px solid rgba(245, 158, 11, 0.2);
-  border-radius: var(--radius-sm);
-}
-.pay-disclosure-row {
+/* ─── Payment methods row (real brand logos, under the plan grid) ─── */
+.pay-methods {
   display: flex;
   align-items: center;
-  gap: 20px;
+  justify-content: center;
+  gap: 10px;
   flex-wrap: wrap;
+  margin: 0 0 12px;
 }
-.pay-disclosure-icons {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  flex-shrink: 0;
-}
-.pay-card {
+.pay-chip {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 26px;
-  min-width: 42px;
-  padding: 0 8px;
+  height: 30px;
+  padding: 0 12px;
+  background: #ffffff;
+  border-radius: 6px;
+}
+.pay-logo { display: block; }
+.pay-logo--visa { height: 12px; width: auto; }
+.pay-logo--mc   { height: 18px; width: auto; }
+.pay-logo--pp   { height: 16px; width: auto; }
+.pay-methods-note {
+  margin-left: 10px;
   font-family: var(--font-mono);
-  font-size: 0.65rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 4px;
-  color: var(--text);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  color: var(--text-mute);
 }
-.pay-card--visa  { color: #1a1f71; background: #ffffff; border-color: #ffffff; }
-.pay-card--mc    { color: #ff5f00; background: #ffffff; border-color: #ffffff; }
-
-.pay-disclosure-text {
-  font-size: 0.92rem;
-  line-height: 1.55;
-  color: var(--text-dim);
-  flex: 1;
-  min-width: 280px;
-}
-.pay-disclosure-text strong {
-  color: var(--text);
-  font-weight: 600;
+@media (max-width: 560px) {
+  .pay-methods-note { width: 100%; text-align: center; margin: 6px 0 0; }
 }
 
 /* ─── Currency conversion note (below cards) ─── */

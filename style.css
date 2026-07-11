@@ -188,6 +188,10 @@ strong { color: var(--text); font-weight: 600; }
 }
 .nav-links a:hover { color: var(--text); }
 .nav-links .btn { color: #0a0a0a; }
+/* Ghost variant sits on the dark header — the dark-CTA text color above
+   would render it invisible until hover. */
+.nav-links .btn-ghost { color: var(--text); border-color: var(--border); }
+.nav-links .btn-ghost:hover { color: var(--text); }
 
 @media (max-width: 640px) {
   /* Hide secondary nav links on mobile but keep the conversion CTA
