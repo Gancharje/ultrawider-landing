@@ -190,10 +190,16 @@
 }
 
 .pricing-footnote {
-  margin-top: 40px;
+  margin: 40px 0 96px;
   text-align: center;
   font-size: 0.85rem;
   color: var(--text-mute);
+}
+
+/* Keep the footer below the fold on /pricing — the page is short enough
+   that the footer otherwise glues itself to the last line. */
+.page-pricing main {
+  min-height: calc(100dvh - 64px);
 }
 .pricing-footnote strong { color: var(--text-dim); }
 
