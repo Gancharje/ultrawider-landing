@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ultrawider Removed — Thanks for Trying It</title>
+    <meta name="description" content="Ultrawider has been removed. Thanks for trying it." />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#050505" />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href="https://ultrawider.net/goodbye" />
+
+    <!-- Capture ?iid=&had=&days= (set by chrome.runtime.setUninstallURL)
+         and strip them before anything else sees the URL. -->
+    <script>
+      (function () {
+        var p = { iid: null, had: null, days: null };
+        try {
+          var q = new URLSearchParams(location.search);
+          p.iid = q.get('iid');
+          p.had = q.get('had');
+          p.days = q.get('days');
+          if (location.search) {
+            history.replaceState(null, '', location.pathname + location.hash);
+          }
+        } catch (_) {}
+        window.__UW_GOODBYE = p;
+      })();
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png" />
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+    <link rel="stylesheet" href="/style.css?v=13" />
+    <link rel="stylesheet" href="/assets/welcome.css?v=1" />
+    <script src="/assets/config.js"></script>
+    <script src="/assets/error-instrumentation.js"></script>
+    <script src="/assets/metrika.js" defer></script>
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/109480276" style="position:absolute;left:-9999px" alt="" /></div></noscript>
+
+    <header class="site-header">
+      <div class="container nav">
+        <a href="/" class="logo">
+          <span class="logo-mark"></span>
+          <span class="logo-text">Ultrawider</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="account-page">
+      <div class="account-container">
+        <header class="account-head">
+          <span class="account-eyebrow">Goodbye</span>
+          <h1>Ultrawider has been removed.</h1>
+          <p class="account-lede">Thanks for trying it.</p>
+        </header>
+
+        <div id="gb-question">
+          <p style="color: var(--text-dim); font-size: 0.95rem; margin: 0;">
+            One optional question — what made you uninstall?
+          </p>
+          <div class="gb-buttons">
+            <button type="button" class="gb-btn" data-reason="monitor_16x9">My monitor is 16:9 — nothing to fill</button>
+            <button type="button" class="gb-btn" data-reason="couldnt_activate">Couldn't figure out how to turn it on</button>
+            <button type="button" class="gb-btn" data-reason="didnt_like_result">Didn't like the result</button>
+            <button type="button" class="gb-btn" data-reason="other">Other</button>
+          </div>
+        </div>
+
+        <div class="gb-thanks" id="gb-thanks" hidden>Thanks — that genuinely helps.</div>
+
+        <p class="gb-links">
+          Changed your mind? <a href="/welcome">The one-minute setup guide is here</a>.<br />
+          Something we could have fixed?
+          <a id="gb-mail" href="mailto:hello@ultrawider.net?subject=Why%20I%20uninstalled">hello@ultrawider.net</a>
+          — a human answers.
+        </p>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-bottom">
+        <span>© 2026 Ultrawider · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a href="/refund.html">Support</a></span>
+      </div>
+    </footer>
+
+    <script>
+      (function () {
+        'use strict';
+        var P = window.__UW_GOODBYE || {};
+        var CFG = window.ULTRAWIDER || {};
+        var API = CFG.API_BASE || 'https://api.ultrawider.net';
+        var CONTACT = CFG.CONTACT_EMAIL || 'hello@ultrawider.net';
+
+        var mail = document.getElementById('gb-mail');
+        if (mail) {
+          mail.href = 'mailto:' + CONTACT + '?subject=Why%20I%20uninstalled';
+          mail.textContent = CONTACT;
+        }
+
+        var installId = P.iid || null;
+        if (!installId) {
+          try { installId = localStorage.getItem('_uw_iid') || null; } catch (_) {}
+        }
+        var hadActivation = P.had === '1' ? true : P.had === '0' ? false : null;
+        var daysInstalled = null;
+        if (P.days !== null && P.days !== '' && isFinite(Number(P.days))) {
+          daysInstalled = Number(P.days);
+        }
+
+        function basePayload() {
+          var p = {};
+          if (installId) p.install_id = installId;
+          if (hadActivation !== null) p.had_activation = hadActivation;
+          if (daysInstalled !== null) p.days_installed = daysInstalled;
+          return p;
+        }
+
+        // Fire-and-forget: sendBeacon first, fetch keepalive fallback.
+        // A dead API must never break this page.
+        function beacon(payload) {
+          var url = API + '/api/welcome/uninstall';
+          var body;
+          try { body = JSON.stringify(payload); } catch (_) { return; }
+          try {
+            if (navigator.sendBeacon) {
+              var blob = new Blob([body], { type: 'application/json' });
+              if (navigator.sendBeacon(url, blob)) return;
+            }
+          } catch (_) {}
+          try {
+            fetch(url, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: body,
+              keepalive: true,
+              mode: 'cors',
+              credentials: 'omit',
+            }).catch(function () {});
+          } catch (_) {}
+        }
+
+        // 1st beacon: the uninstall itself.
+        beacon(basePayload());
+
+        // 2nd (optional) beacon: the reason.
+        var answered = false;
+        var btns = document.querySelectorAll('.gb-btn');
+        for (var i = 0; i < btns.length; i++) {
+          (function (btn) {
+            btn.addEventListener('click', function () {
+              if (answered) return;
+              answered = true;
+              var p = basePayload();
+              p.reason = btn.getAttribute('data-reason');
+              beacon(p);
+              var q = document.getElementById('gb-question');
+              var thanks = document.getElementById('gb-thanks');
+              if (q) q.hidden = true;
+              if (thanks) thanks.hidden = false;
+            });
+          })(btns[i]);
+        }
+      })();
+    </script>
+  </body>
+</html>

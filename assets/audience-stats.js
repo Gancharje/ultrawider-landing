@@ -82,6 +82,18 @@
   // put in reddit/HN/YT links — less spammy than full UTM strings) fills
   // the same slot. Persisted per-session so store-button clicks on later
   // pages keep the original source even after the query string is gone.
+  // v16: install-funnel identity — the /welcome page persists the
+  // extension's install id (_uw_iid) and /internal sets the tester
+  // flag (_uw_internal). Attached to both the visit and click beacons
+  // so the backend can join landing traffic to installs and exclude
+  // internal browsing. Additive fields only.
+  var installId = null;
+  var internalFlag = false;
+  try {
+    installId = localStorage.getItem('_uw_iid') || null;
+    internalFlag = localStorage.getItem('_uw_internal') === '1';
+  } catch (_) { /* localStorage blocked → fields stay null/false */ }
+
   var srcParam = param('utm_source') || param('ref') || param('r') || '';
   try {
     if (srcParam) sessionStorage.setItem('_uw_src', srcParam);
@@ -103,6 +115,8 @@
     utm_medium: param('utm_medium') || '',
     utm_campaign: param('utm_campaign') || '',
     landing_path: location.pathname || '/',
+    install_id: installId,
+    internal: internalFlag,
   };
 
   // 1. Yandex.Metrica userParams — rich segmentation in their dashboard.
@@ -206,6 +220,8 @@
       referrer: ref,
       utm_source: src,
       landing_path: location.pathname || '/',
+      install_id: installId,
+      internal: internalFlag,
     };
     if (extFlag !== null) clickPayload.has_ext = extFlag;
     try {

@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ultrawider — Internal Analytics Exclusion</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#050505" />
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap"
+    />
+    <script src="/assets/config.js"></script>
+    <style>
+      /* Owner-only self-exclusion utility. Deliberately bare: monospace,
+         no nav, no marketing. Worst case a random visitor excludes
+         themselves from our analytics — no harm done. */
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #050505;
+        color: #f5f5f5;
+        font-family: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+        font-size: 14px;
+        line-height: 1.7;
+        padding: 24px;
+      }
+      .box {
+        width: 100%;
+        max-width: 560px;
+        border: 1px solid #1f1f1f;
+        border-radius: 10px;
+        padding: 28px 30px;
+        background: #0e0e0e;
+      }
+      h1 {
+        margin: 0 0 18px;
+        font-size: 15px;
+        font-weight: 600;
+        letter-spacing: 0.04em;
+        color: #f59e0b;
+      }
+      ul { list-style: none; margin: 18px 0; padding: 0; }
+      li { margin: 6px 0; color: #a3a3a3; }
+      li .ok { color: #22c55e; }
+      li .na { color: #6b6b6b; }
+      button {
+        margin-top: 14px;
+        padding: 9px 18px;
+        font: inherit;
+        color: #a3a3a3;
+        background: transparent;
+        border: 1px solid #2a2a2a;
+        border-radius: 7px;
+        cursor: pointer;
+      }
+      button:hover { color: #f5f5f5; border-color: #f59e0b; }
+      .undone { color: #f59e0b; }
+      .home { display: inline-block; margin-top: 22px; color: #6b6b6b; font-size: 12px; text-decoration: none; }
+      .home:hover { color: #f59e0b; }
+    </style>
+  </head>
+  <body>
+    <div class="box">
+      <h1 id="int-title">// ultrawider · internal</h1>
+      <p id="int-status">This browser is now excluded from Ultrawider analytics.</p>
+      <ul>
+        <li id="int-flag">[<span class="ok">✓</span>] internal flag set (localStorage._uw_internal)</li>
+        <li id="int-iid">[<span class="na">–</span>] no install id found in this browser</li>
+      </ul>
+      <button type="button" id="int-undo">Undo — include me again</button>
+      <a class="home" href="/">← ultrawider.net</a>
+    </div>
+
+    <script>
+      (function () {
+        'use strict';
+        var CFG = window.ULTRAWIDER || {};
+        var API = CFG.API_BASE || 'https://api.ultrawider.net';
+
+        function post(path, payload) {
+          var body;
+          try { body = JSON.stringify(payload); } catch (_) { return; }
+          try {
+            if (navigator.sendBeacon) {
+              var blob = new Blob([body], { type: 'application/json' });
+              if (navigator.sendBeacon(API + path, blob)) return;
+            }
+          } catch (_) {}
+          try {
+            fetch(API + path, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: body,
+              keepalive: true,
+              mode: 'cors',
+              credentials: 'omit',
+            }).catch(function () {});
+          } catch (_) {}
+        }
+
+        var iid = null;
+        var flagSet = false;
+        try {
+          localStorage.setItem('_uw_internal', '1');
+          flagSet = localStorage.getItem('_uw_internal') === '1';
+          iid = localStorage.getItem('_uw_iid') || null;
+        } catch (_) { /* localStorage blocked */ }
+
+        var flagLi = document.getElementById('int-flag');
+        var iidLi = document.getElementById('int-iid');
+        var status = document.getElementById('int-status');
+
+        if (!flagSet && flagLi) {
+          flagLi.innerHTML = '[<span class="na">×</span>] could not set flag — localStorage is blocked';
+          if (status) status.textContent = 'Exclusion failed: this browser blocks localStorage.';
+        }
+
+        if (flagSet && iid) {
+          // Mark the install id itself as internal server-side.
+          post('/api/welcome/hello', {
+            install_id: iid,
+            internal: true,
+            flow: 'internal_mark',
+          });
+          post('/api/welcome/event', {
+            install_id: iid,
+            event: 'internal_marked',
+          });
+          if (iidLi) {
+            iidLi.innerHTML = '[<span class="ok">✓</span>] install id marked internal (' +
+              String(iid).replace(/[<>&]/g, '') + ')';
+          }
+        }
+
+        document.getElementById('int-undo').addEventListener('click', function () {
+          try { localStorage.removeItem('_uw_internal'); } catch (_) {}
+          if (status) {
+            status.textContent = 'Flag removed — this browser counts in analytics again.';
+            status.className = 'undone';
+          }
+          if (flagLi) flagLi.innerHTML = '[<span class="na">–</span>] internal flag removed';
+        });
+      })();
+    </script>
+  </body>
+</html>
