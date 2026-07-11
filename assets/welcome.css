@@ -859,3 +859,157 @@
   .wl-handoff-btn,
   .wl-survey-btn { transition: none; }
 }
+
+/* ═══ v3 · status bar, two-card 16:9 flow, pill controls ═══════════════
+   Owner feedback pass: nothing floats — the status bar mounts flush on
+   top of the active flow; every interactive element reads as a button. */
+
+.wl-page-title {
+  font-size: clamp(1.2rem, 1.4vw + 0.8rem, 1.7rem);
+  margin: 0 0 18px;
+  text-align: center;
+}
+
+.wl-statusbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 12px 18px;
+  margin-bottom: 14px;
+  background: linear-gradient(180deg, #17130d, #100e0a);
+  border: 1px solid var(--border-soft, rgba(245, 158, 11, 0.14));
+  border-radius: 14px;
+}
+.wl-status-installed {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: var(--text);
+}
+.wl-status-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(34, 197, 94, 0.14);
+  border: 1px solid rgba(34, 197, 94, 0.5);
+  color: #22c55e;
+  flex: none;
+}
+.wl-status-check svg { width: 12px; height: 12px; }
+.wl-status-right {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.wl-status-detect {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}
+.wl-status-toggle {
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  background: transparent;
+  border: 1px solid var(--border-soft, rgba(245, 158, 11, 0.18));
+  border-radius: 999px;
+  padding: 7px 14px;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, transform 0.15s;
+}
+.wl-status-toggle:hover {
+  color: var(--text);
+  border-color: rgba(245, 158, 11, 0.5);
+  transform: translateY(-1px);
+}
+
+/* 16:9 flow — verdict + two equal cards, one viewport */
+.wl-verdict-title {
+  font-size: clamp(1.5rem, 2vw + 0.8rem, 2.2rem);
+  margin: 6px 0 10px;
+}
+.wl-verdict p { color: var(--text-dim); max-width: 720px; margin: 0 0 22px; }
+
+.wl-cards2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+  align-items: stretch;
+}
+@media (max-width: 860px) { .wl-cards2 { grid-template-columns: 1fr; } }
+
+.wl-card { text-align: left; }
+.wl-card-title { margin: 0 0 10px; font-size: 1.15rem; }
+.wl-card-sub { color: var(--text-dim); font-size: 0.95rem; margin: 0 0 14px; }
+
+.wl-pill-stack { display: flex; flex-direction: column; gap: 10px; }
+.wl-pill-btn {
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-align: left;
+  color: var(--text);
+  background: #17130d;
+  border: 1px solid var(--border-soft, rgba(245, 158, 11, 0.16));
+  border-radius: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s, background 0.15s;
+}
+.wl-pill-btn:hover {
+  border-color: rgba(245, 158, 11, 0.55);
+  background: #1b1610;
+  transform: translateY(-1px);
+}
+
+.wl-thanks-line { color: #22c55e; font-weight: 600; margin: 0 0 8px; }
+.wl-mini-details { margin-top: 12px; }
+.wl-mini-details summary {
+  cursor: pointer;
+  color: var(--text-dim);
+  font-size: 0.9rem;
+}
+.wl-mini-details ol { color: var(--text-dim); font-size: 0.9rem; padding-left: 20px; }
+
+.wl-card-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.wl-cta-sm { padding: 11px 20px !important; font-size: 0.95rem !important; }
+.wl-cta-sm svg { width: 16px; height: 16px; }
+#copy-link-btn.is-copied { filter: saturate(0.6); }
+.wl-demo-line { margin: 14px 0 0; font-size: 0.9rem; color: var(--text-dim); }
+
+.wl-ghost-link {
+  font: inherit;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  background: none;
+  border: none;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.wl-ghost-link:hover { color: var(--text); }
+
+/* goodbye page: centered card + pill answers */
+.gb-wrap { max-width: 720px; margin: 0 auto; }
+.gb-btn {
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--text);
+  background: #17130d;
+  border: 1px solid var(--border-soft, rgba(245, 158, 11, 0.16));
+  border-radius: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.gb-btn:hover { border-color: rgba(245, 158, 11, 0.55); transform: translateY(-1px); }

@@ -36,6 +36,9 @@
   var API = CFG.API_BASE || 'https://api.ultrawider.net';
   var CONTACT = CFG.CONTACT_EMAIL || 'hello@ultrawider.net';
   var WELCOME_URL = 'https://ultrawider.net/welcome';
+  // Share/copy target: the LANDING (it sells + demos without the extension);
+  // /welcome needs the extension installed to be useful.
+  var LANDING_URL = 'https://ultrawider.net/';
   var VALID_FLOWS = { uw_live: 1, std_16x9: 1, uw_grant_needed: 1, uw_no_ext: 1 };
 
   var reducedMotion = false;
@@ -381,44 +384,65 @@
     } catch (_) {}
   }
 
-  // ─── Shared shell ───────────────────────────────────────────────────
-  function updateChip() {
-    var chip = $('wl-chip');
-    var text = $('wl-chip-text');
-    if (!chip || !text) return;
-    var d = state.dims;
-    if (!d.w || !d.h) {
-      chip.hidden = true;
+  // ─── Shared shell: status bar + page title ──────────────────────────
+  /** Move the shared status bar into the active flow's slot so it sits
+   *  flush on top of that flow's content instead of floating in space. */
+  function mountStatusbar() {
+    var bar = $('wl-statusbar');
+    if (!bar) return;
+    if (state.flow === 'uw_no_ext') {
+      var park = $('statusbar-park');
+      if (park && bar.parentNode !== park) park.appendChild(bar);
       return;
     }
-    chip.hidden = false;
-    text.innerHTML =
-      'Detected: <strong>' + d.w + '×' + d.h + '</strong> — ' +
-      tierLabel(d.w, d.h);
+    var host = state.flow === 'std_16x9' ? $('flow-std') : $('flow-uw');
+    var slot = host ? host.querySelector('[data-statusbar-slot]') : null;
+    if (slot && bar.parentNode !== slot) slot.appendChild(bar);
+    var parked = $('statusbar-park');
+    if (parked) parked.hidden = true;
+  }
+
+  /** Detection text + override toggle, always consistent with the ACTIVE
+   *  branch (the old chip kept saying "21:9 ultrawide" above a "this screen
+   *  is 16:9" verdict after an override — a contradiction on screen). */
+  function updateStatus() {
+    var detect = $('wl-detect');
+    var btn = $('wl-override');
+    if (!detect || !btn) return;
+    var d = state.dims;
+    var detected = d.w && d.h ? d.w + '×' + d.h + ' · ' + tierLabel(d.w, d.h) : 'screen unknown';
+    var flowUw = state.flow !== 'std_16x9' && state.flow !== 'uw_no_ext';
+    var detectedUw = d.w && d.h ? isUltrawide(d.w, d.h) : flowUw;
+    var overridden = Boolean(d.w && d.h) && detectedUw !== flowUw;
+    if (!overridden) {
+      detect.textContent = detected;
+      btn.textContent = 'Not this monitor?';
+    } else {
+      detect.textContent = 'Set up for: ' + (flowUw ? 'an ultrawide' : 'a 16:9 screen') + ' (manual)';
+      btn.textContent = '← Use detected: ' + detected;
+    }
+    btn.hidden = state.flow === 'uw_no_ext';
   }
 
   function renderHeadline() {
-    var installed = $('wl-headline-installed');
+    var h = $('wl-headline');
     var noext = $('wl-headline-noext');
-    var sub = $('wl-installed-sub');
     if (state.flow === 'uw_no_ext') {
       if (noext) noext.hidden = false;
-      if (installed) installed.hidden = true;
+      if (h) h.hidden = true;
       return;
     }
-    if (installed) installed.hidden = false;
     if (noext) noext.hidden = true;
-    if (sub) {
-      if (state.flow === 'std_16x9') {
-        sub.textContent =
-          'Installed fine — but there’s something you should know about this screen.';
-      } else if (state.flow === 'uw_grant_needed') {
-        sub.textContent =
-          'One Firefox permission and one click — let’s do both right now.';
-      } else {
-        sub.textContent =
-          'One click and it’s working. Let’s do that click right now.';
-      }
+    if (!h) return;
+    if (state.flow === 'std_16x9') {
+      // The 16:9 flow opens with its own verdict headline.
+      h.hidden = true;
+    } else {
+      h.hidden = false;
+      h.textContent =
+        state.flow === 'uw_grant_needed'
+          ? 'One Firefox permission — then one click.'
+          : 'One more click — it’s on the video below.';
     }
   }
 
@@ -766,23 +790,15 @@
     if (booting) booting.hidden = true;
 
     renderHeadline();
-    updateChip();
+    mountStatusbar();
+    updateStatus();
 
     var flowUw = $('flow-uw');
     var flowStd = $('flow-std');
     var flowNoext = $('flow-noext');
-    var override = $('wl-override');
     if (flowUw) flowUw.hidden = true;
     if (flowStd) flowStd.hidden = true;
     if (flowNoext) flowNoext.hidden = true;
-
-    if (override) {
-      override.hidden = state.flow === 'uw_no_ext';
-      override.textContent =
-        state.flow === 'std_16x9'
-          ? 'Wrong monitor? My ultrawide is this one'
-          : 'Wrong monitor? I’m on my other screen';
-    }
 
     if (state.flow === 'uw_no_ext') {
       if (flowNoext) flowNoext.hidden = false;
@@ -793,7 +809,6 @@
 
     if (state.flow === 'std_16x9') {
       if (flowStd) flowStd.hidden = false;
-      moveSimTo('std-sim-slot', 'SIMULATION — what ultrawide owners see');
       wireStdSections();
       return;
     }
@@ -873,62 +888,53 @@
     if (wiredStdSections) return;
     wiredStdSections = true;
 
-    // S2 · micro-survey
+    // Card 1 — micro-survey → honest exit (thanks + uninstall details)
     var survey = $('std-survey');
-    if (survey) {
+    var done = $('std-survey-done');
+    if (survey && done) {
       var answered = false;
-      function answer(val) {
-        if (answered) return;
-        answered = true;
-        sendEvent('install_reason', { answer: val });
-        var thanks = $('std-survey-thanks');
-        if (thanks) thanks.hidden = false;
-        var btns = survey.querySelectorAll('button');
-        for (var i = 0; i < btns.length; i++) btns[i].disabled = true;
-        if (val === 'elsewhere') {
-          // They own an ultrawide → surface "take it with you" above the sim.
-          var take = $('std-take');
-          var sim = $('std-sim');
-          if (take && sim && sim.parentNode) {
-            sim.parentNode.insertBefore(take, sim);
-            try {
-              take.scrollIntoView({
-                behavior: reducedMotion ? 'auto' : 'smooth',
-                block: 'center',
-              });
-            } catch (_) {}
-          }
-        }
-      }
       var reasonBtns = survey.querySelectorAll('[data-reason]');
       for (var i = 0; i < reasonBtns.length; i++) {
         (function (btn) {
           btn.addEventListener('click', function () {
-            answer(btn.getAttribute('data-reason'));
+            if (answered) return;
+            answered = true;
+            sendEvent('install_reason', { answer: btn.getAttribute('data-reason') });
+            survey.hidden = true;
+            done.hidden = false;
+            sendEvent('uninstall_info_view');
           });
         })(reasonBtns[i]);
       }
-      var dismiss = survey.querySelector('[data-reason-dismiss]');
-      if (dismiss) {
-        dismiss.addEventListener('click', function () { answer('dismissed'); });
-      }
+    }
+    var steps = $('uninstall-steps');
+    if (steps) {
+      var list = uninstallStepsFor(state.browser);
+      var html = '';
+      for (var s = 0; s < list.length; s++) html += '<li>' + list[s] + '</li>';
+      steps.innerHTML = html;
+    }
+    var fb = $('feedback-mail');
+    if (fb) {
+      fb.href = 'mailto:' + CONTACT + '?subject=Your%2016%3A9%20copy%20misled%20me';
+      fb.addEventListener('click', function () { sendEvent('feedback_click'); });
     }
 
-    // S4 · copy link + email form
+    // Card 2 — take it to the ultrawide: copy the LANDING link / mailto self
     var copyBtn = $('copy-link-btn');
     if (copyBtn) {
       copyBtn.addEventListener('click', function () {
         var ok = false;
         try {
           if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(WELCOME_URL).catch(function () {});
+            navigator.clipboard.writeText(LANDING_URL).catch(function () {});
             ok = true;
           }
         } catch (_) {}
         if (!ok) {
           try {
             var ta = document.createElement('textarea');
-            ta.value = WELCOME_URL;
+            ta.value = LANDING_URL;
             ta.style.position = 'fixed';
             ta.style.opacity = '0';
             document.body.appendChild(ta);
@@ -937,41 +943,23 @@
             document.body.removeChild(ta);
           } catch (_) {}
         }
+        var label = $('copy-link-label');
+        if (label) label.textContent = 'Copied ✓';
         copyBtn.classList.add('is-copied');
-        copyBtn.lastChild.textContent = ' Copied ✓';
         sendEvent('link_copied');
       });
     }
-    var emailForm = $('email-link-form');
-    if (emailForm) {
-      emailForm.addEventListener('submit', function (e) {
-        e.preventDefault();
-        var input = $('email-link-input');
-        var email = input ? String(input.value || '').trim() : '';
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          if (input) input.focus();
-          return;
-        }
-        sendEvent('email_link_requested', { email: email });
-        var msg = $('email-sent-msg');
-        if (msg) msg.hidden = false; // optimistic — backend sends it later
-        emailForm.reset();
+    var mailto = $('email-mailto-link');
+    if (mailto) {
+      mailto.addEventListener('click', function () {
+        sendEvent('email_link_requested', { via: 'mailto' });
       });
     }
-
-    // S5 · uninstall steps + view/feedback events
-    var steps = $('uninstall-steps');
-    if (steps) {
-      var list = uninstallStepsFor(state.browser);
-      var html = '';
-      for (var s = 0; s < list.length; s++) html += '<li>' + list[s] + '</li>';
-      steps.innerHTML = html;
-    }
-    onceVisible($('std-goodbye'), function () { sendEvent('uninstall_info_view'); });
-    var fb = $('feedback-mail');
-    if (fb) {
-      fb.href = 'mailto:' + CONTACT + '?subject=Your%2016%3A9%20copy%20misled%20me';
-      fb.addEventListener('click', function () { sendEvent('feedback_click'); });
+    var demo = $('std-demo-link');
+    if (demo) {
+      demo.addEventListener('click', function () {
+        sendEvent('sim_demo_engaged', { via: 'demo_link' });
+      });
     }
   }
 
@@ -998,27 +986,39 @@
     return { flow: 'uw_live', fallback: 'no_handshake' };
   }
 
-  function switchBranch(method) {
+  /** Apply a branch. `push` records it in browser history so the Back
+   *  button undoes the toggle (it used to dead-end the visitor). */
+  function applyBranch(toKind, method, push) {
     var from = state.flow;
-    var to;
-    if (state.flow === 'std_16x9') {
+    if (toKind === 'std_16x9') {
+      if (state.flow === 'std_16x9') return;
+      state.flow = 'std_16x9';
+      state.fallbackReason = null;
+    } else {
+      if (state.flow !== 'std_16x9') return;
       var t = uwTargetFlow();
       state.flow = t.flow;
       state.fallbackReason = t.fallback;
-      to = t.flow;
-    } else {
-      state.flow = 'std_16x9';
-      state.fallbackReason = null;
-      to = 'std_16x9';
     }
-    sendEvent('profile_override', { from: from, to: to, method: method });
+    sendEvent('profile_override', { from: from, to: state.flow, method: method });
+    if (push) {
+      try { history.pushState({ uwFlow: state.flow }, '', location.pathname + location.hash); } catch (_) {}
+    }
     renderFlow();
+  }
+
+  function switchBranch(method) {
+    applyBranch(state.flow === 'std_16x9' ? 'uw' : 'std_16x9', method, true);
   }
 
   function wireOverride() {
     var link = $('wl-override');
-    if (!link) return;
-    link.addEventListener('click', function () { switchBranch('link'); });
+    if (link) link.addEventListener('click', function () { switchBranch('link'); });
+    window.addEventListener('popstate', function (e) {
+      var to = e.state && e.state.uwFlow;
+      if (!to || to === state.flow) return;
+      applyBranch(to === 'std_16x9' ? 'std_16x9' : 'uw', 'history', false);
+    });
   }
 
   var toastEl = null;
@@ -1060,7 +1060,7 @@
       var d = detectDims();
       if (d.w === state.dims.w && d.h === state.dims.h) return;
       state.dims = d;
-      updateChip();
+      updateStatus();
       if (!state.flow || state.flow === 'uw_no_ext') return;
       var nowUw = isUltrawide(d.w, d.h);
       var flowIsUw = state.flow !== 'std_16x9';
@@ -1079,7 +1079,7 @@
   // ─── Boot ───────────────────────────────────────────────────────────
   function boot() {
     state.dims = detectDims();
-    updateChip();
+    updateStatus();
     wireOverride();
     wireRedetect();
     wireSimEngagement();
@@ -1123,6 +1123,10 @@
       var assigned = { flow: state.flow };
       if (state.fallbackReason) assigned.fallback_reason = state.fallbackReason;
       sendEvent('flow_assigned', assigned);
+
+      // Seed history with the assigned branch so Back after a manual
+      // override returns HERE instead of leaving the page.
+      try { history.replaceState({ uwFlow: state.flow }, '', location.pathname + location.hash); } catch (_) {}
 
       renderFlow();
     }

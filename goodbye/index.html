@@ -37,7 +37,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="stylesheet" href="/style.css?v=13" />
-    <link rel="stylesheet" href="/assets/welcome.css?v=1" />
+    <link rel="stylesheet" href="/assets/welcome.css?v=3" />
     <script src="/assets/config.js"></script>
     <script src="/assets/error-instrumentation.js"></script>
     <script src="/assets/metrika.js" defer></script>
@@ -55,7 +55,7 @@
     </header>
 
     <main class="account-page">
-      <div class="account-container">
+      <div class="account-container account-container-wide">
         <header class="account-head">
           <span class="account-eyebrow">Goodbye</span>
           <h1>Ultrawider has been removed.</h1>
@@ -77,7 +77,8 @@
         <div class="gb-thanks" id="gb-thanks" hidden>Thanks — that genuinely helps.</div>
 
         <p class="gb-links">
-          Changed your mind? <a href="/welcome">The one-minute setup guide is here</a>.<br />
+          Changed your mind?
+          <a id="gb-store-link" href="https://chromewebstore.google.com/detail/ultrawider-%E2%80%94-fill-ultrawi/fpbkljincbjlmfefgcefcbjjppehkamo" target="_blank" rel="noopener">Reinstall from the store →</a><br />
           Something we could have fixed?
           <a id="gb-mail" href="mailto:hello@ultrawider.net?subject=Why%20I%20uninstalled">hello@ultrawider.net</a>
           — a human answers.
@@ -103,6 +104,20 @@
         if (mail) {
           mail.href = 'mailto:' + CONTACT + '?subject=Why%20I%20uninstalled';
           mail.textContent = CONTACT;
+        }
+
+        // "Changed your mind?" must point at the STORE — the visitor just
+        // uninstalled, so /welcome (which needs the extension) is a dead end.
+        var STORES = {
+          chrome: 'https://chromewebstore.google.com/detail/ultrawider-%E2%80%94-fill-ultrawi/fpbkljincbjlmfefgcefcbjjppehkamo',
+          edge: 'https://microsoftedge.microsoft.com/addons/detail/ultrawider-%E2%80%94-fill-ultrawi/mpjkkafkfjgealcigbiigiaeljokclkg',
+          firefox: 'https://addons.mozilla.org/firefox/addon/ultrawider-21-9-video-fill/',
+        };
+        var storeLink = document.getElementById('gb-store-link');
+        if (storeLink) {
+          var ua = navigator.userAgent || '';
+          var store = /Firefox|FxiOS/.test(ua) ? 'firefox' : /Edg/.test(ua) ? 'edge' : 'chrome';
+          storeLink.href = STORES[store];
         }
 
         var installId = P.iid || null;

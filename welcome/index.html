@@ -45,13 +45,13 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="stylesheet" href="/style.css?v=13" />
-    <link rel="stylesheet" href="/assets/welcome.css?v=1" />
+    <link rel="stylesheet" href="/assets/welcome.css?v=3" />
     <script src="/assets/config.js"></script>
     <script src="/assets/error-instrumentation.js"></script>
     <script src="/assets/metrika.js" defer></script>
     <script src="/assets/aspect-profile.js" defer></script>
     <script src="/assets/warp-demo.js" defer></script>
-    <script src="/assets/welcome.js?v=1" defer></script>
+    <script src="/assets/welcome.js?v=3" defer></script>
   </head>
   <body>
     <noscript><div><img src="https://mc.yandex.ru/watch/109480276" style="position:absolute;left:-9999px" alt="" /></div></noscript>
@@ -68,16 +68,10 @@
     </header>
 
     <main class="wl-main">
-      <!-- ── Shared shell: headline + detection chip ─────────────────── -->
+      <!-- ── Shared shell: one compact page title. The page's real hero is
+           the STAGE below — everything else is anchored to it. ─────────── -->
       <section class="wl-hero container">
-        <!-- Compact confirmation: the page's hero is the STAGE below, not
-             this header. One line, then straight to the one action. -->
-        <div id="wl-headline-installed" class="wl-installed-row" hidden>
-          <span class="wl-check wl-check--sm" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-          </span>
-          <h1 class="wl-installed-title">Ultrawider is installed. <span class="wl-installed-sub">One click left — it's on the video below.</span></h1>
-        </div>
+        <h1 id="wl-headline" class="wl-page-title" hidden>One more click — it&rsquo;s on the video below.</h1>
 
         <div id="wl-headline-noext" hidden>
           <h1>You bought an ultrawide.<br /><span class="text-accent">Your videos didn't.</span></h1>
@@ -88,120 +82,131 @@
           </p>
         </div>
 
-        <div class="wl-chip-row">
-          <span class="wl-chip" id="wl-chip" hidden>
-            <span class="wl-chip-dot" aria-hidden="true"></span>
-            <span id="wl-chip-text">Detecting your screen…</span>
-          </span>
-          <button type="button" class="wl-chip-link" id="wl-override" hidden>
-            Wrong monitor? I'm on my other screen
-          </button>
-        </div>
-
         <p class="wl-booting" id="wl-booting">
           <span class="wl-grant-wait-dot" aria-hidden="true"></span>Looking for the extension…
         </p>
       </section>
 
+      <!-- Shared status bar — parked here; welcome.js mounts it flush on top
+           of the active flow's stage so it never floats in space. -->
+      <div id="statusbar-park" hidden>
+        <div class="wl-statusbar" id="wl-statusbar">
+          <span class="wl-status-installed">
+            <span class="wl-status-check" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+            Ultrawider is installed
+          </span>
+          <span class="wl-status-right">
+            <span class="wl-status-detect" id="wl-detect">Detecting your screen…</span>
+            <button type="button" class="wl-status-toggle" id="wl-override">Not this monitor?</button>
+          </span>
+        </div>
+      </div>
+
       <!-- ── ULTRAWIDE flow (uw_live + uw_grant_needed share this) ───── -->
       <section id="flow-uw" class="wl-flow container" hidden>
-        <!-- Stage slot: live tutorial OR Firefox grant card OR fallback.
-             The stage IS the hero — no instruction cards above it; the
-             in-fullscreen captions do the guiding, one hint line below. -->
-        <div id="stage-slot">
-          <!-- Live stage — the extension's REAL HUD will mount into
-               #live-stage-screen when it goes fullscreen. Always
-               fullscreen the WRAPPER, never the bare video. -->
-          <div id="live-stage" hidden>
-            <div class="playground-monitor">
-              <div id="live-stage-screen" class="wl-stage-screen">
-                <video id="live-stage-video" muted loop playsinline preload="metadata" poster="/demo/cinematic-hero-poster.jpg">
-                  <source src="/demo/cinematic-hero.mp4" type="video/mp4" />
-                </video>
-                <button type="button" id="stage-fs-cta" class="wl-stage-cta" data-wl-own>
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
-                  Fill this video — go fullscreen
-                </button>
-                <div id="wl-caption" class="wl-caption" data-wl-own hidden>
-                  <span id="wl-caption-text"></span>
-                  <svg class="wl-caption-arrow" id="wl-caption-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="8 7 17 7 17 16"/></svg>
+        <div class="wl-unit">
+          <div class="wl-statusbar-slot" data-statusbar-slot></div>
+
+          <!-- Stage slot: live tutorial OR Firefox grant card OR fallback.
+               The stage IS the hero — no instruction cards above it; the
+               in-fullscreen captions do the guiding, one hint line below. -->
+          <div id="stage-slot">
+            <!-- Live stage — the extension's REAL HUD will mount into
+                 #live-stage-screen when it goes fullscreen. Always
+                 fullscreen the WRAPPER, never the bare video. -->
+            <div id="live-stage" hidden>
+              <div class="playground-monitor">
+                <div id="live-stage-screen" class="wl-stage-screen">
+                  <video id="live-stage-video" muted loop playsinline preload="metadata" poster="/demo/cinematic-hero-poster.jpg">
+                    <source src="/demo/cinematic-hero.mp4" type="video/mp4" />
+                  </video>
+                  <button type="button" id="stage-fs-cta" class="aaa-cta-primary wl-stage-cta" data-wl-own>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3H5a2 2 0 0 0-2 2v3"/><path d="M21 8V5a2 2 0 0 0-2-2h-3"/><path d="M3 16v3a2 2 0 0 0 2 2h3"/><path d="M16 21h3a2 2 0 0 0 2-2v-3"/></svg>
+                    Fill this video — go fullscreen
+                  </button>
+                  <div id="wl-caption" class="wl-caption" data-wl-own hidden>
+                    <span id="wl-caption-text"></span>
+                    <svg class="wl-caption-arrow" id="wl-caption-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="8 7 17 7 17 16"/></svg>
+                  </div>
                 </div>
               </div>
+              <p class="wl-stage-hint" id="wl-stage-hint">
+                In fullscreen a small popup appears — click
+                <strong class="text-accent">Smoothie</strong>. That's the whole product.
+              </p>
+              <p class="wl-stage-skip-row">
+                <button type="button" id="uw-skip" class="wl-ghost-link">Skip — I'll set it up on YouTube directly →</button>
+              </p>
+              <p class="wl-stage-done" id="wl-stage-done" hidden>
+                Done here — your screen filled. Next stop: YouTube ↓
+              </p>
             </div>
-            <p class="wl-stage-hint" id="wl-stage-hint">
-              In fullscreen a small popup appears — click
-              <strong class="text-accent">Smoothie</strong>. That's the whole product.
-            </p>
-            <p class="wl-stage-skip-row">
-              <button type="button" id="uw-skip" class="wl-chip-link">Skip — I'll set it up on YouTube directly →</button>
-            </p>
-            <p class="wl-stage-done" id="wl-stage-done" hidden>
-              Done here — your screen filled. Next stop: YouTube ↓
-            </p>
-          </div>
 
-          <!-- Firefox grant card (uw_grant_needed) -->
-          <div id="grant-card" class="wl-grant" hidden>
-            <div class="wl-grant-head">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.855.497.925.968a.979.979 0 0 1-.276.837l-1.61 1.61a2.404 2.404 0 0 1-1.705.707 2.402 2.402 0 0 1-1.704-.706l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 0 0-.289-.877l-1.568-1.568A2.402 2.402 0 0 1 1.998 12c0-.617.236-1.234.706-1.704L4.23 8.77c.24-.24.581-.353.917-.303.515.077.877.528 1.073 1.01a2.5 2.5 0 1 0 3.259-3.259c-.482-.196-.933-.558-1.01-1.073-.05-.336.062-.676.303-.917l1.525-1.525A2.402 2.402 0 0 1 12 1.998c.617 0 1.234.236 1.704.706l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.02Z"/>
-              </svg>
-              <h3>One Firefox switch to flip first</h3>
+            <!-- Firefox grant card (uw_grant_needed) -->
+            <div id="grant-card" class="wl-grant" hidden>
+              <div class="wl-grant-head">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.855.497.925.968a.979.979 0 0 1-.276.837l-1.61 1.61a2.404 2.404 0 0 1-1.705.707 2.402 2.402 0 0 1-1.704-.706l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 0 0-.289-.877l-1.568-1.568A2.402 2.402 0 0 1 1.998 12c0-.617.236-1.234.706-1.704L4.23 8.77c.24-.24.581-.353.917-.303.515.077.877.528 1.073 1.01a2.5 2.5 0 1 0 3.259-3.259c-.482-.196-.933-.558-1.01-1.073-.05-.336.062-.676.303-.917l1.525-1.525A2.402 2.402 0 0 1 12 1.998c.617 0 1.234.236 1.704.706l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.02Z"/>
+                </svg>
+                <h3>One Firefox switch to flip first</h3>
+              </div>
+              <ol>
+                <li>Click the <strong>puzzle-piece icon</strong> in the Firefox toolbar.</li>
+                <li>Click <strong>Ultrawider</strong>.</li>
+                <li>Choose <strong>“Always allow on every site”</strong>.</li>
+                <li><strong>Reload this page</strong> — the live tutorial appears here automatically.</li>
+              </ol>
+              <span class="wl-grant-wait">
+                <span class="wl-grant-wait-dot" aria-hidden="true"></span>
+                waiting for permission — this card swaps out by itself
+              </span>
+              <div id="grant-sim-slot"></div>
             </div>
-            <ol>
-              <li>Click the <strong>puzzle-piece icon</strong> in the Firefox toolbar.</li>
-              <li>Click <strong>Ultrawider</strong>.</li>
-              <li>Choose <strong>“Always allow on every site”</strong>.</li>
-              <li><strong>Reload this page</strong> — the live tutorial appears here automatically.</li>
-            </ol>
-            <span class="wl-grant-wait">
-              <span class="wl-grant-wait-dot" aria-hidden="true"></span>
-              waiting for permission — this card swaps out by itself
-            </span>
-            <div id="grant-sim-slot"></div>
-          </div>
 
-          <!-- Fallback card: static, honest, zero fake interactivity.
-               Used when the live tutorial can't run (kill-switch off,
-               no handshake, fullscreen denied, HUD timeout). -->
-          <div id="fallback-card" class="wl-fallback" hidden>
-            <h3 class="wl-fallback-title">Here's exactly what you'll see</h3>
-            <p class="wl-fallback-sub">Annotated mock-up — the real popup appears when you fullscreen a video.</p>
-            <div class="wl-frames">
-              <figure style="margin:0">
-                <div class="wl-frame-screen">
-                  <div class="wl-mini-video"></div>
-                  <span class="wl-frame-label">your screen</span>
-                </div>
-                <figcaption class="wl-frame-cap"><strong>1.</strong> Fullscreen any video — note the side bars.</figcaption>
-              </figure>
-              <figure style="margin:0">
-                <div class="wl-frame-screen">
-                  <div class="wl-mini-video"></div>
-                  <div class="wl-hud-mock" aria-label="Mock-up of the Ultrawider popup — what you'll see">
-                    <div class="wl-hud-mock-title">Ultrawider</div>
-                    <div class="wl-hud-mode wl-hud-mode--accent">Smoothie</div>
-                    <div class="wl-hud-mode">Crop</div>
-                    <div class="wl-hud-mode">Off</div>
+            <!-- Fallback card: static, honest, zero fake interactivity.
+                 Used when the live tutorial can't run (kill-switch off,
+                 no handshake, fullscreen denied, HUD timeout). -->
+            <div id="fallback-card" class="wl-fallback" hidden>
+              <h3 class="wl-fallback-title">Here's exactly what you'll see</h3>
+              <p class="wl-fallback-sub">Annotated mock-up — the real popup appears when you fullscreen a video.</p>
+              <div class="wl-frames">
+                <figure style="margin:0">
+                  <div class="wl-frame-screen">
+                    <div class="wl-mini-video"></div>
+                    <span class="wl-frame-label">your screen</span>
                   </div>
-                  <span class="wl-frame-label">what you'll see</span>
-                </div>
-                <figcaption class="wl-frame-cap"><strong>2.</strong> This popup appears — hover it to keep it open.</figcaption>
-              </figure>
-              <figure style="margin:0">
-                <div class="wl-frame-screen">
-                  <div class="wl-mini-video wl-mini-video--filled"></div>
-                  <span class="wl-frame-check" aria-hidden="true">✓ filled</span>
-                  <span class="wl-frame-label">after Smoothie</span>
-                </div>
-                <figcaption class="wl-frame-cap"><strong>3.</strong> Click <strong class="text-accent">Smoothie</strong> — bars gone, faces still round.</figcaption>
-              </figure>
+                  <figcaption class="wl-frame-cap"><strong>1.</strong> Fullscreen any video — note the side bars.</figcaption>
+                </figure>
+                <figure style="margin:0">
+                  <div class="wl-frame-screen">
+                    <div class="wl-mini-video"></div>
+                    <div class="wl-hud-mock" aria-label="Mock-up of the Ultrawider popup — what you'll see">
+                      <div class="wl-hud-mock-title">Ultrawider</div>
+                      <div class="wl-hud-mode wl-hud-mode--accent">Smoothie</div>
+                      <div class="wl-hud-mode">Crop</div>
+                      <div class="wl-hud-mode">Off</div>
+                    </div>
+                    <span class="wl-frame-label">what you'll see</span>
+                  </div>
+                  <figcaption class="wl-frame-cap"><strong>2.</strong> This popup appears — hover it to keep it open.</figcaption>
+                </figure>
+                <figure style="margin:0">
+                  <div class="wl-frame-screen">
+                    <div class="wl-mini-video wl-mini-video--filled"></div>
+                    <span class="wl-frame-check" aria-hidden="true">✓ filled</span>
+                    <span class="wl-frame-label">after Smoothie</span>
+                  </div>
+                  <figcaption class="wl-frame-cap"><strong>3.</strong> Click <strong class="text-accent">Smoothie</strong> — bars gone, faces still round.</figcaption>
+                </figure>
+              </div>
+              <ol class="wl-fallback-steps">
+                <li>Open any video — YouTube is free forever.</li>
+                <li>Press <strong>fullscreen</strong>.</li>
+                <li>A small dark popup appears near the top — hover it, click <strong class="text-accent">Smoothie</strong>.</li>
+              </ol>
             </div>
-            <ol class="wl-fallback-steps">
-              <li>Open any video — YouTube is free forever.</li>
-              <li>Press <strong>fullscreen</strong>.</li>
-              <li>A small dark popup appears near the top — hover it, click <strong class="text-accent">Smoothie</strong>.</li>
-            </ol>
           </div>
         </div>
 
@@ -213,7 +218,7 @@
         <section id="uw-handoff" class="wl-handoff">
           <a
             id="yt-handoff-btn"
-            class="wl-handoff-btn"
+            class="aaa-cta-primary wl-handoff-btn"
             href="https://www.youtube.com/watch?v=LXb3EKWsInQ"
             target="_blank"
             rel="noopener"
@@ -227,8 +232,8 @@
           </p>
         </section>
 
-        <!-- A4 · Pro strip — quiet, after the free win -->
-        <section id="uw-pro" class="wl-pro">
+        <!-- A4 · Pro strip — one clean card, after the free win -->
+        <section id="uw-pro" class="lp-card wl-card wl-pro">
           <div class="wl-pro-cols">
             <div class="wl-pro-col">
               <h4>YouTube</h4>
@@ -250,7 +255,7 @@
           <a id="pricing-link" class="wl-pro-link" href="/pricing?src=welcome">See pricing →</a>
         </section>
 
-        <!-- A5 · Trust footer -->
+        <!-- A5 · Trust footer — compact line + details -->
         <section id="uw-trust" class="wl-trust">
           <details id="rescue-details">
             <summary>Popup didn't appear?</summary>
@@ -271,64 +276,72 @@
         </div><!-- /#uw-after -->
       </section>
 
-      <!-- ── 16:9 flow (std_16x9) ────────────────────────────────────── -->
+      <!-- ── 16:9 flow (std_16x9) — ONE screen, TWO cards ─────────────── -->
       <section id="flow-std" class="wl-flow container" hidden>
-        <!-- S1 · Honest verdict -->
-        <div id="std-verdict" class="wl-verdict">
-          <h3>Heads up: this screen is 16:9.</h3>
-          <p>
-            Ultrawider fills the side-bars that only exist on
-            <strong>ultrawide monitors</strong> — this screen has none, so
-            there's nothing for us to fill. That's geometry, not a bug.
-          </p>
-        </div>
-
-        <!-- S2 · Micro-survey -->
-        <div id="std-survey" class="wl-survey">
-          <h3 class="wl-section-title">Quick one — why did you install?</h3>
-          <button type="button" class="wl-survey-btn" data-reason="elsewhere">I have an ultrawide elsewhere</button>
-          <button type="button" class="wl-survey-btn" data-reason="thought_16x9">I thought it removes black bars on this monitor</button>
-          <button type="button" class="wl-survey-btn" data-reason="curious">Just curious</button>
-          <button type="button" class="wl-survey-dismiss" data-reason-dismiss>skip</button>
-          <p class="wl-survey-thanks" id="std-survey-thanks" hidden>Thanks — that genuinely helps.</p>
-        </div>
-
-        <!-- S3 · Simulated playground (shared node moves in here) -->
-        <div id="std-sim">
-          <h3 class="wl-section-title">What ultrawide owners see</h3>
-          <p class="wl-section-sub">
-            Live simulation of the Smoothie warp, drawn in a 21:9 frame —
-            drag the divider, move the curve slider.
-          </p>
-          <div id="std-sim-slot"></div>
-        </div>
-
-        <!-- S4 · Take it with you -->
-        <div id="std-take" class="wl-take">
-          <h3 class="wl-section-title">Take it with you</h3>
-          <p class="wl-section-sub">For the day you sit down at an ultrawide.</p>
-          <div class="wl-take-row">
-            <button type="button" id="copy-link-btn" class="wl-copy-btn">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-              Copy link
-            </button>
-            <form id="email-link-form" class="wl-email-form" novalidate>
-              <input type="email" id="email-link-input" placeholder="you@example.com" autocomplete="email" aria-label="Email me the link for my ultrawide" />
-              <button type="submit">Email me the link</button>
-            </form>
+        <!-- S1 · Status bar + honest verdict, one attached unit -->
+        <div class="wl-unit">
+          <div class="wl-statusbar-slot" data-statusbar-slot></div>
+          <div id="std-verdict" class="wl-verdict">
+            <h1 class="wl-verdict-title">This screen is 16:9 — <span class="text-accent">nothing to fill here.</span></h1>
+            <p>
+              Ultrawider fills side-bars that only exist on
+              <strong>ultrawide monitors</strong>. This screen has none —
+              that's geometry, not a bug.
+            </p>
           </div>
-          <p class="wl-email-sent" id="email-sent-msg" hidden>Sent — check your inbox soon.</p>
         </div>
 
-        <!-- S5 · Graceful goodbye -->
-        <div id="std-goodbye" class="wl-uninst">
-          <h3>On this monitor Ultrawider would just sit idle — uninstalling is completely fine:</h3>
-          <ol id="uninstall-steps"></ol>
-          <p class="wl-feedback">
-            If our store listing made you think this works on 16:9 — that's a
-            bug in our copy,
-            <a id="feedback-mail" href="mailto:hello@ultrawider.net?subject=Your%2016%3A9%20copy%20misled%20me">tell us</a>.
-          </p>
+        <!-- S2 · Two equal cards: honest exit vs. take-it-to-the-ultrawide -->
+        <div class="wl-cards2">
+          <div class="lp-card wl-card" id="std-survey-card">
+            <h3 class="wl-card-title">Only have this 16:9 screen?</h3>
+            <div id="std-survey">
+              <p class="wl-card-sub">30-second favour — why did you install?</p>
+              <div class="wl-pill-stack">
+                <button type="button" class="wl-pill-btn" data-reason="thought_16x9">I thought it removes black bars here</button>
+                <button type="button" class="wl-pill-btn" data-reason="curious">Just curious</button>
+                <button type="button" class="wl-pill-btn" data-reason="other">Something else</button>
+              </div>
+            </div>
+            <div id="std-survey-done" hidden>
+              <p class="wl-thanks-line">Thanks — that genuinely helps.</p>
+              <p class="wl-card-sub">
+                Honestly: Ultrawider can't do anything on a 16:9 screen, so
+                feel free to uninstall it — no hard feelings.
+              </p>
+              <details class="wl-mini-details" id="uninstall-details">
+                <summary>How to uninstall</summary>
+                <ol id="uninstall-steps"></ol>
+                <p class="wl-feedback">
+                  If our store listing made you think this works on 16:9 —
+                  that's a bug in our copy,
+                  <a id="feedback-mail" href="mailto:hello@ultrawider.net?subject=Your%2016%3A9%20copy%20misled%20me">tell us</a>.
+                </p>
+              </details>
+            </div>
+          </div>
+
+          <div class="lp-card wl-card" id="std-share-card">
+            <h3 class="wl-card-title">Have an ultrawide at home or work?</h3>
+            <p class="wl-card-sub">
+              On a 21:9 / 32:9 it fills the black bars — the centre stays
+              perfectly undistorted.
+            </p>
+            <div class="wl-card-actions">
+              <button type="button" id="copy-link-btn" class="aaa-cta-primary wl-cta-sm">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span id="copy-link-label">Copy link</span>
+              </button>
+              <a
+                id="email-mailto-link"
+                class="aaa-cta-secondary wl-cta-sm"
+                href="mailto:?subject=Ultrawider%20for%20your%20ultrawide%20monitor&amp;body=https%3A%2F%2Fultrawider.net%20%E2%80%94%20fills%2016%3A9%20video%20on%20ultrawide%20monitors%2C%20free%20on%20YouTube"
+              >Email it to yourself</a>
+            </div>
+            <p class="wl-demo-line">
+              or see <a id="std-demo-link" href="https://ultrawider.net/#playground" target="_blank" rel="noopener">the live demo →</a>
+            </p>
+          </div>
         </div>
       </section>
 
@@ -347,7 +360,7 @@
         <div class="wl-noext-cta-row">
           <a id="noext-install-cta" data-install-cta
              href="https://chromewebstore.google.com/detail/ultrawider-%E2%80%94-fill-ultrawi/fpbkljincbjlmfefgcefcbjjppehkamo"
-             target="_blank" rel="noopener" class="wl-handoff-btn">
+             target="_blank" rel="noopener" class="aaa-cta-primary wl-handoff-btn">
             Install — Free
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </a>
@@ -411,7 +424,7 @@
       </div>
     </main>
 
-    <footer class="site-footer">
+    <footer class="site-footer wl-footer">
       <div class="container footer-bottom">
         <span>© 2026 Ultrawider · <a href="/terms.html">Terms</a> · <a href="/privacy.html">Privacy</a> · <a href="/refund.html">Support</a></span>
       </div>
