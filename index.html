@@ -31,7 +31,8 @@
   <script src="assets/error-instrumentation.js?v=12"></script>
   <script src="assets/metrika.js?v=12" defer></script>
   <script src="assets/audience-stats.js?v=16" defer></script>
-  <link rel="stylesheet" href="assets/styles.css?v=15" />
+  <script src="assets/share-link.js?v=2" defer></script>
+  <link rel="stylesheet" href="assets/styles.css?v=18" />
 
   <link rel="preload" as="video" href="demo/cinematic-hero.mp4" type="video/mp4" />
   <link rel="preload" as="image" href="demo/face-source.jpg" />
@@ -233,6 +234,24 @@
             </a>
           </div>
 
+          <!-- Contextual hero share (hidden by default; share-link.js
+               reveals it): 16:9 visitors get it INSTEAD of both CTAs
+               (their conversion is passing the link on), visitors who
+               already run the extension get it instead of Install. -->
+          <div class="hero-share" id="hero-share" hidden>
+            <div class="share-row share-row--hero">
+              <code class="share-chip" id="hero-share-chip">ultrawider.net</code>
+              <button type="button" class="share-copy-btn" id="hero-share-copy">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+                </svg>
+                <span id="hero-share-copy-label">Copy link</span>
+              </button>
+            </div>
+            <p class="hero-share-note" id="hero-share-note"></p>
+          </div>
+
           <div class="store-links" data-store-links>
             <a data-store="chrome" href="https://chromewebstore.google.com/detail/ultrawider-%E2%80%94-fill-ultrawi/fpbkljincbjlmfefgcefcbjjppehkamo" target="_blank" rel="noopener">Chrome Web Store</a>
             <span class="store-sep" aria-hidden="true">·</span>
@@ -343,6 +362,34 @@
             <polyline points="19 12 12 19 5 12"/>
           </svg>
         </a>
+      </div>
+    </section>
+
+    <!-- SHARE — personal tracked link (?r=code). Copy is aspect-aware:
+         16:9 visitors are asked to pass it to an ultrawide owner (they
+         can't use the product themselves — this IS their conversion),
+         ultrawide visitors get a plain "share it" nudge. share-link.js
+         fills the chip, wires the copy button and beacons the copy. -->
+    <section class="share-section" id="share">
+      <div class="container">
+        <div class="share-card">
+          <div class="share-text">
+            <h3 id="share-title">Know someone with an ultrawide?</h3>
+            <p id="share-sub">
+              Send them your personal link — we'll see when it lands.
+            </p>
+          </div>
+          <div class="share-row">
+            <code class="share-chip" id="share-chip">ultrawider.net</code>
+            <button type="button" class="share-copy-btn" id="share-copy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+              </svg>
+              <span id="share-copy-label">Copy link</span>
+            </button>
+          </div>
+        </div>
       </div>
     </section>
 
