@@ -70,7 +70,10 @@
 
   function planCard(planId, plans, idx) {
     var p = plans[planId];
-    if (!p) return '';
+    // Fail-soft: skip a malformed plan instead of throwing and killing the
+    // whole pricing render (a stale-cached build once crashed here on an
+    // undefined price, surfaced by a crawler hit — see fingerprint b7a88b).
+    if (!p || typeof p.priceUsd !== 'number') return '';
     var ex = EXTRAS[planId] || { period: '', features: [], cta: 'Get Pro' };
     var isRec = planId === RECOMMENDED;
     var price = formatPriceParts(p.priceUsd);
