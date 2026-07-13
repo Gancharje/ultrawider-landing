@@ -165,18 +165,14 @@
           return p;
         }
 
-        // Fire-and-forget: sendBeacon first, fetch keepalive fallback.
-        // A dead API must never break this page.
+        // Fire-and-forget fetch keepalive. NO sendBeacon: it sends
+        // credentialed cross-origin requests our API rejects on CORS
+        // preflight while still returning true — silently dropping the
+        // beacon (bit us on /welcome until 2026-07-13).
         function beacon(payload) {
           var url = API + '/api/welcome/uninstall';
           var body;
           try { body = JSON.stringify(payload); } catch (_) { return; }
-          try {
-            if (navigator.sendBeacon) {
-              var blob = new Blob([body], { type: 'application/json' });
-              if (navigator.sendBeacon(url, blob)) return;
-            }
-          } catch (_) {}
           try {
             fetch(url, {
               method: 'POST',

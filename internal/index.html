@@ -83,15 +83,11 @@
         var CFG = window.ULTRAWIDER || {};
         var API = CFG.API_BASE || 'https://api.ultrawider.net';
 
+        // fetch keepalive only — sendBeacon sends credentialed requests
+        // that die on CORS preflight against our API (returns true anyway).
         function post(path, payload) {
           var body;
           try { body = JSON.stringify(payload); } catch (_) { return; }
-          try {
-            if (navigator.sendBeacon) {
-              var blob = new Blob([body], { type: 'application/json' });
-              if (navigator.sendBeacon(API + path, blob)) return;
-            }
-          } catch (_) {}
           try {
             fetch(API + path, {
               method: 'POST',

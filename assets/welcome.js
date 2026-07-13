@@ -21,7 +21,7 @@
  *        std_16x9        16:9 screen — honest "nothing to fill" flow
  *        uw_no_ext       organic visitor without an install id
  *   4. reports /api/welcome/hello + funnel events. Every network call
- *      is fire-and-forget: sendBeacon first, fetch keepalive fallback,
+ *      is fire-and-forget: fetch keepalive (credentials:'omit'),
  *      all wrapped — a dead API can NEVER break this page.
  *
  * Kill-switch: GET /api/welcome/config → { liveTutorial: true }. Any
@@ -86,15 +86,12 @@
     } catch (_) {
       return;
     }
-    // sendBeacon survives tab close and never blocks; some browsers
-    // refuse application/json Blobs cross-origin, so fall through to
-    // fetch keepalive whenever it declines or throws.
-    try {
-      if (navigator.sendBeacon) {
-        var blob = new Blob([body], { type: 'application/json' });
-        if (navigator.sendBeacon(url, blob)) return;
-      }
-    } catch (_) { /* fall through */ }
+    // NO sendBeacon here: it always sends CREDENTIALED cross-origin
+    // requests, our API (deliberately) doesn't allow credentials, so
+    // the browser kills the call on CORS preflight — while sendBeacon
+    // still returns true ("queued"), masking the failure. This silently
+    // dropped every real hello/event until 2026-07-13. fetch with
+    // keepalive survives tab close just the same (see audience-stats.js).
     try {
       fetch(url, {
         method: 'POST',
