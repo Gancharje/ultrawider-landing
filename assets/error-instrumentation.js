@@ -21,6 +21,7 @@
 // Store-Click conversion event (fired from the install button) and remarketing.
 (function () {
   var GADS_ID = 'AW-953520341';
+  if (window.gtag) return; // already loaded via the inline snippet on this page
   var s = document.createElement('script');
   s.async = true;
   s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GADS_ID;
