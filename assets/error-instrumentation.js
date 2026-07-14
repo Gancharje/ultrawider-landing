@@ -13,6 +13,25 @@
  *  - Filters out third-party noise: cross-origin "Script error." and
  *    common browser-extension violations that aren't actionable.
  */
+
+// ── Google Ads tag (AW-953520341) ───────────────────────────────────────────
+// Base gtag loader, shared across every user-facing landing page (this file is
+// included on all pages except /internal). Loading it here — early, in one
+// place — lets Google detect the tag site-wide and is the prerequisite for the
+// Store-Click conversion event (fired from the install button) and remarketing.
+(function () {
+  var GADS_ID = 'AW-953520341';
+  var s = document.createElement('script');
+  s.async = true;
+  s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GADS_ID;
+  document.head.appendChild(s);
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { window.dataLayer.push(arguments); }
+  window.gtag = window.gtag || gtag;
+  window.gtag('js', new Date());
+  window.gtag('config', GADS_ID);
+})();
+
 (function () {
   var ULTRAWIDER = window.ULTRAWIDER || {};
   var API_BASE = ULTRAWIDER.API_BASE || 'https://api.ultrawider.net';
