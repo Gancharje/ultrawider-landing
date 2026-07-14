@@ -66,6 +66,7 @@
     tutorialFailed: false,
     helloSent: false,
     dims: { w: 0, h: 0 },
+    source: null,
   };
 
   try {
@@ -76,6 +77,17 @@
     state.iid = BOOT.iid || null;
     state.internal = BOOT.dev === '1';
   }
+  // Acquisition source persisted by the landing (audience-stats.js) in
+  // localStorage — survives the landing → store → welcome new-tab hop. Used
+  // only within a 30-day last-touch window (matching Google's default click
+  // window) so an ancient campaign visit can't mis-attribute a later install.
+  try {
+    var _src = localStorage.getItem('_uw_src');
+    var _srcTs = Number(localStorage.getItem('_uw_src_ts') || 0);
+    if (_src && _srcTs && Date.now() - _srcTs < 30 * 86400000) {
+      state.source = String(_src).slice(0, 32);
+    }
+  } catch (_) { /* localStorage blocked → source stays null */ }
 
   // ─── Beacons — NEVER block or break UX ──────────────────────────────
   function postJSON(path, payload) {
@@ -1147,6 +1159,7 @@
           dev_build: state.devBuild,
           internal: state.internal,
           flow: state.flow,
+          source: state.source,
         });
       }
 

@@ -99,6 +99,16 @@
     if (srcParam) sessionStorage.setItem('_uw_src', srcParam);
     else srcParam = sessionStorage.getItem('_uw_src') || '';
   } catch (_) { /* sessionStorage blocked → per-page attribution only */ }
+  // Also persist the source to localStorage (with a timestamp). The /welcome
+  // page opens in a NEW tab after install, where sessionStorage is empty —
+  // only localStorage (same origin) survives the landing → store → welcome
+  // hop, so the installer row can be attributed to its acquisition source.
+  try {
+    if (srcParam) {
+      localStorage.setItem('_uw_src', srcParam);
+      localStorage.setItem('_uw_src_ts', String(Date.now()));
+    }
+  } catch (_) { /* localStorage blocked → correlation-only attribution */ }
   try {
     if (document.referrer && !sessionStorage.getItem('_uw_ref')) {
       sessionStorage.setItem('_uw_ref', document.referrer);
@@ -224,6 +234,18 @@
       internal: internalFlag,
     };
     if (extFlag !== null) clickPayload.has_ext = extFlag;
+    // Google Ads "Store Click" conversion — install intent. Only the three
+    // store targets (not checkout/pricing). Fire-and-forget: gtag sends it
+    // over a beacon transport, so it survives the navigation to the store.
+    if (target === 'chrome' || target === 'edge' || target === 'firefox') {
+      try {
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', 'conversion', {
+            send_to: 'AW-953520341/uNfUCPrkq9AcENWh1sYD',
+          });
+        }
+      } catch (_) { /* never let the tag interfere with the click */ }
+    }
     try {
       fetch(API_BASE + '/api/landing-click', {
         method: 'POST',
