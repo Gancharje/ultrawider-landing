@@ -361,6 +361,39 @@
       }
     });
 
+    // ─── Compare-against toggle (comparison-first positioning)
+    // 'stretch' (default): the LEFT side becomes object-fit:fill — the
+    // exact uniform linear stretch every plain "fill my screen" tool
+    // ships, so the divider directly compares their result vs Smoothie.
+    // 'letterbox': the classic do-nothing baseline with black bars.
+    // The right side is ALWAYS the live Smoothie warp.
+    var labelLeft = root.querySelector('[data-compare-label]');
+    var compareBtns = document.querySelectorAll('[data-compare]');
+    function setCompareMode(mode) {
+      var m = mode === 'letterbox' ? 'letterbox' : 'stretch';
+      root.classList.toggle('playground--stretch', m === 'stretch');
+      if (labelLeft) {
+        labelLeft.textContent = m === 'stretch' ? 'Dumb stretch' : 'Black bars';
+      }
+      divider.setAttribute(
+        'aria-label',
+        m === 'stretch'
+          ? 'Drag to compare plain linear stretch vs Smoothie warp'
+          : 'Drag to compare letterboxed 16:9 vs Smoothie warp'
+      );
+      for (var bi = 0; bi < compareBtns.length; bi++) {
+        var on = compareBtns[bi].getAttribute('data-compare') === m;
+        compareBtns[bi].classList.toggle('is-active', on);
+        compareBtns[bi].setAttribute('aria-pressed', on ? 'true' : 'false');
+      }
+    }
+    for (var ci = 0; ci < compareBtns.length; ci++) {
+      compareBtns[ci].addEventListener('click', function (e) {
+        setCompareMode(e.currentTarget.getAttribute('data-compare'));
+      });
+    }
+    setCompareMode('stretch');
+
     // ─── Scroll-driven warp intensification (auto-boost while hero in view)
     if (!prefersReducedMotion) {
       function updateScrollBoost() {

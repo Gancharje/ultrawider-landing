@@ -32,7 +32,7 @@
     monthly: {
       period: '/mo',
       features: [
-        'Twitch, Vimeo, Kick + most other video sites',
+        'Every site — Netflix, Prime, Twitch, Kick…',
         'Aspect-aware auto-tuning',
       ],
       cta: 'Subscribe monthly',

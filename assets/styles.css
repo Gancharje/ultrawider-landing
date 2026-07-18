@@ -853,7 +853,38 @@ button[type='submit'][disabled] {
 @media (max-width: 640px) {
   .share-card { padding: 22px 20px; }
   .share-row { width: 100%; }
-  .share-chip { flex: 1; justify-content: center; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+  /* text-overflow needs a BLOCK formatting context: on the inline-flex
+     chip the text is an anonymous flex item, the ellipsis silently never
+     applies, and justify-content:center clipped the link on BOTH ends
+     at 390px. Block + line-height keeps the 44px height and ellipsizes. */
+  .share-chip {
+    display: block;
+    flex: 1 1 100%;
+    min-width: 0;
+    max-width: 100%;
+    min-height: 44px;
+    line-height: 44px;
+    padding: 1px 14px;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+/* ── Mobile: store links become real tap targets ─────────────────────
+   The one-line dotted row measured ~23px tall at 390px — well under the
+   44px minimum. Pills restore the hit area; the dot separators go. */
+@media (max-width: 640px) {
+  .store-links { gap: 8px; }
+  .store-links a {
+    padding: 11px 14px;
+    border: 1px solid var(--border-soft);
+    border-bottom-color: var(--border-soft);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.03);
+  }
+  .store-links a.is-current { border-color: var(--accent); }
+  .store-sep { display: none; }
 }
 
 /* Hero contextual share (share-link.js swaps it in for 16:9 visitors

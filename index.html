@@ -3,17 +3,21 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Fill your 21:9 / 32:9 ultrawide monitor with any 16:9 video. Ultrawider's WebGL warp shader stretches the edges, leaves faces round — drag the slider and see the math run live in your browser." />
-  <meta name="keywords" content="ultrawide monitor, 21:9 video, 32:9 video, 16:9 to 21:9, fill ultrawide screen, video stretcher, ultrawide YouTube, letterbox remove, black bars remove, WebGL video warp" />
+  <meta name="description" content="Fill your 21:9 / 32:9 ultrawide with any video — even Netflix and other DRM streams. Plain stretching makes everyone look wide; Ultrawider's Smoothie warp bends only the edges, so faces stay true. Free on YouTube, free 3-minute preview everywhere else." />
+  <meta name="keywords" content="ultrawide monitor, 21:9 video, 32:9 video, 16:9 to 21:9, fill ultrawide screen, netflix ultrawide full screen, ultrawide netflix, stretch video without distortion, ultrawide YouTube, letterbox remove, black bars remove, non-linear stretch" />
   <meta name="theme-color" content="#050505" />
   <meta property="og:title" content="Ultrawider — Fill Ultrawide Monitors with 21:9 Video Warp" />
-  <meta property="og:description" content="Stretch 16:9 videos to fit your 21:9 / 32:9 ultrawide monitor. WebGL warp keeps faces undistorted. Free on YouTube." />
+  <meta property="og:description" content="Fill your 21:9 / 32:9 with any video — even Netflix. Plain stretch widens faces; Smoothie's non-linear warp keeps them true. Free on YouTube." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://ultrawider.net" />
   <meta property="og:site_name" content="Ultrawider" />
+  <meta property="og:image" content="https://ultrawider.net/assets/og-faces.png" />
+  <meta property="og:image:width" content="1280" />
+  <meta property="og:image:height" content="800" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Ultrawider — Fill Ultrawide Monitors with 21:9 Video Warp" />
-  <meta name="twitter:description" content="Stretch 16:9 videos to fit your 21:9 / 32:9 ultrawide monitor. WebGL warp keeps faces undistorted." />
+  <meta name="twitter:description" content="Fill your 21:9 / 32:9 with any video — even Netflix. Plain stretch widens faces; Smoothie's non-linear warp keeps them true." />
+  <meta name="twitter:image" content="https://ultrawider.net/assets/og-faces.png" />
   <link rel="canonical" href="https://ultrawider.net/" />
   <title>Ultrawider — Fill Ultrawide Monitors with 21:9 Video Warp</title>
 
@@ -26,7 +30,7 @@
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="assets/favicon-16.png" />
     <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
-    <link rel="stylesheet" href="style.css?v=12" />
+    <link rel="stylesheet" href="style.css?v=13" />
   <!-- Google Ads base tag (AW-953520341) — inline on the ad landing page so
        Google reliably detects it and the Store-Click conversion fires here. -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=AW-953520341"></script>
@@ -42,16 +46,16 @@
   <script src="assets/metrika.js?v=12" defer></script>
   <script src="assets/audience-stats.js?v=17" defer></script>
   <script src="assets/share-link.js?v=2" defer></script>
-  <link rel="stylesheet" href="assets/styles.css?v=18" />
+  <link rel="stylesheet" href="assets/styles.css?v=19" />
 
   <link rel="preload" as="video" href="demo/cinematic-hero.mp4" type="video/mp4" />
   <link rel="preload" as="image" href="demo/face-source.jpg" />
 
   <script src="assets/config.js?v=12" defer></script>
   <script src="assets/aspect-profile.js?v=12" defer></script>
-  <script src="assets/warp-demo.js?v=12" defer></script>
+  <script src="assets/warp-demo.js?v=13" defer></script>
   <script src="assets/math-demo.js?v=12" defer></script>
-  <script src="assets/landing-checkout.js?v=15" defer></script>
+  <script src="assets/landing-checkout.js?v=16" defer></script>
 
   <!-- Aspect-aware hero personalization.
        Reads physical monitor dims via screen.width/height for real
@@ -66,7 +70,7 @@
          >= 3200px  → personalized ultrawide math (-X% / Y px lost) -->
   <script>
     (function () {
-      var DEFAULT_LEDE = "Those bars on the sides? That's what every standard player gives you on a widescreen monitor. <strong>Smoothie warp fills every pixel — without distorting faces.</strong>";
+      var DEFAULT_LEDE = "Those bars on the sides? That's what every standard player gives you on a widescreen monitor. <strong>Smoothie fills every pixel without touching faces — on YouTube, Twitch, even Netflix.</strong>";
 
       function getDims() {
         var sw = window.screen && window.screen.width || 0;
@@ -119,7 +123,7 @@
             for (var j = 0; j < spcEls.length; j++) spcEls[j].textContent = lostPx + ' px lost';
             ledeEl.innerHTML = "That's <strong>" + (lossPct * 2) +
               "% of your screen</strong> a standard player throws away on every widescreen video. " +
-              "<strong>Smoothie warp fills every pixel</strong> — without distorting faces.";
+              "<strong>Smoothie fills every pixel</strong> — faces stay true, even on Netflix.";
           } else if (tier === 'compact') {
             for (var k = 0; k < pctEls.length; k++) pctEls[k].textContent = '0%';
             for (var m = 0; m < spcEls.length; m++) spcEls[m].textContent = '0 px lost';
@@ -177,7 +181,7 @@
       <div class="aaa-hero-content">
         <div class="aaa-eyebrow">
           <span class="aaa-eyebrow-dot" aria-hidden="true"></span>
-          <span>Smoothie · Quintic NLS · WebGL2</span>
+          <span>Smoothie · Quintic NLS · works on Netflix</span>
         </div>
 
         <h1 class="aaa-headline">
@@ -221,7 +225,7 @@
           <p class="aaa-lede">
             Those bars on the sides? That's what every standard player gives
             you on a widescreen monitor.
-            <strong>Smoothie warp fills every pixel — without distorting faces.</strong>
+            <strong>Smoothie fills every pixel without touching faces — on YouTube, Twitch, even Netflix.</strong>
           </p>
 
           <div class="aaa-actions">
@@ -288,12 +292,21 @@
       <div class="container">
         <header class="section-head">
           <span class="eyebrow">Live · in your browser</span>
-          <h2>Drag. Slide. <span class="text-accent">See the math work.</span></h2>
+          <h2>Stretching is easy. <span class="text-accent">Faces are hard.</span></h2>
           <p>
-            Letterboxed 16:9 on the left, Smoothie-warped 21:9 on the right —
-            drag the divider, watch the centre hold while the edges fill.
+            Left: what ordinary &ldquo;fill the screen&rdquo; stretching does — the whole
+            frame widens, people included. Right: Smoothie — the centre stays
+            true, only the edges carry the stretch. Drag the divider.
           </p>
         </header>
+
+        <div class="compare-toggle" data-compare-toggle>
+          <span class="compare-toggle-name">Compare against</span>
+          <span class="compare-seg" role="group" aria-label="What the left side of the divider shows">
+            <button type="button" class="compare-opt is-active" data-compare="stretch" aria-pressed="true">Dumb stretch</button>
+            <button type="button" class="compare-opt" data-compare="letterbox" aria-pressed="false">Black bars</button>
+          </span>
+        </div>
 
         <div class="playground-monitor">
         <div class="playground" data-playground>
@@ -311,7 +324,7 @@
             data-divider
             role="slider"
             tabindex="0"
-            aria-label="Drag to compare original 16:9 vs Smoothie-warped 21:9"
+            aria-label="Drag to compare plain linear stretch vs Smoothie warp"
             aria-valuemin="0"
             aria-valuemax="100"
             aria-valuenow="50"
@@ -326,7 +339,7 @@
           </div>
 
           <div class="playground-labels" aria-hidden="true">
-            <span class="playground-label playground-label-left">Without</span>
+            <span class="playground-label playground-label-left" data-compare-label>Dumb stretch</span>
             <span class="playground-label playground-label-right">Ultrawider</span>
           </div>
 
@@ -347,17 +360,17 @@
           </div>
 
           <div class="playground-fallback-message" data-fallback hidden>
-            <p>Live WebGL playground isn't available on your browser. See the math below ↓</p>
+            <p>The live demo needs WebGL, which your browser blocked. See the math below ↓</p>
           </div>
         </div>
         </div>
 
         <p class="playground-tail">
           <span class="playground-tail-dot" aria-hidden="true"></span>
-          <span class="playground-tail-free">Free on every YouTube video</span>
+          <span class="playground-tail-free">Free on YouTube · 3-min free preview on every other site</span>
           <span class="playground-tail-sep" aria-hidden="true">·</span>
           <a class="playground-tail-cta" href="#pricing">
-            Get Pro for every supported site
+            Get Pro for every site — Netflix included
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <line x1="5" y1="12" x2="19" y2="12"/>
               <polyline points="12 5 19 12 12 19"/>
@@ -414,7 +427,7 @@
         <header class="math-head">
           <div class="aaa-eyebrow">
             <span class="aaa-eyebrow-dot" aria-hidden="true"></span>
-            <span>The shader · One uniform</span>
+            <span>The math · One uniform</span>
           </div>
           <h2>Quintic smootherstep. <span class="text-accent">Drag and see.</span></h2>
           <p class="math-lede">
@@ -479,7 +492,9 @@
 
         <p class="math-footer">
           C² continuity established in <a href="https://mrl.cs.nyu.edu/~perlin/paper445.pdf" target="_blank" rel="noopener">Perlin, <em>Improving Noise</em> (SIGGRAPH 2002)</a>
-          · runs in <code class="code-inline">~3 multiply-adds per pixel</code> on the GPU fragment shader.
+          · runs in <code class="code-inline">~3 multiply-adds per pixel</code> — shipped as an
+          SVG displacement filter that never reads a pixel, which is why it works
+          even on DRM video (Netflix, Prime).
         </p>
 
         <a href="#pricing" class="math-scroll" aria-label="Scroll to pricing">
@@ -506,8 +521,10 @@
           </div>
           <h2>Free on YouTube. <span class="text-accent">Pro everywhere.</span></h2>
           <p class="lp-lede">
-            Smoothie's free on YouTube — forever. Go Pro to unlock every
-            other supported site, auto-tuned for 21:9, 24:9 and 32:9.
+            Smoothie's free on YouTube — forever. On every other site you get
+            a <strong>free 3-minute preview</strong> each time you switch it
+            on: watch it fill your Netflix before you pay a cent. Pro removes
+            the timer everywhere, auto-tuned for 21:9, 24:9 and 32:9.
           </p>
         </header>
 
@@ -628,7 +645,7 @@
         <div class="faq-list">
           <details>
             <summary>What's the difference between Free and Pro?</summary>
-            <p>Free unlocks the Smoothie warp on YouTube — that's enough for most casual viewers to fall in love with the feature. Pro from $5/month (or $24/year, ≈ $2/mo) removes the platform gate: Smoothie works on Twitch, Vimeo, Kick and any other site whose video isn't DRM-protected. See the <a href="#pricing">pricing page</a> for the full comparison.</p>
+            <p>Free gives you the full Smoothie warp on YouTube — forever — plus a <strong>3-minute Smoothie preview on any other site</strong>, as many times as you like: watch it fill your own Netflix or Twitch before paying anything. Pro from $5/month (or $24/year, ≈ $2/mo) removes the timer everywhere. See <a href="#pricing">pricing</a> for the full comparison.</p>
           </details>
 
           <details id="faq-stars">
@@ -648,7 +665,7 @@
 
           <details>
             <summary>Which sites does it work on?</summary>
-            <p>Pretty much anywhere that isn't behind a paywall-DRM. Twitch, Vimeo, Kick, most news sites, course platforms, podcast players, and many independent video hosts all work. <strong>Netflix, HBO Max, Disney+, Prime Video</strong> use DRM that blocks the pixel access we need — those are fundamentally blocked, not by us but by the platforms themselves.</p>
+            <p>Everywhere video plays in your browser — <strong>including Netflix, Prime Video, Disney+ and Max</strong>. Smoothie is built as an SVG displacement filter: it never reads a single pixel, so DRM has nothing to block. Twitch, Vimeo, Kick, news sites, course platforms, sports streams — and the DRM services where ordinary warping tools give up.</p>
           </details>
 
           <details>
