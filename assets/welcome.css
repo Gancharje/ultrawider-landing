@@ -1253,3 +1253,24 @@ main.account-page { flex: 1; }
 .wl-step2-price a { color: var(--accent); text-decoration: none; white-space: nowrap; }
 .wl-step2-price a:hover { text-decoration: underline; }
 .wl-step2-dot { color: var(--text-mute); padding: 0 4px; }
+
+/* Step-2 recomposition: single column — instruction -> CTA (with a hint
+   beside it) -> hairline -> quiet reference block (coverage + price).
+   The old 1fr/auto grid left the button floating in empty space. */
+.wl-step2-body { display: block; }
+.wl-step2-cta-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin: 20px 0 26px;
+}
+.wl-step2-cta-hint {
+  font-size: 0.86rem;
+  color: var(--text-mute);
+}
+.wl-step2-ref {
+  border-top: 1px solid var(--border-soft);
+  padding-top: 20px;
+}
+.wl-step2-works { margin: 0 0 12px; }

@@ -45,7 +45,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="stylesheet" href="/style.css?v=16" />
-    <link rel="stylesheet" href="/assets/welcome.css?v=9" />
+    <link rel="stylesheet" href="/assets/welcome.css?v=10" />
     <script src="/assets/config.js"></script>
     <script src="/assets/error-instrumentation.js"></script>
     <script src="/assets/metrika.js" defer></script>
@@ -301,45 +301,52 @@
                 <strong class="text-accent">Smoothie</strong>. Ultrawider
                 remembers it per site — set once, works forever.
               </p>
-              <div class="uw-works uw-works--left wl-step2-works" id="uw-pro" aria-label="Pro works on every video site">
-                <span class="uw-works-eyebrow">Pro unlocks every site</span>
-                <div class="uw-works-row">
-                  <span class="svc-netflix">Netflix</span>
-                  <span class="svc-disney">Disney+</span>
-                  <span class="svc-prime">Prime Video</span>
-                  <span class="svc-max">Max</span>
-                  <span class="svc-hulu">Hulu</span>
-                  <span class="svc-dazn">DAZN</span>
-                  <span class="svc-f1">F1 TV</span>
-                  <span class="svc-twitch">Twitch</span>
-                  <span class="uw-works-more">…and every other video site</span>
-                </div>
+
+              <!-- The action lives WITH the instruction it belongs to. -->
+              <div class="wl-step2-cta-row">
+                <a
+                  id="yt-handoff-btn"
+                  class="aaa-cta-primary wl-handoff-btn"
+                  href="https://www.youtube.com/watch?v=LXb3EKWsInQ"
+                  target="_blank"
+                  rel="noopener"
+                >
+                  Open a video on YouTube
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                </a>
+                <span class="wl-step2-cta-hint">Takes 30 seconds — set once, it sticks.</span>
               </div>
-              <p class="wl-step2-price">
-                <span class="wl-step2-price-free">YouTube — free forever</span>
-                <span class="wl-step2-dot" aria-hidden="true">·</span>
-                <span>3-min free preview everywhere else</span>
-                <span class="wl-step2-dot" aria-hidden="true">·</span>
-                <strong>Pro $5/mo · $24/yr · $49 once</strong>
-                <a id="pricing-link" href="/pricing?src=welcome">See pricing →</a>
-              </p>
-              <p class="wl-pro-drm">
-                DRM included — Smoothie never reads a pixel, so Netflix-class
-                protection has nothing to block. We only started saying this
-                when it became true, in&nbsp;1.0.5.
-              </p>
-            </div>
-            <div class="wl-step2-cta">
-              <a
-                id="yt-handoff-btn"
-                class="aaa-cta-primary wl-handoff-btn"
-                href="https://www.youtube.com/watch?v=LXb3EKWsInQ"
-                target="_blank"
-                rel="noopener"
-              >
-                Open a video on YouTube
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-              </a>
+
+              <!-- Reference block: coverage + pricing, quiet under a hairline. -->
+              <div class="wl-step2-ref">
+                <div class="uw-works uw-works--left wl-step2-works" id="uw-pro" aria-label="Pro works on every video site">
+                  <span class="uw-works-eyebrow">Pro unlocks every site</span>
+                  <div class="uw-works-row">
+                    <span class="svc-netflix">Netflix</span>
+                    <span class="svc-disney">Disney+</span>
+                    <span class="svc-prime">Prime Video</span>
+                    <span class="svc-max">Max</span>
+                    <span class="svc-hulu">Hulu</span>
+                    <span class="svc-dazn">DAZN</span>
+                    <span class="svc-f1">F1 TV</span>
+                    <span class="svc-twitch">Twitch</span>
+                    <span class="uw-works-more">…and every other video site</span>
+                  </div>
+                </div>
+                <p class="wl-step2-price">
+                  <span class="wl-step2-price-free">YouTube — free forever</span>
+                  <span class="wl-step2-dot" aria-hidden="true">·</span>
+                  <span>3-min free preview everywhere else</span>
+                  <span class="wl-step2-dot" aria-hidden="true">·</span>
+                  <strong>Pro $5/mo · $24/yr · $49 once</strong>
+                  <a id="pricing-link" href="/pricing?src=welcome">See pricing →</a>
+                </p>
+                <p class="wl-pro-drm">
+                  DRM included — Smoothie never reads a pixel, so Netflix-class
+                  protection has nothing to block. We only started saying this
+                  when it became true, in&nbsp;1.0.5.
+                </p>
+              </div>
             </div>
           </div>
           <details id="rescue-details" class="wl-step2-rescue">
