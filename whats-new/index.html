@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>What's New in Ultrawider 1.0.5</title>
+    <meta name="description" content="Ultrawider 1.0.5: Smoothie now works on Netflix, Prime and other DRM sites, plus a free 3-minute preview on any site." />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#050505" />
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href="https://ultrawider.net/whats-new" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    />
+    <link rel="stylesheet" href="/style.css?v=15" />
+    <script src="/assets/config.js"></script>
+    <script src="/assets/error-instrumentation.js"></script>
+    <script src="/assets/metrika.js" defer></script>
+    <!-- Capture the extension's hand-off params before first paint, then
+         strip the query (it carries the install id — same privacy handling
+         as /welcome and /report). -->
+    <script>
+      (function () {
+        var boot = {};
+        try {
+          var q = new URLSearchParams(location.search);
+          ['iid', 'v', 'from', 'b', 'dev'].forEach(function (k) { boot[k] = q.get(k); });
+          if (location.search) history.replaceState(null, '', location.pathname + location.hash);
+        } catch (_) {}
+        try { if (boot.iid) localStorage.setItem('_uw_iid', boot.iid); } catch (_) {}
+        window.__UW_WHATSNEW_BOOT = boot;
+      })();
+    </script>
+
+    <style>
+      /* What's-new page — announcement layout on the shared token system. */
+      .wn-main {
+        min-height: calc(100dvh - 260px);
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding: clamp(40px, 7dvh, 96px) 20px 72px;
+      }
+      .wn-container { max-width: 760px; width: 100%; }
+      .wn-eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        font-weight: 600;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 16px;
+      }
+      .wn-eyebrow-dot {
+        width: 6px; height: 6px; border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 4px var(--accent-glow);
+      }
+      .wn-container h1 {
+        margin: 0 0 14px;
+        font-family: var(--font-display);
+        font-size: clamp(2.2rem, 3.4vw + 0.6rem, 3.4rem);
+        font-weight: 600;
+        letter-spacing: -0.03em;
+        line-height: 1.04;
+        color: var(--text);
+      }
+      .wn-lede {
+        margin: 0 0 clamp(28px, 4dvh, 44px);
+        max-width: 58ch;
+        font-size: 1rem;
+        line-height: 1.65;
+        color: var(--text-dim);
+      }
+      .wn-lede strong { color: var(--text); }
+
+      .wn-cards { display: grid; gap: 14px; margin-bottom: clamp(28px, 4dvh, 44px); }
+      .wn-card {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        padding: 20px 22px;
+        background: var(--bg-elev);
+        border: 1px solid var(--border-soft);
+        border-radius: 14px;
+      }
+      .wn-card--hero {
+        background: linear-gradient(180deg, rgba(245, 158, 11, 0.09), rgba(245, 158, 11, 0.03));
+        border-color: rgba(245, 158, 11, 0.28);
+      }
+      .wn-ico {
+        flex: 0 0 auto;
+        width: 40px; height: 40px;
+        display: grid; place-items: center;
+        border-radius: 11px;
+        color: var(--accent);
+        background: var(--accent-glow);
+      }
+      .wn-ico svg { width: 20px; height: 20px; display: block; }
+      .wn-card h3 {
+        margin: 2px 0 6px;
+        font-size: 1.05rem;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        color: var(--text);
+      }
+      .wn-card p {
+        margin: 0;
+        font-size: 0.92rem;
+        line-height: 1.6;
+        color: var(--text-dim);
+      }
+      .wn-card p strong { color: var(--text); }
+
+      .wn-cta-row {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+      .wn-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+      }
+      .wn-cta svg { width: 17px; height: 17px; }
+      .wn-how {
+        margin: 0;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        letter-spacing: 0.02em;
+        color: var(--text-mute);
+      }
+      .wn-how strong { color: var(--text-dim); font-weight: 600; }
+      @media (max-width: 560px) {
+        .wn-cta-row { align-items: flex-start; flex-direction: column; }
+      }
+    </style>
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/109480276" style="position:absolute;left:-9999px" alt="" /></div></noscript>
+    <header class="site-header">
+      <div class="container nav">
+        <a href="/" class="logo">
+          <span class="logo-mark"></span>
+          <span class="logo-text">Ultrawider</span>
+        </a>
+        <nav class="nav-links">
+          <a href="/#playground">Playground</a>
+          <a href="/#math">For geeks</a>
+          <a href="/#pricing">Pricing</a>
+          <a href="/#faq">FAQ</a>
+          <a href="/#pricing" class="btn-cta">Get Pro</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wn-main">
+      <div class="wn-container">
+        <span class="wn-eyebrow"><span class="wn-eyebrow-dot" aria-hidden="true"></span>What's new · 1.0.5</span>
+        <h1>Smoothie now works<br />on <span class="text-accent">Netflix.</span></h1>
+        <p class="wn-lede">
+          We rebuilt the warp engine from the ground up. Same pixel-exact
+          quintic math, completely new delivery — and it changes what the
+          extension can do for you. <strong>Everything below is already
+          active in your browser.</strong>
+        </p>
+
+        <div class="wn-cards">
+          <div class="wn-card wn-card--hero">
+            <span class="wn-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.83-1.2"/></svg>
+            </span>
+            <div>
+              <h3>DRM sites — unlocked</h3>
+              <p>
+                <strong>Netflix, Prime Video, Disney+, Max</strong> and every
+                other DRM service now get the full Smoothie warp. The new
+                engine is an SVG displacement filter: it never reads a single
+                pixel, so content protection has nothing to block. This used
+                to be impossible — now it's the default.
+              </p>
+            </div>
+          </div>
+
+          <div class="wn-card">
+            <span class="wn-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 13.5"/></svg>
+            </span>
+            <div>
+              <h3>Try Smoothie free on any site</h3>
+              <p>
+                Off YouTube, every activation now runs a <strong>free
+                3-minute preview</strong> — as many times as you like. Watch
+                it fill your own screen before deciding on Pro. YouTube stays
+                free forever, as always.
+              </p>
+            </div>
+          </div>
+
+          <div class="wn-card">
+            <span class="wn-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="8" width="18" height="4" rx="1"/><path d="M12 8v13M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/><path d="M12 8S10.5 3 8 3a2.5 2.5 0 0 0 0 5M12 8s1.5-5 4-5a2.5 2.5 0 0 1 0 5"/></svg>
+            </span>
+            <div>
+              <h3>Found a bug? It pays</h3>
+              <p>
+                There's a new <strong>“Not working?”</strong> button in the
+                fullscreen HUD and the toolbar popup. If you report a bug we
+                can reproduce, we fix it — and send you a
+                <strong>free month of Pro</strong> as thanks.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="wn-cta-row">
+          <a class="aaa-cta-primary wn-cta" href="https://www.netflix.com" target="_blank" rel="noopener">
+            Try it on Netflix
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <p class="wn-how">or any video: <strong>fullscreen → Smoothie</strong>. That's it.</p>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="logo">
+            <span class="logo-mark"></span>
+            <span class="logo-text">Ultrawider</span>
+          </a>
+          <p class="footer-tag">Built for ultrawide.</p>
+        </div>
+        <nav class="footer-nav">
+          <h4>Product</h4>
+          <a href="/#playground">Playground</a>
+          <a href="/#math">For geeks</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/#faq">FAQ</a>
+        </nav>
+        <nav class="footer-nav">
+          <h4>Account</h4>
+          <a href="/recover">Recover license</a>
+          <a href="/contact">Contact support</a>
+        </nav>
+        <nav class="footer-nav">
+          <h4>Legal</h4>
+          <a href="/terms.html">Terms of Service</a>
+          <a href="/privacy.html">Privacy Policy</a>
+          <a href="/refund.html">Support Policy</a>
+        </nav>
+      </div>
+      <div class="container footer-bottom">
+        <span>© 2026 Ultrawider. All rights reserved.</span>
+      </div>
+    </footer>
+  </body>
+</html>
