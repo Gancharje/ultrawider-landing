@@ -642,9 +642,16 @@
               }
             }
           } else if (m.type === 'attributes' && m.target === video) {
-            // Smoothie start also hides the original video element.
+            // Smoothie start: the ≤1.0.4 WebGL engine hid the original
+            // video (visibility:hidden under an overlay canvas); the 1.0.5+
+            // SVG engine keeps the video visible and instead stamps an
+            // inline filter: url(#ulw-…) on it. Accept either footprint so
+            // the tutorial advances for every extension version in the wild.
             try {
-              if (video.style && video.style.visibility === 'hidden') {
+              if (video.style && (
+                video.style.visibility === 'hidden' ||
+                (video.style.filter && video.style.filter.indexOf('url(') !== -1)
+              )) {
                 onActivationDetected();
               }
             } catch (_) {}
