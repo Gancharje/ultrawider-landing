@@ -44,14 +44,14 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
-    <link rel="stylesheet" href="/style.css?v=13" />
-    <link rel="stylesheet" href="/assets/welcome.css?v=6" />
+    <link rel="stylesheet" href="/style.css?v=15" />
+    <link rel="stylesheet" href="/assets/welcome.css?v=7" />
     <script src="/assets/config.js"></script>
     <script src="/assets/error-instrumentation.js"></script>
     <script src="/assets/metrika.js" defer></script>
     <script src="/assets/aspect-profile.js" defer></script>
-    <script src="/assets/warp-demo.js" defer></script>
-    <script src="/assets/welcome.js?v=9" defer></script>
+    <script src="/assets/warp-demo.js?v=13" defer></script>
+    <script src="/assets/welcome.js?v=10" defer></script>
   </head>
   <body>
     <noscript><div><img src="https://mc.yandex.ru/watch/109480276" style="position:absolute;left:-9999px" alt="" /></div></noscript>
@@ -77,8 +77,8 @@
           <h1>You bought an ultrawide.<br /><span class="text-accent">Your videos didn't.</span></h1>
           <p class="wl-hero-sub">
             Ultrawider is a browser extension that fills the black side-bars
-            on 21:9 and 32:9 monitors — a WebGL warp that stretches the edges
-            and leaves faces round.
+            on 21:9 and 32:9 monitors — a non-linear warp that stretches the
+            edges, leaves faces round, and works even on Netflix.
           </p>
         </div>
 
@@ -108,6 +108,70 @@
       <section id="flow-uw" class="wl-flow container" hidden>
         <div class="wl-unit">
           <div class="wl-statusbar-slot" data-statusbar-slot></div>
+
+          <!-- ── Marketing intro (uw_live only) — sell first, teach second.
+               Shown BEFORE the live tutorial: what just landed in the
+               browser and why it beats the dumb stretch every other tool
+               ships. The simulated divider below the points is the living
+               proof; "Try it" reveals the real stage. Keeps marketing and
+               teaching as two clean steps instead of one mixed screen. -->
+          <div id="uw-intro" hidden>
+            <div class="wl-intro-head">
+              <h2 class="wl-intro-title">Fill the screen.<br /><span class="text-accent">Keep the faces.</span></h2>
+              <p class="wl-intro-sub">
+                You're set up. Thirty seconds on what makes this one
+                different — then try it on a real video.
+              </p>
+            </div>
+
+            <ul class="wl-intro-points">
+              <li>
+                <span class="wl-intro-ico" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M9 12H5m2.5-2.5L5 12l2.5 2.5M15 12h4m-2.5-2.5L19 12l-2.5 2.5"/></svg>
+                </span>
+                <div>
+                  <h4>No black bars — ever</h4>
+                  <p>Any 16:9 video fills your entire 21:9 / 32:9 panel. Subtitles stay on screen.</p>
+                </div>
+              </li>
+              <li>
+                <span class="wl-intro-ico" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9 10h.01M15 10h.01"/><path d="M8.5 15a4.5 4.5 0 0 0 7 0"/></svg>
+                </span>
+                <div>
+                  <h4>Not a dumb stretch</h4>
+                  <p>Plain stretch tools make everyone ~30% wider. Smoothie bends only the edges — the centre maps 1:1. Drag the divider below and see.</p>
+                </div>
+              </li>
+              <li>
+                <span class="wl-intro-ico" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.83-1.2"/></svg>
+                </span>
+                <div>
+                  <h4>Netflix works</h4>
+                  <p>And Prime, Disney+, Max. Smoothie never reads a pixel, so DRM has nothing to block.</p>
+                </div>
+              </li>
+              <li>
+                <span class="wl-intro-ico" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 13.5"/></svg>
+                </span>
+                <div>
+                  <h4>Free to try everywhere</h4>
+                  <p>YouTube is free forever. Every other site gives you a full 3-minute preview, every time you switch it on.</p>
+                </div>
+              </li>
+            </ul>
+
+            <div id="uw-intro-sim-slot"></div>
+
+            <p class="wl-intro-cta-row">
+              <button type="button" id="uw-intro-try" class="aaa-cta-primary wl-intro-cta">
+                Try it for real — on this video
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+              </button>
+            </p>
+          </div>
 
           <!-- Stage slot: live tutorial OR Firefox grant card OR fallback.
                The stage IS the hero — no instruction cards above it; the
@@ -406,7 +470,7 @@
               </div>
             </div>
             <div class="playground-labels" aria-hidden="true">
-              <span class="playground-label playground-label-left">Without</span>
+              <span class="playground-label playground-label-left" data-compare-label>Dumb stretch</span>
               <span class="playground-label playground-label-right">Ultrawider</span>
             </div>
             <div class="playground-controls">

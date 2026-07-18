@@ -832,11 +832,55 @@
         // a user override to std_16x9 may have landed meanwhile.
         if (state.flow !== 'uw_live') return;
         if (liveOk) {
-          setupLiveStage();
+          // Marketing intro first (sell → then teach): the tutorial stage
+          // appears when the visitor clicks "Try it". introSeen survives
+          // re-renders (monitor override round-trips) within the session.
+          if (state.introSeen) {
+            setupLiveStage();
+          } else {
+            showIntro();
+          }
         } else {
           showFallbackCard();
         }
       });
+    }
+  }
+
+  // ─── Marketing intro (uw_live) — what just landed + why it beats the
+  //     dumb stretch. The shared sim gives the living stretch-vs-Smoothie
+  //     proof right under the points; "Try it" swaps intro → live stage.
+  var introWired = false;
+  function showIntro() {
+    var intro = $('uw-intro');
+    if (!intro) { setupLiveStage(); return; } // markup missing → old path
+    var stage = $('live-stage');
+    if (stage) stage.hidden = true;
+    // The page headline ("One more click — it's on the video below")
+    // narrates the STAGE; the intro carries its own title.
+    var hl = $('wl-headline');
+    if (hl) hl.hidden = true;
+    intro.hidden = false;
+    moveSimTo('uw-intro-sim-slot', 'LIVE SIMULATION');
+    sendEvent('intro_view');
+    if (!introWired) {
+      introWired = true;
+      var btn = $('uw-intro-try');
+      if (btn) {
+        btn.addEventListener('click', function () {
+          state.introSeen = true;
+          intro.hidden = true;
+          if (hl) hl.hidden = false;
+          sendEvent('intro_try_clicked');
+          // Park the sim again (hidden) — the stage is the hero now.
+          moveSimTo('sim-park');
+          setupLiveStage();
+          var st = $('live-stage');
+          if (st && typeof st.scrollIntoView === 'function') {
+            st.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        });
+      }
     }
   }
 

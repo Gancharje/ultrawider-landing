@@ -1148,3 +1148,82 @@ main.account-page { flex: 1; }
 }
 .wl-cta-copy svg { width: 17px; height: 17px; }
 .wl-share-note { margin: 10px 0 0; font-size: 0.85rem; color: var(--text-mute); }
+
+/* ─── Marketing intro (uw_live) — sell first, teach second ──────────── */
+#uw-intro { padding: 6px 0 10px; }
+.wl-intro-head {
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto clamp(24px, 3.4dvh, 40px);
+}
+.wl-intro-title {
+  margin: 0 0 14px;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 2.6vw + 0.7rem, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+  color: var(--text);
+}
+.wl-intro-sub {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.6;
+  color: var(--text-dim);
+}
+.wl-intro-points {
+  list-style: none;
+  margin: 0 auto clamp(22px, 3dvh, 34px);
+  padding: 0;
+  max-width: 880px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 22px;
+}
+.wl-intro-points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 13px;
+  padding: 15px 16px;
+  background: var(--bg-elev);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+}
+.wl-intro-ico {
+  flex: 0 0 auto;
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  color: var(--accent);
+  background: var(--accent-glow);
+}
+.wl-intro-ico svg { width: 19px; height: 19px; display: block; }
+.wl-intro-points h4 {
+  margin: 1px 0 4px;
+  font-size: 0.96rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+.wl-intro-points p {
+  margin: 0;
+  font-size: 0.86rem;
+  line-height: 1.5;
+  color: var(--text-dim);
+}
+#uw-intro-sim-slot { max-width: 880px; margin: 0 auto; }
+.wl-intro-cta-row {
+  margin: clamp(22px, 3dvh, 32px) 0 4px;
+  text-align: center;
+}
+.wl-intro-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+.wl-intro-cta svg { width: 17px; height: 17px; }
+@media (max-width: 720px) {
+  .wl-intro-points { grid-template-columns: 1fr; }
+}
