@@ -369,12 +369,28 @@
     // The right side is ALWAYS the live Smoothie warp.
     var labelLeft = root.querySelector('[data-compare-label]');
     var compareBtns = document.querySelectorAll('[data-compare]');
+    // Mode-specific section copy: 'stretch' sells against the dumb-stretch
+    // competitors; 'letterbox' sells against doing nothing — and names the
+    // DRM services so "every site" is concrete, not a slogan.
+    var compareCopyEl = document.querySelector('[data-compare-copy]');
+    var COMPARE_COPY = {
+      stretch:
+        'Left: what other “fill the screen” extensions do — uniform ' +
+        'stretch, every face ~31% wider. Right: Smoothie — the centre stays ' +
+        'true, only the edges carry the stretch. Drag the divider.',
+      letterbox:
+        'Left: what you live with today — black bars burning a quarter of ' +
+        'your panel. Right: Smoothie fills every pixel — on every site: ' +
+        'Netflix, Disney+, Prime Video, Max, sports streams, all of them. ' +
+        'Drag the divider.',
+    };
     function setCompareMode(mode) {
       var m = mode === 'letterbox' ? 'letterbox' : 'stretch';
       root.classList.toggle('playground--stretch', m === 'stretch');
       if (labelLeft) {
         labelLeft.textContent = m === 'stretch' ? 'Dumb stretch' : 'Black bars';
       }
+      if (compareCopyEl) compareCopyEl.textContent = COMPARE_COPY[m];
       divider.setAttribute(
         'aria-label',
         m === 'stretch'

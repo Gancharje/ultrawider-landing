@@ -1236,3 +1236,20 @@ main.account-page { flex: 1; }
   gap: 22px;
   flex-wrap: wrap;
 }
+
+/* Step-2 card refit: lead -> coverage strip -> one quiet price line. */
+.wl-step2-works { margin: 18px 0 14px; }
+.wl-step2-works .uw-works-row { font-size: 0.98rem; gap: 4px 15px; }
+.wl-step2-price {
+  margin: 0 0 12px;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  line-height: 1.9;
+  color: var(--text-dim);
+}
+.wl-step2-price strong { color: var(--text); font-weight: 600; }
+.wl-step2-price-free { color: #4ade80; }
+.wl-step2-price a { color: var(--accent); text-decoration: none; white-space: nowrap; }
+.wl-step2-price a:hover { text-decoration: underline; }
+.wl-step2-dot { color: var(--text-mute); padding: 0 4px; }

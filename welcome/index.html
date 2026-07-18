@@ -44,13 +44,13 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
-    <link rel="stylesheet" href="/style.css?v=15" />
-    <link rel="stylesheet" href="/assets/welcome.css?v=8" />
+    <link rel="stylesheet" href="/style.css?v=16" />
+    <link rel="stylesheet" href="/assets/welcome.css?v=9" />
     <script src="/assets/config.js"></script>
     <script src="/assets/error-instrumentation.js"></script>
     <script src="/assets/metrika.js" defer></script>
     <script src="/assets/aspect-profile.js" defer></script>
-    <script src="/assets/warp-demo.js?v=13" defer></script>
+    <script src="/assets/warp-demo.js?v=14" defer></script>
     <script src="/assets/welcome.js?v=12" defer></script>
   </head>
   <body>
@@ -148,8 +148,8 @@
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.83-1.2"/></svg>
                 </span>
                 <div>
-                  <h4>Netflix works</h4>
-                  <p>And Prime Video, Disney+, Max, Hulu — plus sports streams like DAZN and F1 TV. Smoothie never reads a pixel, so DRM has nothing to block.</p>
+                  <h4>Works on every site — even DRM</h4>
+                  <p>Netflix, Prime Video, Disney+, Max, Hulu, sports streams like DAZN and F1 TV — Smoothie never reads a pixel, so protection has nothing to block.</p>
                 </div>
               </li>
               <li>
@@ -301,18 +301,32 @@
                 <strong class="text-accent">Smoothie</strong>. Ultrawider
                 remembers it per site — set once, works forever.
               </p>
-              <p class="wl-pro-line" id="uw-pro">
-                YouTube is free forever. Everywhere else —
-                <strong>Netflix, Prime Video, Disney+, Max, Twitch, sports
-                streams</strong> — is <strong>Pro</strong>, with a free
-                3-minute preview every time you switch Smoothie on.
-                $5/mo · $24/yr · $49 once, card or PayPal.
+              <div class="uw-works uw-works--left wl-step2-works" id="uw-pro" aria-label="Pro works on every video site">
+                <span class="uw-works-eyebrow">Pro unlocks every site</span>
+                <div class="uw-works-row">
+                  <span class="svc-netflix">Netflix</span>
+                  <span class="svc-disney">Disney+</span>
+                  <span class="svc-prime">Prime Video</span>
+                  <span class="svc-max">Max</span>
+                  <span class="svc-hulu">Hulu</span>
+                  <span class="svc-dazn">DAZN</span>
+                  <span class="svc-f1">F1 TV</span>
+                  <span class="svc-twitch">Twitch</span>
+                  <span class="uw-works-more">…and every other video site</span>
+                </div>
+              </div>
+              <p class="wl-step2-price">
+                <span class="wl-step2-price-free">YouTube — free forever</span>
+                <span class="wl-step2-dot" aria-hidden="true">·</span>
+                <span>3-min free preview everywhere else</span>
+                <span class="wl-step2-dot" aria-hidden="true">·</span>
+                <strong>Pro $5/mo · $24/yr · $49 once</strong>
                 <a id="pricing-link" href="/pricing?src=welcome">See pricing →</a>
               </p>
               <p class="wl-pro-drm">
-                Yes, DRM really works now: Smoothie never reads a pixel, so
-                Netflix-class protection has nothing to block. We only
-                started saying this when it became true — in&nbsp;1.0.5.
+                DRM included — Smoothie never reads a pixel, so Netflix-class
+                protection has nothing to block. We only started saying this
+                when it became true, in&nbsp;1.0.5.
               </p>
             </div>
             <div class="wl-step2-cta">

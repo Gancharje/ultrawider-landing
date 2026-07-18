@@ -3744,3 +3744,48 @@ code, .code-inline {
   .compare-toggle-name { display: none; }
   .compare-opt { padding: 9px 14px; font-size: 0.82rem; }
 }
+
+/* ─── Service coverage strip (.uw-works) ─────────────────────────────
+   The one answer to "does Pro work on MY site?": a quiet strip of
+   brand-colored service names + "…and every other video site".
+   Reused on the hero, /welcome step-2, and anywhere the coverage
+   question comes up — one component, one truth. */
+.uw-works {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.uw-works-eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.uw-works-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: baseline;
+  gap: 5px 16px;
+  max-width: 780px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  line-height: 1.7;
+}
+.uw-works-more { color: var(--text-mute); font-weight: 500; }
+/* Brand-colored text names (same trademark-safe language the store
+   screenshots use — names as supported-site facts, no logo art). */
+.svc-netflix { color: #e50914; }  .svc-prime  { color: #00a8e1; }
+.svc-disney  { color: #7cb8ff; }  .svc-max    { color: #a78bfa; }
+.svc-hulu    { color: #1ce783; }  .svc-apple  { color: #f5f5f5; }
+.svc-crunchy { color: #f47521; }  .svc-dazn   { color: #ebff00; }
+.svc-espn    { color: #ff3b30; }  .svc-f1     { color: #e10600; }
+.svc-yt      { color: #ff0000; }  .svc-twitch { color: #a970ff; }
+.svc-kick    { color: #53fc18; }
+/* Left-aligned variant for card layouts (e.g. /welcome step-2). */
+.uw-works--left { align-items: flex-start; }
+.uw-works--left .uw-works-row { justify-content: flex-start; max-width: none; }
