@@ -705,6 +705,15 @@
 
     try { video.play().catch(function () {}); } catch (_) {}
 
+    // Wire-once guard. The intro's back/forward navigation re-calls
+    // setupLiveStage on every return to the stage; without this, each
+    // pass stacked ANOTHER cta click listener, so one user click fired
+    // N requestFullscreen calls — the extras rejected ("requires a user
+    // gesture"), their catch ran tutorialFail('fs_denied'), and the
+    // fallback card silently hid the stage under the live fullscreen.
+    if (liveTutorial.stageWired) return;
+    liveTutorial.stageWired = true;
+
     document.addEventListener('fullscreenchange', function () {
       if (fsElement() === wrap) {
         clearTimeout(liveTutorial.fsGuardTimer);
@@ -872,6 +881,20 @@
           intro.hidden = true;
           if (hl) hl.hidden = false;
           sendEvent('intro_try_clicked');
+          // Browser Back must return to the intro — push a stage entry
+          // (uwFlow kept so the existing branch-switch popstate logic
+          // stays coherent). If the top entry is ALREADY a stage entry
+          // (re-entering after a branch round-trip), replace instead of
+          // stacking duplicates — one Back must always reach the intro.
+          try {
+            var entry = { uwFlow: state.flow, uwScreen: 'stage' };
+            var cur = history.state;
+            if (cur && cur.uwScreen === 'stage') {
+              history.replaceState(entry, '', location.pathname + location.hash);
+            } else {
+              history.pushState(entry, '', location.pathname + location.hash);
+            }
+          } catch (_) {}
           // Park the sim again (hidden) — the stage is the hero now.
           moveSimTo('sim-park');
           setupLiveStage();
@@ -881,6 +904,20 @@
           }
         });
       }
+    }
+  }
+
+  /** Stage → intro (the "← Why it's different" link and browser Back).
+   *  sendEvent('intro_view') fires again inside showIntro — a re-view is
+   *  a real funnel signal, not noise. */
+  function returnToIntro() {
+    state.introSeen = false;
+    var stage = $('live-stage');
+    if (stage) stage.hidden = true;
+    showIntro();
+    var intro = $('uw-intro');
+    if (intro && typeof intro.scrollIntoView === 'function') {
+      intro.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
   }
 
@@ -935,6 +972,21 @@
       skip.addEventListener('click', function () {
         skip.hidden = true;
         revealAfter(true);
+      });
+    }
+    var backIntro = $('uw-back-intro');
+    if (backIntro) {
+      backIntro.addEventListener('click', function () {
+        // Prefer popping the stage history entry so the stack mirrors the
+        // screens (the popstate handler routes to the intro). Direct
+        // fallback covers browsers where the pushState was swallowed.
+        var hs = null;
+        try { hs = history.state; } catch (_) {}
+        if (hs && hs.uwScreen === 'stage') {
+          history.back();
+        } else {
+          returnToIntro();
+        }
       });
     }
     var yt = $('yt-handoff-btn');
@@ -1109,6 +1161,14 @@
     if (link) link.addEventListener('click', function () { switchBranch('link'); });
     window.addEventListener('popstate', function (e) {
       var to = e.state && e.state.uwFlow;
+      var screen = e.state && e.state.uwScreen;
+      // Back from the tutorial stage (its history entry carries
+      // uwScreen:'stage') to any entry without it → return to the
+      // marketing intro instead of a dead click.
+      if (state.flow === 'uw_live' && state.introSeen && !screen) {
+        returnToIntro();
+        return;
+      }
       if (!to || to === state.flow) return;
       applyBranch(to === 'std_16x9' ? 'std_16x9' : 'uw', 'history', false);
     });

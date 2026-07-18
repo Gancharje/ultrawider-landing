@@ -1227,3 +1227,12 @@ main.account-page { flex: 1; }
 @media (max-width: 720px) {
   .wl-intro-points { grid-template-columns: 1fr; }
 }
+
+/* Stage skip row carries two ghost links now (back-to-intro + skip). */
+.wl-stage-skip-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  flex-wrap: wrap;
+}

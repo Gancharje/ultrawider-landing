@@ -45,13 +45,13 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="stylesheet" href="/style.css?v=15" />
-    <link rel="stylesheet" href="/assets/welcome.css?v=7" />
+    <link rel="stylesheet" href="/assets/welcome.css?v=8" />
     <script src="/assets/config.js"></script>
     <script src="/assets/error-instrumentation.js"></script>
     <script src="/assets/metrika.js" defer></script>
     <script src="/assets/aspect-profile.js" defer></script>
     <script src="/assets/warp-demo.js?v=13" defer></script>
-    <script src="/assets/welcome.js?v=10" defer></script>
+    <script src="/assets/welcome.js?v=12" defer></script>
   </head>
   <body>
     <noscript><div><img src="https://mc.yandex.ru/watch/109480276" style="position:absolute;left:-9999px" alt="" /></div></noscript>
@@ -149,7 +149,7 @@
                 </span>
                 <div>
                   <h4>Netflix works</h4>
-                  <p>And Prime, Disney+, Max. Smoothie never reads a pixel, so DRM has nothing to block.</p>
+                  <p>And Prime Video, Disney+, Max, Hulu — plus sports streams like DAZN and F1 TV. Smoothie never reads a pixel, so DRM has nothing to block.</p>
                 </div>
               </li>
               <li>
@@ -201,6 +201,7 @@
                 <strong class="text-accent">Smoothie</strong>. That's the whole product.
               </p>
               <p class="wl-stage-skip-row">
+                <button type="button" id="uw-back-intro" class="wl-ghost-link">← Why it's different</button>
                 <button type="button" id="uw-skip" class="wl-ghost-link">Skip — I'll set it up on YouTube directly →</button>
               </p>
             </div>
@@ -301,13 +302,17 @@
                 remembers it per site — set once, works forever.
               </p>
               <p class="wl-pro-line" id="uw-pro">
-                YouTube is free forever. Twitch, Kick, Vimeo + more are
-                <strong>Pro</strong> — $5/mo · $24/yr · $49 once, card or
-                PayPal. <a id="pricing-link" href="/pricing?src=welcome">See pricing →</a>
+                YouTube is free forever. Everywhere else —
+                <strong>Netflix, Prime Video, Disney+, Max, Twitch, sports
+                streams</strong> — is <strong>Pro</strong>, with a free
+                3-minute preview every time you switch Smoothie on.
+                $5/mo · $24/yr · $49 once, card or PayPal.
+                <a id="pricing-link" href="/pricing?src=welcome">See pricing →</a>
               </p>
               <p class="wl-pro-drm">
-                Netflix, Disney+ and other DRM video can never work — we
-                don't sell what we can't do.
+                Yes, DRM really works now: Smoothie never reads a pixel, so
+                Netflix-class protection has nothing to block. We only
+                started saying this when it became true — in&nbsp;1.0.5.
               </p>
             </div>
             <div class="wl-step2-cta">
