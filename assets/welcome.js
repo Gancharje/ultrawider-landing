@@ -89,6 +89,80 @@
     }
   } catch (_) { /* localStorage blocked → source stays null */ }
 
+  // ─── Tutorial A/B (landing-only — NO extension change) ──────────────
+  // Split real installs by a stable hash of the install id:
+  //   'live'  → the guided fullscreen tutorial (control)
+  //   'noTut' → skip the in-page homework; the intro's "try" button sends
+  //             them straight to the real task (YouTube), no forced ritual.
+  // Tests the "onboarding friction / expectation-gap" churn hypothesis
+  // without touching the shipped extension. Internal/dev always 'live' so
+  // operator testing stays deterministic (and is excluded from analysis).
+  function uwHash(s) {
+    var h = 5381;
+    for (var i = 0; i < s.length; i++) h = (((h << 5) + h) + s.charCodeAt(i)) >>> 0;
+    return h;
+  }
+  state.tutVariant = 'live';
+  state.variantSent = false;
+  try {
+    if (!state.internal && !state.devBuild && state.iid) {
+      state.tutVariant = uwHash(state.iid) % 2 === 0 ? 'live' : 'noTut';
+    }
+  } catch (_) { /* hash failure → stays 'live' */ }
+
+  // ─── Competitor co-presence probe (tests the "conflicting rival
+  //     extension breaks us → churn" hypothesis). Image-probes each rival's
+  //     web-accessible icon: a successful load means it's installed. Pure
+  //     page JS, NO extension change. Best-effort — only detects rivals that
+  //     expose a static, broadly web-accessible icon (a miss ≠ absent). ──
+  var COMPETITORS = [
+    { name: 'ultrawideo', id: 'bfbnagnphiehemkdgmmficmjfddgfhpl',
+      paths: ['icon-32.png', 'icons/icon-32.png', 'icon32.png', 'images/icon-32.png', 'assets/icon-32.png', 'icon-48.png', 'icon-128.png', 'icon.png', 'logo.png'] },
+    { name: 'ultrawidify', id: 'dndehlekllfkaijdlokmmicgnlanfjbi',
+      paths: ['res/icons/uw-32.png', 'res/icons/uw_32.png', 'res/icons/uw.png', 'res/icons/icon-32.png', 'res/icons/38.png', 'res/img/icon.png', 'icons/uw-32.png'] },
+    { name: 'zoomfill', id: 'ochhcgamjcnhpaekcckimgofnedofplf',
+      paths: ['icon-32.png', 'icons/icon-32.png', 'icon32.png', 'images/icon-32.png', 'icon-128.png', 'icon.png', 'logo.png'] },
+    { name: 'uwvideo', id: 'cnekplknldbinbjoghollooefbmabnab',
+      paths: ['icon-32.png', 'icons/icon-32.png', 'icon32.png', 'images/icon-32.png', 'icon-128.png', 'icon.png', 'logo.png'] },
+    { name: 'zoomtofill', id: 'adpjimagbfpknkodpofjphpbdlfkeiho',
+      paths: ['icon-32.png', 'icons/icon-32.png', 'icon32.png', 'images/icon-32.png', 'icon-128.png', 'icon.png', 'logo.png'] },
+  ];
+  function probeOneRival(comp, cb) {
+    var i = 0, settled = false;
+    function done(v) { if (settled) return; settled = true; cb(v); }
+    function next() {
+      if (settled) return;
+      if (i >= comp.paths.length) { done(false); return; }
+      var url = 'chrome-extension://' + comp.id + '/' + comp.paths[i++];
+      var img = new Image();
+      var to = setTimeout(function () { img.onload = img.onerror = null; next(); }, 1500);
+      img.onload = function () { clearTimeout(to); done(true); };
+      img.onerror = function () { clearTimeout(to); next(); };
+      try { img.src = url; } catch (_) { clearTimeout(to); next(); }
+    }
+    next();
+  }
+  function probeCompetitors() {
+    var found = [];
+    var pending = COMPETITORS.length;
+    var fired = false;
+    function report() {
+      if (fired) return;
+      fired = true;
+      // Always send — an empty list is a real signal (no rival detected).
+      sendEvent('competitor_probe', { found: found, checked: COMPETITORS.length });
+    }
+    var guard = setTimeout(report, 8000); // never leave the signal hanging
+    for (var k = 0; k < COMPETITORS.length; k++) {
+      (function (comp) {
+        probeOneRival(comp, function (present) {
+          if (present) found.push(comp.name);
+          if (--pending === 0) { clearTimeout(guard); report(); }
+        });
+      })(COMPETITORS[k]);
+    }
+  }
+
   // ─── Beacons — NEVER block or break UX ──────────────────────────────
   function postJSON(path, payload) {
     var url = API + path;
@@ -841,11 +915,18 @@
         // a user override to std_16x9 may have landed meanwhile.
         if (state.flow !== 'uw_live') return;
         if (liveOk) {
+          if (!state.variantSent) {
+            state.variantSent = true;
+            sendEvent('tutorial_variant', { variant: state.tutVariant });
+          }
           // Marketing intro first (sell → then teach): the tutorial stage
           // appears when the visitor clicks "Try it". introSeen survives
           // re-renders (monitor override round-trips) within the session.
+          // Variant B ('noTut') that re-renders after skipping goes straight
+          // to the after-section — never re-arm the tutorial for it.
           if (state.introSeen) {
-            setupLiveStage();
+            if (state.tutVariant === 'noTut') { revealAfter(false); }
+            else { setupLiveStage(); }
           } else {
             showIntro();
           }
@@ -871,7 +952,15 @@
     if (hl) hl.hidden = true;
     intro.hidden = false;
     moveSimTo('uw-intro-sim-slot', 'LIVE SIMULATION');
-    sendEvent('intro_view');
+    sendEvent('intro_view', { variant: state.tutVariant });
+    // Variant B has no in-page tutorial — the button text ("…on this video")
+    // would lie, so relabel it. First child of the button is the text node.
+    if (state.tutVariant === 'noTut') {
+      var tb = $('uw-intro-try');
+      if (tb && tb.firstChild && tb.firstChild.nodeType === 3) {
+        tb.firstChild.nodeValue = 'Turn it on — takes one click ';
+      }
+    }
     if (!introWired) {
       introWired = true;
       var btn = $('uw-intro-try');
@@ -880,7 +969,17 @@
           state.introSeen = true;
           intro.hidden = true;
           if (hl) hl.hidden = false;
-          sendEvent('intro_try_clicked');
+          sendEvent('intro_try_clicked', { variant: state.tutVariant });
+          // Variant B ('noTut') — the A/B "no homework" arm: skip the forced
+          // in-page fullscreen tutorial and hand them straight to the real
+          // task on YouTube (the extension auto-applies per host). Tests
+          // whether the guided ritual helps retention or repels.
+          if (state.tutVariant === 'noTut') {
+            if (hl) hl.hidden = true;
+            moveSimTo('sim-park');
+            revealAfter(true);
+            return;
+          }
           // Browser Back must return to the intro — push a stage entry
           // (uwFlow kept so the existing branch-switch popstate logic
           // stays coherent). If the top entry is ALREADY a stage entry
@@ -1238,6 +1337,7 @@
     wireSimEngagement();
 
     sendEvent('welcome_view');
+    probeCompetitors(); // rival-extension co-presence (conflict hypothesis)
     fetchConfig(); // kill-switch — resolves in parallel, ≤2.5 s
 
     var hwReady = null;
