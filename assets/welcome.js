@@ -97,18 +97,20 @@
   // Tests the "onboarding friction / expectation-gap" churn hypothesis
   // without touching the shipped extension. Internal/dev always 'live' so
   // operator testing stays deterministic (and is excluded from analysis).
-  function uwHash(s) {
-    var h = 5381;
-    for (var i = 0; i < s.length; i++) h = (((h << 5) + h) + s.charCodeAt(i)) >>> 0;
-    return h;
+  // Independent per-experiment bucketing (round-5 §1) — see assets/experiments.js.
+  // The old djb2 %2 correlated every experiment (a prefix can't change a low-bit
+  // parity), so 'calm' below could never co-occur with the 'live' tutorial arm
+  // that the aha requires. UWExperiments.bucket2 avalanches the key into every
+  // bit, so 'tutorial' and 'post_aha_pressure' assign the same iid independently.
+  var EXP = (typeof window !== 'undefined' && window.UWExperiments) || null;
+  function assignBucket(key, arms, fallback) {
+    try {
+      if (!EXP || state.internal || state.devBuild || !state.iid) return fallback;
+      return EXP.bucket2(key, state.iid, arms);
+    } catch (_) { return fallback; }
   }
-  state.tutVariant = 'live';
+  state.tutVariant = assignBucket('tutorial', ['live', 'noTut'], 'live');
   state.variantSent = false;
-  try {
-    if (!state.internal && !state.devBuild && state.iid) {
-      state.tutVariant = uwHash(state.iid) % 2 === 0 ? 'live' : 'noTut';
-    }
-  } catch (_) { /* hash failure → stays 'live' */ }
 
   // ─── post_aha_pressure A/B (round-4 §6) ─────────────────────────────
   // AFTER the aha, do we push (price + Pro unlock + "now go set YouTube"
@@ -119,13 +121,8 @@
   // independently of the tutorial A/B (uncorrelated arms). Internal/dev
   // always 'current' and are excluded from analysis. The assignment is
   // recorded at exposure (when the post-aha surface renders), not here.
-  state.postAhaPressure = 'current';
+  state.postAhaPressure = assignBucket('post_aha_pressure', ['current', 'calm'], 'current');
   state.postAhaSent = false;
-  try {
-    if (!state.internal && !state.devBuild && state.iid) {
-      state.postAhaPressure = uwHash('paha:' + state.iid) % 2 === 0 ? 'current' : 'calm';
-    }
-  } catch (_) { /* hash failure → stays 'current' */ }
 
   // ─── Competitor co-presence probe (tests the "conflicting rival
   //     extension breaks us → churn" hypothesis). Image-probes each rival's
