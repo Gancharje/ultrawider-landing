@@ -42,7 +42,7 @@
 
       <span class="eyebrow">Legal</span>
       <h1>Privacy Policy</h1>
-      <p class="legal-meta">Last updated: 5 July 2026 · Effective: 5 July 2026</p>
+      <p class="legal-meta">Last updated: 22 July 2026 · Effective: 22 July 2026</p>
 
       <p>
         This Privacy Policy describes how Akimov Pavel Andreevich, a
@@ -120,8 +120,9 @@
           understand who installs and why people leave: your anonymous
           install ID, extension version, browser type and language, screen
           resolution and aspect-ratio tier, an approximate country derived
-          server-side from your IP (the IP itself is used transiently for
-          this and rate-limiting), and coarse hardware capability info
+          server-side from your IP (your raw IP is stored with this record for
+          country lookup, rate-limiting and abuse prevention, then deleted or
+          anonymised within 30 days), and coarse hardware capability info
           your browser exposes to every website (CPU core count,
           approximate device memory, graphics-card model string, display
           refresh rate). The setup page also records which onboarding steps
@@ -166,8 +167,12 @@
           extension. You can block it with any tracker-blocker, with
           your browser's "Do Not Track" header, or by visiting the
           <a href="https://yandex.com/support/metrica/general/opt-out.html" target="_blank" rel="noopener">Yandex.Metrica opt-out page</a>.
-          The Chrome extension itself ships no analytics — Chrome Web
-          Store policy forbids it.
+          The extension itself loads no Yandex.Metrica or third-party
+          analytics SDK; its own data collection is the opt-in usage
+          telemetry, the on-by-default anonymous first-session diagnostics,
+          and the always-on crash/error reports described above — all
+          anonymous, all limited to the fields listed, and all disclosed
+          here.
         </li>
         <li><strong>Server logs</strong> — when you visit ultrawider.net or hit our licence-check endpoint, our hosting provider may log standard request metadata (IP, user-agent, timestamp) for security and abuse prevention. Kept for no more than 30 days.</li>
       </ul>
@@ -249,6 +254,7 @@
         <li>Payment metadata: kept for the period required by Russian tax and accounting law.</li>
         <li>Support emails: kept up to 24 months, then deleted.</li>
         <li>Server logs: kept up to 30 days, then deleted.</li>
+        <li>Raw IP addresses in analytics, onboarding, and diagnostics records: deleted or anonymised within 30 days. Payment-related IPs are retained under payment-metadata retention above for fraud prevention.</li>
       </ul>
 
       <h2>9. Your rights</h2>
