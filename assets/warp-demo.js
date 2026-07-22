@@ -377,7 +377,7 @@
       stretch:
         'Left: what other “fill the screen” extensions do — uniform ' +
         'stretch, every face ~31% wider. Right: Smoothie — the centre stays ' +
-        'true, only the edges carry the stretch. Drag the divider.',
+        'far closer to natural while the edges carry most of the stretch. Drag the divider.',
       letterbox:
         'Left: what you live with today — black bars burning a quarter of ' +
         'your panel. Right: Smoothie fills every pixel — on every site: ' +

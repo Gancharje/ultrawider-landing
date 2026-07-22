@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Fill your 21:9 / 32:9 ultrawide with any video — even Netflix and other DRM streams. Plain stretching makes everyone look wide; Ultrawider's Smoothie warp bends only the edges, so faces stay true. Free on YouTube, free 3-minute preview everywhere else." />
+  <meta name="description" content="Fill your 21:9 / 32:9 ultrawide with any video — even Netflix and other DRM streams. Plain stretching makes everyone look wide; Ultrawider's Smoothie warp bends far more at the edges than the centre, so faces stay far truer. Free on YouTube, free 3-minute preview everywhere else." />
   <meta name="keywords" content="ultrawide monitor, 21:9 video, 32:9 video, 16:9 to 21:9, fill ultrawide screen, netflix ultrawide full screen, ultrawide netflix, stretch video without distortion, ultrawide YouTube, letterbox remove, black bars remove, non-linear stretch" />
   <meta name="theme-color" content="#050505" />
   <meta property="og:title" content="Ultrawider — Fill Ultrawide Monitors with 21:9 Video Warp" />
-  <meta property="og:description" content="Fill your 21:9 / 32:9 with any video — even Netflix. Plain stretch widens faces; Smoothie's non-linear warp keeps them true. Free on YouTube." />
+  <meta property="og:description" content="Fill your 21:9 / 32:9 with any video — even Netflix. Plain stretch widens faces; Smoothie's non-linear warp keeps them far truer. Free on YouTube." />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://ultrawider.net" />
   <meta property="og:site_name" content="Ultrawider" />
@@ -16,7 +16,7 @@
   <meta property="og:image:height" content="800" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Ultrawider — Fill Ultrawide Monitors with 21:9 Video Warp" />
-  <meta name="twitter:description" content="Fill your 21:9 / 32:9 with any video — even Netflix. Plain stretch widens faces; Smoothie's non-linear warp keeps them true." />
+  <meta name="twitter:description" content="Fill your 21:9 / 32:9 with any video — even Netflix. Plain stretch widens faces; Smoothie's non-linear warp keeps them far truer." />
   <meta name="twitter:image" content="https://ultrawider.net/assets/og-faces.png" />
   <link rel="canonical" href="https://ultrawider.net/" />
   <title>Ultrawider — Fill Ultrawide Monitors with 21:9 Video Warp</title>
@@ -123,7 +123,7 @@
             for (var j = 0; j < spcEls.length; j++) spcEls[j].textContent = lostPx + ' px lost';
             ledeEl.innerHTML = "That's <strong>" + (lossPct * 2) +
               "% of your screen</strong> a standard player throws away on every widescreen video. " +
-              "<strong>Smoothie fills every pixel</strong> — faces stay true, even on Netflix.";
+              "<strong>Smoothie fills every pixel</strong> — faces stay far truer than a plain stretch, even on Netflix.";
           } else if (tier === 'compact') {
             for (var k = 0; k < pctEls.length; k++) pctEls[k].textContent = '0%';
             for (var m = 0; m < spcEls.length; m++) spcEls[m].textContent = '0 px lost';
@@ -315,7 +315,7 @@
           <p data-compare-copy>
             Left: what other &ldquo;fill the screen&rdquo; extensions do — uniform
             stretch, every face ~31% wider. Right: Smoothie — the centre stays
-            true, only the edges carry the stretch. Drag the divider.
+            far closer to natural while the edges carry most of the stretch. Drag the divider.
           </p>
         </header>
 
@@ -454,8 +454,10 @@
             <a class="math-cite" href="https://mrl.cs.nyu.edu/~perlin/paper445.pdf" target="_blank" rel="noopener">Ken Perlin's quintic smootherstep</a>
             — chosen because its second derivative vanishes at the endpoints, so
             the warp accelerates without a visible "seam" between centre and edge.
-            At the default strength of 0.34, the centre matches a 21:9 monitor's
-            1.31× horizontal stretch exactly: faces stay round.
+            At the default strength of 0.34, the curve delivers a 21:9 monitor's
+            1.31× overall horizontal fill while keeping the centre far closer to
+            its natural width than the edges — so faces near the middle stay
+            close to round.
           </p>
         </header>
 

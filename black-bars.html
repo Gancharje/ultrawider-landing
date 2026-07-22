@@ -79,7 +79,7 @@
     <p class="sub">The 2026 guide to making 16:9 video fill a 21:9 or 32:9 screen — four real methods, with the honest trade-offs of each.</p>
 
     <div class="tldr">
-      <p><strong>Short answer:</strong> black bars exist because nearly all video is produced in 16:9, and your monitor isn't. You can crop the video, stretch it, or warp it non-linearly. Cropping loses the edges, linear stretching makes faces ~30% wider, and non-linear warping keeps the center of the image untouched while stretching only the edges — which is the only method where people on screen still look like themselves.</p>
+      <p><strong>Short answer:</strong> black bars exist because nearly all video is produced in 16:9, and your monitor isn't. You can crop the video, stretch it, or warp it non-linearly. Cropping loses the edges, linear stretching makes faces ~30% wider, and non-linear warping keeps the center of the image far closer to natural while pushing the stretch out to the edges — the method where people on screen still look most like themselves.</p>
     </div>
 
     <h2>Why you get black bars in the first place</h2>
@@ -124,11 +124,11 @@
 
     <h2>Method 4: Non-linear warp (what we build)</h2>
     <div class="method">
-      <h3>Keep the center of the frame untouched, stretch only the edges</h3>
-      <p>Old TVs called a crude version of this "smart stretch". The modern version runs a warp curve over the video right in the browser: the <strong>central ~60% of the frame maps 1:1</strong> — mathematically zero distortion where faces, players and action live — while the outer edges absorb all of the stretch, where peripheral vision barely registers it.</p>
+      <h3>Protect the center, push the stretch out to the edges</h3>
+      <p>Old TVs called a crude version of this "smart stretch". The modern version runs a warp curve over the video right in the browser: the <strong>central band takes far less stretch than the edges</strong> — close to untouched on 21:9, only lightly stretched on very-wide screens — while the outer edges absorb most of it, where peripheral vision barely registers it.</p>
       <p>That's what <a href="/">Ultrawider</a> does. It detects your exact aspect ratio (21:9, 32:9, anything), computes the right curve, and applies it the moment a video goes fullscreen. The warp is an SVG displacement filter that never reads a pixel — so it works even on DRM services like <strong>Netflix and Prime Video</strong>, where pixel-reading tools give up.</p>
       <ul class="pc">
-        <li class="pro">Faces and center content stay geometrically correct</li>
+        <li class="pro">Faces and center content stay far closer to natural than a uniform stretch</li>
         <li class="pro">Fills the entire panel — no bars, no cropped subtitles</li>
         <li class="pro">Works per-site with remembered preferences</li>
         <li class="pro">No pixel access needed — DRM sites (Netflix-class) get the full warp too</li>
@@ -143,7 +143,7 @@
       <tr><td>Zoom / crop</td><td>✓ perfect</td><td>✕ loses 25%</td><td>rarely</td><td>✓</td></tr>
       <tr><td>GPU scaling</td><td>✕ 30% wider</td><td>✓</td><td>✓ (stretches everything)</td><td>✓</td></tr>
       <tr><td>Linear stretch ext.</td><td>✕ 30% wider</td><td>✓</td><td>✓</td><td>✓</td></tr>
-      <tr><td>Non-linear warp</td><td>✓ center untouched</td><td>✓</td><td>✓</td><td>✓</td></tr>
+      <tr><td>Non-linear warp</td><td>✓ center protected</td><td>✓</td><td>✓</td><td>✓</td></tr>
     </table>
     </div>
     <p>If you only watch on one desktop player, use its crop mode. If you watch video in a browser — which is where YouTube, Twitch, sports and courses actually live — a non-linear warp is the only option that fills the screen <em>and</em> keeps people looking human.</p>
@@ -165,7 +165,7 @@
       <dt>Does the warp really work on DRM sites like Netflix?</dt>
       <dd>Yes. DRM (Widevine and friends) blocks <em>reading</em> video pixels, which is why older pixel-reading warp tools fell back to crop there. Ultrawider's Smoothie sidesteps the problem entirely: it's an SVG displacement filter — the browser's compositor bends the picture without any code ever touching a pixel, so Netflix-class sites get the exact same warp as YouTube.</dd>
       <dt>Does this work on 32:9 super ultrawides?</dt>
-      <dd>Yes — the warp curve is computed from your actual aspect ratio. On 32:9 the edges absorb more stretch, but the center stays 1:1 just the same. Crop mode on 32:9 costs too much image to be practical, which makes the warp approach even more relevant there.</dd>
+      <dd>Yes — the warp curve is computed from your actual aspect ratio. A 32:9 screen needs twice the width of the 16:9 frame, so there is more stretch to place: the center takes some of it too (it can't stay perfectly 1:1), but the curve keeps the center far less distorted than a uniform stretch and pushes most of the stretch to the edges. Crop mode on 32:9 costs too much image to be practical, which makes the warp approach even more relevant there.</dd>
     </dl>
 
     <div class="foot">
