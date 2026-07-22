@@ -190,6 +190,38 @@
         // 1st beacon: the uninstall itself.
         beacon(basePayload());
 
+        // Diagnostics snapshot forwarding (extension 1.0.6, ТЗ §4.2/§13-landing).
+        // The uninstall URL carries &d=<compact anonymous snapshot>; forward it
+        // VERBATIM to the extension diagnostics endpoint so the churn cause
+        // (funnel stage, worst terminal, injection stats, versions) survives with
+        // NO network opt-in — this is the only always-on channel. Load-time
+        // keepalive is the primary send; pagehide/visibility is a backstop in
+        // case the tab closes before it flushes.
+        var diagSnap = null;
+        try { diagSnap = new URLSearchParams(location.search).get('d'); } catch (_) {}
+        var diagSent = false;
+        function diagBeacon() {
+          if (diagSent || !diagSnap) return;
+          diagSent = true;
+          var body;
+          try { body = JSON.stringify({ iid: installId, diag: diagSnap }); } catch (_) { return; }
+          try {
+            fetch(API + '/api/extension/uninstall', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: body,
+              keepalive: true,
+              mode: 'cors',
+              credentials: 'omit',
+            }).catch(function () {});
+          } catch (_) {}
+        }
+        diagBeacon();
+        window.addEventListener('pagehide', diagBeacon);
+        document.addEventListener('visibilitychange', function () {
+          if (document.visibilityState === 'hidden') diagBeacon();
+        });
+
         // 2nd (optional) beacon: the reason.
         var answered = false;
         var btns = document.querySelectorAll('.gb-btn');
