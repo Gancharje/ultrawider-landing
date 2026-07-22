@@ -1,0 +1,12 @@
+{
+  "name": "ultrawider-landing",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Ultrawider marketing + onboarding site (static HTML/JS).",
+  "scripts": {
+    "test": "node tests/goodbye.browser-test.cjs"
+  },
+  "devDependencies": {
+    "playwright": "^1.60.0"
+  }
+}

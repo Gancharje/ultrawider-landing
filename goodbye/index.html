@@ -9,16 +9,20 @@
     <meta name="robots" content="noindex" />
     <link rel="canonical" href="https://ultrawider.net/goodbye" />
 
-    <!-- Capture ?iid=&had=&days= (set by chrome.runtime.setUninstallURL)
-         and strip them before anything else sees the URL. -->
+    <!-- Capture ?iid=&had=&days=&d= (set by chrome.runtime.setUninstallURL)
+         and strip them before anything else sees the URL. The `d` snapshot
+         MUST be read here, in the head, BEFORE replaceState wipes the query —
+         the body script runs after the strip and would otherwise see an empty
+         location.search (this silently killed diagnostics forwarding). -->
     <script>
       (function () {
-        var p = { iid: null, had: null, days: null };
+        var p = { iid: null, had: null, days: null, d: null };
         try {
           var q = new URLSearchParams(location.search);
           p.iid = q.get('iid');
           p.had = q.get('had');
           p.days = q.get('days');
+          p.d = q.get('d');
           if (location.search) {
             history.replaceState(null, '', location.pathname + location.hash);
           }
@@ -197,14 +201,27 @@
         // NO network opt-in — this is the only always-on channel. Load-time
         // keepalive is the primary send; pagehide/visibility is a backstop in
         // case the tab closes before it flushes.
-        var diagSnap = null;
-        try { diagSnap = new URLSearchParams(location.search).get('d'); } catch (_) {}
-        var diagSent = false;
+        // `d` was captured in the head BEFORE replaceState stripped the query
+        // (location.search is empty by now — reading it here would always be
+        // null, which is exactly the bug this replaces).
+        var diagSnap = P.d || null;
+        var diagSent = false;      // only true after a CONFIRMED 2xx
+        var diagInFlight = false;  // never overlap two attempts
+        var diagAttempts = 0;
+        var DIAG_MAX_ATTEMPTS = 5;
+        function scheduleDiagRetry() {
+          if (diagSent || diagAttempts >= DIAG_MAX_ATTEMPTS) return;
+          // Exponential backoff 400 → 800 → 1600 → 3200 → capped 5000 ms.
+          var delay = Math.min(400 * Math.pow(2, diagAttempts - 1), 5000);
+          setTimeout(diagBeacon, delay);
+        }
         function diagBeacon() {
-          if (diagSent || !diagSnap) return;
-          diagSent = true;
+          if (diagSent || diagInFlight || !diagSnap) return;
+          if (diagAttempts >= DIAG_MAX_ATTEMPTS) return;
+          diagAttempts++;
           var body;
           try { body = JSON.stringify({ iid: installId, diag: diagSnap }); } catch (_) { return; }
+          diagInFlight = true;
           try {
             fetch(API + '/api/extension/uninstall', {
               method: 'POST',
@@ -213,10 +230,29 @@
               keepalive: true,
               mode: 'cors',
               credentials: 'omit',
-            }).catch(function () {});
-          } catch (_) {}
+            }).then(function (r) {
+              diagInFlight = false;
+              // A real retry: only stop on a genuine 2xx. A 5xx / 4xx / opaque
+              // failure schedules another attempt instead of silently giving up
+              // (the old code set diagSent=true before the fetch even resolved).
+              if (r && (r.ok || (r.status >= 200 && r.status < 300))) {
+                diagSent = true;
+              } else {
+                scheduleDiagRetry();
+              }
+            }).catch(function () {
+              diagInFlight = false;
+              scheduleDiagRetry();
+            });
+          } catch (_) {
+            diagInFlight = false;
+            scheduleDiagRetry();
+          }
         }
         diagBeacon();
+        // Backstops: if the tab is closing before the first attempt confirmed,
+        // fire again (keepalive survives unload). Guarded by diagSent so a
+        // confirmed send never double-posts.
         window.addEventListener('pagehide', diagBeacon);
         document.addEventListener('visibilitychange', function () {
           if (document.visibilityState === 'hidden') diagBeacon();
