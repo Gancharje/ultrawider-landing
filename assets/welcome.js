@@ -110,6 +110,23 @@
     }
   } catch (_) { /* hash failure → stays 'live' */ }
 
+  // ─── post_aha_pressure A/B (round-4 §6) ─────────────────────────────
+  // AFTER the aha, do we push (price + Pro unlock + "now go set YouTube"
+  // homework) or stay calm (just acknowledge it works, nothing to do)?
+  //   'current' → the shipped step-2 sell/homework card (control)
+  //   'calm'    → no price, no Pro, no extra homework
+  // Deterministic by a SALTED hash of the install id so it splits
+  // independently of the tutorial A/B (uncorrelated arms). Internal/dev
+  // always 'current' and are excluded from analysis. The assignment is
+  // recorded at exposure (when the post-aha surface renders), not here.
+  state.postAhaPressure = 'current';
+  state.postAhaSent = false;
+  try {
+    if (!state.internal && !state.devBuild && state.iid) {
+      state.postAhaPressure = uwHash('paha:' + state.iid) % 2 === 0 ? 'current' : 'calm';
+    }
+  } catch (_) { /* hash failure → stays 'current' */ }
+
   // ─── Competitor co-presence probe (tests the "conflicting rival
   //     extension breaks us → churn" hypothesis). Image-probes each rival's
   //     web-accessible icon: a successful load means it's installed. Pure
@@ -841,12 +858,37 @@
     var after = $('uw-after');
     if (!after || !after.hidden) return;
     after.hidden = false;
+    var target = applyPostAhaTreatment();
     if (scroll) {
       try {
-        var handoff = $('uw-handoff');
-        if (handoff) handoff.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        var el = $(target) || $('uw-handoff');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
       } catch (_) {}
     }
+  }
+
+  /** post_aha_pressure treatment (round-4 §6). Only bites AFTER the aha — a
+   *  fallback/skip visitor never saw it work, so they still need the "set
+   *  YouTube" handoff to reach value. Records the assignment at exposure
+   *  (first render of the post-aha surface), then, for the 'calm' arm, hides
+   *  the sell/homework card and shows a bare "you're all set" acknowledgement:
+   *  no price, no Pro, no extra homework. Returns the id to scroll to. */
+  function applyPostAhaTreatment() {
+    if (!state.ahaSeen) return 'uw-handoff';
+    if (!state.postAhaSent) {
+      state.postAhaSent = true;
+      sendEvent('post_aha_pressure_assigned', { variant: state.postAhaPressure });
+    }
+    if (state.postAhaPressure !== 'calm') return 'uw-handoff';
+    var handoff = $('uw-handoff');
+    var calm = $('uw-calm');
+    if (handoff) handoff.hidden = true;
+    if (calm) {
+      calm.hidden = false;
+      var m = $('calm-mail');
+      if (m) { m.href = 'mailto:' + CONTACT + '?subject=Ultrawider'; m.textContent = CONTACT; }
+    }
+    return 'uw-calm';
   }
 
   var STORE_URLS = {
@@ -1328,6 +1370,51 @@
     window.addEventListener('focus', schedule);
   }
 
+  // ─── Dwell / engagement measurement (round-4 §5) ────────────────────
+  // Real foreground-time measurement: accumulate only the time the page is
+  // actually VISIBLE (visibilitychange pauses/resumes the clock — a tab left
+  // in the background doesn't count), and emit one `welcome_dwell` on the
+  // first hide/pagehide (the reliable "they're leaving" signal; unload is
+  // not). Answers a question the funnel couldn't: did they even look, and for
+  // how long, before they left — and how far they got.
+  var dwell = { visibleMs: 0, resumeTs: null, sent: false };
+  function dwellVisible() {
+    try { return document.visibilityState !== 'hidden'; } catch (_) { return true; }
+  }
+  function dwellResume() { if (dwell.resumeTs === null) dwell.resumeTs = Date.now(); }
+  function dwellPause() {
+    if (dwell.resumeTs !== null) { dwell.visibleMs += Date.now() - dwell.resumeTs; dwell.resumeTs = null; }
+  }
+  function dwellReached() {
+    if (state.ahaSeen) return 'aha';
+    if (state.hudSeen) return 'hud';
+    if (state.fsTs) return 'tutorial_fs';
+    if (state.introSeen) return 'intro_try';
+    return 'view';
+  }
+  function sendDwell() {
+    if (dwell.sent) return;
+    dwell.sent = true;
+    dwellPause();
+    sendEvent('welcome_dwell', {
+      visible_ms: Math.round(dwell.visibleMs),
+      total_ms: Date.now() - state.loadTs,
+      reached: dwellReached(),
+      flow: state.flow,
+      aha: !!state.ahaSeen,
+      variant: state.tutVariant,
+      post_aha: state.postAhaPressure,
+    });
+  }
+  function initDwell() {
+    if (dwellVisible()) dwellResume();
+    document.addEventListener('visibilitychange', function () {
+      if (document.visibilityState === 'hidden') { dwellPause(); sendDwell(); }
+      else dwellResume();
+    });
+    window.addEventListener('pagehide', sendDwell);
+  }
+
   // ─── Boot ───────────────────────────────────────────────────────────
   function boot() {
     state.dims = detectDims();
@@ -1335,6 +1422,7 @@
     wireOverride();
     wireRedetect();
     wireSimEngagement();
+    initDwell();
 
     sendEvent('welcome_view');
     probeCompetitors(); // rival-extension co-presence (conflict hypothesis)
