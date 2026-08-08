@@ -118,8 +118,23 @@
     <script src="/assets/config.js"></script>
     <script>
       (function () {
-        document.getElementById('contact-link').href =
-          'mailto:' + window.ULTRAWIDER.CONTACT_EMAIL;
+        // ONE MISSING ASSET MUST NOT TAKE THE PAGE WITH IT.
+        //
+        // `config.js` is a separate request, and a client that skips or drops
+        // it — a crawler, a blocker, a bad minute of network — used to make
+        // this whole block throw on its first line. Everything below it,
+        // including the button this page exists for, then never ran. Measured:
+        // Applebot hit /cancel/ and the error log caught
+        // `undefined is not an object (evaluating 'CONTACT')`.
+        //
+        // The values are constants, so the page carries its own copy and works
+        // even when the config never arrives. Same shape as goodbye/ and
+        // internal/, which already do this.
+        var CFG = window.ULTRAWIDER || {};
+        var CONTACT = CFG.CONTACT_EMAIL || 'hello@ultrawider.net';
+        var API = CFG.API_BASE || 'https://api.ultrawider.net';
+        var contactLink = document.getElementById('contact-link');
+        if (contactLink) contactLink.href = 'mailto:' + CONTACT;
 
         var params = new URLSearchParams(location.search);
         var presetEmail = params.get('email');
@@ -147,7 +162,7 @@
             // Backend always answers {ok:true} — deliberately no
             // account-existence oracle, so the success copy stays honest
             // ("if that email has any licenses").
-            var resp = await fetch(window.ULTRAWIDER.API_BASE + '/api/recover', {
+            var resp = await fetch(API + '/api/recover', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ email: email }),
@@ -156,12 +171,12 @@
             msg.className = 'account-msg';
             msg.textContent =
               "If that email has any licenses, we've sent them. Check spam. " +
-              'No email after 10 minutes? Write ' + window.ULTRAWIDER.CONTACT_EMAIL + '.';
+              'No email after 10 minutes? Write ' + CONTACT + '.';
           } catch (err) {
             msg.className = 'account-msg account-msg--error';
             msg.textContent =
               "Couldn't reach our servers — try again in a minute, or email " +
-              window.ULTRAWIDER.CONTACT_EMAIL + " and we'll dig your key out manually.";
+              CONTACT + " and we'll dig your key out manually.";
           }
         });
       })();

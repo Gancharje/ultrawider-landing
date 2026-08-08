@@ -162,8 +162,25 @@
     <script src="/assets/config.js"></script>
     <script>
       (function () {
-        document.getElementById('contact-link').href =
-          'mailto:' + window.ULTRAWIDER.CONTACT_EMAIL + '?subject=Cancel%20subscription';
+        // ONE MISSING ASSET MUST NOT TAKE THE PAGE WITH IT.
+        //
+        // `config.js` is a separate request, and a client that skips or drops
+        // it — a crawler, a blocker, a bad minute of network — used to make
+        // this whole block throw on its first line. Everything below it,
+        // including the button this page exists for, then never ran. Measured:
+        // Applebot hit /cancel/ and the error log caught
+        // `undefined is not an object (evaluating 'CONTACT')`.
+        //
+        // The values are constants, so the page carries its own copy and works
+        // even when the config never arrives. Same shape as goodbye/ and
+        // internal/, which already do this.
+        var CFG = window.ULTRAWIDER || {};
+        var CONTACT = CFG.CONTACT_EMAIL || 'hello@ultrawider.net';
+        var API = CFG.API_BASE || 'https://api.ultrawider.net';
+        var contactLink = document.getElementById('contact-link');
+        if (contactLink) {
+          contactLink.href = 'mailto:' + CONTACT + '?subject=Cancel%20subscription';
+        }
 
         // Metrika loads deferred (after this classic script) — fire the
         // page-view goal once it's available.
@@ -223,7 +240,7 @@
           show('Cancelling…');
 
           try {
-            var resp = await fetch(window.ULTRAWIDER.API_BASE + '/api/subscription/cancel', {
+            var resp = await fetch(API + '/api/subscription/cancel', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ email: email, key: rawKey }),
@@ -249,7 +266,7 @@
             show(
               (body && body.message) ||
                 'Something went wrong (' + resp.status + '). Please try again or email ' +
-                  window.ULTRAWIDER.CONTACT_EMAIL + '.',
+                  CONTACT + '.',
               'error'
             );
             btn.disabled = false;
@@ -257,7 +274,7 @@
           } catch (err) {
             show(
               "Couldn't reach our servers — try again in a minute, or email " +
-                window.ULTRAWIDER.CONTACT_EMAIL + " and we'll cancel it for you.",
+                CONTACT + " and we'll cancel it for you.",
               'error'
             );
             btn.disabled = false;

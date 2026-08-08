@@ -189,7 +189,9 @@
         }
 
         function planCard(planId) {
-          var p = window.ULTRAWIDER.PLANS[planId];
+          // The prices live in config.js; without it there is nothing honest to
+          // print, so the card is skipped rather than the page thrown away.
+          var p = (window.ULTRAWIDER && window.ULTRAWIDER.PLANS || {})[planId];
           if (!p) return '';
           var ex = EXTRAS[planId] || { period: '', features: [], cta: 'Get Pro' };
           var isRec = planId === RECOMMENDED;
