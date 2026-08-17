@@ -76,20 +76,7 @@
       <h3>2.2 Information collected automatically</h3>
       <ul>
         <li><strong>Anonymous installation count</strong> — provided by the Chrome Web Store statistics dashboard. Not tied to your identity.</li>
-        <li>
-          <strong>Crash and error reports</strong> — when the extension or
-          the website encounters an unhandled JavaScript error, we
-          automatically send a technical report containing: the error
-          message and stack trace, the page <strong>hostname only</strong>
-          (e.g. <code>youtube.com</code> — never the full URL, path, or
-          query string), the browser/OS string, and an
-          <strong>anonymous install ID</strong> (a random UUID
-          generated at first install, not linked to your email or any
-          other identifier). Crash reports are <strong>always sent</strong>
-          regardless of the telemetry toggle, because we need this
-          signal to keep the product working. They contain no URLs,
-          no PII, no video content, no credentials, and no licence key.
-        </li>
+        <li><strong>Crash and error reports</strong> — when the extension or the website encounters an unhandled JavaScript error, we automatically send a technical report containing the error message, the stack trace and the browser/OS string. Before it leaves your browser that text passes through a redactor that replaces every web address, site name, file path, e-mail address, licence key, session token and random identifier it recognises with a placeholder such as <code>[url]</code> or <code>[host]</code>; what remains is the shape of the failure — which of our own files and functions threw, and on which line. Any extra context is limited to a fixed list of counters and short codes, and anything not on that list is dropped rather than sent. These reports carry no installation ID of their own, and they are sent regardless of the telemetry toggle, because we need this signal to keep the product working.</li>
         <li>
           <strong>Behavioural telemetry</strong> (extension only) — when
           the extension loads on a page, when you open a video in
@@ -117,8 +104,7 @@
           (<code>ultrawider.net/welcome</code>), and when you uninstall it
           your browser may open <code>ultrawider.net/goodbye</code>. These
           pages send our server a single first-party snapshot so we can
-          understand who installs and why people leave: your anonymous
-          install ID, extension version, browser type and language, screen
+          understand who installs and why people leave: your installation ID, extension version, browser type and language, screen
           resolution and aspect-ratio tier, an approximate country derived
           server-side from your IP (your raw IP is stored with this record for
           country lookup, rate-limiting and abuse prevention, then deleted or
@@ -126,8 +112,7 @@
           your browser exposes to every website (CPU core count,
           approximate device memory, graphics-card model string, display
           refresh rate). The setup page also records which onboarding steps
-          you reached, and the goodbye page records the optional uninstall
-          reason you click. No cookies are used; the install ID is stored
+          you reached, and the goodbye page records the optional uninstall reason you click. <strong>The uninstall address itself</strong> carries three values whenever you remove the extension: your installation ID, whether the extension ever applied a mode, and how many days it was installed. Those three are sent even if you have turned diagnostics off — they are what tells us an uninstall happened at all. Unless diagnostics are off, that address also carries the short coded snapshot described below. No cookies are used; the install ID is stored
           in this site's local storage so we can tell returning visits
           apart. None of this is linked to your email or identity, and
           none of it involves your browsing history.
@@ -143,19 +128,7 @@
           or dismissed — never what you write in a review). Same data, same
           purpose; still no URLs, page content, identity, or watch history.
         </li>
-        <li>
-          <strong>Anonymous first-session diagnostics</strong> — to understand
-          why the extension sometimes fails to fill the screen, it may send
-          anonymous coded outcomes from your first sessions: which mode was
-          attempted (smooth / crop / off), whether it succeeded, why it fell
-          back if it didn't, whether the on-screen control was actually shown,
-          plus the anonymous install ID, extension and browser version, and
-          screen dimensions already described above. These are fixed enumerated
-          codes and coarse buckets only — never your email, license key,
-          browsing history, page URLs, page content, or video frames. It is
-          <strong>on by default and can be turned off</strong> in the
-          extension's settings, alongside the anonymous-telemetry toggle.
-        </li>
+        <li><strong>First-session diagnostics</strong> — to understand why the extension sometimes fails to fill the screen, it sends coded outcomes from your first sessions: which mode was attempted (smooth / crop / off), whether it succeeded, why it fell back if it did not, whether the on-screen control was actually shown, how far the setup flow got, how long a working result was watched in coarse steps, and what became of the free Smoothie sample including whether the Crop it falls back to could be proven — plus the installation ID, extension and browser version, and screen dimensions already described above. These are fixed enumerated codes, counters and coarse buckets only — never your e-mail, licence key, browsing history, page URLs, page titles, page content, or video frames. <strong>They are on by default and can be turned off</strong> in the extension settings, alongside the anonymous-telemetry toggle; turning them off stops both this channel and the coded snapshot on the uninstall address described above. If that setting cannot be read for any reason, the extension behaves as though it were off and sends nothing. The channel that sends these diagnostics over the network while the extension is running sits behind an additional server-side switch, and that switch is currently off.</li>
         <li>
           <strong>Anonymous website analytics</strong> — the
           <a href="https://ultrawider.net">ultrawider.net</a> website (NOT
@@ -170,9 +143,7 @@
           The extension itself loads no Yandex.Metrica or third-party
           analytics SDK; its own data collection is the opt-in usage
           telemetry, the on-by-default anonymous first-session diagnostics,
-          and the always-on crash/error reports described above — all
-          anonymous, all limited to the fields listed, and all disclosed
-          here.
+          and the always-on crash/error reports described above — all limited to the fields listed and all disclosed here. Two separate switches control them, and they are not the same switch: usage telemetry — the only channel that sends a site name — is <strong>off until you turn it on</strong>, while first-session diagnostics are <strong>on until you turn them off</strong>. The installation ID is a random identifier created when you install: it identifies an installation rather than a person, and it does link that installation’s own records to one another, which is why we call it pseudonymous rather than anonymous.
         </li>
         <li><strong>Server logs</strong> — when you visit ultrawider.net or hit our licence-check endpoint, our hosting provider may log standard request metadata (IP, user-agent, timestamp) for security and abuse prevention. Kept for no more than 30 days.</li>
       </ul>

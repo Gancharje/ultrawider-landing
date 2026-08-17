@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "description": "Ultrawider marketing + onboarding site (static HTML/JS).",
   "scripts": {
-    "test": "node tests/experiments.test.cjs && node tests/events-contract.test.cjs && node tests/goodbye.browser-test.cjs"
+    "test": "node tests/experiments.test.cjs && node tests/events-contract.test.cjs && node tests/privacy-claims.test.cjs && node tests/goodbye.browser-test.cjs"
   },
   "devDependencies": {
     "playwright": "^1.60.0"
