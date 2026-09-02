@@ -14,24 +14,15 @@
  *    common browser-extension violations that aren't actionable.
  */
 
-// ── Google Ads tag (AW-953520341) ───────────────────────────────────────────
-// Base gtag loader, shared across every user-facing landing page (this file is
-// included on all pages except /internal). Loading it here — early, in one
-// place — lets Google detect the tag site-wide and is the prerequisite for the
-// Store-Click conversion event (fired from the install button) and remarketing.
-(function () {
-  var GADS_ID = 'AW-953520341';
-  if (window.gtag) return; // already loaded via the inline snippet on this page
-  var s = document.createElement('script');
-  s.async = true;
-  s.src = 'https://www.googletagmanager.com/gtag/js?id=' + GADS_ID;
-  document.head.appendChild(s);
-  window.dataLayer = window.dataLayer || [];
-  function gtag() { window.dataLayer.push(arguments); }
-  window.gtag = window.gtag || gtag;
-  window.gtag('js', new Date());
-  window.gtag('config', GADS_ID);
-})();
+// ── note ─────────────────────────────────────────────────────────────────────
+// A Google Ads gtag loader used to live at the top of this file and therefore
+// reached EVERY page that included it — including /goodbye, the uninstall
+// surface. Measured on a real render (2026-09-02): the loader's remarketing
+// collect requests fired from the very page a user lands on when they REMOVE
+// the extension. The owner removed advertising from that surface outright:
+// the loader now lives in /assets/ads-gtag.js under its own name, is included
+// by the marketing pages only, and this file is what its name always said it
+// was — first-party error instrumentation, nothing else.
 
 (function () {
   var ULTRAWIDER = window.ULTRAWIDER || {};
