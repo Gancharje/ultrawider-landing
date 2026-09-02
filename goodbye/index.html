@@ -44,11 +44,17 @@
     <link rel="stylesheet" href="/assets/welcome.css?v=5" />
     <script src="/assets/config.js"></script>
     <script src="/assets/error-instrumentation.js"></script>
-    <script src="/assets/metrika.js" defer></script>
+    <!-- NO THIRD-PARTY TRACKING ON THIS PAGE (owner decisions, 2026-09-02):
+         the ad tag and the metrics counter are both gone from the uninstall
+         surface — the page a person lands on the moment they remove the
+         extension carries none of it, script or noscript. The owner's own
+         analytics stay: the first-party uninstall POST and the error
+         instrumentation above. The shared counter asset is untouched and
+         remains included by the other pages. privacy.html's "No cookies are
+         used" is true here again; tests/goodbye-no-ads.browser-test.cjs
+         keeps it that way. -->
   </head>
   <body>
-    <noscript><div><img src="https://mc.yandex.ru/watch/109480276" style="position:absolute;left:-9999px" alt="" /></div></noscript>
-
     <header class="site-header">
       <div class="container nav">
         <a href="/" class="logo">
