@@ -35,24 +35,32 @@ assert.ok(
   'and the page must say which of the two it is',
 );
 
-// ── the two switches are two ──────────────────────────────────────────────
+// ── one channel, no switches (owner decision 2026-09-03) ─────────────────
 assert.ok(
-  says('off until you turn it on') && says('on until you turn them off'),
-  'usage telemetry is opt-in and first-session diagnostics are opt-out — the page must distinguish them',
+  says('one channel, always on, no switches'),
+  'the extension has ONE diagnostics channel, always on; the page must say so',
 );
 assert.ok(
   !/first-session diagnostics[^.]{0,120}(opt-in|strictly opt-in)/i.test(text),
   'the 1.0.7 diagnostics channel is opt-OUT; describing it as opt-in is the one claim that is a release blocker',
 );
 
-// ── the opt-out does not silence everything ───────────────────────────────
+// ── always-on diagnostics (owner decision 2026-09-03) ────────────────────
 assert.ok(
-  says('uninstall address itself') && says('sent even if you have turned diagnostics off'),
-  'the bare iid/had/days uninstall ping keeps being sent, and the page must say so',
+  says('automatic, all installs') && says('random installation ID') && says('30 days'),
+  'the page must say diagnostics are automatic, identified by a random install ID, kept 30 days',
 );
 assert.ok(
-  !says('we send nothing at all when you turn') && !says('turning it off stops all'),
-  'the opt-out stops the diagnostics channel and the snapshot, not every request',
+  says('hostname') && says('never sent') && says('no full URLs, paths or queries'),
+  'hostname is disclosed as allowed; URLs/paths/queries named as never sent',
+);
+assert.ok(
+  !says('opt-in') && !says('turn it on') && !says('toggle'),
+  'no opt-in/toggle language may survive the always-on decision',
+);
+assert.ok(
+  says('uninstall address itself'),
+  'the bare iid/had/days uninstall ping keeps being described',
 );
 
 // ── error reports ─────────────────────────────────────────────────────────
