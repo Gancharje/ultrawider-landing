@@ -77,28 +77,15 @@
       <h3>2.2 Information collected automatically</h3>
       <ul>
         <li><strong>Anonymous installation count</strong> — provided by the Chrome Web Store statistics dashboard. Not tied to your identity.</li>
-        <li><strong>Crash and error reports</strong> — when the extension or the website encounters an unhandled JavaScript error, we automatically send a technical report containing the error message, the stack trace and the browser/OS string. Before it leaves your browser that text passes through a redactor that replaces every web address, site name, file path, e-mail address, licence key, session token and random identifier it recognises with a placeholder such as <code>[url]</code> or <code>[host]</code>; what remains is the shape of the failure — which of our own files and functions threw, and on which line. Any extra context is limited to a fixed list of counters and short codes, and anything not on that list is dropped rather than sent. These reports carry no installation ID of their own, and they are sent regardless of the telemetry toggle, because we need this signal to keep the product working.</li>
-        <li>
-          <strong>Behavioural telemetry</strong> (extension only) — when
-          the extension loads on a page, when you open a video in
-          fullscreen with our HUD visible, and when you select a viewing
-          mode, the extension sends an anonymous event containing: your
-          install ID, the page hostname (e.g. <code>youtube.com</code> —
-          NOT the URL or video ID), your monitor's aspect-ratio tier
-          (16:9, 21:9, 24:9, or 32:9), and screen dimensions. We use
-          this to understand which sites our users actually want
-          ultrawide support on and to find compatibility gaps.
+        <li><strong>One explicit diagnostics choice (v1.0.7)</strong> — the extension asks once, in a card at the top of its popup, whether you will share anonymous diagnostics. The two buttons — <em>Share anonymous diagnostics</em> and <em>Don&rsquo;t share</em> — are equal choices; nothing is pre-selected, closing the popup without choosing sends nothing, and every feature works either way. Until you choose, nothing below in this list is sent. You can change the decision at any time in the same popup; changing it to &ldquo;Don&rsquo;t share&rdquo; also erases everything still waiting to be sent.
           <br><br>
-          <strong>This is OFF by default</strong> — behavioural telemetry
-          is strictly opt-in starting with v1.0.1. You can turn it on or
-          off at any time by opening the Ultrawider popup (toolbar icon)
-          and toggling «Анонимная телеметрия» / "Anonymous telemetry".
-          The toggle controls <strong>only</strong> these usage-analytics
-          events; the anonymous crash and error reports described above
-          are always sent (hostname only, no URLs) because we need them
-          to keep the product working. We send no behavioural events
-          unless you opt in.
-        </li>
+          <strong>What is sent if you share:</strong>
+          <ul>
+            <li><strong>Quality events</strong> — coded outcomes only: mode launches and results (smooth / crop), error codes and which build phase failed, whether a fallback to Crop succeeded, how quickly a mode was switched off (bucketed as 0&ndash;5, 6&ndash;15, 16&ndash;60 or over 60 seconds), and the free-sample funnel (started / ran out / retried / exhausted), plus Upgrade and Enter-key button clicks. Every event carries your install ID, the extension version and stable session/attempt identifiers so outcomes can be correlated.</li>
+            <li><strong>Critical extension errors</strong> — when our own code fails, a coded report: the failure kind, the error class, which of our own files and lines were involved, and the same install/version identifiers. Raw error text is never sent: the message is dropped at the source, and only our own frames are kept.</li>
+          </ul>
+          <strong>What is never sent, in any event:</strong> page addresses (URLs), hostnames, paths or queries; video IDs, titles or media addresses; page or subtitle text; raw error messages or stacks containing page frames; search queries; your e-mail; your licence key; anything you type. If the choice cannot be read for any reason, the extension behaves as if you had not shared and sends nothing.</li>
+        <li><strong>Website error reports</strong> — when the website itself encounters an unhandled error, a technical report is sent containing the redacted error shape (every web address, site name, file path, e-mail address, licence key, session token and random identifier replaced by placeholders; only the shape of the failure remains). These come from the website, carry no installation ID, and are not covered by the extension choice above.</li>
         <li>
           <strong>Setup &amp; goodbye pages</strong> — when you install the
           extension it opens our one-time setup page
@@ -129,7 +116,7 @@
           or dismissed — never what you write in a review). Same data, same
           purpose; still no URLs, page content, identity, or watch history.
         </li>
-        <li><strong>First-session diagnostics</strong> — to understand why the extension sometimes fails to fill the screen, it sends coded outcomes from your first sessions: which mode was attempted (smooth / crop / off), whether it succeeded, why it fell back if it did not, whether the on-screen control was actually shown, how far the setup flow got, how long a working result was watched in coarse steps, and what became of the free Smoothie sample including whether the Crop it falls back to could be proven — plus the installation ID, extension and browser version, and screen dimensions already described above. These are fixed enumerated codes, counters and coarse buckets only — never your e-mail, licence key, browsing history, page URLs, page titles, page content, or video frames. <strong>They are on by default and can be turned off</strong> in the extension settings, alongside the anonymous-telemetry toggle; turning them off stops both this channel and the coded snapshot on the uninstall address described above. If that setting cannot be read for any reason, the extension behaves as though it were off and sends nothing. The channel that sends these diagnostics over the network while the extension is running sits behind an additional server-side switch, and that switch is currently off.</li>
+        <li><strong>First-session diagnostics</strong> — to understand why the extension sometimes fails to fill the screen, it sends coded outcomes from your first sessions: which mode was attempted (smooth / crop / off), whether it succeeded, why it fell back if it did not, whether the on-screen control was actually shown, how far the setup flow got, how long a working result was watched in coarse steps, and what became of the free Smoothie sample including whether the Crop it falls back to could be proven — plus the installation ID, extension and browser version, and screen dimensions already described above. These are fixed enumerated codes, counters and coarse buckets only — never your e-mail, licence key, browsing history, page URLs, page titles, page content, or video frames. <strong>They are on by default and can be turned off</strong> in the extension settings; turning them off stops both this channel and the coded snapshot on the uninstall address described above. If that setting cannot be read for any reason, the extension behaves as though it were off and sends nothing. The channel that sends these diagnostics over the network while the extension is running sits behind an additional server-side switch, and that switch is currently off.</li>
         <li>
           <strong>Anonymous website analytics</strong> — the
           <a href="https://ultrawider.net">ultrawider.net</a> website (NOT
