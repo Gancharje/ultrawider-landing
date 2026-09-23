@@ -265,7 +265,28 @@
         });
 
         // 2nd (optional) beacon: the reason.
+        // Leak-sensor patch (migration 022): every reason beacon carries
+        // dwell_ms (how long the page was open at answer time), and a
+        // "no_response" beacon fires on page-hide when the user leaves
+        // without tapping anything — 153 of 181 September beacons had no
+        // reason at all, and "ignored the question" vs "closed the tab
+        // instantly" are different problems only dwell can separate.
         var answered = false;
+        var noResponseSent = false;
+        var openedAt = Date.now();
+        function dwellMs() { return Date.now() - openedAt; }
+        function sendNoResponse() {
+          if (answered || noResponseSent) return;
+          noResponseSent = true;
+          var p = basePayload();
+          p.reason = 'no_response';
+          p.dwell_ms = dwellMs();
+          beacon(p);
+        }
+        window.addEventListener('pagehide', sendNoResponse);
+        document.addEventListener('visibilitychange', function () {
+          if (document.visibilityState === 'hidden') sendNoResponse();
+        });
         var btns = document.querySelectorAll('.gb-btn');
         for (var i = 0; i < btns.length; i++) {
           (function (btn) {
@@ -274,6 +295,7 @@
               answered = true;
               var p = basePayload();
               p.reason = btn.getAttribute('data-reason');
+              p.dwell_ms = dwellMs();
               beacon(p);
               var q = document.getElementById('gb-question');
               var thanks = document.getElementById('gb-thanks');
