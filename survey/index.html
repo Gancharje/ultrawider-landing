@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ultrawider — 2-minute survey</title>
+<style>
+  *{box-sizing:border-box;margin:0}
+  body{background:#0b0d12;color:#f0f2f5;font:15px/1.6 -apple-system,BlinkMacSystemFont,"SF Pro Text","Inter","Segoe UI",system-ui,sans-serif;padding:40px 20px;min-height:100vh;display:flex;align-items:flex-start;justify-content:center}
+  .survey{max-width:480px;width:100%}
+  h1{font-size:22px;font-weight:700;margin-bottom:6px;letter-spacing:-.01em}
+  .sub{color:#8b93a3;font-size:14px;margin-bottom:28px}
+  .sub b{color:#f59e0b;font-weight:600}
+
+  .q{margin-bottom:26px;padding:20px;background:#12151c;border:1px solid rgba(255,255,255,.08);border-radius:12px}
+  .q h2{font-size:15px;font-weight:600;margin-bottom:14px;color:#e8ecf0}
+  .opt{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;margin-bottom:6px;border:1px solid rgba(255,255,255,.08);border-radius:8px;background:rgba(255,255,255,.03);cursor:pointer;transition:all .15s ease}
+  .opt:hover{border-color:rgba(245,158,11,.3);background:rgba(245,158,11,.05)}
+  .opt.selected{border-color:#f59e0b;background:rgba(245,158,11,.1)}
+  .opt input[type=radio]{display:none}
+  .dot{width:18px;height:18px;border-radius:50%;border:2px solid #4a5060;flex-shrink:0;margin-top:1px;transition:all .15s ease;position:relative}
+  .opt.selected .dot{border-color:#f59e0b;background:#f59e0b}
+  .opt.selected .dot::after{content:'';position:absolute;inset:3px;border-radius:50%;background:#0b0d12}
+  .opt label{cursor:pointer;color:#c8cdd5;font-size:14px;line-height:1.45}
+  .opt.selected label{color:#f0f2f5}
+
+  textarea,input[type=email],input[type=text]{width:100%;padding:10px 14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:8px;color:#f0f2f5;font:inherit;font-size:14px;margin-top:8px;resize:vertical;min-height:60px;outline:none;transition:border-color .15s ease}
+  textarea:focus,input:focus{border-color:#f59e0b}
+  textarea::placeholder,input::placeholder{color:#5a6070}
+  .hint{font-size:12px;color:#5a6070;margin-top:6px}
+
+  .submit{display:block;width:100%;padding:14px;margin-top:8px;background:#f59e0b;border:1px solid #f59e0b;border-radius:10px;color:#0a0a0a;font:600 15px/1 inherit;text-align:center;cursor:pointer;text-decoration:none;transition:all .15s ease}
+  .submit:hover{background:#fbbf24;border-color:#fbbf24;transform:translateY(-1px)}
+  .submit:active{transform:scale(.98)}
+
+  .done{display:none;text-align:center;padding:40px 20px}
+  .done h2{font-size:20px;margin-bottom:10px;color:#f59e0b}
+  .done p{color:#8b93a3;font-size:14px}
+
+  @media (max-width:480px){body{padding:20px 16px}.q{padding:16px}}
+</style>
+</head>
+<body>
+<div class="survey">
+  <h1>Ultrawider survey</h1>
+  <p class="sub"><b>Free Pro key</b> for completing this 2-minute survey.</p>
+
+  <form id="surveyForm">
+
+  <div class="q" id="q1">
+    <h2>Have you tried our Smoothie mode? Did you like it?</h2>
+    <div class="opt" data-value="tried_liked"><input type="radio" name="q1" value="tried_liked" id="q1a"><span class="dot"></span><label for="q1a">Tried it, liked it</label></div>
+    <div class="opt" data-value="tried_disliked"><input type="radio" name="q1" value="tried_disliked" id="q1b"><span class="dot"></span><label for="q1b">Tried it, didn't like it</label></div>
+    <div class="opt" data-value="not_tried"><input type="radio" name="q1" value="not_tried" id="q1c"><span class="dot"></span><label for="q1c">Haven't tried it yet</label></div>
+  </div>
+
+  <div class="q" id="q2">
+    <h2>Is the current functionality enough for you?</h2>
+    <div class="opt" data-value="enough"><input type="radio" name="q2" value="enough" id="q2a"><span class="dot"></span><label for="q2a">Yes, enough</label></div>
+    <div class="opt" data-value="not_enough"><input type="radio" name="q2" value="not_enough" id="q2b"><span class="dot"></span><label for="q2b">No — tell us what's missing</label></div>
+    <textarea id="q2text" placeholder="What would you like Ultrawider to do?"></textarea>
+  </div>
+
+  <div class="q" id="q3">
+    <h2>Have you run into technical issues?</h2>
+    <div class="opt" data-value="no_issues"><input type="radio" name="q3" value="no_issues" id="q3a"><span class="dot"></span><label for="q3a">No, works fine</label></div>
+    <div class="opt" data-value="had_issues"><input type="radio" name="q3" value="had_issues" id="q3b"><span class="dot"></span><label for="q3b">Yes — describe the bug and the site</label></div>
+    <textarea id="q3text" placeholder="What happened, and on which site?"></textarea>
+  </div>
+
+  <div class="q" id="q4">
+    <h2>Email for your free Pro key</h2>
+    <input type="email" id="q4text" placeholder="you@example.com" autocomplete="email">
+    <p class="hint">We'll only use it to send your key and follow up on your feedback. No newsletters, no spam.</p>
+  </div>
+
+  <button type="submit" class="submit">Get my free Pro key</button>
+
+  </form>
+
+  <div class="done" id="done">
+    <h2>✓ Thank you!</h2>
+    <p>Your free Pro key is on its way to your inbox.<br>Every answer helps us build a better Ultrawider.</p>
+  </div>
+</div>
+
+<script>
+(function() {
+  'use strict';
+  var API = (window.ULTRAWIDER && window.ULTRAWIDER.API_BASE) || 'https://api.ultrawider.net';
+  var qs = new URLSearchParams(location.search);
+  var iid = qs.get('iid');
+
+  // Strip query params from the address bar (privacy: no install_id in history)
+  try { history.replaceState(null, '', location.pathname); } catch(e) {}
+
+  // ── Event logging (every action, even without submit) ──
+  var lastSent = {};
+  function logEvent(event, data) {
+    var payload = { event: event, data: data || null };
+    if (iid) payload.install_id = iid;
+    // Debounce identical events (typing produces many)
+    var key = event + ':' + JSON.stringify(data);
+    if (lastSent[key] && Date.now() - lastSent[key] < 1000) return;
+    lastSent[key] = Date.now();
+    try {
+      fetch(API + '/api/survey/event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+        keepalive: true,
+        mode: 'cors',
+        credentials: 'omit',
+      }).catch(function() {});
+    } catch(e) {}
+  }
+
+  // Page view
+  logEvent('survey_view', { referrer: document.referrer || null });
+
+  // ── Radio button logging ──
+  function bindRadio(name, event) {
+    var opts = document.querySelectorAll('#' + name + ' .opt');
+    for (var i = 0; i < opts.length; i++) {
+      (function(opt) {
+        opt.addEventListener('click', function() {
+          // Deselect siblings
+          for (var j = 0; j < opts.length; j++) opts[j].classList.remove('selected');
+          opt.classList.add('selected');
+          var radio = opt.querySelector('input[type=radio]');
+          if (radio) radio.checked = true;
+          logEvent(event, { value: opt.dataset.value });
+        });
+      })(opts[i]);
+    }
+  }
+  bindRadio('q1', 'q1_select');
+  bindRadio('q2', 'q2_select');
+  bindRadio('q3', 'q3_select');
+
+  // ── Text logging (debounced) ──
+  function bindText(id, event) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var timer = null;
+    el.addEventListener('input', function() {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(function() {
+        logEvent(event, { length: el.value.length, value: el.value.slice(0, 200) });
+      }, 500);
+    });
+  }
+  bindText('q2text', 'q2_text');
+  bindText('q3text', 'q3_text');
+  bindText('q4text', 'q4_text');
+
+  // ── Abandon logging ──
+  function currentState() {
+    return {
+      q1: getRadio('q1'), q2: getRadio('q2'), q2_text: !!document.getElementById('q2text').value,
+      q3: getRadio('q3'), q3_text: !!document.getElementById('q3text').value,
+      email: !!document.getElementById('q4text').value
+    };
+  }
+  function getRadio(name) {
+    var sel = document.querySelector('#' + name + ' .opt.selected');
+    return sel ? sel.dataset.value : null;
+  }
+  window.addEventListener('pagehide', function() {
+    if (document.getElementById('done').style.display === 'block') return; // already submitted
+    logEvent('survey_abandon', currentState());
+  });
+
+  // ── Submit ──
+  document.getElementById('surveyForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    var state = {
+      q1: getRadio('q1'),
+      q2_choice: getRadio('q2'),
+      q2_text: document.getElementById('q2text').value || null,
+      q3_choice: getRadio('q3'),
+      q3_text: document.getElementById('q3text').value || null,
+      email: document.getElementById('q4text').value || null
+    };
+    if (iid) state.install_id = iid;
+    logEvent('survey_submit', { q1: state.q1, q2: state.q2_choice, q3: state.q3_choice, has_email: !!state.email });
+    try {
+      fetch(API + '/api/survey/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(state),
+        keepalive: true,
+        mode: 'cors',
+        credentials: 'omit',
+      }).catch(function() {});
+    } catch(e2) {}
+    document.getElementById('surveyForm').style.display = 'none';
+    document.getElementById('done').style.display = 'block';
+  });
+})();
+</script>
+</body>
+</html>
