@@ -52,26 +52,27 @@
     <div class="opt" data-value="tried_liked"><input type="radio" name="q1" value="tried_liked" id="q1a"><span class="dot"></span><label for="q1a">Tried it, liked it</label></div>
     <div class="opt" data-value="tried_disliked"><input type="radio" name="q1" value="tried_disliked" id="q1b"><span class="dot"></span><label for="q1b">Tried it, didn't like it</label></div>
     <div class="opt" data-value="not_tried"><input type="radio" name="q1" value="not_tried" id="q1c"><span class="dot"></span><label for="q1c">Haven't tried it yet</label></div>
+    <textarea id="q1why" placeholder="What's stopping you? (optional)" style="display:none"></textarea>
   </div>
 
   <div class="q" id="q2">
     <h2>Is the current functionality enough for you?</h2>
     <div class="opt" data-value="enough"><input type="radio" name="q2" value="enough" id="q2a"><span class="dot"></span><label for="q2a">Yes, enough</label></div>
     <div class="opt" data-value="not_enough"><input type="radio" name="q2" value="not_enough" id="q2b"><span class="dot"></span><label for="q2b">No — tell us what's missing</label></div>
-    <textarea id="q2text" placeholder="What would you like Ultrawider to do?"></textarea>
+    <textarea id="q2text" placeholder="What would you like Ultrawider to do?" style="display:none"></textarea>
   </div>
 
   <div class="q" id="q3">
     <h2>Have you run into technical issues?</h2>
     <div class="opt" data-value="no_issues"><input type="radio" name="q3" value="no_issues" id="q3a"><span class="dot"></span><label for="q3a">No, works fine</label></div>
     <div class="opt" data-value="had_issues"><input type="radio" name="q3" value="had_issues" id="q3b"><span class="dot"></span><label for="q3b">Yes — describe the bug and the site</label></div>
-    <textarea id="q3text" placeholder="What happened, and on which site?"></textarea>
+    <textarea id="q3text" placeholder="What happened, and on which site?" style="display:none"></textarea>
   </div>
 
   <div class="q" id="q4">
     <h2>Email for your free Pro key</h2>
     <input type="email" id="q4text" placeholder="you@example.com" autocomplete="email">
-    <p class="hint">We'll only use it to send your key and follow up on your feedback. No newsletters, no spam.</p>
+    <p class="hint">Your key is sent regardless of your answers — even if you haven't tried Smoothie.<br>We'll only use it to send your key and follow up. No newsletters, no spam.</p>
   </div>
 
   <button type="submit" class="submit">Get my free Pro key</button>
@@ -118,7 +119,7 @@
   // Page view
   logEvent('survey_view', { referrer: document.referrer || null });
 
-  // ── Radio button logging ──
+  // ── Radio button logging + conditional textareas ──
   function bindRadio(name, event) {
     var opts = document.querySelectorAll('#' + name + ' .opt');
     for (var i = 0; i < opts.length; i++) {
@@ -130,10 +131,31 @@
           var radio = opt.querySelector('input[type=radio]');
           if (radio) radio.checked = true;
           logEvent(event, { value: opt.dataset.value });
+          // Show/hide conditional textareas
+          updateTextareas(name, opt.dataset.value);
         });
       })(opts[i]);
     }
   }
+
+  function updateTextareas(name, value) {
+    if (name === 'q1') {
+      // Show "What's stopping you?" only for "Haven't tried"
+      var why = document.getElementById('q1why');
+      if (why) why.style.display = value === 'not_tried' ? 'block' : 'none';
+    }
+    if (name === 'q2') {
+      // Show textarea only for "Not enough"
+      var q2t = document.getElementById('q2text');
+      if (q2t) q2t.style.display = value === 'not_enough' ? 'block' : 'none';
+    }
+    if (name === 'q3') {
+      // Show textarea only for "Yes, issues"
+      var q3t = document.getElementById('q3text');
+      if (q3t) q3t.style.display = value === 'had_issues' ? 'block' : 'none';
+    }
+  }
+
   bindRadio('q1', 'q1_select');
   bindRadio('q2', 'q2_select');
   bindRadio('q3', 'q3_select');
@@ -150,6 +172,7 @@
       }, 500);
     });
   }
+  bindText('q1why', 'q1_why');
   bindText('q2text', 'q2_text');
   bindText('q3text', 'q3_text');
   bindText('q4text', 'q4_text');
@@ -176,10 +199,11 @@
     e.preventDefault();
     var state = {
       q1: getRadio('q1'),
+      q1_why: (getRadio('q1') === 'not_tried') ? (document.getElementById('q1why').value || null) : null,
       q2_choice: getRadio('q2'),
-      q2_text: document.getElementById('q2text').value || null,
+      q2_text: (getRadio('q2') === 'not_enough') ? (document.getElementById('q2text').value || null) : null,
       q3_choice: getRadio('q3'),
-      q3_text: document.getElementById('q3text').value || null,
+      q3_text: (getRadio('q3') === 'had_issues') ? (document.getElementById('q3text').value || null) : null,
       email: document.getElementById('q4text').value || null
     };
     if (iid) state.install_id = iid;
