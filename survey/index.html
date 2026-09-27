@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Ultrawider — Survey</title>
-<meta name="description" content="2-minute survey. Free Pro key for your feedback." />
+<meta name="description" content="2-minute survey. Free 7-day Pro key for your feedback." />
 <meta name="theme-color" content="#050505" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -31,9 +31,9 @@ body{background:var(--bg);color:var(--text);font:15px/1.6 var(--font-body);paddi
 
 /* ── header ── */
 .brand{display:flex;align-items:center;gap:10px;margin-bottom:28px}
-.brand-mark{width:24px;height:16px;background:linear-gradient(135deg,var(--accent),var(--accent-dim));border-radius:3px;box-shadow:0 0 0 1px rgba(255,255,255,.06),0 4px 12px var(--accent-glow);position:relative}
-.brand-mark::after{content:'';position:absolute;inset:2px;background:#050505;border-radius:1px;clip-path:polygon(0 0,50% 0,50% 100%,0 100%)}
-.brand-name{font-family:var(--font-display);font-weight:700;font-size:14px;letter-spacing:.1em;text-transform:uppercase}
+.brand-mark{width:22px;height:14px;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dim) 100%);border-radius:3px;box-shadow:0 0 0 1px rgba(255,255,255,.04),0 4px 14px rgba(245,158,11,.35);position:relative}
+.brand-mark::after{content:'';position:absolute;inset:2px;background:var(--bg);border-radius:1px;clip-path:polygon(0 0,35% 0,35% 100%,0 100%,0 0,65% 0,65% 100%,100% 100%,100% 0)}
+.brand-name{font-family:var(--font-display);font-weight:700;font-size:1.05rem;letter-spacing:0}
 
 h1{font-family:var(--font-display);font-weight:800;font-size:clamp(1.6rem,3vw,2.2rem);letter-spacing:-.03em;line-height:1.05;margin-bottom:8px}
 h1 .accent{color:var(--accent)}
@@ -121,7 +121,7 @@ textarea::placeholder,input::placeholder{color:var(--text-mute)}
   </div>
 
   <h1>Tell us what <span class="accent">you think</span></h1>
-  <p class="lede"><strong>Free Pro key</strong> for 2 minutes of honest feedback. Your answers shape what we build next.</p>
+  <p class="lede"><strong>Free 7-day Pro key</strong> for 2 minutes of honest feedback. Your answers shape what we build next.</p>
 
   <form id="surveyForm">
 
@@ -152,14 +152,14 @@ textarea::placeholder,input::placeholder{color:var(--text-mute)}
 
   <div class="q" id="q4">
     <span class="q-num">04</span>
-    <h2>Where should we send your free Pro key?</h2>
+    <h2>Where should we send your 7-day Pro key?</h2>
     <input type="email" id="q4text" placeholder="you@example.com" autocomplete="email">
-    <p class="hint"><strong>Sent for any answer</strong> — even if you haven't tried Smoothie.<br>Used only for your key and feedback follow-up. No spam.</p>
+    <p class="hint"><strong>Sent for any answer</strong> — even if you haven't tried Smoothie.<br>7-day trial, sent instantly. Used only for your key and follow-up. No spam.</p>
   </div>
 
   <button type="submit" class="submit">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-    Get my free Pro key
+    Get my free 7-day Pro key
   </button>
 
   </form>
@@ -169,7 +169,7 @@ textarea::placeholder,input::placeholder{color:var(--text-mute)}
       <svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></svg>
     </div>
     <h2>You're all set</h2>
-    <p>Your free Pro key is on its way to your inbox.<br>Every answer helps us build a better Ultrawider.</p>
+    <p>Your free 7-day Pro key is on its way to your inbox.<br>Every answer helps us build a better Ultrawider.</p>
   </div>
 
   <p class="footer"><a href="https://ultrawider.net">ultrawider.net</a> · <a href="https://ultrawider.net/privacy">Privacy</a></p>
