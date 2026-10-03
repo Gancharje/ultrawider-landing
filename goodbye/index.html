@@ -73,20 +73,42 @@
         </header>
 
         <div id="gb-question">
-          <p style="color: var(--text-dim); font-size: 0.95rem; margin: 0;">
-            One optional question — what made you uninstall?
+          <p style="color: var(--text-dim); font-size: 0.95rem; margin: 0 0 14px;">
+            Two quick optional questions — 20 seconds that shape what we fix next.
           </p>
-          <div class="gb-buttons">
+
+          <p class="gb-step" id="gb-step1-label" style="font-family: var(--font-mono, ui-monospace, monospace); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px;">01 · What made you uninstall?</p>
+          <div class="gb-buttons" id="gb-reasons">
             <button type="button" class="gb-btn" data-reason="monitor_16x9">My monitor is 16:9 — nothing to fill</button>
+            <button type="button" class="gb-btn" data-reason="didnt_work">It didn't work</button>
+            <button type="button" class="gb-btn" data-reason="didnt_like_result">Didn't like the picture</button>
+            <button type="button" class="gb-btn" data-reason="too_fiddly">Too many clicks</button>
             <button type="button" class="gb-btn" data-reason="not_expected">Not what I expected</button>
-            <button type="button" class="gb-btn" data-reason="too_fiddly">Too much clicking to use it</button>
-            <button type="button" class="gb-btn" data-reason="didnt_work">It didn't work / stayed broken</button>
-            <button type="button" class="gb-btn" data-reason="didnt_like_result">Didn't like how it looked</button>
-            <button type="button" class="gb-btn" data-reason="other">Other</button>
+            <button type="button" class="gb-btn" data-reason="just_trying">Was just trying it out</button>
+            <button type="button" class="gb-btn" data-reason="other">Something else</button>
+          </div>
+
+          <div id="gb-followup" hidden style="margin-top: 18px;">
+            <p class="gb-step" id="gb-step2-label" style="font-family: var(--font-mono, ui-monospace, monospace); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px;">02 · One more detail — what exactly?</p>
+            <div class="gb-buttons" id="gb-details"></div>
+            <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 10px; max-width: 420px;">
+              <div>
+                <label for="gb-site" style="display:block; font-size: 12px; color: var(--text-mute); margin-bottom: 5px;">Where did it happen? (site)</label>
+                <input type="text" id="gb-site" placeholder="e.g. primevideo.com" autocomplete="off"
+                  style="width:100%; padding:10px 14px; background: var(--bg-elev-2, #141414); border: 1px solid var(--border-soft, #161616); border-radius: 8px; color: var(--text); font: 14px/1.4 Inter, system-ui, sans-serif;" />
+              </div>
+              <div>
+                <label for="gb-email" style="display:block; font-size: 12px; color: var(--text-mute); margin-bottom: 5px;">Email — for a <strong style="color: var(--accent);">free week of Pro</strong> if you give it another shot (optional)</label>
+                <input type="email" id="gb-email" placeholder="you@example.com" autocomplete="email"
+                  style="width:100%; padding:10px 14px; background: var(--bg-elev-2, #141414); border: 1px solid var(--border-soft, #161616); border-radius: 8px; color: var(--text); font: 14px/1.4 Inter, system-ui, sans-serif;" />
+              </div>
+            </div>
+            <button type="button" id="gb-send" class="aaa-cta-primary" style="margin-top: 16px; padding: 11px 26px; font-size: 13px; border-radius: 8px;">Send answers</button>
+            <button type="button" id="gb-skip" style="margin-left: 10px; background:none; border:none; color: var(--text-mute); font-size: 12px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; padding: 11px 4px;">skip</button>
           </div>
         </div>
 
-        <div class="gb-thanks" id="gb-thanks" hidden>Thanks — that genuinely helps.</div>
+        <div class="gb-thanks" id="gb-thanks" hidden>Thanks — that genuinely helps.<span id="gb-key-note" hidden><br /><br />Your free week of Pro is on its way to your inbox.</span></div>
 
         <p class="gb-links">
           Changed your mind?
@@ -287,23 +309,125 @@
         document.addEventListener('visibilitychange', function () {
           if (document.visibilityState === 'hidden') sendNoResponse();
         });
-        var btns = document.querySelectorAll('.gb-btn');
-        for (var i = 0; i < btns.length; i++) {
+        // ── THE TWO-STEP SURVEY (owner rework, 03.10) ──────────────────────
+        // Step 1: the reason (one tap). Step 2: a reason-SPECIFIC follow-up
+        // (the detail that actually names the defect), a free-text site, and
+        // an optional email — which triggers the 7-day Pro win-back key
+        // through the existing survey auto-key rail (/api/survey/submit).
+        // A bare reason like "didn't work" answered nothing; the detail +
+        // site pair is what turns a churn row into a fixable defect.
+        var DETAILS = {
+          didnt_work: [
+            ['black_screen', 'Screen went black'],
+            ['nothing_happened', 'Nothing changed at all'],
+            ['broken_bars', 'Black bars stayed'],
+            ['glitches', 'Glitches / artifacts'],
+            ['slow', 'Video stuttered or lagged'],
+            ['site_specific', 'Only on one site'],
+          ],
+          didnt_like_result: [
+            ['faces_weird', 'Faces / center looked stretched'],
+            ['edges_weird', 'Edges looked wrong'],
+            ['quality', 'Picture quality dropped'],
+            ['prefer_bars', 'I actually prefer the original bars'],
+          ],
+          too_fiddly: [
+            ['every_time', 'I had to enable it every time'],
+            ['hard_to_find', 'Controls were hard to find'],
+            ['fullscreen_only', 'Wanted it without fullscreen'],
+          ],
+          not_expected: [
+            ['expected_auto', 'I expected it to work automatically'],
+            ['expected_free', 'Expected everything free'],
+            ['wrong_site', 'Doesn\'t work on my main site'],
+          ],
+          monitor_16x9: [],
+          just_trying: [],
+          other: [],
+        };
+        var chosenReason = null;
+        var chosenDetail = null;
+        var reasonBtns = document.querySelectorAll('#gb-reasons .gb-btn');
+        for (var i = 0; i < reasonBtns.length; i++) {
           (function (btn) {
             btn.addEventListener('click', function () {
               if (answered) return;
-              answered = true;
-              var p = basePayload();
-              p.reason = btn.getAttribute('data-reason');
-              p.dwell_ms = dwellMs();
-              beacon(p);
-              var q = document.getElementById('gb-question');
-              var thanks = document.getElementById('gb-thanks');
-              if (q) q.hidden = true;
-              if (thanks) thanks.hidden = false;
+              chosenReason = btn.getAttribute('data-reason');
+              // Mark selection, dim siblings.
+              for (var j = 0; j < reasonBtns.length; j++) {
+                reasonBtns[j].style.borderColor = reasonBtns[j] === btn ? 'rgba(245,158,11,0.55)' : '';
+              }
+              // Step 2 — the reason's details (when it has any).
+              var detailBox = document.getElementById('gb-details');
+              var followup = document.getElementById('gb-followup');
+              detailBox.innerHTML = '';
+              var list = DETAILS[chosenReason] || [];
+              for (var k = 0; k < list.length; k++) {
+                (function (pair) {
+                  var db = document.createElement('button');
+                  db.type = 'button';
+                  db.className = 'gb-btn';
+                  db.setAttribute('data-detail', pair[0]);
+                  db.textContent = pair[1];
+                  db.addEventListener('click', function () {
+                    chosenDetail = pair[0];
+                    for (var m = 0; m < detailBox.children.length; m++) {
+                      detailBox.children[m].style.borderColor = detailBox.children[m] === db ? 'rgba(245,158,11,0.55)' : '';
+                    }
+                  });
+                  detailBox.appendChild(db);
+                })(list[k]);
+              }
+              var step2 = document.getElementById('gb-step2-label');
+              if (step2) step2.hidden = list.length === 0 && false; // label stays; empty list = free text only
+              if (followup) followup.hidden = false;
             });
-          })(btns[i]);
+          })(reasonBtns[i]);
         }
+
+        function finishSurvey(sendIt) {
+          if (answered) return;
+          answered = true;
+          var p = basePayload();
+          p.reason = chosenReason || 'skipped';
+          if (chosenDetail) p.detail = chosenDetail;
+          var site = (document.getElementById('gb-site') || {}).value || '';
+          if (site.trim()) p.site = site.trim().slice(0, 120);
+          p.dwell_ms = dwellMs();
+          beacon(p);
+
+          // The win-back key: email present + sendIt → the survey auto-key
+          // rail issues the 7-day Pro key. q1 marks the cohort so the
+          // survey dashboard separates win-backs from the 1.0.9 campaign.
+          var email = (document.getElementById('gb-email') || {}).value || '';
+          if (sendIt && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+            try {
+              fetch(API + '/api/survey/submit', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  install_id: installId, q1: 'winback_goodbye',
+                  q2_choice: chosenReason, q3_text: p.site || null,
+                  email: email.trim(),
+                }),
+                keepalive: true, mode: 'cors', credentials: 'omit',
+              }).catch(function () {});
+            } catch (_) {}
+            var note = document.getElementById('gb-key-note');
+            if (note) note.hidden = false;
+          }
+          var q = document.getElementById('gb-question');
+          var thanks = document.getElementById('gb-thanks');
+          if (q) q.hidden = true;
+          if (thanks) thanks.hidden = false;
+        }
+        var sendBtn = document.getElementById('gb-send');
+        if (sendBtn) sendBtn.addEventListener('click', function () { finishSurvey(true); });
+        var skipBtn = document.getElementById('gb-skip');
+        if (skipBtn) skipBtn.addEventListener('click', function () { finishSurvey(false); });
+        // Leaving without finishing still counts the (already-tapped) reason.
+        var finishOnHide = function () { if (!answered && chosenReason) finishSurvey(false); };
+        window.addEventListener('pagehide', finishOnHide);
       })();
     </script>
   </body>
