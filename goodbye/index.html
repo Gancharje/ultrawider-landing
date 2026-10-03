@@ -53,6 +53,18 @@
          remains included by the other pages. privacy.html's "No cookies are
          used" is true here again; tests/goodbye-no-ads.browser-test.cjs
          keeps it that way. -->
+  <style>
+    .gb-btn{
+      text-align:left;font:500 14px/1.4 Inter,system-ui,sans-serif;color:#a3a3a3;
+      background:#141414;border:1px solid #161616;border-radius:12px;
+      padding:12px 16px;cursor:pointer;transition:border-color 160ms,background 160ms,transform 160ms;
+    }
+    .gb-btn:hover{border-color:#2e2e2e;background:#141414;color:#f5f5f5}
+    #gb-details .gb-btn{padding:10px 14px;font-size:13px}
+    #gb-site:focus,#gb-email:focus{border-color:#f59e0b}
+    #gb-send:hover{background:#fbbf24}
+    #gb-send:active{transform:scale(.98)}
+  </style>
   </head>
   <body>
     <header class="site-header">
@@ -64,21 +76,20 @@
       </div>
     </header>
 
-    <main class="account-page">
-      <div class="account-container account-container-wide">
-        <header class="account-head">
-          <span class="account-eyebrow">Goodbye</span>
-          <h1>Ultrawider has been removed.</h1>
-          <p class="account-lede">Thanks for trying it.</p>
-        </header>
+    <main style="max-width:560px;width:100%;margin:0 auto;padding:48px 20px 96px;display:flex;align-items:flex-start;justify-content:center;">
+      <div style="width:100%;">
 
-        <div id="gb-question">
-          <p style="color: var(--text-dim); font-size: 0.95rem; margin: 0 0 14px;">
-            Two quick optional questions — 20 seconds that shape what we fix next.
-          </p>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:28px;">
+          <span style="width:34px;height:22px;background:linear-gradient(135deg,#f5a623 0%,#b45309 100%);border-radius:6px;position:relative;box-shadow:0 4px 14px rgba(245,158,11,.35);"></span>
+          <span style="font-family:'Bricolage Grotesque','Inter',system-ui,sans-serif;font-weight:700;font-size:1.05rem;">Ultrawider</span>
+        </div>
 
-          <p class="gb-step" id="gb-step1-label" style="font-family: var(--font-mono, ui-monospace, monospace); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px;">01 · What made you uninstall?</p>
-          <div class="gb-buttons" id="gb-reasons">
+        <h1 style="font-family:'Bricolage Grotesque','Inter',system-ui,sans-serif;font-weight:800;font-size:clamp(1.6rem,3vw,2.1rem);letter-spacing:-.03em;line-height:1.05;margin:0 0 8px;">Thanks for <span style="color:#f59e0b">trying it</span></h1>
+        <p style="color:#a3a3a3;font-size:14.5px;line-height:1.55;margin:0 0 28px;max-width:46ch;">The extension is removed. If you have 20 seconds, tell us why — it genuinely shapes what we fix.</p>
+
+        <div id="gb-question" style="background:#0e0e0e;border:1px solid #161616;border-radius:14px;padding:22px 24px 20px;">
+          <p style="font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#f59e0b;margin:0 0 12px;">01 · What made you uninstall?</p>
+          <div id="gb-reasons" style="display:flex;flex-direction:column;gap:8px;">
             <button type="button" class="gb-btn" data-reason="monitor_16x9">My monitor is 16:9 — nothing to fill</button>
             <button type="button" class="gb-btn" data-reason="didnt_work">It didn't work</button>
             <button type="button" class="gb-btn" data-reason="didnt_like_result">Didn't like the picture</button>
@@ -88,35 +99,41 @@
             <button type="button" class="gb-btn" data-reason="other">Something else</button>
           </div>
 
-          <div id="gb-followup" hidden style="margin-top: 18px;">
-            <p class="gb-step" id="gb-step2-label" style="font-family: var(--font-mono, ui-monospace, monospace); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin: 0 0 8px;">02 · One more detail — what exactly?</p>
-            <div class="gb-buttons" id="gb-details"></div>
-            <div style="margin-top: 14px; display: flex; flex-direction: column; gap: 10px; max-width: 420px;">
+          <div id="gb-followup" hidden style="margin-top:20px;padding-top:18px;border-top:1px solid #161616;">
+            <p style="font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-size:11px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#f59e0b;margin:0 0 12px;">02 · One more detail — what exactly?</p>
+            <div id="gb-details" style="display:flex;flex-direction:column;gap:8px;"></div>
+            <div style="margin-top:16px;display:flex;flex-direction:column;gap:10px;">
               <div>
-                <label for="gb-site" style="display:block; font-size: 12px; color: var(--text-mute); margin-bottom: 5px;">Where did it happen? (site)</label>
+                <label for="gb-site" style="display:block;font-size:12px;color:#6b6b6b;margin-bottom:5px;">Where did it happen? (site)</label>
                 <input type="text" id="gb-site" placeholder="e.g. primevideo.com" autocomplete="off"
-                  style="width:100%; padding:10px 14px; background: var(--bg-elev-2, #141414); border: 1px solid var(--border-soft, #161616); border-radius: 8px; color: var(--text); font: 14px/1.4 Inter, system-ui, sans-serif;" />
+                  style="width:100%;padding:11px 14px;background:#141414;border:1px solid #161616;border-radius:10px;color:#f5f5f5;font:14px/1.4 Inter,system-ui,sans-serif;outline:none;transition:border-color 160ms;" />
               </div>
               <div>
-                <label for="gb-email" style="display:block; font-size: 12px; color: var(--text-mute); margin-bottom: 5px;">Email — for a <strong style="color: var(--accent);">free week of Pro</strong> if you give it another shot (optional)</label>
+                <label for="gb-email" style="display:block;font-size:12px;color:#6b6b6b;margin-bottom:5px;">Email — for a <strong style="color:#f59e0b;font-weight:600;">free week of Pro</strong> if you give it another shot (optional)</label>
                 <input type="email" id="gb-email" placeholder="you@example.com" autocomplete="email"
-                  style="width:100%; padding:10px 14px; background: var(--bg-elev-2, #141414); border: 1px solid var(--border-soft, #161616); border-radius: 8px; color: var(--text); font: 14px/1.4 Inter, system-ui, sans-serif;" />
+                  style="width:100%;padding:11px 14px;background:#141414;border:1px solid #161616;border-radius:10px;color:#f5f5f5;font:14px/1.4 Inter,system-ui,sans-serif;outline:none;transition:border-color 160ms;" />
               </div>
             </div>
-            <button type="button" id="gb-send" class="aaa-cta-primary" style="margin-top: 16px; padding: 11px 26px; font-size: 13px; border-radius: 8px;">Send answers</button>
-            <button type="button" id="gb-skip" style="margin-left: 10px; background:none; border:none; color: var(--text-mute); font-size: 12px; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; padding: 11px 4px;">skip</button>
+            <div style="margin-top:18px;display:flex;align-items:center;gap:12px;">
+              <button type="button" id="gb-send" style="display:inline-flex;align-items:center;gap:8px;padding:13px 26px;background:#f59e0b;border:1px solid transparent;border-radius:10px;color:#1a1205;font:600 14px/1 Inter,system-ui,sans-serif;cursor:pointer;box-shadow:0 8px 24px rgba(245,158,11,.28);transition:background 160ms;">Send answers</button>
+              <button type="button" id="gb-skip" style="background:none;border:none;color:#6b6b6b;font:500 12px Inter,system-ui,sans-serif;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:13px 4px;">skip</button>
+            </div>
           </div>
         </div>
 
-        <div class="gb-thanks" id="gb-thanks" hidden>Thanks — that genuinely helps.<span id="gb-key-note" hidden><br /><br />Your free week of Pro is on its way to your inbox.</span></div>
+        <div class="gb-thanks" id="gb-thanks" hidden style="text-align:center;padding:48px 24px;">
+          <div style="width:48px;height:48px;margin:0 auto 16px;border-radius:50%;background:rgba(245,158,11,.12);display:flex;align-items:center;justify-content:center;">
+            <svg viewBox="0 0 24 24" style="width:24px;height:24px;stroke:#f59e0b;stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round;"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <h2 style="font-family:'Bricolage Grotesque','Inter',system-ui,sans-serif;font-weight:700;font-size:20px;margin:0 0 8px;color:#f5f5f5;">Thank you</h2>
+          <p style="color:#a3a3a3;font-size:14px;line-height:1.55;"><span id="gb-key-note" hidden>Your free week of Pro is on its way to your inbox.<br></span>Every answer helps us build a better Ultrawider.</p>
+        </div>
 
-        <p class="gb-links">
-          Changed your mind?
-          <a id="gb-store-link" href="https://chromewebstore.google.com/detail/ultrawider-%E2%80%94-fill-ultrawi/fpbkljincbjlmfefgcefcbjjppehkamo" target="_blank" rel="noopener">Reinstall from the store →</a><br />
-          Something we could have fixed?
-          <a id="gb-mail" href="mailto:hello@ultrawider.net?subject=Why%20I%20uninstalled">hello@ultrawider.net</a>
-          — a human answers.
-        </p>
+        <div id="gb-return" style="margin-top:24px;text-align:center;font-size:13px;color:#6b6b6b;line-height:2;">
+          Changed your mind? <a id="gb-store-link" href="https://chromewebstore.google.com/detail/ultrawider-%E2%80%94-fill-ultrawi/fpbkljincbjlmfefgcefcbjjppehkamo" target="_blank" rel="noopener" style="color:#a3a3a3;text-decoration:underline;text-underline-offset:2px;">Reinstall</a>
+          &nbsp;·&nbsp; <a id="gb-mail" href="mailto:hello@ultrawider.net" style="color:#a3a3a3;text-decoration:underline;text-underline-offset:2px;">hello@ultrawider.net</a>
+        </div>
+
       </div>
     </main>
 
