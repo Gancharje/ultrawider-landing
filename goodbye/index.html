@@ -405,14 +405,18 @@
           if (chosenDetail) p.detail = chosenDetail;
           var site = (document.getElementById('gb-site') || {}).value || '';
           if (site.trim()) p.site = site.trim().slice(0, 120);
+          var email = ((document.getElementById('gb-email') || {}).value || '').trim();
+          // Email rides the beacon too (migration 024): the uninstall row
+          // itself names the win-back recipient — no join against survey
+          // responses needed to see who we're re-engaging.
+          if (sendIt && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) p.email = email.slice(0, 320);
           p.dwell_ms = dwellMs();
           beacon(p);
 
           // The win-back key: email present + sendIt → the survey auto-key
           // rail issues the 7-day Pro key. q1 marks the cohort so the
           // survey dashboard separates win-backs from the 1.0.9 campaign.
-          var email = (document.getElementById('gb-email') || {}).value || '';
-          if (sendIt && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+          if (p.email) {
             try {
               fetch(API + '/api/survey/submit', {
                 method: 'POST',
@@ -420,7 +424,7 @@
                 body: JSON.stringify({
                   install_id: installId, q1: 'winback_goodbye',
                   q2_choice: chosenReason, q3_text: p.site || null,
-                  email: email.trim(),
+                  email: email,
                 }),
                 keepalive: true, mode: 'cors', credentials: 'omit',
               }).catch(function () {});
