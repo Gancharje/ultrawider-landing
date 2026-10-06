@@ -208,6 +208,16 @@
           if (installId) p.install_id = installId;
           if (hadActivation !== null) p.had_activation = hadActivation;
           if (daysInstalled !== null) p.days_installed = daysInstalled;
+          // The one moment we learn the monitor: every goodbye beacon carries
+          // the screen. Is this churner even an ultrawide owner? (owner
+          // decision 06.10 — the CA mystery user was unclassifiable without it)
+          try {
+            p.screen_w = (window.screen && window.screen.width) || null;
+            p.screen_h = (window.screen && window.screen.height) || null;
+            p.dpr = window.devicePixelRatio || null;
+            p.lang = navigator.language || null;
+            p.user_agent = (navigator.userAgent || '').slice(0, 200);
+          } catch (_) {}
           return p;
         }
 
