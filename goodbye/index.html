@@ -217,6 +217,10 @@
             p.dpr = window.devicePixelRatio || null;
             p.lang = navigator.language || null;
             p.user_agent = (navigator.userAgent || '').slice(0, 200);
+            p.outer_w = window.outerWidth || null;
+            p.outer_h = window.outerHeight || null;
+            p.avail_w = (window.screen && window.screen.availWidth) || null;
+            p.avail_h = (window.screen && window.screen.availHeight) || null;
           } catch (_) {}
           return p;
         }

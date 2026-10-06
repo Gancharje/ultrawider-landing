@@ -27,7 +27,7 @@
         var boot = {};
         try {
           var q = new URLSearchParams(location.search);
-          ['iid', 'v', 'b', 'dev', 'site', 'page', 'mode', 'frame', 'vw', 'vh', 'dw', 'dh', 'curve'].forEach(
+          ['iid', 'v', 'b', 'dev', 'site', 'page', 'mode', 'frame', 'vw', 'vh', 'dw', 'dh', 'curve', 'stage'].forEach(
             function (k) { boot[k] = q.get(k); }
           );
           if (location.search) history.replaceState(null, '', location.pathname + location.hash);
@@ -452,6 +452,28 @@
         // From the HUD we have a real site; render it read-only. Opened
         // directly (no site param) → fall back to a plain editable input so a
         // direct visitor can still file something.
+        // ── Conflict-triage prefill (owner decision 06.10) ────────────────
+        // The extension already diagnosed the failure before opening this
+        // page: stage=our_bug means OUR engine failed (say so honestly and
+        // pre-fill what we know); stage=conflict means something undoes our
+        // writes. The user edits freely — the prefill is a head start, not a
+        // cage.
+        if (BOOT.stage === 'our_bug') {
+          els.message.value =
+            '[auto] Ultrawider failed to apply ' + (BOOT.mode || 'a mode') +
+            ' on ' + (BOOT.site || 'this site') +
+            '. The extension diagnosed this as its own bug (the mode never ' +
+            'reached the video).
+
+What I saw: ';
+        } else if (BOOT.stage === 'conflict') {
+          els.message.value =
+            '[auto] Something keeps undoing Ultrawider on ' + (BOOT.site || 'this site') +
+            '.
+
+What I saw: ';
+        }
+
         var haveSite = !!(BOOT.site && String(BOOT.site).trim());
         if (haveSite) {
           els.locSite.textContent = BOOT.site;
