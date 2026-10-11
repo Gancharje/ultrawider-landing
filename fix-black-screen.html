@@ -37,6 +37,7 @@
     strong { color: var(--text); }
     code { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; font-size: 0.9em; }
 
+    /* ── Browser toggle ─────────────────────────────────────────── */
     .tog {
       display: inline-flex; border: 1px solid var(--line-soft); border-radius: 999px;
       overflow: hidden; margin: 20px 0 4px; background: var(--panel);
@@ -46,17 +47,23 @@
       font: 600 15px system-ui, sans-serif; padding: 8px 24px;
     }
     .tog button.on { background: var(--accent); color: var(--accent-ink); }
-    [data-b] { display: none; }
-    body.b-chrome .chrome, body.b-edge .edge { display: initial; }
 
-    .step { margin-top: 52px; }
-    .n {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 30px; height: 30px; border-radius: 50%;
-      background: var(--accent); color: var(--accent-ink);
-      font: 800 15px/1 system-ui, sans-serif; margin-bottom: 10px;
+    /* Hide/show per browser — works for inline spans AND block divs */
+    body:not(.b-chrome) .chrome { display: none !important; }
+    body:not(.b-edge)   .edge   { display: none !important; }
+
+    /* ── Steps ───────────────────────────────────────────────────── */
+    .step { margin-top: 48px; }
+    .step-head {
+      display: flex; align-items: center; gap: 14px; margin-bottom: 6px;
     }
-    .step h2 { font-size: 21px; margin: 0 0 4px; letter-spacing: -0.01em; }
+    .n {
+      flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--accent); color: var(--accent-ink);
+      font: 800 16px/1 system-ui, sans-serif;
+    }
+    .step-head h2 { margin: 0; font-size: 21px; letter-spacing: -0.01em; line-height: 1.3; }
     .step p { margin: 10px 0; }
     .kbd {
       display: inline-block; padding: 1px 7px; border-radius: 5px;
@@ -64,6 +71,7 @@
       background: var(--panel); color: var(--text);
       font: 600 13px ui-monospace, Consolas, monospace;
     }
+    .icon { font-size: 22px; margin-right: 8px; }
 
     .shot {
       margin: 18px 0 4px; border-radius: 12px; overflow: hidden;
@@ -86,17 +94,23 @@
       background: var(--accent); color: var(--accent-ink);
       font: 700 14px/1 system-ui, sans-serif; letter-spacing: 0.04em;
       padding: 12px 20px; text-transform: uppercase;
-      transition: transform 120ms ease;
+      /* "Copied ✓" is wider than "Copy" — lock the width so the layout
+         doesn't jump when the text flips. */
+      min-width: 88px; text-align: center;
+      transition: background 120ms ease, color 120ms ease;
     }
     .copybtn:active { transform: scale(0.97); }
     .copybtn.done { background: var(--good); color: #07130e; }
 
-    .done { margin-top: 56px; padding-top: 24px; border-top: 1px solid var(--line-soft); }
-    .done h2 { margin: 0 0 6px; color: var(--good); font-size: 21px; }
+    .sorry {
+      margin-top: 52px; padding: 22px 24px; border-radius: 14px;
+      border: 1px solid rgba(16,185,129,0.3); background: rgba(16,185,129,0.05);
+    }
+    .sorry h2 { margin: 0 0 6px; color: var(--good); font-size: 20px; }
     .still {
       border: 1px solid var(--line); border-radius: 14px;
       background: linear-gradient(180deg, rgba(245,158,11,0.08), rgba(245,158,11,0.02));
-      padding: 20px 22px; margin: 20px 0 8px;
+      padding: 20px 22px; margin: 18px 0 8px;
     }
     .still h2 { margin: 0 0 6px; font-size: 19px; }
     .btn {
@@ -107,7 +121,6 @@
     details { border-top: 1px solid var(--line-soft); padding: 13px 2px; margin-top: 6px; }
     summary { cursor: pointer; color: var(--text); font-weight: 600; font-size: 15px; }
     details p { font-size: 15px; }
-    .foot { margin-top: 44px; font-size: 14px; color: var(--dim); }
   </style>
 </head>
 <body class="b-chrome">
@@ -140,8 +153,7 @@
     </div>
 
     <section class="step">
-      <div class="n">1</div>
-      <h2>Copy this line</h2>
+      <div class="step-head"><div class="n">1</div><h2><span class="icon">📋</span>Copy this line</h2></div>
       <div class="copybox">
         <code id="flagline">--disable-direct-composition</code>
         <button class="copybtn" id="copybtn" type="button">Copy</button>
@@ -150,8 +162,7 @@
     </section>
 
     <section class="step">
-      <div class="n">2</div>
-      <h2>Right-click the browser icon → Properties</h2>
+      <div class="step-head"><div class="n">2</div><h2><span class="icon">🖱️</span>Right-click the browser icon → Properties</h2></div>
       <p>On the desktop, right-click the <span class="chrome"><strong>Google Chrome</strong></span><span class="edge"><strong>Microsoft Edge</strong></span> icon you open the browser with. <strong>Properties</strong> is near the bottom of the menu.</p>
       <div class="shot chrome"><img src="assets/guide/chrome-menu.png" alt="Right-click menu on the Chrome desktop icon" width="470" height="566" /></div>
       <div class="shot edge"><img src="assets/guide/edge-menu.png" alt="Right-click menu on the Edge desktop icon" width="479" height="508" /></div>
@@ -159,8 +170,7 @@
     </section>
 
     <section class="step">
-      <div class="n">3</div>
-      <h2>Paste the line into <em>Target</em>, click OK</h2>
+      <div class="step-head"><div class="n">3</div><h2><span class="icon">📝</span>Paste into <em>Target</em>, click OK</h2></div>
       <p>Click at the <strong>very end</strong> of the <strong>Target</strong> field — the one with the long path. Type <strong>one space</strong>, press <span class="kbd">Ctrl</span>+<span class="kbd">V</span>, click <strong>OK</strong>. Your field must look exactly like this:</p>
       <div class="shot chrome"><img src="assets/guide/chrome-target.png" alt="Chrome Properties: Target field with the pasted line" width="490" height="688" /></div>
       <div class="shot edge"><img src="assets/guide/edge-target.png" alt="Edge Properties: Target field with the pasted line" width="499" height="659" /></div>
@@ -168,20 +178,19 @@
     </section>
 
     <section class="step">
-      <div class="n">4</div>
-      <h2>Restart the browser completely</h2>
+      <div class="step-head"><div class="n">4</div><h2><span class="icon">🔄</span>Restart the browser completely</h2></div>
       <p>Close every <span class="chrome"><strong>Chrome</strong></span><span class="edge"><strong>Edge</strong></span> window. Check the corner next to the clock — if the browser's small icon is still there, right-click it → <strong>Exit</strong>. Then open the browser again <strong>from the same desktop icon</strong>.</p>
       <p>Back on Netflix: fullscreen → Smoothie. <strong>The picture fills the screen.</strong></p>
     </section>
 
-    <div class="done">
-      <h2>Done</h2>
-      <p>To undo: repeat steps 2–3 and delete the pasted line.</p>
+    <div class="sorry">
+      <h2>✓ Done — sorry for the inconvenience</h2>
+      <p>This is a Chrome/Edge limitation, not a bug in Ultrawider — but we know it's frustrating. To undo: repeat steps 2–3 and delete the pasted line.</p>
     </div>
 
     <div class="still">
       <h2>Still black?</h2>
-      <p>Tell us what you see — we read every report and answer personally. A confirmed bug earns you a free month of Pro.</p>
+      <p>If the problem persists, send us a report — we'll help you sort it out. And if you help us find a new issue, you get a month of Pro for free.</p>
       <a class="btn" href="/report/">Send a report</a>
       <a class="btn ghost" href="/contact/">Contact us</a>
     </div>
@@ -194,8 +203,6 @@
       <summary>The fix works only when the browser starts from that shortcut</summary>
       <p>Windows stores the line in the shortcut itself. If you open the browser from somewhere else, repeat steps 2–3 on that shortcut — or pin the fixed desktop shortcut to the taskbar and use it.</p>
     </details>
-
-    <div class="foot">Ultrawider — <a href="/">ultrawider.net</a></div>
   </div>
   </main>
 
