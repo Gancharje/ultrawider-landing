@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Smoothie Shows a Black Screen on Netflix — the 2-Minute Fix (2026)</title>
-  <meta name="description" content="One paste in your Chrome shortcut fixes the black screen Smoothie can get on Netflix, HBO Max and other DRM sites on Windows. Two minutes, nothing to install, fully reversible." />
+  <title>Smoothie Goes Black on Netflix — the 2-Minute Fix | Ultrawider</title>
+  <meta name="description" content="One line, pasted into your Chrome or Edge shortcut, fixes the black screen Smoothie can get on Netflix and other DRM sites on Windows. Two minutes, nothing to install, reversible." />
   <link rel="canonical" href="https://ultrawider.net/fix-black-screen.html" />
-  <meta property="og:title" content="Smoothie Shows a Black Screen on Netflix — the 2-Minute Fix" />
-  <meta property="og:description" content="One paste in your Chrome shortcut. Nothing to install. Fully reversible." />
+  <meta property="og:title" content="Smoothie Goes Black on Netflix — the 2-Minute Fix" />
+  <meta property="og:description" content="One line in your browser shortcut. Nothing to install. Reversible." />
   <meta property="og:url" content="https://ultrawider.net/fix-black-screen.html" />
   <meta property="og:type" content="article" />
   <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />
@@ -18,101 +18,87 @@
       --bg: #0a0908; --panel: #14110c; --panel-2: #1a150e;
       --line: rgba(245,158,11,0.16); --line-soft: rgba(247,245,242,0.09);
       --text: #f5f2ed; --dim: #b3a996; --accent: #f59e0b; --accent-ink: #14100a;
-      --good: #10b981; --bad: #ef4444;
+      --good: #10b981;
     }
     * { box-sizing: border-box; }
     body {
       margin: 0; background: var(--bg); color: var(--text);
-      font: 17px/1.7 system-ui, "Segoe UI", Roboto, sans-serif;
+      font: 17px/1.65 system-ui, "Segoe UI", Roboto, sans-serif;
       -webkit-font-smoothing: antialiased;
     }
-    .wrap { max-width: 720px; margin: 0 auto; padding: 40px 22px 90px; }
+    .wrap { max-width: 680px; margin: 0 auto; padding: 36px 22px 80px; }
     a { color: var(--accent); }
     .crumb { font-size: 14px; color: var(--dim); }
     .crumb a { text-decoration: none; }
-    h1 { font-size: 32px; line-height: 1.22; letter-spacing: -0.02em; margin: 14px 0 10px; }
-    .sub { color: var(--dim); margin: 0 0 26px; font-size: 18px; }
-    h2 { font-size: 22px; margin: 44px 0 10px; letter-spacing: -0.01em; }
-    p, li { color: var(--dim); }
+    h1 { font-size: 30px; line-height: 1.22; letter-spacing: -0.02em; margin: 12px 0 8px; }
+    .sub { color: var(--dim); margin: 0 0 22px; font-size: 17px; }
+    p { color: var(--dim); margin: 10px 0; }
     strong { color: var(--text); }
     code, .mono { font-family: ui-monospace, "Cascadia Mono", Consolas, monospace; }
 
     .tldr {
       border: 1px solid var(--line); background: rgba(245,158,11,0.05);
-      border-radius: 12px; padding: 18px 20px; margin: 0 0 6px;
+      border-radius: 12px; padding: 14px 18px; margin: 0 0 18px;
     }
-    .tldr p { margin: 0; }
+    .tldr p { margin: 0; font-size: 16px; }
 
-    .needs {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
-      background: var(--line-soft); border: 1px solid var(--line-soft);
-      border-radius: 12px; overflow: hidden; margin: 14px 0 0;
+    /* Browser toggle */
+    .tog {
+      display: inline-flex; border: 1px solid var(--line-soft); border-radius: 10px;
+      overflow: hidden; margin: 4px 0 20px; background: var(--panel);
     }
-    .needs div { background: var(--panel); padding: 14px 16px; }
-    .needs b { display: block; color: var(--text); font-size: 14px; }
-    .needs span { color: var(--dim); font-size: 14px; }
-    @media (max-width: 560px) { .needs { grid-template-columns: 1fr; } }
+    .tog button {
+      border: 0; background: transparent; color: var(--dim); cursor: pointer;
+      font: 600 15px system-ui, sans-serif; padding: 9px 22px;
+    }
+    .tog button.on { background: var(--accent); color: var(--accent-ink); }
+    [data-b] { display: none; }
+    body.b-chrome .chrome, body.b-edge .edge { display: initial; }
 
-    /* ── Steps ──────────────────────────────────────────────── */
+    /* Steps */
     .step {
       border: 1px solid var(--line-soft); border-radius: 14px;
-      background: var(--panel); margin: 18px 0; overflow: hidden;
+      background: var(--panel); margin: 14px 0; overflow: hidden;
     }
-    .step-head {
-      display: flex; align-items: center; gap: 14px;
-      padding: 18px 20px 0;
-    }
+    .step-head { display: flex; align-items: center; gap: 13px; padding: 16px 18px 0; }
     .step-n {
-      flex: 0 0 auto; width: 34px; height: 34px; border-radius: 50%;
+      flex: 0 0 auto; width: 32px; height: 32px; border-radius: 50%;
       background: var(--accent); color: var(--accent-ink);
-      font-weight: 800; font-size: 17px; display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 16px; display: flex; align-items: center; justify-content: center;
     }
-    .step-head h2 { margin: 0; font-size: 19px; }
-    .step-body { padding: 12px 20px 20px; }
+    .step-head h2 { margin: 0; font-size: 18px; }
+    .step-body { padding: 10px 18px 18px; }
     .step-body p { margin: 8px 0; }
-    .fig { margin: 16px 0 6px; border: 1px solid var(--line-soft); border-radius: 10px; background: var(--panel-2); overflow: hidden; }
-    .fig svg { display: block; width: 100%; height: auto; }
-    .fig-cap { font-size: 13px; color: var(--dim); padding: 8px 14px; border-top: 1px solid var(--line-soft); }
+
+    .fig { margin: 12px 0 4px; position: relative; border: 1px solid var(--line-soft); border-radius: 10px; overflow: hidden; background: var(--panel-2); }
+    .fig img { display: block; width: 100%; height: auto; }
+    .ring {
+      position: absolute; border: 2px solid var(--accent); border-radius: 8px;
+      box-shadow: 0 0 0 3px rgba(245,158,11,0.25), inset 0 0 0 1px rgba(0,0,0,0.35);
+      pointer-events: none;
+    }
+    .tag {
+      position: absolute; background: var(--accent); color: var(--accent-ink);
+      font: 700 12px/1.2 system-ui, sans-serif; padding: 4px 9px; border-radius: 6px;
+      pointer-events: none; white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.5);
+    }
+    .fig-cap { font-size: 13.5px; color: var(--dim); padding: 8px 14px; border-top: 1px solid var(--line-soft); }
+
     .expect {
-      display: flex; gap: 10px; align-items: flex-start;
-      margin-top: 14px; padding: 10px 14px; border-radius: 10px;
-      background: rgba(16,185,129,0.07); border: 1px solid rgba(16,185,129,0.25);
-      font-size: 15px;
+      display: flex; gap: 10px; align-items: flex-start; margin-top: 12px;
+      padding: 9px 13px; border-radius: 10px;
+      background: rgba(16,185,129,0.07); border: 1px solid rgba(16,185,129,0.25); font-size: 15px;
     }
     .expect::before { content: "✓"; color: var(--good); font-weight: 800; flex: 0 0 auto; }
     .expect span { color: var(--dim); }
-    .expect b { color: var(--text); }
     .warn {
-      display: flex; gap: 10px; align-items: flex-start;
-      margin-top: 12px; padding: 10px 14px; border-radius: 10px;
-      background: rgba(245,158,11,0.06); border: 1px solid var(--line);
-      font-size: 15px;
+      display: flex; gap: 10px; align-items: flex-start; margin-top: 10px;
+      padding: 9px 13px; border-radius: 10px;
+      background: rgba(245,158,11,0.06); border: 1px solid var(--line); font-size: 15px;
     }
     .warn::before { content: "!"; color: var(--accent); font-weight: 800; flex: 0 0 auto; }
     .warn span { color: var(--dim); }
-    .warn b { color: var(--text); }
-
-    /* ── Copy chip ──────────────────────────────────────────── */
-    .copybox {
-      margin: 14px 0 4px; border: 1px dashed rgba(245,158,11,0.45);
-      border-radius: 12px; padding: 14px 16px;
-      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
-      background: rgba(245,158,11,0.04);
-    }
-    .copybox .mono {
-      flex: 1 1 260px; min-width: 0; color: var(--text); font-size: 15px;
-      white-space: nowrap; overflow-x: auto; user-select: all;
-    }
-    .copybtn {
-      flex: 0 0 auto; border: 0; border-radius: 9px; cursor: pointer;
-      background: var(--accent); color: var(--accent-ink);
-      font: 700 14px/1 system-ui, sans-serif; letter-spacing: 0.04em;
-      padding: 11px 18px; text-transform: uppercase;
-      transition: transform 120ms ease, background 120ms ease;
-    }
-    .copybtn:active { transform: scale(0.97); }
-    .copybtn.done { background: var(--good); color: #07130e; }
-
     .kbd {
       display: inline-block; padding: 1px 7px; border-radius: 5px;
       border: 1px solid var(--line-soft); border-bottom-width: 2px;
@@ -120,241 +106,157 @@
       font: 600 13px ui-monospace, Consolas, monospace;
     }
 
-    /* ── Result / fallback ──────────────────────────────────── */
-    .done-box {
-      border: 1px solid rgba(16,185,129,0.35); border-radius: 14px;
-      background: rgba(16,185,129,0.06); padding: 22px 24px; margin: 34px 0 10px;
+    .copybox {
+      margin: 12px 0 2px; border: 1px dashed rgba(245,158,11,0.45);
+      border-radius: 12px; padding: 13px 15px;
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+      background: rgba(245,158,11,0.04);
     }
-    .done-box h2 { margin: 0 0 8px; color: var(--good); }
-    .still-box {
-      border: 1px solid var(--line); border-radius: 14px;
-      background: linear-gradient(180deg, rgba(245,158,11,0.08), rgba(245,158,11,0.02));
-      padding: 22px 24px; margin: 18px 0 10px;
+    .copybox .mono {
+      flex: 1 1 240px; min-width: 0; color: var(--text); font-size: 15px;
+      white-space: nowrap; overflow-x: auto; user-select: all;
     }
-    .still-box h2 { margin: 0 0 8px; }
-    .btn {
-      display: inline-block; background: var(--accent); color: var(--accent-ink);
-      font-weight: 700; text-decoration: none; padding: 12px 22px; border-radius: 10px;
-      margin: 10px 12px 4px 0;
+    .copybtn {
+      flex: 0 0 auto; border: 0; border-radius: 9px; cursor: pointer;
+      background: var(--accent); color: var(--accent-ink);
+      font: 700 14px/1 system-ui, sans-serif; letter-spacing: 0.04em;
+      padding: 11px 18px; text-transform: uppercase;
+      transition: transform 120ms ease;
     }
+    .copybtn:active { transform: scale(0.97); }
+    .copybtn.done { background: var(--good); color: #07130e; }
+
+    .done-box { border: 1px solid rgba(16,185,129,0.35); border-radius: 14px; background: rgba(16,185,129,0.06); padding: 20px 22px; margin: 28px 0 10px; }
+    .done-box h2 { margin: 0 0 6px; color: var(--good); font-size: 20px; }
+    .still-box { border: 1px solid var(--line); border-radius: 14px; background: linear-gradient(180deg, rgba(245,158,11,0.08), rgba(245,158,11,0.02)); padding: 20px 22px; margin: 14px 0 10px; }
+    .still-box h2 { margin: 0 0 6px; font-size: 20px; }
+    .btn { display: inline-block; background: var(--accent); color: var(--accent-ink); font-weight: 700; text-decoration: none; padding: 11px 20px; border-radius: 10px; margin: 8px 10px 2px 0; }
     .btn.ghost { background: transparent; color: var(--accent); border: 1px solid var(--line); }
-    details {
-      border: 1px solid var(--line-soft); border-radius: 12px;
-      padding: 14px 18px; margin: 14px 0; background: var(--panel);
-    }
-    summary { cursor: pointer; color: var(--text); font-weight: 600; }
+    details { border: 1px solid var(--line-soft); border-radius: 12px; padding: 12px 16px; margin: 10px 0; background: var(--panel); }
+    summary { cursor: pointer; color: var(--text); font-weight: 600; font-size: 15px; }
     details p { font-size: 15px; }
-    .foot { margin-top: 56px; font-size: 14px; color: var(--dim); border-top: 1px solid var(--line-soft); padding-top: 18px; }
+    .foot { margin-top: 48px; font-size: 14px; color: var(--dim); border-top: 1px solid var(--line-soft); padding-top: 16px; }
   </style>
 </head>
-<body>
+<body class="b-chrome">
   <div class="wrap">
     <div class="crumb"><a href="/">Ultrawider</a> › Fix</div>
-    <h1>Smoothie shows a black screen on Netflix — the 2-minute fix</h1>
-    <p class="sub">This is a quirk of Chrome on Windows with protected video. One paste in your Chrome shortcut fixes it. Nothing to install, and you can undo it anytime.</p>
+    <h1>Smoothie goes black on Netflix — the 2-minute fix</h1>
+    <p class="sub">One line, pasted into your browser shortcut. Works for Chrome and Edge on Windows.</p>
 
     <div class="tldr">
-      <p><strong>What's happening:</strong> sites like Netflix, Max and Disney+ play their video through extra protection (DRM). On Windows, Chrome draws that protected video on a special fast layer that Smoothie's warp cannot reach — so the picture turns black. <strong>One line, pasted into your Chrome shortcut, switches Chrome to the normal drawing path.</strong> Your video quality stays the same.</p>
+      <p><strong>Why:</strong> streaming sites protect their video, and on Windows Chrome and Edge draw that protected video on a fast layer our warp can't reach — so the picture turns black. <strong>The fix:</strong> one paste tells your browser to draw it the normal way.</p>
     </div>
 
-    <div class="needs">
-      <div><b>Time</b><span>About 2 minutes</span></div>
-      <div><b>Skills needed</b><span>Copy, paste, click — that's all</span></div>
-      <div><b>Tools</b><span>Chrome on Windows, nothing else</span></div>
-      <div><b>Reversible?</b><span>Yes — remove the line anytime</span></div>
+    <div class="tog" role="tablist" aria-label="Choose your browser">
+      <button type="button" id="t-chrome" class="on">Chrome</button>
+      <button type="button" id="t-edge">Edge</button>
     </div>
+    <div class="chrome">You use <strong>Google Chrome</strong>.</div>
+    <div class="edge">You use <strong>Microsoft Edge</strong>.</div>
 
     <!-- STEP 1 -->
-    <div class="step" id="step1">
-      <div class="step-head"><div class="step-n">1</div><h2>Copy the fix line</h2></div>
+    <div class="step">
+      <div class="step-head"><div class="step-n">1</div><h2>Copy the line</h2></div>
       <div class="step-body">
-        <p>Click the button below. The line is now on your clipboard, ready for step 3.</p>
         <div class="copybox">
           <span class="mono" id="flagline">--disable-direct-composition</span>
           <button class="copybtn" id="copybtn" type="button">Copy</button>
         </div>
-        <div class="expect"><span><b>You'll see:</b> the button says <b>Copied ✓</b>. Don't paste it anywhere yet.</span></div>
+        <div class="expect"><span>The button says <strong>Copied ✓</strong>. Don't paste it anywhere yet.</span></div>
       </div>
     </div>
 
     <!-- STEP 2 -->
-    <div class="step" id="step2">
-      <div class="step-head"><div class="step-n">2</div><h2>Right-click your Chrome icon → Properties</h2></div>
+    <div class="step">
+      <div class="step-head"><div class="step-n">2</div><h2>Right-click your browser icon → <span class="chrome">Properties</span><span class="edge">Properties</span></h2></div>
       <div class="step-body">
-        <p>Find the icon you normally use to open Chrome — on the desktop or in the taskbar. <strong>Right-click it</strong> and choose <strong>Properties</strong> at the very bottom of the menu.</p>
-        <div class="fig">
-          <svg viewBox="0 0 640 250" role="img" aria-label="Right-click menu on the Chrome icon with Properties highlighted">
-            <rect x="0" y="0" width="640" height="250" fill="#100d09"/>
-            <!-- desktop icon -->
-            <g transform="translate(70,60)">
-              <circle cx="36" cy="30" r="26" fill="#1a150e" stroke="rgba(247,245,242,0.14)"/>
-              <circle cx="36" cy="30" r="15" fill="none" stroke="#f5f2ed" stroke-width="5" stroke-dasharray="70 25" transform="rotate(-90 36 30)"/>
-              <circle cx="36" cy="30" r="6" fill="#f5f2ed"/>
-              <rect x="14" y="64" width="44" height="8" rx="2" fill="rgba(245,158,11,0.5)"/>
-              <rect x="0" y="0" width="72" height="76" fill="none" stroke="rgba(245,158,11,0.55)" rx="6"/>
-            </g>
-            <!-- context menu -->
-            <g transform="translate(210,28)" font-family="system-ui, 'Segoe UI', sans-serif" font-size="15">
-              <rect x="0" y="0" width="230" height="196" rx="8" fill="#1c1712" stroke="rgba(247,245,242,0.14)"/>
-              <rect x="10" y="12" width="210" height="26" rx="5" fill="rgba(247,245,242,0.05)"/>
-              <text x="22" y="30" fill="#b3a996">Open</text>
-              <rect x="10" y="44" width="210" height="26" rx="5" fill="rgba(247,245,242,0.05)"/>
-              <text x="22" y="62" fill="#b3a996">New window</text>
-              <rect x="10" y="76" width="210" height="26" rx="5" fill="rgba(247,245,242,0.05)"/>
-              <text x="22" y="94" fill="#b3a996">Pin to taskbar</text>
-              <rect x="10" y="108" width="210" height="26" rx="5" fill="rgba(247,245,242,0.05)"/>
-              <text x="22" y="126" fill="#b3a996">Rename</text>
-              <rect x="10" y="140" width="210" height="26" rx="5" fill="rgba(247,245,242,0.05)"/>
-              <text x="22" y="158" fill="#b3a996">Delete</text>
-              <rect x="6" y="164" width="218" height="26" rx="5" fill="rgba(245,158,11,0.16)" stroke="rgba(245,158,11,0.55)"/>
-              <text x="22" y="182" fill="#f5f2ed" font-weight="700">Properties</text>
-              <!-- cursor arrow -->
-              <path d="M 196 172 l 14 6 -9 3 -3 9 z" fill="#f5f2ed"/>
-            </g>
-            <text x="470" y="150" fill="#b3a996" font-family="system-ui, sans-serif" font-size="14" text-anchor="middle">the icon you</text>
-            <text x="470" y="170" fill="#b3a996" font-family="system-ui, sans-serif" font-size="14" text-anchor="middle">open Chrome with</text>
-          </svg>
-          <div class="fig-cap">The menu opens on right-click. <b>Properties</b> is always the last item.</div>
+        <p>Find the <span class="chrome"><strong>Google Chrome</strong></span><span class="edge"><strong>Microsoft Edge</strong></span> icon on your desktop. <strong>Right-click it.</strong> If the menu that opens is short, click <strong>Show more options</strong> first. Then click <strong>Properties</strong> — the last item.</p>
+        <div class="fig chrome">
+          <img src="assets/guide/chrome-menu.png" alt="Right-click menu on the Chrome icon" width="400" height="460" />
+          <div class="ring" style="left:7%; top:82.5%; width:86%; height:9.5%"></div>
+          <div class="tag" style="right:4%; top:74%">Properties</div>
         </div>
-        <div class="warn"><span><b>Chrome pinned to the taskbar?</b> Right-click the icon, then in the small menu right-click <b>Google Chrome</b> again, then click Properties.</span></div>
-        <div class="expect"><span><b>You'll see:</b> a window titled “Google Chrome Properties”.</span></div>
+        <div class="fig edge">
+          <img src="assets/guide/edge-menu.png" alt="Right-click menu on the Edge icon" width="400" height="460" />
+          <div class="ring" style="left:7%; top:82.5%; width:86%; height:9.5%"></div>
+          <div class="tag" style="right:4%; top:74%">Properties</div>
+        </div>
+        <div class="fig-cap">The menu may look exactly like this or be shorter — then click “Show more options” first. <b>Properties</b> is always the last item.</div>
+        <div class="warn"><span>Icon not on the desktop? Right-click it in the taskbar, then right-click <strong><span class="chrome">Google Chrome</span><span class="edge">Microsoft Edge</span></strong> in the small menu, then Properties.</span></div>
+        <div class="expect"><span>A window titled <strong><span class="chrome">“Google Chrome Properties”</span><span class="edge">“Microsoft Edge Properties”</span></strong> opens.</span></div>
       </div>
     </div>
 
     <!-- STEP 3 -->
-    <div class="step" id="step3">
-      <div class="step-head"><div class="step-n">3</div><h2>Paste the line at the very end of “Target”</h2></div>
+    <div class="step">
+      <div class="step-head"><div class="step-n">3</div><h2>Paste it at the end of the Target field</h2></div>
       <div class="step-body">
-        <p>In the Properties window find the field named <strong>Target</strong>. Click inside it, press <span class="kbd">End</span> (or Ctrl+→) to jump to the <strong>very end</strong> of the text, type <strong>one space</strong>, then press <span class="kbd">Ctrl</span> + <span class="kbd">V</span>.</p>
-        <div class="fig">
-          <svg viewBox="0 0 640 300" role="img" aria-label="Properties dialog, Target field, the flag pasted after the path and one space, highlighted">
-            <rect x="0" y="0" width="640" height="300" fill="#100d09"/>
-            <g transform="translate(40,24)" font-family="system-ui, 'Segoe UI', sans-serif" font-size="14">
-              <!-- dialog -->
-              <rect x="0" y="0" width="560" height="244" rx="9" fill="#1c1712" stroke="rgba(247,245,242,0.16)"/>
-              <rect x="0" y="0" width="560" height="34" rx="9" fill="#241d15"/>
-              <text x="14" y="23" fill="#f5f2ed" font-weight="600">Google Chrome Properties</text>
-              <!-- tabs -->
-              <text x="16" y="56" fill="#f5f2ed" font-weight="600">Shortcut</text>
-              <line x1="12" y1="64" x2="86" y2="64" stroke="#f59e0b" stroke-width="2"/>
-              <text x="100" y="56" fill="#8d8271">Compatibility</text>
-              <!-- Target label + field -->
-              <text x="16" y="92" fill="#b3a996">Target:</text>
-              <rect x="100" y="76" width="444" height="28" rx="4" fill="#0f0c08" stroke="rgba(247,245,242,0.2)"/>
-              <text x="110" y="95" fill="#b3a996" font-family="ui-monospace, Consolas, monospace" font-size="12.5">"C:\Program Files\Google\Chrome\Application\chrome.exe"</text>
-              <rect x="392" y="76" width="147" height="28" rx="4" fill="rgba(245,158,11,0.14)" stroke="rgba(245,158,11,0.6)"/>
-              <text x="398" y="95" fill="#f5b93e" font-family="ui-monospace, Consolas, monospace" font-size="12.5"> --disable-direct-composition</text>
-              <!-- the one space marker -->
-              <circle cx="384" cy="90" r="9" fill="none" stroke="#f59e0b" stroke-dasharray="3 3"/>
-              <text x="384" y="122" fill="#8d8271" font-size="11.5" text-anchor="middle">↑ one space here</text>
-              <!-- other rows, dimmed -->
-              <text x="16" y="152" fill="#8d8271">Start in:</text>
-              <rect x="100" y="136" width="444" height="26" rx="4" fill="#0f0c08" stroke="rgba(247,245,242,0.08)"/>
-              <text x="16" y="186" fill="#8d8271">Shortcut key:</text>
-              <rect x="100" y="170" width="200" height="26" rx="4" fill="#0f0c08" stroke="rgba(247,245,242,0.08)"/>
-              <text x="16" y="220" fill="#8d8271">Run:</text>
-              <rect x="100" y="204" width="200" height="26" rx="4" fill="#0f0c08" stroke="rgba(247,245,242,0.08)"/>
-              <!-- OK button -->
-              <rect x="384" y="200" width="74" height="28" rx="5" fill="#f59e0b"/>
-              <text x="421" y="219" fill="#14100a" font-weight="700" text-anchor="middle">OK</text>
-              <rect x="468" y="200" width="74" height="28" rx="5" fill="none" stroke="rgba(247,245,242,0.25)"/>
-              <text x="505" y="219" fill="#b3a996" text-anchor="middle">Cancel</text>
-            </g>
-          </svg>
-          <div class="fig-cap">The Target field after pasting. The path stays untouched; <b>space + line</b> sits after it.</div>
+        <p>Find the field that shows a long path ending in <span class="chrome mono">…chrome.exe</span><span class="edge mono">…msedge.exe</span>. Click at the <strong>very end</strong> of that text, type <strong>one space</strong>, then press <span class="kbd">Ctrl</span> + <span class="kbd">V</span>. Click <strong>OK</strong>.</p>
+        <div class="fig chrome">
+          <img src="assets/guide/chrome-target.png" alt="Chrome Properties dialog, Target field with the pasted line" width="1160" height="520" />
+          <div class="ring" style="left:57%; top:25%; width:39.5%; height:11.5%"></div>
+          <div class="tag" style="right:3%; top:13%">the pasted line</div>
         </div>
-        <div class="warn"><span><b>Don't delete anything</b> that's already in the field — only add a space and the paste. If Windows says the name is invalid, check that there's exactly <b>one space</b> between <span class="mono">chrome.exe"</span> and the pasted line. Click <b>OK</b>.</span></div>
-        <div class="expect"><span><b>You'll see:</b> the window closes with no error.</span></div>
+        <div class="fig edge">
+          <img src="assets/guide/edge-target.png" alt="Edge Properties dialog, Target field with the pasted line" width="1160" height="520" />
+          <div class="ring" style="left:52%; top:25%; width:44.5%; height:11.5%"></div>
+          <div class="tag" style="right:3%; top:13%">the pasted line</div>
+        </div>
+        <div class="fig-cap">This is what it looks like <b>after</b> the paste — one space after the path, then the line.</div>
+        <div class="warn"><span>Don't delete anything that's already in the field. If Windows says the name is invalid — check that there's exactly <strong>one space</strong> between the path and the line.</span></div>
+        <div class="expect"><span>The window closes with no error.</span></div>
       </div>
     </div>
 
     <!-- STEP 4 -->
-    <div class="step" id="step4">
-      <div class="step-head"><div class="step-n">4</div><h2>Quit Chrome completely</h2></div>
+    <div class="step">
+      <div class="step-head"><div class="step-n">4</div><h2>Restart the browser completely</h2></div>
       <div class="step-body">
-        <p>Close all Chrome windows. Then — important — Chrome often keeps running near the clock in the bottom-right corner. <strong>Right-click that small Chrome icon → Exit.</strong> The fix only applies on a fresh start.</p>
-        <div class="fig">
-          <svg viewBox="0 0 640 200" role="img" aria-label="System tray area: right-click the Chrome icon and choose Exit">
-            <rect x="0" y="0" width="640" height="200" fill="#100d09"/>
-            <!-- taskbar strip -->
-            <rect x="0" y="150" width="640" height="50" fill="#1a150e"/>
-            <rect x="0" y="150" width="640" height="1" fill="rgba(247,245,242,0.1)"/>
-            <text x="20" y="180" fill="#5b5346" font-family="system-ui" font-size="13">⊞  Start</text>
-            <rect x="560" y="158" width="34" height="10" rx="2" fill="none" stroke="#5b5346"/>
-            <text x="620" y="182" fill="#5b5346" font-family="system-ui" font-size="12" text-anchor="end">🕘 10:24</text>
-            <!-- tray chrome dot -->
-            <g transform="translate(500,164)">
-              <circle cx="8" cy="8" r="8" fill="#1c1712" stroke="rgba(247,245,242,0.35)"/>
-              <circle cx="8" cy="8" r="3.5" fill="#f5f2ed"/>
-            </g>
-            <!-- menu -->
-            <g transform="translate(380,66)" font-family="system-ui, 'Segoe UI', sans-serif" font-size="14.5">
-              <rect x="0" y="0" width="180" height="72" rx="8" fill="#1c1712" stroke="rgba(247,245,242,0.14)"/>
-              <rect x="8" y="10" width="164" height="24" rx="5" fill="rgba(247,245,242,0.05)"/>
-              <text x="20" y="27" fill="#b3a996">New window</text>
-              <rect x="4" y="38" width="172" height="26" rx="5" fill="rgba(245,158,11,0.16)" stroke="rgba(245,158,11,0.55)"/>
-              <text x="20" y="56" fill="#f5f2ed" font-weight="700">Exit</text>
-              <path d="M 122 96 l 14 6 -9 3 -3 9 z" fill="#f5f2ed"/>
-            </g>
-            <text x="120" y="60" fill="#b3a996" font-family="system-ui, sans-serif" font-size="14">the small Chrome icon</text>
-            <text x="120" y="80" fill="#b3a996" font-family="system-ui, sans-serif" font-size="14">next to the clock</text>
-          </svg>
-          <div class="fig-cap">Right-click the small icon by the clock → <b>Exit</b>. No icon left there = Chrome is fully closed.</div>
-        </div>
-        <div class="expect"><span><b>You'll see:</b> the small Chrome icon disappears from the corner.</span></div>
+        <p>Close every <span class="chrome"><strong>Chrome</strong></span><span class="edge"><strong>Edge</strong></span> window. Then look at the corner of the screen, next to the clock: if the browser's small icon is still there, right-click it → <strong>Exit</strong>. Now open the browser again <strong>from the same desktop icon</strong>.</p>
+        <div class="expect"><span>Back on Netflix: fullscreen → Smoothie — <strong>the picture fills the screen</strong>.</span></div>
       </div>
     </div>
 
-    <!-- STEP 5 -->
-    <div class="step" id="step5">
-      <div class="step-head"><div class="step-n">5</div><h2>Open Chrome the same way as always</h2></div>
-      <div class="step-body">
-        <p>Double-click <strong>the same icon</strong> you edited (the fix lives in that shortcut). Go back to Netflix, go fullscreen and switch on Smoothie.</p>
-        <div class="expect"><span><b>You'll see:</b> the picture — warped to fill your screen, no black.</span></div>
-      </div>
+    <div class="done-box">
+      <h2>Done</h2>
+      <p>If you ever want to undo this, do step 2–3 again and delete the pasted line.</p>
     </div>
 
-    <!-- VERIFY -->
-    <h2 id="check">How do I know it worked?</h2>
-    <p>The honest check is the picture itself. If you like checking under the hood: type <span class="mono">chrome://version</span> in the address bar and look at the <strong>Command Line</strong> field — it must contain <span class="mono">--disable-direct-composition</span>.</p>
-
-    <div class="done-box" id="done">
-      <h2>Done — Smoothie fills the screen</h2>
-      <p>Enjoy. If you ever want to undo this, open Properties again and delete the pasted line. That's it.</p>
-    </div>
-
-    <div class="still-box" id="still-black">
-      <h2>Still black — or something else looks off?</h2>
-      <p>Tell us what you see. We read every report and answer personally — and a confirmed bug earns you a free month of Pro.</p>
-      <a class="btn" href="/report/">Send us a report</a>
+    <div class="still-box">
+      <h2>Still black?</h2>
+      <p>Tell us what you see — we read every report and answer personally. A confirmed bug earns you a free month of Pro.</p>
+      <a class="btn" href="/report/">Send a report</a>
       <a class="btn ghost" href="/contact/">Contact us</a>
     </div>
 
     <details>
       <summary>What does this line actually do?</summary>
-      <p>Chrome on Windows draws protected (DRM) video on a special hardware layer that runs beside the page. Smoothie's non-linear warp has to process the picture itself, and that layer doesn't allow it — some PC configurations show black instead. The line tells Chrome to use its standard drawing path for everything; protected video keeps all of its protection and your streaming quality stays the same. The trade-off: Chrome renders through a slightly older route, which in rare cases causes minor visual quirks on other sites. Removing the line restores everything exactly as it was.</p>
+      <p>Protected (DRM) video is drawn on a special fast layer that runs beside the page; our non-linear warp can't process it, and on some PCs that layer shows black instead. The line switches your browser to its standard drawing path. The video keeps all of its protection and quality; the trade-off is a slightly older rendering route, which can rarely cause minor visual quirks on other sites.</p>
     </details>
     <details>
-      <summary>Using Edge instead of Chrome?</summary>
-      <p>Exactly the same steps — right-click your <strong>Edge</strong> shortcut, Properties, paste the same line after the path, fully quit Edge, open it again.</p>
-    </details>
-    <details>
-      <summary>The fix works only when Chrome starts from that shortcut</summary>
-      <p>Windows stores the line in the shortcut itself — links from other places (Start menu search, another app) won't have it. If you usually open Chrome differently, do the same two edits (Target field) on that shortcut too, or drag your fixed shortcut to the taskbar and use it from now on.</p>
+      <summary>The fix only works when the browser starts from that shortcut</summary>
+      <p>Windows stores the line in the shortcut itself. If you usually open the browser from somewhere else (Start menu, another app), either repeat steps 2–3 on that shortcut, or pin your fixed desktop shortcut to the taskbar and use it from now on.</p>
     </details>
 
-    <div class="foot">
-      Ultrawider — the ultrawide video extension. <a href="/">ultrawider.net</a><br/>
-      Chrome and Windows are trademarks of their owners; this guide changes a browser launch option only.
-    </div>
+    <div class="foot">Ultrawider — <a href="/">ultrawider.net</a></div>
   </div>
 
   <script>
     (function () {
+      var bc = document.getElementById('t-chrome'), be = document.getElementById('t-edge');
+      function setB(cls) {
+        document.body.className = cls;
+        bc.classList.toggle('on', cls === 'b-chrome');
+        be.classList.toggle('on', cls === 'b-edge');
+      }
+      bc.addEventListener('click', function () { setB('b-chrome'); });
+      be.addEventListener('click', function () { setB('b-edge'); });
+
       var btn = document.getElementById('copybtn');
       var line = document.getElementById('flagline').textContent.trim();
       function ok() {
-        btn.textContent = 'Copied \u2713';
+        btn.textContent = 'Copied ✓';
         btn.classList.add('done');
         setTimeout(function () { btn.textContent = 'Copy'; btn.classList.remove('done'); }, 4000);
       }
