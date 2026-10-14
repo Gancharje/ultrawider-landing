@@ -29,57 +29,58 @@
 }
 *{box-sizing:border-box;margin:0}
 html{-webkit-text-size-adjust:100%}
-body{background:var(--bg);color:var(--text);font:15px/1.6 var(--font-body);-webkit-font-smoothing:antialiased}
+/* STICKY-SHELL (owner 14.10): the page is at least one window tall — the
+   footer sits on the bottom edge of the viewport (below the fold when the
+   content is taller), never floating mid-air on a big screen. The form
+   column centers vertically in the space left and grows to use it. */
+body{background:var(--bg);color:var(--text);font:15px/1.6 var(--font-body);-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
 
-/* ONE SCREEN (owner 14.10): the form column is sized so the four questions
-   AND the Send button are visible without scrolling on a normal desktop
-   viewport — header and site footer included. */
-.survey-wrap{max-width:820px;margin:0 auto;padding:22px 20px 26px}
-.survey-head{margin-bottom:14px}
-.survey-head h1{font-family:var(--font-display);font-weight:800;font-size:clamp(1.3rem,2vw,1.7rem);letter-spacing:-.03em;line-height:1.1;margin-bottom:6px}
+.survey-wrap{flex:1 1 auto;width:100%;max-width:1020px;margin:0 auto;padding:26px 22px 30px;display:flex;flex-direction:column;justify-content:center}
+.survey-head{margin-bottom:16px}
+.survey-head h1{font-family:var(--font-display);font-weight:800;font-size:clamp(1.5rem,2.4vw,2.1rem);letter-spacing:-.03em;line-height:1.1;margin-bottom:8px}
 .survey-head h1 .accent{color:var(--accent)}
-.lede{color:var(--text-dim);font-size:13.5px;max-width:60ch;line-height:1.5}
+.lede{color:var(--text-dim);font-size:14.5px;max-width:64ch;line-height:1.55}
 .lede strong{color:var(--accent);font-weight:600}
 
-/* ── question cards: 2×2 grid ── */
-.qs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.q{padding:14px 16px;background:var(--bg-elev);border:1px solid var(--border-soft);border-radius:var(--radius);transition:border-color var(--transition)}
+/* ── question cards: 2×2 grid, sized to the window it has ── */
+.qs{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.q{padding:18px 20px;background:var(--bg-elev);border:1px solid var(--border-soft);border-radius:var(--radius);transition:border-color var(--transition)}
 .q:focus-within{border-color:var(--border-hover)}
 
-.q-num{display:inline-block;font-family:var(--font-mono);font-size:10px;font-weight:500;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px}
-.q h2{font-family:var(--font-body);font-weight:600;font-size:13.5px;color:var(--text);margin-bottom:10px;line-height:1.35}
+.q-num{display:inline-block;font-family:var(--font-mono);font-size:11px;font-weight:500;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.q h2{font-family:var(--font-body);font-weight:600;font-size:15px;color:var(--text);margin-bottom:12px;line-height:1.35}
 
 /* radio options */
-.opt{display:flex;align-items:center;gap:10px;padding:8px 12px;margin-bottom:6px;border:1px solid var(--border-soft);border-radius:var(--radius-sm);background:var(--bg-elev-2);cursor:pointer;transition:all var(--transition)}
+.opt{display:flex;align-items:center;gap:12px;padding:11px 14px;margin-bottom:8px;border:1px solid var(--border-soft);border-radius:var(--radius-sm);background:var(--bg-elev-2);cursor:pointer;transition:all var(--transition)}
 .opt:last-child{margin-bottom:0}
 .opt:hover{border-color:var(--border-hover)}
 .opt.selected{border-color:var(--accent);background:var(--accent-glow)}
 .opt input[type=radio]{display:none}
-.dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--border-hover);flex-shrink:0;transition:all var(--transition);position:relative}
+.dot{width:18px;height:18px;border-radius:50%;border:2px solid var(--border-hover);flex-shrink:0;transition:all var(--transition);position:relative}
 .opt:hover .dot{border-color:var(--accent-dim)}
 .opt.selected .dot{border-color:var(--accent);background:var(--accent)}
-.opt.selected .dot::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--bg)}
-.opt label{cursor:pointer;color:var(--text-dim);font-size:13px;line-height:1.35;flex:1}
+.opt.selected .dot::after{content:'';position:absolute;inset:4px;border-radius:50%;background:var(--bg)}
+.opt label{cursor:pointer;color:var(--text-dim);font-size:14px;line-height:1.4;flex:1}
 .opt.selected label{color:var(--text)}
 
 /* textareas + inputs */
 textarea,input[type=email]{
-  width:100%;padding:9px 12px;margin-top:8px;
+  width:100%;padding:11px 14px;margin-top:8px;
   background:var(--bg-elev-2);border:1px solid var(--border-soft);border-radius:var(--radius-sm);
-  color:var(--text);font:13px/1.45 var(--font-body);
-  resize:vertical;min-height:52px;outline:none;transition:border-color var(--transition);
+  color:var(--text);font:14px/1.5 var(--font-body);
+  resize:vertical;min-height:56px;outline:none;transition:border-color var(--transition);
 }
 textarea:focus,input:focus{border-color:var(--accent)}
 textarea::placeholder,input::placeholder{color:var(--text-mute)}
 
 /* hint text */
-.hint{font-size:11.5px;color:var(--text-mute);margin-top:7px;line-height:1.45}
+.hint{font-size:12px;color:var(--text-mute);margin-top:8px;line-height:1.5}
 .hint strong{color:var(--text-dim);font-weight:500}
 
 /* ── submit: full width of the grid, directly under it ── */
 .submit{
   display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
-  padding:13px 24px;margin-top:14px;
+  padding:15px 24px;margin-top:16px;
   background:var(--accent);border:1px solid transparent;border-radius:var(--radius-sm);
   color:#1a1207;font:600 14px/1 var(--font-body);text-align:center;cursor:pointer;
   box-shadow:0 8px 24px rgba(245,158,11,.28);

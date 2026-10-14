@@ -27,8 +27,9 @@ const { chromium } = require('playwright');
     m.header && m.footer && m.send &&
     m.send.bottom <= m.viewport &&      // Send visible without scroll
     m.formBottom <= m.viewport &&       // all questions on screen
-    m.footer.top < m.docHeight;
-  console.log(ok ? 'PASS: header+footer present, Send fits one screen' : 'FAIL');
+    m.footer.top < m.docHeight &&
+    m.docHeight - m.footer.bottom < 2;  // footer pinned to the page bottom — never floating
+  console.log(ok ? 'PASS: header+footer present, Send fits one screen, footer pinned' : 'FAIL');
   await page.screenshot({ path: 'C:/Users/user/Desktop/widescope/gate-logs/survey-rework.png', fullPage: false });
   await browser.close();
   process.exit(ok ? 0 : 1);
