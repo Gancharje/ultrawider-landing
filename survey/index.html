@@ -9,6 +9,10 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Shared site system: the site header/footer (.site-header, .site-footer,
+     .container, .logo) comes from here; the survey's own tokens and layout
+     below win wherever both speak (inline block loads after the link). -->
+<link rel="stylesheet" href="/style.css?v=16">
 <style>
 :root{
   --bg:#050505; --bg-elev:#0e0e0e; --bg-elev-2:#141414;
@@ -25,60 +29,59 @@
 }
 *{box-sizing:border-box;margin:0}
 html{-webkit-text-size-adjust:100%}
-body{background:var(--bg);color:var(--text);font:15px/1.6 var(--font-body);padding:48px 20px;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font:15px/1.6 var(--font-body);-webkit-font-smoothing:antialiased}
 
-.survey{max-width:520px;width:100%}
-
-/* ── header ── */
-.brand{display:flex;align-items:center;gap:10px;margin-bottom:28px}
-.brand-mark{width:22px;height:14px;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dim) 100%);border-radius:3px;box-shadow:0 0 0 1px rgba(255,255,255,.04),0 4px 14px rgba(245,158,11,.35);position:relative}
-.brand-mark::after{content:'';position:absolute;inset:2px;background:var(--bg);border-radius:1px;clip-path:polygon(0 0,35% 0,35% 100%,0 100%,0 0,65% 0,65% 100%,100% 100%,100% 0)}
-.brand-name{font-family:var(--font-display);font-weight:700;font-size:1.05rem;letter-spacing:0}
-
-h1{font-family:var(--font-display);font-weight:800;font-size:clamp(1.6rem,3vw,2.2rem);letter-spacing:-.03em;line-height:1.05;margin-bottom:8px}
-h1 .accent{color:var(--accent)}
-.lede{color:var(--text-dim);font-size:14.5px;margin-bottom:32px;max-width:44ch;line-height:1.55}
+/* ONE SCREEN (owner 14.10): the form column is sized so the four questions
+   AND the Send button are visible without scrolling on a normal desktop
+   viewport — header and site footer included. */
+.survey-wrap{max-width:820px;margin:0 auto;padding:22px 20px 26px}
+.survey-head{margin-bottom:14px}
+.survey-head h1{font-family:var(--font-display);font-weight:800;font-size:clamp(1.3rem,2vw,1.7rem);letter-spacing:-.03em;line-height:1.1;margin-bottom:6px}
+.survey-head h1 .accent{color:var(--accent)}
+.lede{color:var(--text-dim);font-size:13.5px;max-width:60ch;line-height:1.5}
 .lede strong{color:var(--accent);font-weight:600}
 
-/* ── question cards ── */
-.q{margin-bottom:20px;padding:22px 24px;background:var(--bg-elev);border:1px solid var(--border-soft);border-radius:var(--radius);transition:border-color var(--transition)}
+/* ── question cards: 2×2 grid ── */
+.qs{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.q{padding:14px 16px;background:var(--bg-elev);border:1px solid var(--border-soft);border-radius:var(--radius);transition:border-color var(--transition)}
 .q:focus-within{border-color:var(--border-hover)}
 
-.q-num{display:inline-block;font-family:var(--font-mono);font-size:11px;font-weight:500;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px}
-.q h2{font-family:var(--font-body);font-weight:600;font-size:15px;color:var(--text);margin-bottom:16px;line-height:1.35}
+.q-num{display:inline-block;font-family:var(--font-mono);font-size:10px;font-weight:500;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-bottom:5px}
+.q h2{font-family:var(--font-body);font-weight:600;font-size:13.5px;color:var(--text);margin-bottom:10px;line-height:1.35}
 
 /* radio options */
-.opt{display:flex;align-items:center;gap:12px;padding:12px 16px;margin-bottom:8px;border:1px solid var(--border-soft);border-radius:var(--radius-sm);background:var(--bg-elev-2);cursor:pointer;transition:all var(--transition)}
+.opt{display:flex;align-items:center;gap:10px;padding:8px 12px;margin-bottom:6px;border:1px solid var(--border-soft);border-radius:var(--radius-sm);background:var(--bg-elev-2);cursor:pointer;transition:all var(--transition)}
+.opt:last-child{margin-bottom:0}
 .opt:hover{border-color:var(--border-hover)}
 .opt.selected{border-color:var(--accent);background:var(--accent-glow)}
 .opt input[type=radio]{display:none}
-.dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--border-hover);flex-shrink:0;transition:all var(--transition);position:relative}
+.dot{width:16px;height:16px;border-radius:50%;border:2px solid var(--border-hover);flex-shrink:0;transition:all var(--transition);position:relative}
 .opt:hover .dot{border-color:var(--accent-dim)}
 .opt.selected .dot{border-color:var(--accent);background:var(--accent)}
-.opt.selected .dot::after{content:'';position:absolute;inset:4px;border-radius:50%;background:var(--bg)}
-.opt label{cursor:pointer;color:var(--text-dim);font-size:14px;line-height:1.4;flex:1}
+.opt.selected .dot::after{content:'';position:absolute;inset:3px;border-radius:50%;background:var(--bg)}
+.opt label{cursor:pointer;color:var(--text-dim);font-size:13px;line-height:1.35;flex:1}
 .opt.selected label{color:var(--text)}
 
 /* textareas + inputs */
 textarea,input[type=email]{
-  width:100%;padding:12px 16px;margin-top:8px;
+  width:100%;padding:9px 12px;margin-top:8px;
   background:var(--bg-elev-2);border:1px solid var(--border-soft);border-radius:var(--radius-sm);
-  color:var(--text);font:14px/1.5 var(--font-body);
-  resize:vertical;min-height:64px;outline:none;transition:border-color var(--transition);
+  color:var(--text);font:13px/1.45 var(--font-body);
+  resize:vertical;min-height:52px;outline:none;transition:border-color var(--transition);
 }
 textarea:focus,input:focus{border-color:var(--accent)}
 textarea::placeholder,input::placeholder{color:var(--text-mute)}
 
 /* hint text */
-.hint{font-size:12px;color:var(--text-mute);margin-top:10px;line-height:1.5}
+.hint{font-size:11.5px;color:var(--text-mute);margin-top:7px;line-height:1.45}
 .hint strong{color:var(--text-dim);font-weight:500}
 
-/* ── submit ── */
+/* ── submit: full width of the grid, directly under it ── */
 .submit{
   display:flex;align-items:center;justify-content:center;gap:8px;width:100%;
-  padding:16px 24px;margin-top:12px;
+  padding:13px 24px;margin-top:14px;
   background:var(--accent);border:1px solid transparent;border-radius:var(--radius-sm);
-  color:#1a1207;font:600 15px/1 var(--font-body);text-align:center;cursor:pointer;
+  color:#1a1207;font:600 14px/1 var(--font-body);text-align:center;cursor:pointer;
   box-shadow:0 8px 24px rgba(245,158,11,.28);
   transition:transform var(--transition),background var(--transition),box-shadow var(--transition);
 }
@@ -86,20 +89,17 @@ textarea::placeholder,input::placeholder{color:var(--text-mute)}
 .submit:active{transform:scale(.98)}
 
 /* ── success ── */
-.done{display:none;text-align:center;padding:48px 24px}
+.done{display:none;text-align:center;padding:40px 24px}
 .done-check{width:48px;height:48px;margin:0 auto 16px;border-radius:50%;background:var(--accent-glow);display:flex;align-items:center;justify-content:center}
 .done-check svg{width:24px;height:24px;stroke:var(--accent);stroke-width:2.5;fill:none;stroke-linecap:round;stroke-linejoin:round}
 .done h2{font-family:var(--font-display);font-weight:700;font-size:20px;margin-bottom:8px;color:var(--text)}
 .done p{color:var(--text-dim);font-size:14px;line-height:1.55}
 
-/* ── footer ── */
-.footer{margin-top:28px;text-align:center;font-size:12px;color:var(--text-mute)}
-.footer a{color:var(--text-dim);text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--border-hover)}
-
-@media (max-width:480px){
-  body{padding:24px 16px}
-  .q{padding:16px}
-  .opt{padding:10px 12px}
+@media (max-width:680px){
+  .qs{grid-template-columns:1fr}
+  .survey-wrap{padding:16px 14px 20px}
+  .q{padding:12px}
+  .opt{padding:8px 10px}
 }
 
 @media (prefers-color-scheme: light){
@@ -113,17 +113,31 @@ textarea::placeholder,input::placeholder{color:var(--text-mute)}
 </style>
 </head>
 <body>
-<div class="survey">
 
-  <div class="brand">
-    <div class="brand-mark"></div>
-    <span class="brand-name">Ultrawider</span>
+<header class="site-header">
+  <div class="container nav">
+    <a href="/" class="logo">
+      <span class="logo-mark"></span>
+      <span class="logo-text">Ultrawider</span>
+    </a>
+    <nav class="nav-links">
+      <a href="/#playground">Playground</a>
+      <a href="/#math">For geeks</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/#faq">FAQ</a>
+      <a href="/#pricing" class="btn-cta">Get Pro</a>
+    </nav>
+  </div>
+</header>
+
+<main class="survey-wrap">
+  <div class="survey-head">
+    <h1>Tell us what <span class="accent">you think</span></h1>
+    <p class="lede"><strong>Sorry to interrupt.</strong> A one-time, two-minute survey — it helps us make Ultrawider better for you. No reward, no follow-up spam.</p>
   </div>
 
-  <h1>Tell us what <span class="accent">you think</span></h1>
-  <p class="lede"><strong>Sorry to interrupt.</strong> This is a one-time survey — it helps us make Ultrawider better for you. Two minutes, no reward, no follow-up spam.</p>
-
   <form id="surveyForm">
+  <div class="qs">
 
   <div class="q" id="q1">
     <span class="q-num">01</span>
@@ -154,7 +168,9 @@ textarea::placeholder,input::placeholder{color:var(--text-mute)}
     <span class="q-num">04</span>
     <h2>Want to hear back from us? <span style="color:var(--text-dim)">(optional)</span></h2>
     <input type="email" id="q4text" placeholder="you@example.com" autocomplete="email">
-    <p class="hint">Leave an email only if you'd like a reply (e.g. we fixed the thing you reported).<br>Used for nothing else. No spam.</p>
+    <p class="hint">Leave an email only if you'd like a reply — e.g. we fixed the thing you reported. Used for nothing else.</p>
+  </div>
+
   </div>
 
   <button type="submit" class="submit">
@@ -171,9 +187,40 @@ textarea::placeholder,input::placeholder{color:var(--text-mute)}
     <h2>You're all set</h2>
     <p>Thank you — really. Every answer shapes what we build next.</p>
   </div>
+</main>
 
-  <p class="footer"><a href="https://ultrawider.net">ultrawider.net</a> · <a href="https://ultrawider.net/privacy">Privacy</a></p>
-</div>
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="footer-brand">
+      <a href="/" class="logo">
+        <span class="logo-mark"></span>
+        <span class="logo-text">Ultrawider</span>
+      </a>
+      <p class="footer-tag">Built for ultrawide.</p>
+    </div>
+    <nav class="footer-nav">
+      <h4>Product</h4>
+      <a href="/#playground">Playground</a>
+      <a href="/#math">For geeks</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/#faq">FAQ</a>
+    </nav>
+    <nav class="footer-nav">
+      <h4>Account</h4>
+      <a href="/recover">Recover license</a>
+      <a href="/contact">Contact support</a>
+    </nav>
+    <nav class="footer-nav">
+      <h4>Legal</h4>
+      <a href="/terms.html">Terms of Service</a>
+      <a href="/privacy.html">Privacy Policy</a>
+      <a href="/refund.html">Support Policy</a>
+    </nav>
+  </div>
+  <div class="container footer-bottom">
+    <span>© 2026 Ultrawider. All rights reserved.</span>
+  </div>
+</footer>
 
 <script>
 (function() {
