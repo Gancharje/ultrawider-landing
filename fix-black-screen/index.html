@@ -203,7 +203,9 @@
     </details>
     <details>
       <summary>The fix stops working when I close and reopen my browser</summary>
-      <p>This is Chrome running in the background. When you close the window, Chrome keeps a hidden process alive (icon near the clock) — reopening doesn't actually relaunch Chrome, it just opens a new window of the already-running process, without the flag. To fix: right-click the browser's small icon near the clock → <strong>Exit</strong> before reopening from your desktop shortcut. Or turn off background mode: browser Settings → System → <strong>turn off "Continue running background apps when the browser is closed"</strong>.</p>
+      <p>This is the browser running in the background. When you close the window, it keeps a hidden process alive (icon near the clock) — reopening doesn't actually relaunch it, it just opens a new window of the already-running process, without the flag. To fix: right-click the browser's small icon near the clock → <strong>Exit</strong> before reopening from your desktop shortcut. Or turn off background mode:</p>
+      <p><strong>Chrome:</strong> Settings → System → turn off <strong>"Continue running background apps when Chrome is closed"</strong>.</p>
+      <p><strong>Edge:</strong> Settings → System and performance → turn off <strong>"Startup boost"</strong> and <strong>"Continue running background extensions when Microsoft Edge is closed"</strong>. (Killing the process in Task Manager works too — it's the same thing a full restart does.)</p>
     </details>
   </div>
   </main>
