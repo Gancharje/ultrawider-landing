@@ -102,14 +102,9 @@ textarea::placeholder,input::placeholder{color:var(--text-mute)}
   .opt{padding:8px 10px}
 }
 
-@media (prefers-color-scheme: light){
-  :root{
-    --bg:#fafafa; --bg-elev:#fff; --bg-elev-2:#f4f4f5;
-    --border:#e5e5e5; --border-soft:#eee; --border-hover:#ccc;
-    --text:#1a1a1a; --text-dim:#555; --text-mute:#999;
-    --accent-glow:rgba(245,158,11,.1);
-  }
-}
+/* No light scheme (owner 14.10): the site chrome from /style.css is dark by
+   identity — a light form body under the dark header/footer read as broken.
+   The survey is dark, like every other page. */
 </style>
 </head>
 <body>
