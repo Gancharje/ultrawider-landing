@@ -21,7 +21,7 @@
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
     />
     <link rel="stylesheet" href="/style.css?v=16" />
-    <link rel="stylesheet" href="/assets/styles.css?v=18" />
+    <link rel="stylesheet" href="/assets/styles.css?v=19" />
     <script src="/assets/config.js"></script>
     <script src="/assets/error-instrumentation.js"></script>
     <script src="/assets/ads-gtag.js"></script>
@@ -224,7 +224,77 @@
           root.innerHTML = ORDER.map(planCard).join('');
         }
 
-        render();
+        // CN lead card (owner decision 18.10): mainland-China visitors
+        // cannot pay through Lava.top (no Alipay/WeChat rails, no legal
+        // alternative without a Chinese entity), so they get a fourth
+        // centered card that collects an email for a manual-Alipay
+        // follow-up. Framed like the recommended plan. Detection: CN
+        // browser language AND a Chinese timezone — both must hold, so
+        // zh-TW/zh-HK visitors (who can pay normally) never see it.
+        function isMainlandCn() {
+          var langs = (navigator.languages && navigator.languages.length)
+            ? navigator.languages
+            : [navigator.language || ''];
+          var langOk = langs.some(function (l) {
+            return /^zh$/i.test(l) || /^zh[-_](cn|hans)/i.test(l);
+          });
+          if (!langOk) return false;
+          var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+          return ['Asia/Shanghai', 'Asia/Urumqi', 'Asia/Chongqing', 'Asia/Harbin'].indexOf(tz) !== -1;
+        }
+
+        function cnCard() {
+          return (
+            '<div class="plan plan--recommended plan--cn" data-plan="cn-alipay">' +
+            '<div class="ribbon">支付宝付款</div>' +
+            '<h3>来自中国？</h3>' +
+            '<div class="price">支付宝<span>/Alipay</span></div>' +
+            '<p class="plan-duration">来自中国？留下邮箱，我们会与您联系，安排支付宝付款。</p>' +
+            '<form class="cn-lead" novalidate>' +
+            '<input type="email" name="email" placeholder="您的邮箱 / your email" required />' +
+            '<button type="submit">留下邮箱</button>' +
+            '</form>' +
+            '</div>'
+          );
+        }
+
+        var order = ORDER.slice();
+        if (isMainlandCn()) order.splice(2, 0, 'cn-alipay');
+        root.innerHTML = order
+          .map(function (id) { return id === 'cn-alipay' ? cnCard() : planCard(id); })
+          .join('');
+
+        root.addEventListener('submit', function (e) {
+          var form = e.target.closest('.cn-lead');
+          if (!form) return;
+          e.preventDefault();
+          var email = (form.email.value || '').trim();
+          if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+            form.email.focus();
+            form.email.placeholder = '请输入有效的邮箱 / valid email, please';
+            return;
+          }
+          form.querySelector('button').disabled = true;
+          // API lives on its own subdomain (the site itself is static on
+          // GitHub Pages — no relative /api here).
+          var base = (window.ULTRAWIDER && window.ULTRAWIDER.API_BASE) || 'https://api.ultrawider.net';
+          fetch(base + '/api/cn-lead', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              email: email,
+              install_id: installId || undefined,
+              lang: (navigator.languages || [navigator.language || '']).join(','),
+            }),
+          })
+            .then(function (r) { return r.json(); })
+            .catch(function () { return { ok: true }; }) // network hiccup — do not lose the visitor's belief
+            .then(function () {
+              form.outerHTML =
+                '<p class="cn-ok">谢谢！我们会在 24 小时内与您联系。<br>' +
+                'Thank you! We&rsquo;ll email you within 24 hours.</p>';
+            });
+        });
 
         // Static config.js prices are authoritative ($5/mo, $24/yr) —
         // no live /api/pricing override.
