@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>7 Days of Ultrawider Pro — Free, No Card</title>
+    <meta
+      name="description"
+      content="Full Pro for 7 days — both modes, every site. Leave your email, we send the key. No card, nothing to cancel. After the week it's $24/year, your choice."
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#050505" />
+    <meta property="og:title" content="7 Days of Ultrawider Pro — Free" />
+    <meta property="og:description" content="Both modes, every site, 7 days. Leave an email — the key arrives in a minute." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ultrawider.net/trial" />
+    <link rel="canonical" href="https://ultrawider.net/trial" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    />
+    <link rel="stylesheet" href="/style.css?v=16" />
+    <script src="/assets/config.js"></script>
+    <script src="/assets/error-instrumentation.js"></script>
+    <script src="/assets/ads-gtag.js"></script>
+    <script src="/assets/metrika.js" defer></script>
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/109480276" style="position:absolute;left:-9999px" alt="" /></div></noscript>
+    <header class="site-header">
+      <div class="container nav">
+        <a href="/" class="logo">
+          <span class="logo-mark"></span>
+          <span class="logo-text">Ultrawider</span>
+        </a>
+        <nav class="nav-links">
+          <a href="/#playground">Playground</a>
+          <a href="/#math">For geeks</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/#faq">FAQ</a>
+          <a href="/pricing" class="btn-cta">Get Pro</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="account-page">
+      <div class="account-container">
+        <a href="/pricing" class="account-back" aria-label="Back to plans">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+          Back to plans
+        </a>
+
+        <header class="account-head">
+          <span class="account-eyebrow">Free trial</span>
+          <h1>A week of full Pro. On us.</h1>
+          <p class="account-lede">
+            Both modes, every site — Netflix, Twitch, Prime included — for
+            7 days. Leave your email and the key arrives within a minute.
+            No card. Nothing to cancel. Ever.
+          </p>
+        </header>
+
+        <form class="account-form" id="form" novalidate>
+          <label class="account-label" for="email">Your email</label>
+          <input
+            class="account-input"
+            type="email"
+            id="email"
+            required
+            placeholder="your.email@example.com"
+            autocomplete="email"
+          />
+          <button class="account-submit" type="submit">Send my 7-day key</button>
+        </form>
+
+        <div class="account-msg" id="msg" hidden></div>
+
+        <p class="account-fallback">
+          After the week, Pro is $24/year — or stay on the free plan.
+          Your call, nothing charges by itself. Questions?
+          <a id="contact-link" href="mailto:hello@ultrawider.net">hello@ultrawider.net</a>
+        </p>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="logo">
+            <span class="logo-mark"></span>
+            <span class="logo-text">Ultrawider</span>
+          </a>
+          <p class="footer-tag">Built for ultrawide.</p>
+        </div>
+        <nav class="footer-nav">
+          <h4>Product</h4>
+          <a href="/#playground">Playground</a>
+          <a href="/#math">For geeks</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/#faq">FAQ</a>
+        </nav>
+        <nav class="footer-nav">
+          <h4>Account</h4>
+          <a href="/recover">Recover license</a>
+          <a href="/contact">Contact support</a>
+        </nav>
+        <nav class="footer-nav">
+          <h4>Legal</h4>
+          <a href="/terms.html">Terms of Service</a>
+          <a href="/privacy.html">Privacy Policy</a>
+          <a href="/refund.html">Support Policy</a>
+        </nav>
+      </div>
+      <div class="container footer-bottom">
+        <span>© 2026 Ultrawider. All rights reserved.</span>
+      </div>
+    </footer>
+
+    <script src="/assets/config.js"></script>
+    <script>
+      (function () {
+        // Same resilience pattern as /recover: config.js is a separate
+        // request — this page works even when it never arrives.
+        var CFG = window.ULTRAWIDER || {};
+        var CONTACT = CFG.CONTACT_EMAIL || 'hello@ultrawider.net';
+        var API = CFG.API_BASE || 'https://api.ultrawider.net';
+        var contactLink = document.getElementById('contact-link');
+        if (contactLink) contactLink.href = 'mailto:' + CONTACT;
+
+        // The extension passes its install_id so the second fraud wall
+        // (one trial per install) works even before the email wall matters.
+        var installId = new URLSearchParams(location.search).get('install_id');
+
+        var form = document.getElementById('form');
+        var input = document.getElementById('email');
+        var msg = document.getElementById('msg');
+
+        form.addEventListener('submit', async function (e) {
+          e.preventDefault();
+          var email = (input.value || '').trim();
+          if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            msg.hidden = false;
+            msg.className = 'account-msg account-msg--error';
+            msg.textContent = 'Please enter a valid email address.';
+            return;
+          }
+
+          msg.hidden = false;
+          msg.className = 'account-msg';
+          msg.textContent = 'Issuing your key…';
+
+          try {
+            var resp = await fetch(API + '/api/trial-request', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                email: email,
+                install_id: installId || undefined,
+              }),
+            });
+            var data = await resp.json().catch(function () { return {}; });
+            if (resp.ok && data.ok) {
+              form.hidden = true;
+              msg.hidden = false;
+              msg.className = 'account-msg account-msg--ok';
+              msg.textContent =
+                'On its way! Check ' + email + ' — the key usually lands within a minute. ' +
+                'Then: extension popup → "Already have a key?" → paste → Activate.';
+            } else if (data && data.throttled) {
+              msg.className = 'account-msg account-msg--error';
+              msg.textContent = 'A little too fast — try again in an hour.';
+            } else {
+              msg.className = 'account-msg account-msg--error';
+              msg.textContent = 'Something glitched on our side — please try once more.';
+            }
+          } catch (err) {
+            msg.className = 'account-msg account-msg--error';
+            msg.textContent = 'Network hiccup — please try once more.';
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
