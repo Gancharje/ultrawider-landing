@@ -146,6 +146,104 @@
       });
     })();
   </script>
+
+  <!-- STRUCTURED DATA: AI crawlers and search engines read this to understand
+       WHAT the product IS, WHO it's for, and WHAT it costs. Without schema,
+       Google and AI assistants see a wall of text and guess. With it, they
+       know: browser extension, category, price, features, ratings. -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://ultrawider.net/#app",
+        "name": "Ultrawider",
+        "alternateName": "Ultrawider — 21:9 Video Warp",
+        "description": "Chrome/Edge extension that fills ultrawide monitors with any video. Smoothie warp stretches edges while keeping center true — faces stay natural. Works on Netflix and other DRM streams. Free on YouTube.",
+        "url": "https://ultrawider.net/",
+        "applicationCategory": "BrowserApplication",
+        "applicationSubCategory": "Video Enhancement",
+        "operatingSystem": "Chrome, Edge, Windows, macOS, Linux",
+        "browserRequirements": "Requires Chrome-based browser (Chrome, Edge, Brave, Opera)",
+        "featureList": [
+          "Smoothie warp — non-linear stretch that keeps faces true",
+          "Crop mode — instant zoom to fill 21:9/32:9 screen",
+          "Works on Netflix, Twitch, Prime Video and DRM streams",
+          "Quality-aware mode recommendations",
+          "Mini-mode switcher for one-click mode toggle",
+          "Free on YouTube forever"
+        ],
+        "screenshot": "https://ultrawider.net/assets/og-image.png",
+        "offers": {
+          "@type": "AggregateOffer",
+          "lowPrice": "0",
+          "highPrice": "24",
+          "priceCurrency": "USD",
+          "offerCount": "3"
+        },
+        "author": {
+          "@type": "Person",
+          "name": "Pavel"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://ultrawider.net/#site",
+        "url": "https://ultrawider.net/",
+        "name": "Ultrawider",
+        "description": "Fill ultrawide monitors with any video — even DRM streams",
+        "publisher": { "@id": "https://ultrawider.net/#app" }
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://ultrawider.net/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Why do faces look wide on my ultrawide monitor?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Plain stretching stretches every pixel equally, making faces and objects look unnaturally wide. Ultrawider's Smoothie warp stretches the EDGES far more than the center, so faces in the middle stay true while the sides fill the screen."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I remove black bars on my ultrawide monitor?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Install the Ultrawider Chrome/Edge extension. It offers two modes: Smoothie (intelligent warp that preserves faces) and Crop (zoom-to-fill that cuts top/bottom). Both fill your 21:9 or 32:9 screen with any 16:9 video."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does it work on Netflix?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Ultrawider works on Netflix, Prime Video, Disney+, Twitch, Crunchyroll and other DRM-protected streams. The Smoothie warp engine runs on the composited video, not the raw DRM stream."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is Ultrawider free?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Free on YouTube forever. For all other sites, there's a free 7-day trial with full Pro access. After the trial, Pro is $24/year (both modes, every site, one key for up to 3 devices)."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What's the difference between Smoothie and Crop?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Crop zooms uniformly to fill the screen, cutting off the top and bottom of the video — fast but loses content. Smoothie stretches the edges more than the center using a log-linear curve, filling the screen without cropping — faces stay true, nothing is lost."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 <noscript><div><img src="https://mc.yandex.ru/watch/109480276" style="position:absolute;left:-9999px" alt="" /></div></noscript>

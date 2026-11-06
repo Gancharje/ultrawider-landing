@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Black Bars on Ultrawide Monitors — 3 Ways to Fill Your 21:9 Screen</title>
+    <meta name="description" content="Why black bars appear on ultrawide monitors and three ways to remove them: stretch (distorts), crop (loses content), and non-linear warp (best of both)." />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#050505" />
+    <link rel="canonical" href="https://ultrawider.net/guides/black-bars" />
+    <link rel="stylesheet" href="/style.css?v=16" />
+    <link rel="stylesheet" href="/assets/styles.css?v=19" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav">
+        <a href="/" class="logo"><span class="logo-mark"></span><span class="logo-text">Ultrawider</span></a>
+        <nav class="nav-links">
+          <a href="/#playground">Playground</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/faq">FAQ</a>
+          <a href="/" class="btn-ghost btn-sm">Home</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div class="container">
+          <span class="eyebrow">Guide</span>
+          <h1>Black bars on ultrawide: three ways to kill them</h1>
+          <p class="lead">Stretch, crop, or warp — which one is right for you?</p>
+        </div>
+      </section>
+
+      <section>
+        <div class="container" style="max-width: 72ch; padding-bottom: 60px;">
+          <div class="guide">
+            <p>Your ultrawide monitor is <strong>21:9</strong>. Most video is <strong>16:9</strong>. The mismatch creates black bars on the left and right — sometimes 25% of your screen is wasted. Here are the three approaches, honestly compared.</p>
+
+            <h2>Option 1: Uniform Stretch</h2>
+            <p><strong>How:</strong> Change aspect ratio to "stretch" or "full" in your player.</p>
+            <p><strong>Pros:</strong> Nothing is lost. Works everywhere.</p>
+            <p><strong>Cons:</strong> <strong>Faces look 34% wider</strong>. Everything becomes bloated. Fine for landscapes, terrible for people.</p>
+            <p><strong>Verdict:</strong> Better than bars, but the distortion is distracting.</p>
+
+            <h2>Option 2: Crop / Zoom</h2>
+            <p><strong>How:</strong> Change aspect ratio to "zoom", "crop" or "fill". Or use Ultrawider's <strong>Crop mode</strong>.</p>
+            <p><strong>Pros:</strong> No distortion — the picture looks natural. Instant, works on any content.</p>
+            <p><strong>Cons:</strong> <strong>Loses the top and bottom</strong> of the frame — about 25% of the content. Subtitles at the very bottom can get cut (Ultrawider's Crop preserves the subtitle zone).</p>
+            <p><strong>Verdict:</strong> Best for action scenes and scenery. Worst when subtitles or important action is at the top/bottom.</p>
+
+            <h2>Option 3: Non-Linear Warp (Smoothie)</h2>
+            <p><strong>How:</strong> <a href="/">Ultrawider extension</a> — Smoothie mode.</p>
+            <p><strong>How it works:</strong> Instead of stretching every pixel equally, it stretches the EDGES far more than the CENTER. A face in the middle stays at 1.0× (zero distortion). A tree at the edge gets 1.86× (invisible because you're not looking there).</p>
+            <p><strong>Pros:</strong> No black bars. No cropping. No face distortion. Works on Netflix and DRM.</p>
+            <p><strong>Cons:</strong> Not available in any video player — requires the extension. On very low-quality sources, stretching can soften the picture.</p>
+            <p><strong>Verdict:</strong> The best option when it works. Which is almost always.</p>
+
+            <h2>Comparison table</h2>
+            <table style="width:100%; border-collapse: collapse; margin: 16px 0;">
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.1);">
+                <th style="text-align:left; padding:8px 12px; color:#f5f5f5;">Approach</th>
+                <th style="text-align:center; padding:8px; color:#f5f5f5;">Bars gone?</th>
+                <th style="text-align:center; padding:8px; color:#f5f5f5;">Faces OK?</th>
+                <th style="text-align:center; padding:8px; color:#f5f5f5;">Content lost?</th>
+                <th style="text-align:center; padding:8px; color:#f5f5f5;">DRM?</th>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding:8px 12px; color:#a3a3a3;">Stretch</td>
+                <td style="text-align:center; color:#4ade80;">✓</td>
+                <td style="text-align:center; color:#ef4444;">✗ 34% wide</td>
+                <td style="text-align:center; color:#4ade80;">✓ none</td>
+                <td style="text-align:center; color:#a3a3a3;">player-dependent</td>
+              </tr>
+              <tr style="border-bottom: 1px solid rgba(255,255,255,0.05);">
+                <td style="padding:8px 12px; color:#a3a3a3;">Crop</td>
+                <td style="text-align:center; color:#4ade80;">✓</td>
+                <td style="text-align:center; color:#4ade80;">✓</td>
+                <td style="text-align:center; color:#ef4444;">✗ ~25% cut</td>
+                <td style="text-align:center; color:#4ade80;">✓ works</td>
+              </tr>
+              <tr>
+                <td style="padding:8px 12px; color:#f5a623;"><strong>Smoothie</strong></td>
+                <td style="text-align:center; color:#4ade80;">✓</td>
+                <td style="text-align:center; color:#4ade80;">✓</td>
+                <td style="text-align:center; color:#4ade80;">✓ none</td>
+                <td style="text-align:center; color:#4ade80;">✓ works</td>
+              </tr>
+            </table>
+
+            <div class="cta">
+              <p><strong>Try Smoothie on your own video:</strong> <a href="/#playground">live demo →</a> or <a href="/">install free</a> (YouTube forever, 7-day trial everywhere)</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <style>
+      .guide p { color: #a3a3a3; line-height: 1.7; font-size: 1rem; margin: 0 0 16px; }
+      .guide h2 { color: #f5f5f5; font-size: 1.2rem; margin: 32px 0 12px; }
+      .guide strong { color: #f5f5f5; }
+      .guide .cta { margin-top: 40px; padding: 20px; background: rgba(245,166,35,0.08); border: 1px solid rgba(245,166,35,0.25); border-radius: 12px; }
+      .guide .cta a { color: #f5a623; font-weight: 600; text-decoration: none; }
+      .guide .cta p { margin: 0; color: #d4d4d4; }
+    </style>
+    <footer class="site-footer">
+      <div class="container footer-bottom">
+        <span>© 2026 Ultrawider. <a href="/">Home</a> · <a href="/guides/faces">Why faces look wide →</a> · <a href="/guides/netflix">Netflix on ultrawide →</a></span>
+      </div>
+    </footer>
+  </body>
+</html>

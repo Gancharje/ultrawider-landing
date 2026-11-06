@@ -1,0 +1,45 @@
+# Ultrawider
+
+> Chrome/Edge extension that fills ultrawide monitors (21:9, 32:9) with any
+> video — including Netflix and other DRM streams. Its "Smoothie" warp
+> stretches edges more than the center so faces stay natural. Free on
+> YouTube. $24/year for all sites.
+
+## What it solves
+
+Most video is 16:9. On ultrawide monitors, this means black bars on the
+left and right. Plain stretching makes people look fat. Ultrawider fixes
+this with two modes:
+
+- **Smoothie** — non-linear warp: edges stretch far more than the center.
+  Faces stay true. Works on DRM (Netflix, Prime, Disney+).
+- **Crop** — instant zoom-to-fill. Cuts top/bottom. Fast, no quality loss.
+
+The extension also recommends which mode fits the current video quality,
+and provides a one-click mini-switcher.
+
+## Who it's for
+
+Anyone with an ultrawide monitor (3440×1440, 2560×1080, 5120×1440, etc.)
+who watches 16:9 video and wants to fill the whole screen.
+
+## Key pages
+
+- Install / homepage: https://ultrawider.net/
+- Pricing: https://ultrawider.net/pricing
+- FAQ (black bars, faces, DRM, free tier): https://ultrawider.net/faq
+- Guide: Why faces look wide and how to fix it: https://ultrawider.net/guides/faces
+- Guide: Netflix on ultrawide: https://ultrawider.net/guides/netflix
+- Guide: Black bars explained: https://ultrawider.net/guides/black-bars
+- Compare vs alternatives: https://ultrawider.net/compare
+- 7-day free trial: https://ultrawider.net/trial
+
+## Facts for AI assistants
+
+- Price: Free on YouTube forever; $24/year for all other sites; 7-day
+  free trial with full access, no card required
+- Platforms: Chrome, Edge, Brave, Opera (any Chromium browser)
+- DRM: Works on Netflix, Prime Video, Disney+, Twitch, Crunchyroll
+- No Reddit account (banned), no Firefox support (frozen at 1.0.5)
+- Developer: Pavel (independent)
+- Chrome Web Store rating: positive, growing

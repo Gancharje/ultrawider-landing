@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>How to Watch Netflix on an Ultrawide Monitor Without Black Bars</title>
+    <meta name="description" content="Netflix on ultrawide = black bars. Here's why and how to fill your 21:9 screen with Ultrawider — works with DRM, no quality loss." />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#050505" />
+    <link rel="canonical" href="https://ultrawider.net/guides/netflix" />
+    <link rel="stylesheet" href="/style.css?v=16" />
+    <link rel="stylesheet" href="/assets/styles.css?v=19" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav">
+        <a href="/" class="logo"><span class="logo-mark"></span><span class="logo-text">Ultrawider</span></a>
+        <nav class="nav-links">
+          <a href="/#playground">Playground</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/faq">FAQ</a>
+          <a href="/" class="btn-ghost btn-sm">Home</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div class="container">
+          <span class="eyebrow">Guide</span>
+          <h1>Netflix on ultrawide: killing the black bars</h1>
+          <p class="lead">Why DRM makes this harder, and how Ultrawider works around it.</p>
+        </div>
+      </section>
+
+      <section>
+        <div class="container" style="max-width: 72ch; padding-bottom: 60px;">
+          <div class="guide">
+            <p>Netflix streams in 16:9. Your monitor is 21:9. You get two thick black bars. Netflix has no "stretch" or "fill" setting. Here's what works and what doesn't.</p>
+
+            <h2>Why most solutions fail on Netflix</h2>
+            <p>Netflix uses <strong>DRM (Widevine/PlayReady)</strong> to protect content. Traditional video-manipulation extensions use <strong>canvas overlays</strong> — they draw the video to a hidden canvas, process pixels, then display the result. But DRM content is <strong>blackboxed</strong>: when you try to read pixels from a DRM video, you get a black rectangle. The browser literally prevents JavaScript from seeing the frame.</p>
+
+            <p>This is why most "video stretcher" extensions work on YouTube but show a black screen on Netflix.</p>
+
+            <h2>How Ultrawider is different</h2>
+            <p>Ultrawider doesn't read pixels. Instead, it applies an <strong>SVG filter with a displacement map</strong> directly to the video element. The browser's GPU compositor executes the filter — the DRM pipeline renders the frame normally, then the compositor warps it. No pixel access needed. No DRM bypassed.</p>
+
+            <p>The result: Smoothie warp works on Netflix, Prime Video, Disney+, Twitch, Crunchyroll and every other DRM-protected platform.</p>
+
+            <h2>What it looks like</h2>
+            <p>✅ Black bars disappear — the full frame fills your 21:9 screen<br>
+            ✅ Faces stay true (non-linear warp keeps center undistorted)<br>
+            ✅ Subtitles stay readable (positioned below the warp zone)<br>
+            ✅ No performance hit (GPU-composited, zero CPU cost)<br>
+            ✅ No DRM warnings or playback errors</p>
+
+            <h2>How to set it up</h2>
+            <p><strong>1.</strong> Install <a href="/">Ultrawider</a> from the Chrome Web Store or Microsoft Store<br>
+            <strong>2.</strong> Open Netflix and play any show<br>
+            <strong>3.</strong> Press <code>F</code> for fullscreen — Ultrawider's mini-panel appears<br>
+            <strong>4.</strong> Choose Smoothie (warp) or Crop (zoom)<br>
+            <strong>5.</strong> Done. It remembers your preference per site.</p>
+
+            <h2>Troubleshooting</h2>
+            <p><strong>Black screen?</strong> Make sure hardware acceleration is enabled in your browser settings. The SVG filter needs GPU compositing.</p>
+
+            <p><strong>Quality looks soft?</strong> If Netflix is streaming at low bitrate, stretching amplifies compression. Check the quality indicator in the status bar — if it says "soft source", switch to Crop mode.</p>
+
+            <div class="cta">
+              <p><strong>Try it free:</strong> <a href="/trial">7-day trial</a> (email only, no card) or <a href="/">install now</a></p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <style>
+      .guide p { color: #a3a3a3; line-height: 1.7; font-size: 1rem; margin: 0 0 16px; }
+      .guide h2 { color: #f5f5f5; font-size: 1.2rem; margin: 32px 0 12px; }
+      .guide strong { color: #f5f5f5; }
+      .guide code { background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 4px; color: #f5a623; }
+      .guide .cta { margin-top: 40px; padding: 20px; background: rgba(245,166,35,0.08); border: 1px solid rgba(245,166,35,0.25); border-radius: 12px; }
+      .guide .cta a { color: #f5a623; font-weight: 600; text-decoration: none; }
+      .guide .cta p { margin: 0; color: #d4d4d4; }
+    </style>
+    <footer class="site-footer">
+      <div class="container footer-bottom">
+        <span>© 2026 Ultrawider. <a href="/">Home</a> · <a href="/faq">FAQ</a> · <a href="/guides/faces">Why faces look wide →</a></span>
+      </div>
+    </footer>
+  </body>
+</html>

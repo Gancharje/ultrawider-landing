@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Ultrawider FAQ — Black Bars, Wide Faces, Netflix DRM, Free Tier</title>
+    <meta
+      name="description"
+      content="Why black bars appear on ultrawide monitors, why faces look wide, how Ultrawider's Smoothie warp fixes it, and whether it works on Netflix. Straight answers."
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#050505" />
+    <meta property="og:title" content="Ultrawider FAQ — Answers" />
+    <meta property="og:description" content="Black bars, wide faces, Netflix DRM, free vs Pro — all answered." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ultrawider.net/faq" />
+    <link rel="canonical" href="https://ultrawider.net/faq" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    />
+    <link rel="stylesheet" href="/style.css?v=16" />
+    <link rel="stylesheet" href="/assets/styles.css?v=19" />
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Why do I get black bars on my ultrawide monitor?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Most video is produced in 16:9 aspect ratio (like 1920×1080). Your ultrawide monitor is 21:9 or wider (like 3440×1440). The video can't fill the extra width, so the player shows black bars (letterboxing) on the left and right. Ultrawider fills those bars by stretching or cropping the video."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why do faces look wide and fat when I stretch video?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "When you stretch a 16:9 video to fill a 21:9 screen, every pixel gets wider by the same amount — about 33% wider. A face that should be oval becomes round. Ultrawider's Smoothie warp solves this: it stretches the LEFT and RIGHT edges far more than the CENTER, using a logarithmic curve. The middle of the frame — where faces usually are — stays nearly unchanged, while the sides absorb the stretching."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does Ultrawider work on Netflix?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Ultrawider works on Netflix, Amazon Prime Video, Disney+, Twitch, Crunchyroll, Bilibili and other DRM-protected platforms. The Smoothie warp engine applies an SVG filter to the video element after the DRM pipeline renders it, so it works without bypassing any protection."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Ultrawider free?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Free on YouTube forever, with no time limit. For all other sites (Netflix, Twitch, Prime, etc.), you get a 7-day free trial with full Pro access — no credit card required, just your email. After the trial, Pro is $24/year for both modes on every site, one key for up to 3 devices, cancel anytime."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the difference between Smoothie and Crop?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Crop zooms the video uniformly until it fills the screen, cutting off the top and bottom. It's instant and works everywhere, but you lose part of the picture. Smoothie stretches the video non-linearly — edges stretch far more than the center — so nothing is lost and faces stay natural. Smoothie is the premium mode; Crop is the fast, free mode."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which browsers does Ultrawider support?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Chrome, Edge, Brave, Opera and any Chromium-based browser. Firefox is not supported (frozen at version 1.0.5 due to rendering limitations)."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Will Stretchie/Smoothie make the picture blurry?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "On high-quality sources (1080p+ with good bitrate), Smoothie looks great — the warp is smooth and faces stay sharp. On low-bitrate or low-resolution sources (under 720p), stretching amplifies compression artifacts. That's why Ultrawider shows a quality indicator and recommends Crop when the source is too soft for Smoothie."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is Ultrawider different from just changing aspect ratio in video player settings?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Video player 'stretch' options stretch every pixel equally — faces look wide and distorted. Some players offer 'zoom' which crops like our Crop mode. No player offers non-linear warping like Smoothie. Ultrawider adds both modes plus quality-aware recommendations and a one-click switcher, on every site, automatically."
+          }
+        }
+      ]
+    }
+    </script>
+  </head>
+  <body>
+    <noscript><div><img src="https://mc.yandex.ru/watch/109480276" style="position:absolute;left:-9999px" alt="" /></div></noscript>
+    <header class="site-header">
+      <div class="container nav">
+        <a href="/" class="logo">
+          <span class="logo-mark"></span>
+          <span class="logo-text">Ultrawider</span>
+        </a>
+        <nav class="nav-links">
+          <a href="/#playground">Playground</a>
+          <a href="/#math">For geeks</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/#faq">FAQ</a>
+          <a href="/" class="btn-ghost btn-sm">Back to home</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div class="container">
+          <span class="eyebrow">Answers</span>
+          <h1>Questions people actually ask.</h1>
+          <p class="lead">
+            Black bars, wide faces, Netflix DRM, free vs Pro — straight
+            answers, no marketing fluff.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+          <style>
+            .faq-item { border-bottom: 1px solid rgba(255,255,255,0.08); padding: 24px 0; }
+            .faq-item h2 { font-size: 1.15rem; font-weight: 700; margin: 0 0 10px; color: #f5f5f5; }
+            .faq-item p { font-size: 0.95rem; line-height: 1.6; color: #a3a3a3; margin: 0; max-width: 72ch; }
+            .faq-item strong { color: #f5f5f5; }
+            .faq-item code { background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 4px; font-size: 0.85em; color: #f5a623; }
+          </style>
+
+          <div class="faq-item">
+            <h2>Why do I get black bars on my ultrawide monitor?</h2>
+            <p>Most video is <strong>16:9</strong> (like 1920×1080). Your monitor is <strong>21:9</strong> (3440×1440) or wider. The video can't fill the extra width, so the player letterboxes it with black bars on the sides. Ultrawider fills those bars — <strong>Smoothie</strong> stretches without cropping, <strong>Crop</strong> zooms with cropping.</p>
+          </div>
+
+          <div class="faq-item">
+            <h2>Why do faces look wide and fat when I stretch video?</h2>
+            <p>Uniform stretching makes every pixel ~<strong>33% wider</strong> on a 21:9 screen. A face that's naturally oval becomes round. <strong>Smoothie</strong> fixes this with a non-linear warp: edges stretch far more than the center. The middle of the frame — where faces are — stays nearly unchanged. <a href="/guides/faces">Read the full explanation →</a></p>
+          </div>
+
+          <div class="faq-item">
+            <h2>Does Ultrawider work on Netflix?</h2>
+            <p><strong>Yes</strong>. Works on Netflix, Prime Video, Disney+, Twitch, Crunchyroll and other DRM-protected platforms. The warp engine applies after the DRM pipeline renders — no protection is bypassed.</p>
+          </div>
+
+          <div class="faq-item">
+            <h2>Is Ultrawider free?</h2>
+            <p><strong>Free on YouTube forever</strong>. For all other sites: <strong>7-day free trial</strong> (email only, no card) → then <strong>$24/year</strong>. One key for up to 3 devices. Cancel anytime. <a href="/trial">Start free trial →</a></p>
+          </div>
+
+          <div class="faq-item">
+            <h2>What's the difference between Smoothie and Crop?</h2>
+            <p><strong>Crop</strong>: instant zoom, cuts top/bottom, works everywhere, free.<br><strong>Smoothie</strong>: non-linear stretch, nothing lost, faces stay true, works on DRM. Premium mode.</p>
+          </div>
+
+          <div class="faq-item">
+            <h2>Which browsers are supported?</h2>
+            <p>Chrome, Edge, Brave, Opera — any Chromium browser. <strong>Firefox not supported</strong> (rendering limitations).</p>
+          </div>
+
+          <div class="faq-item">
+            <h2>Will Smoothie make the picture blurry?</h2>
+            <p>On good sources (1080p+, decent bitrate) — no, it looks great. On <strong>low-quality sources</strong> (sub-720p, heavy compression), stretching amplifies artifacts. Ultrawider's quality indicator warns you and recommends <strong>Crop</strong> when the source is too soft.</p>
+          </div>
+
+          <div class="faq-item">
+            <h2>How is this different from player settings?</h2>
+            <p>Player "stretch" makes everything wide. Player "zoom" is just Crop. <strong>No player offers non-linear warping.</strong> Ultrawider adds both modes + quality recommendations + one-click switcher, automatically on every site.</p>
+          </div>
+
+          <div class="faq-item">
+            <h2>Ready to try?</h2>
+            <p>
+              <a href="/" style="color: #f5a623; font-weight: 600;">Install Ultrawider →</a> (Chrome / Edge, free on YouTube)<br>
+              <a href="/trial" style="color: #f5a623; font-weight: 600;">7-day free trial →</a> (all sites, no card)<br>
+              <a href="/pricing" style="color: #a3a3a3;">See pricing</a>
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="logo">
+            <span class="logo-mark"></span>
+            <span class="logo-text">Ultrawider</span>
+          </a>
+          <p class="footer-tag">Built for ultrawide.</p>
+        </div>
+        <nav class="footer-nav">
+          <h4>Product</h4>
+          <a href="/#playground">Playground</a>
+          <a href="/guides/black-bars">Guides</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/faq">FAQ</a>
+        </nav>
+        <nav class="footer-nav">
+          <h4>Account</h4>
+          <a href="/recover">Recover license</a>
+          <a href="/contact">Contact support</a>
+        </nav>
+        <nav class="footer-nav">
+          <h4>Legal</h4>
+          <a href="/terms.html">Terms of Service</a>
+          <a href="/privacy.html">Privacy Policy</a>
+          <a href="/refund.html">Support Policy</a>
+        </nav>
+      </div>
+      <div class="container footer-bottom">
+        <span>© 2026 Ultrawider. All rights reserved.</span>
+      </div>
+    </footer>
+  </body>
+</html>

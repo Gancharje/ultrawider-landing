@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Why Faces Look Wide on Ultrawide Monitors — and How to Fix It</title>
+    <meta name="description" content="The science of why stretched video makes faces look fat on ultrawide monitors, and how non-linear warping (Smoothie) fixes it while keeping center true." />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#050505" />
+    <link rel="canonical" href="https://ultrawider.net/guides/faces" />
+    <link rel="stylesheet" href="/style.css?v=16" />
+    <link rel="stylesheet" href="/assets/styles.css?v=19" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container nav">
+        <a href="/" class="logo"><span class="logo-mark"></span><span class="logo-text">Ultrawider</span></a>
+        <nav class="nav-links">
+          <a href="/#playground">Playground</a>
+          <a href="/pricing">Pricing</a>
+          <a href="/faq">FAQ</a>
+          <a href="/" class="btn-ghost btn-sm">Home</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div class="container">
+          <span class="eyebrow">Guide</span>
+          <h1>Why faces look wide on ultrawide monitors</h1>
+          <p class="lead">The math behind "fat face syndrome" — and the non-linear fix.</p>
+        </div>
+      </section>
+
+      <section>
+        <div class="container" style="max-width: 72ch; padding-bottom: 60px;">
+          <style>
+            .guide p { color: #a3a3a3; line-height: 1.7; font-size: 1rem; margin: 0 0 16px; }
+            .guide h2 { color: #f5f5f5; font-size: 1.2rem; margin: 32px 0 12px; }
+            .guide strong { color: #f5f5f5; }
+            .guide .number { color: #f5a623; font-family: 'JetBrains Mono', monospace; }
+            .guide .cta { margin-top: 40px; padding: 20px; background: rgba(245,166,35,0.08); border: 1px solid rgba(245,166,35,0.25); border-radius: 12px; }
+            .guide .cta a { color: #f5a623; font-weight: 600; text-decoration: none; }
+            .guide .cta p { margin: 0; color: #d4d4d4; }
+          </style>
+
+          <div class="guide">
+            <p>You bought an ultrawide monitor to see more. Then you play a 16:9 video and either get black bars on the sides, or — if you stretch — everyone looks like they gained 30 pounds. Here's why, and what actually works.</p>
+
+            <h2>The problem: uniform stretching</h2>
+            <p>A 16:9 video is, say, <span class="number">1920×1080</span>. Your 21:9 monitor is <span class="number">3440×1440</span>. To fill the screen, you need to stretch the width by <span class="number">3440/1920 = 1.79×</span> while the height only stretches by <span class="number">1440/1080 = 1.33×</span>. The result: every pixel becomes <span class="number">1.79/1.33 = 1.34×</span> wider than tall. A round face becomes an oval — 34% too wide.</p>
+
+            <p>This is called <strong>anamorphic distortion</strong> — the same effect you get watching a CinemaScope movie on a square TV. It's not a bug in your monitor or player; it's basic geometry.</p>
+
+            <h2>Why you can't just "unstretch" the center</h2>
+            <p>What if you stretch the edges more than the center? Then faces in the middle stay close to their natural proportions, while the sides — backgrounds, landscapes, crowd scenes — absorb the extra width. This is exactly what <strong>Smoothie</strong> does.</p>
+
+            <p>The key insight: viewers look at the <strong>center of the frame</strong>. That's where faces, dialogue, and action live. The edges are peripheral — a stretch there is barely noticed. So Smoothie applies a <strong>logarithmic stretch curve</strong>:</p>
+
+            <p style="text-align:center; font-family: 'JetBrains Mono', monospace; color: #f5a623; padding: 12px; background: rgba(255,255,255,0.03); border-radius: 8px;">
+              stretch(x) = 1.0 at center → up to 1.86× at edges
+            </p>
+
+            <p>At the exact center of the frame, the stretch factor is <strong>exactly 1.0×</strong> — zero distortion. As you move toward the edges, stretching increases gradually. A face at center-left or center-right gets maybe 1.05× wider — imperceptible. A background tree at the far edge gets 1.86× wider — invisible because you're not looking there.</p>
+
+            <h2>The result</h2>
+            <p>With Smoothie:</p>
+            <p>✅ The full frame fills your ultrawide screen — no black bars<br>
+            ✅ Faces stay true (center stretch = 1.0×)<br>
+            ✅ Nothing is cropped or lost<br>
+            ✅ Works on Netflix and other DRM streams<br>
+            ✅ No visible seams or artifacts</p>
+
+            <h2>Why hasn't anyone done this before?</h2>
+            <p>Non-linear video warping requires real-time pixel manipulation, which is expensive. Historically this needed WebGL canvas overlays — which break on DRM-protected content. Ultrawider uses an <strong>SVG displacement map filter</strong> that the browser's compositor applies directly to the video element, making it work everywhere — including Netflix — with near-zero CPU cost.</p>
+
+            <div class="cta">
+              <p><strong>See it on your own video:</strong> <a href="/#playground">try the live demo →</a> or <a href="/">install Ultrawider</a> (free on YouTube)</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-bottom">
+        <span>© 2026 Ultrawider. <a href="/">Home</a> · <a href="/faq">FAQ</a> · <a href="/pricing">Pricing</a></span>
+      </div>
+    </footer>
+  </body>
+</html>
