@@ -1,0 +1,51 @@
+/* Comparison pages: two-column layout, our side (left) carries the amber
+   weight, theirs is muted neutral. Unique features get the only accent. */
+
+.cmp-hero { padding: 48px 0 24px; }
+.cmp-hero h1 { font-family: 'Bricolage Grotesque', sans-serif; font-size: clamp(1.8rem, 5vw, 2.6rem); font-weight: 800; color: #f5f5f5; letter-spacing: -0.02em; margin: 0 0 8px; }
+.cmp-hero .lead { color: #a3a3a3; font-size: 1.05rem; line-height: 1.6; max-width: 60ch; margin: 0; }
+.cmp-hero .eyebrow { color: #f5a623; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; display: block; margin-bottom: 12px; }
+
+.cmp-section { padding: 8px 0 80px; }
+.cmp-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border-radius: 14px; border: 1px solid rgba(255,255,255,0.08); background: rgba(10,10,10,0.6); }
+.cmp-table { width: 100%; border-collapse: collapse; min-width: 560px; }
+.cmp-table th { padding: 14px 16px; font-family: 'Bricolage Grotesque', sans-serif; font-size: 0.95rem; font-weight: 700; text-align: left; border-bottom: 2px solid rgba(255,255,255,0.12); }
+.cmp-table th.us { color: #f5a623; }
+.cmp-table th.them { color: #737373; }
+.cmp-table td { padding: 10px 16px; font-size: 0.88rem; line-height: 1.5; border-bottom: 1px solid rgba(255,255,255,0.05); vertical-align: top; }
+.cmp-table td.feat { color: #d4d4d4; font-weight: 500; width: 30%; }
+.cmp-table td.us { color: #e8dcc8; background: rgba(245,166,35,0.04); border-left: 2px solid rgba(245,166,35,0.2); }
+.cmp-table td.them { color: #8a8a8a; }
+.cmp-table tr:last-child td { border-bottom: none; }
+.ok { color: #4ade80; margin-right: 4px; }
+.nok { color: #525252; }
+.uniq { color: #f5a623; font-weight: 600; }
+.price-good { color: #f5a623; font-weight: 700; font-size: 1rem; }
+.price-meh { color: #8a8a8a; }
+
+.cmp-why { margin-top: 48px; }
+.cmp-why h2 { font-family: 'Bricolage Grotesque', sans-serif; font-size: 1.3rem; font-weight: 700; color: #f5f5f5; margin: 0 0 20px; letter-spacing: -0.01em; }
+.why-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.why-card { padding: 20px; border-radius: 12px; background: rgba(245,166,35,0.06); border: 1px solid rgba(245,166,35,0.15); }
+.why-card h3 { font-family: 'Bricolage Grotesque', sans-serif; font-size: 0.95rem; font-weight: 700; color: #f5a623; margin: 0 0 8px; }
+.why-card p { font-size: 0.88rem; line-height: 1.6; color: #a3a3a3; margin: 0; }
+.why-card strong { color: #f5f5f5; }
+
+.cmp-when { margin-top: 32px; padding: 16px 20px; border-radius: 10px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.06); }
+.cmp-when p { font-size: 0.85rem; color: #737373; line-height: 1.6; margin: 0; }
+.cmp-when strong { color: #a3a3a3; }
+
+.cmp-cta { margin-top: 48px; text-align: center; }
+.cmp-cta .btn-main { display: inline-flex; align-items: center; gap: 8px; padding: 14px 32px; background: #f5a623; border: none; border-radius: 10px; color: #0a0a0a; font: 700 1rem 'Bricolage Grotesque', sans-serif; text-decoration: none; letter-spacing: 0.02em; }
+.cmp-cta .btn-main:hover { background: #f5b744; }
+.cmp-cta .btn-sub { display: inline-flex; margin-left: 12px; padding: 14px 24px; background: transparent; border: 1px solid rgba(245,166,35,0.3); border-radius: 10px; color: #f5a623; font: 500 0.9rem 'Inter', sans-serif; text-decoration: none; }
+.cmp-cta .btn-sub:hover { border-color: #f5a623; }
+.cmp-cta p.note { color: #525252; font-size: 0.8rem; margin: 12px 0 0; }
+
+.cmp-nav { margin-top: 56px; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.06); display: flex; gap: 24px; flex-wrap: wrap; }
+.cmp-nav a { color: #737373; font-size: 0.85rem; text-decoration: none; }
+.cmp-nav a:hover { color: #f5a623; }
+
+@media (max-width: 480px) {
+  .cmp-cta .btn-sub { margin-left: 0; margin-top: 12px; }
+}

@@ -2,13 +2,17 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Ultrawider vs UltraWideo — Which Ultrawide Video Extension Wins?</title>
-    <meta name="description" content="Ultrawider ($24/yr, Smoothie warp, quality recommendations) vs UltraWideo (freemium, ambient light, 41 languages). Honest feature and pricing comparison." />
+    <title>Ultrawider vs UltraWideo — Which Ultrawide Extension Wins?</title>
+    <meta name="description" content="Ultrawider ($24/yr, Smoothie non-linear warp, quality recommendations) vs UltraWideo (freemium, no non-linear stretch). Compare features and pricing." />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#050505" />
     <link rel="canonical" href="https://ultrawider.net/compare/ultrawideo" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" />
     <link rel="stylesheet" href="/style.css?v=16" />
     <link rel="stylesheet" href="/assets/styles.css?v=19" />
+    <link rel="stylesheet" href="/compare/cmp.css" />
   </head>
   <body>
     <header class="site-header">
@@ -24,78 +28,80 @@
     </header>
 
     <main>
-      <section class="page-hero">
+      <section class="cmp-hero">
         <div class="container">
           <span class="eyebrow">Comparison</span>
           <h1>Ultrawider vs UltraWideo</h1>
-          <p class="lead">Both are polished. Here's the honest breakdown.</p>
+          <p class="lead">UltraWideo is polished — 4.4★, 70K users, 41 languages. But it stretches every pixel equally. If faces looking natural matters, that's the difference.</p>
         </div>
       </section>
 
-      <section>
-        <div class="container" style="max-width: 80ch; padding-bottom: 60px;">
-          <div class="cmp">
-            <table>
-              <tr>
-                <th>Feature</th>
-                <th>Ultrawider</th>
-                <th>UltraWideo</th>
-              </tr>
-              <tr><td>Non-linear stretch</td><td class="yes">✅ Smoothie</td><td class="no">❌ (Normal, Upscale, Stretch, Custom)</td></tr>
-              <tr><td>Crop / zoom</td><td class="yes">✅</td><td class="yes">✅</td></tr>
-              <tr><td>DRM (Netflix etc.)</td><td class="yes">✅ Optimized</td><td class="yes">✅</td></tr>
-              <tr><td>Quality recommendations</td><td class="win">✅ Unique</td><td class="no">❌</td></tr>
-              <tr><td>Mini-switcher</td><td class="win">✅ Unique</td><td class="no">❌</td></tr>
-              <tr><td>7-day trial</td><td class="win">✅ No card</td><td class="no">❌ PRO locked</td></tr>
-              <tr><td>Price</td><td class="win">$24/year</td><td>Freemium + PRO</td></tr>
-              <tr><td>Ambient light</td><td class="no">❌</td><td class="yes">✅ PRO</td></tr>
-              <tr><td>Adaptive sharpening</td><td class="no">❌</td><td class="yes">✅ PRO</td></tr>
-              <tr><td>Per-path settings</td><td class="no">❌ (per-site only)</td><td class="yes">✅ PRO</td></tr>
-              <tr><td>Cloud sync</td><td class="part">⚠️ browser sync</td><td class="yes">✅ PRO</td></tr>
-              <tr><td>Letterbox crop (baked-in bars)</td><td class="no">❌</td><td class="yes">✅ PRO</td></tr>
-              <tr><td>Languages</td><td>English</td><td class="yes">✅ 41</td></tr>
-              <tr><td>Firefox</td><td class="no">❌</td><td class="yes">✅</td></tr>
-              <tr><td>Users</td><td>~600</td><td>70,000</td></tr>
-              <tr><td>Store rating</td><td>New</td><td class="yes">4.4★</td></tr>
+      <section class="cmp-section">
+        <div class="container">
+          <div class="cmp-table-wrap">
+            <table class="cmp-table">
+              <tr><th></th><th class="us">Ultrawider</th><th class="them">UltraWideo</th></tr>
+              <tr><td class="feat">Non-linear stretch (faces stay true)</td><td class="us"><span class="ok">✓</span> Smoothie warp</td><td class="them"><span class="nok">✗ Uniform stretch — 34% wider faces</span></td></tr>
+              <tr><td class="feat">Crop / zoom</td><td class="us"><span class="ok">✓</span></td><td class="them"><span class="ok">✓</span></td></tr>
+              <tr><td class="feat">DRM (Netflix etc.)</td><td class="us"><span class="ok">✓</span> Engine-verified</td><td class="them"><span class="ok">✓</span></td></tr>
+              <tr><td class="feat">Quality recommendations</td><td class="us"><span class="uniq">✓ Only extension that does this</span></td><td class="them"><span class="nok">—</span></td></tr>
+              <tr><td class="feat">One-click mini-switcher</td><td class="us"><span class="uniq">✓ Only extension that does this</span></td><td class="them"><span class="nok">—</span></td></tr>
+              <tr><td class="feat">Try full Pro free</td><td class="us"><span class="ok">✓</span> 7 days, no card</td><td class="them"><span class="nok">PRO locked</span></td></tr>
+              <tr><td class="feat">Subtitle-safe crop</td><td class="us"><span class="ok">✓</span> Preserves bottom 12%</td><td class="them">Standard crop</td></tr>
+              <tr><td class="feat">Letterbox crop (baked-in bars)</td><td class="us"><span class="nok">—</span></td><td class="them">PRO</td></tr>
+              <tr><td class="feat">Ambient light</td><td class="us"><span class="nok">—</span></td><td class="them">PRO</td></tr>
+              <tr><td class="feat">Per-path rules</td><td class="us">Per-site</td><td class="them">PRO</td></tr>
+              <tr><td class="feat">Firefox</td><td class="us"><span class="nok">—</span></td><td class="them"><span class="ok">✓</span></td></tr>
+              <tr><td class="feat">Languages</td><td class="us">English</td><td class="them"><span class="ok">✓</span> 41</td></tr>
+              <tr><td class="feat">Users</td><td class="us">Growing</td><td class="them">70K</td></tr>
+              <tr><td class="feat">Store rating</td><td class="us">New</td><td class="them">4.4★</td></tr>
             </table>
+          </div>
 
-            <h2>Where UltraWideo wins</h2>
-            <p>Best store rating (4.4★), 70K users, 41 languages, cross-browser (Chrome + Firefox). Their <strong>letterbox detection</strong> crops bars baked into the video itself (not just player letterboxing) — clever. Per-path rules let you configure individual channels/videos differently. Cloud sync. Ambient light effect.</p>
-
-            <h2>Where Ultrawider wins</h2>
-            <p><strong>1. Smoothie warp:</strong> UltraWideo has stretch modes but <strong>no non-linear stretching</strong> — uniform stretch only. Faces look 34% wider. Our Smoothie preserves center at exactly 1.0× — faces stay true.</p>
-            <p><strong>2. Quality recommendations:</strong> We measure stream quality and recommend Crop when Smoothie would look soft. Unique.</p>
-            <p><strong>3. Price + trial:</strong> $24/yr flat with 7-day full trial. No locked PRO features behind freemium gates during trial.</p>
-            <p><strong>4. Simpler:</strong> Two modes instead of four. Quality recommendations mean you don't have to figure out which mode to use — we tell you.</p>
-
-            <h2>Bottom line</h2>
-            <p>UltraWideo is the most polished competitor — great rating, broad platform support, rich features. But they don't have non-linear stretching, which is the core of what ultrawide video should look like. If faces looking natural matters to you, that's the difference.</p>
-
-            <div class="cta">
-              <p><strong>See the difference on your own video:</strong> <a href="/#playground">live demo →</a> or <a href="/trial">7-day trial →</a></p>
+          <div class="cmp-why">
+            <h2>Why people choose Ultrawider</h2>
+            <div class="why-grid">
+              <div class="why-card">
+                <h3>Faces stay natural</h3>
+                <p>UltraWideo has four stretch modes, but <strong>none are non-linear</strong> — every pixel stretches equally. On a 21:9 screen that's 34% wider faces. Smoothie stretches edges far more than center, so <strong>faces at screen center look exactly right</strong>.</p>
+              </div>
+              <div class="why-card">
+                <h3>Two modes, not four</h3>
+                <p>UltraWideo's Normal / Upscale / Stretch / Custom is powerful but requires you to figure out which to use. Ultrawider has <strong>Smoothie and Crop</strong> — and quality recommendations tell you which fits your current stream.</p>
+              </div>
+              <div class="card why-card">
+                <h3>Flat $24/yr, full trial</h3>
+                <p>7-day full Pro trial with no card, then $24/year. No freemium gates during the trial — you experience everything before deciding.</p>
+              </div>
+              <div class="why-card">
+                <h3>Simpler to use</h3>
+                <p>One click to switch modes via mini-switcher. No settings panel, no mode manager, no learning curve. <strong>Install, fullscreen, done.</strong></p>
+              </div>
             </div>
+          </div>
+
+          <div class="cmp-when">
+            <p><strong>When UltraWideo might work better:</strong> if you're on Firefox, need 41 languages, or want ambient light and per-URL rules. Their letterbox detection (cropping bars baked into the video) is also clever. Genuinely well-built — but no non-linear stretching.</p>
+          </div>
+
+          <div class="cmp-cta">
+            <a href="/trial" class="btn-main">Try free for 7 days</a>
+            <a href="/#playground" class="btn-sub">See Smoothie demo</a>
+            <p class="note">No credit card. Full Pro access.</p>
+          </div>
+
+          <div class="cmp-nav">
+            <a href="/compare/zoom-to-fill">vs Zoom to Fill →</a>
+            <a href="/compare/ultrawidify">vs Ultrawidify →</a>
+            <a href="/">← Home</a>
           </div>
         </div>
       </section>
     </main>
 
-    <style>
-      .cmp table { width: 100%; border-collapse: collapse; margin: 20px 0 32px; }
-      .cmp th { text-align: left; padding: 10px 12px; color: #f5f5f5; border-bottom: 2px solid rgba(255,255,255,0.15); font-size: 0.9rem; }
-      .cmp td { padding: 8px 12px; color: #a3a3a3; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 0.9rem; }
-      .cmp td:first-child { color: #d4d4d4; font-weight: 500; }
-      .cmp .yes { color: #4ade80; } .cmp .no { color: #ef4444; } .cmp .part { color: #f5a623; }
-      .cmp h2 { color: #f5f5f5; font-size: 1.2rem; margin: 36px 0 12px; }
-      .cmp p { color: #a3a3a3; line-height: 1.7; font-size: 1rem; margin: 0 0 16px; }
-      .cmp strong { color: #f5f5f5; }
-      .cmp .win { color: #f5a623; font-weight: 600; }
-      .cmp .cta { margin-top: 40px; padding: 20px; background: rgba(245,166,35,0.08); border: 1px solid rgba(245,166,35,0.25); border-radius: 12px; }
-      .cmp .cta a { color: #f5a623; font-weight: 600; text-decoration: none; }
-      .cmp .cta p { margin: 0; color: #d4d4d4; }
-    </style>
     <footer class="site-footer">
       <div class="container footer-bottom">
-        <span>© 2026 Ultrawider. <a href="/">Home</a> · <a href="/compare/zoom-to-fill">vs Zoom to Fill →</a> · <a href="/compare/ultrawidify">vs Ultrawidify →</a></span>
+        <span>© 2026 Ultrawider. <a href="/">Home</a> · <a href="/faq">FAQ</a> · <a href="/pricing">Pricing</a></span>
       </div>
     </footer>
   </body>
