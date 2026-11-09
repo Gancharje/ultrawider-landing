@@ -21,7 +21,7 @@
       href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@10..96,75..100,400..800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
     />
     <link rel="stylesheet" href="/style.css?v=16" />
-    <link rel="stylesheet" href="/assets/styles.css?v=19" />
+    <link rel="stylesheet" href="/assets/styles.css?v=20" />
     <script src="/assets/config.js"></script>
     <script src="/assets/error-instrumentation.js"></script>
     <script src="/assets/ads-gtag.js"></script>
@@ -85,6 +85,20 @@
             </div>
           </div>
 
+          <!-- THE FREE WEEK, SAID OUT LOUD (owner 10.11, the 1.1.7 post-mortem):
+               the extension's paywalled mode-button used to land here with the
+               buyer never learning the 7-day week existed (5 of 26 UW deaths
+               were paywall clicks without a purchase). Every path to this page
+               now meets the free door first. -->
+          <div class="trial-banner" id="trial-banner" role="region" aria-label="Free trial">
+            <div class="trial-banner-text">
+              <strong>New here? Your first 7 days of Pro are free.</strong>
+              No card, no auto-renew — your Pro key arrives by email, and both
+              modes (including Netflix and other DRM sites) unlock for a week.
+            </div>
+            <a class="trial-banner-cta" id="trial-banner-link" href="/trial">Start free week</a>
+          </div>
+
           <div class="plans" id="plans"></div>
 
           <p class="pay-conversion-note" aria-live="polite">
@@ -143,6 +157,20 @@
         var root = document.getElementById('plans');
         var params = new URLSearchParams(location.search);
         var installId = params.get('install_id');
+
+        // Trial door passthrough (owner 10.11): keep the install bound so the
+        // one-trial-per-install fraud wall holds when the free week is claimed
+        // from this page.
+        (function () {
+          var a = document.getElementById('trial-banner-link');
+          if (!a) return;
+          var tp = new URLSearchParams();
+          if (installId) tp.set('install_id', installId);
+          var src = params.get('source');
+          if (src) tp.set('source', src + '_pricing');
+          var q = tp.toString();
+          if (q) a.href = '/trial?' + q;
+        })();
 
         // Funnel goal: metrika.js is deferred and runs AFTER this classic
         // script — wait for DOMContentLoaded when UW_METRIKA exists.
