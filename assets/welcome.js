@@ -260,6 +260,19 @@
     return w / h >= 2.1 || w >= 3200;
   }
 
+  // ─── 16:9 GATE (owner 10.11): confident NON-ultrawide installs see the
+  // gate first. STRICT by design: the only screen source is window.screen —
+  // the PHYSICAL monitor in CSS px (aspect survives any DPR/zoom), so an
+  // ultrawide in a windowed browser is never gated. Unknown dims fail OPEN
+  // (normal flow, no gate). A landscape phone can look 21:9-shaped
+  // (844×390) — "ultrawide" with a tiny min side is gated as a phone.
+  function gateApplies(dims) {
+    if (!dims || !dims.w || !dims.h) return false; // fail open
+    var min = Math.min(dims.w, dims.h);
+    if (isUltrawide(dims.w, dims.h) && min >= 500) return false; // real UW monitor
+    return true; // 16:9 / 16:10 / 4:3 / portrait / phone-landscape
+  }
+
   function tierLabel(w, h) {
     var tier = aspectTierFor(w, h);
     if (tier === 'super-ultrawide-32-9') return '32:9 super-ultrawide';
@@ -1064,6 +1077,91 @@
   var wiredStdSections = false;
   var wiredNoextSections = false;
 
+  // ─── 16:9 gate state ───
+  var gateWired = false;
+  var gateShownAt = 0;
+  var gateDraftTimer = null;
+  var gateDraftSent = '';
+
+  function showStdFlow() {
+    var flowStd = $('flow-std');
+    if (flowStd) flowStd.hidden = false;
+    wireStdSections();
+  }
+
+  function renderGate() {
+    var flowGate = $('flow-gate');
+    if (!flowGate) { showStdFlow(); return; } // markup missing → honest fallback
+    var res = $('gate-res');
+    if (res && state.dims) res.textContent = state.dims.w + ' × ' + state.dims.h + ' px';
+    flowGate.hidden = false;
+    if (!gateWired) {
+      gateWired = true;
+      wireGate();
+    }
+    if (!gateShownAt) {
+      gateShownAt = Date.now();
+      sendEvent('gate_shown', { w: state.dims && state.dims.w, h: state.dims && state.dims.h });
+    }
+  }
+
+  function wireGate() {
+    var cont = $('gate-continue');
+    if (cont) {
+      cont.addEventListener('click', function () {
+        sendEvent('gate_continue', { dwell_ms: gateShownAt ? Date.now() - gateShownAt : null });
+        var flowGate = $('flow-gate');
+        if (flowGate) flowGate.hidden = true;
+        showStdFlow();
+      });
+    }
+    var ta = $('gate-text');
+    var note = $('gate-draft-note');
+    function postGate(submitted) {
+      if (!state.iid) return;
+      postJSON('/api/screen-gate', {
+        install_id: state.iid,
+        screen_w: state.dims ? state.dims.w : null,
+        screen_h: state.dims ? state.dims.h : null,
+        text: (ta && ta.value ? ta.value : '').trim(),
+        submitted: submitted ? 1 : 0,
+      });
+    }
+    if (ta) {
+      // THE DRAFT IS THE PRODUCT (owner 10.11): every pause in typing saves
+      // the text server-side — a user who never clicks Send still answers.
+      ta.addEventListener('input', function () {
+        if (note) { note.textContent = 'Saving…'; note.classList.remove('saved'); }
+        if (gateDraftTimer) clearTimeout(gateDraftTimer);
+        gateDraftTimer = setTimeout(function () {
+          var v = (ta.value || '').trim();
+          if (v === gateDraftSent) return;
+          gateDraftSent = v;
+          postGate(false);
+          if (note) {
+            note.textContent = v ? 'Draft saved' : '';
+            if (v) note.classList.add('saved');
+          }
+        }, 700);
+      });
+    }
+    var send = $('gate-submit');
+    if (send) {
+      send.addEventListener('click', function () {
+        postGate(true);
+        sendEvent('gate_submit');
+        send.classList.add('wl-gate-cta--sent');
+        var svg = send.querySelector('svg');
+        if (svg) svg.hidden = true;
+        if (send.childNodes[0]) send.childNodes[0].textContent = 'Sent';
+        if (ta) ta.disabled = true;
+        if (note) note.textContent = '';
+        var thanks = $('gate-thanks');
+        if (thanks) thanks.hidden = false;
+      });
+    }
+  }
+
   function renderFlow() {
     var booting = $('wl-booting');
     if (booting) booting.hidden = true;
@@ -1075,9 +1173,17 @@
     var flowUw = $('flow-uw');
     var flowStd = $('flow-std');
     var flowNoext = $('flow-noext');
+    var flowGate = $('flow-gate');
     if (flowUw) flowUw.hidden = true;
     if (flowStd) flowStd.hidden = true;
     if (flowNoext) flowNoext.hidden = true;
+    if (flowGate) flowGate.hidden = true;
+
+    // Internal testing hook: ?force=gate previews the 16:9 gate on any screen.
+    if (BOOT.force === 'gate') {
+      renderGate();
+      return;
+    }
 
     if (state.flow === 'uw_no_ext') {
       if (flowNoext) flowNoext.hidden = false;
@@ -1087,8 +1193,13 @@
     }
 
     if (state.flow === 'std_16x9') {
-      if (flowStd) flowStd.hidden = false;
-      wireStdSections();
+      // THE GATE COMES FIRST for a confident non-UW INSTALL (owner 10.11):
+      // organic visitors and forced branches go straight to the std flow.
+      if (state.iid && !BOOT.force && gateApplies(state.dims)) {
+        renderGate();
+        return;
+      }
+      showStdFlow();
       return;
     }
 

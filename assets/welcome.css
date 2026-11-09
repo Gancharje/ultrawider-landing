@@ -1274,3 +1274,104 @@ main.account-page { flex: 1; }
   padding-top: 20px;
 }
 .wl-step2-works { margin: 0 0 12px; }
+
+/* ─── 16:9 GATE (owner 10.11) — the honest verdict for confident non-UW
+       installs. Same unit/verdict/card DNA as the std flow; the two BIG
+       CTAs are the page's loudest elements by design — the owner's brief:
+       the continue door and the send button must be impossible to miss. ─── */
+.wl-gate-verdict { text-align: left; }
+.wl-gate-eyebrow {
+  display: inline-block;
+  margin: 2px 0 14px;
+  padding: 5px 12px;
+  border: 1px solid var(--accent);
+  border-radius: 999px;
+  background: rgba(245, 158, 11, 0.07);
+  color: var(--accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.wl-gate-sub {
+  margin: 14px 0 0;
+  max-width: 56ch;
+  color: var(--text-dim);
+  line-height: 1.65;
+}
+.wl-gate-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 26px;
+  padding: 15px 30px;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-sm);
+  color: #0a0a0a;
+  font-family: inherit;
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.12s ease;
+}
+.wl-gate-cta svg { width: 19px; height: 19px; }
+.wl-gate-cta:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
+.wl-gate-cta:active { transform: scale(0.985); }
+
+.wl-gate-card { margin-top: 20px; }
+.wl-gate-label {
+  display: block;
+  margin: 18px 0 8px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.wl-gate-text {
+  width: 100%;
+  min-height: 110px;
+  padding: 13px 15px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  resize: vertical;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+.wl-gate-text::placeholder { color: var(--text-mute); }
+.wl-gate-text:focus {
+  outline: none;
+  border-color: var(--accent);
+  background: rgba(245, 158, 11, 0.04);
+}
+.wl-gate-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 16px;
+}
+.wl-gate-draft {
+  font-size: 0.8rem;
+  color: var(--text-mute);
+  transition: color 0.3s ease;
+}
+.wl-gate-draft.saved { color: #4ade80; }
+.wl-gate-cta--send { margin-top: 0; padding: 12px 26px; font-size: 0.95rem; }
+.wl-gate-cta--sent {
+  background: rgba(74, 222, 128, 0.14);
+  border-color: rgba(74, 222, 128, 0.5);
+  color: #4ade80;
+  cursor: default;
+  pointer-events: none;
+}
+@media (max-width: 560px) {
+  .wl-gate-cta { width: 100%; }
+  .wl-gate-cta--send { width: 100%; }
+}

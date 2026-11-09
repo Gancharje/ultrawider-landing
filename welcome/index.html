@@ -45,7 +45,7 @@
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16.png" />
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
     <link rel="stylesheet" href="/style.css?v=16" />
-    <link rel="stylesheet" href="/assets/welcome.css?v=10" />
+    <link rel="stylesheet" href="/assets/welcome.css?v=11" />
     <script src="/assets/config.js"></script>
     <script src="/assets/error-instrumentation.js"></script>
     <script src="/assets/ads-gtag.js"></script>
@@ -53,7 +53,7 @@
     <script src="/assets/aspect-profile.js" defer></script>
     <script src="/assets/warp-demo.js?v=14" defer></script>
     <script src="/assets/experiments.js?v=1" defer></script>
-    <script src="/assets/welcome.js?v=14" defer></script>
+    <script src="/assets/welcome.js?v=15" defer></script>
   </head>
   <body>
     <noscript><div><img src="https://mc.yandex.ru/watch/109480276" style="position:absolute;left:-9999px" alt="" /></div></noscript>
@@ -391,6 +391,65 @@
       </section>
 
       <!-- ── 16:9 flow (std_16x9) — ONE screen, TWO cards ─────────────── -->
+      <!-- ── 16:9 GATE (owner 10.11): a CONFIDENT non-ultrawide install lands
+           here first — honest verdict, one big door onward for the
+           we-got-it-wrong case, and a free-text ask whose draft is captured
+           even without a submit. Gate targeting is strict: window.screen
+           (the physical monitor, not the window), so an ultrawide in a
+           windowed browser never sees this page. -->
+      <section id="flow-gate" class="wl-flow container" hidden>
+        <div class="wl-unit">
+          <div class="wl-statusbar-slot" data-statusbar-slot></div>
+          <div class="wl-verdict wl-gate-verdict">
+            <span class="wl-gate-eyebrow">One honest check before you start</span>
+            <h1 class="wl-verdict-title">
+              Ultrawider today solves one thing:
+              <span class="text-accent">filling 21:9 / 32:9 screens.</span>
+            </h1>
+            <p id="gate-verdict-line">
+              We checked your screen: <strong id="gate-res">—</strong> —
+              it doesn&rsquo;t match 21:9 or 32:9.
+            </p>
+            <p class="wl-gate-sub">
+              The black side-bars this extension removes only exist on
+              ultrawide monitors. On this screen there is nothing to fill —
+              that&rsquo;s geometry, not a bug we can patch. If we read your
+              screen wrong — or you want to keep going anyway — the button
+              below continues the normal setup, everything works as usual.
+            </p>
+            <button type="button" id="gate-continue" class="wl-gate-cta">
+              We got it wrong — continue setup
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="lp-card wl-card wl-gate-card">
+          <h3 class="wl-card-title">Installed it on 16:9 on purpose? Tell us why.</h3>
+          <p class="wl-card-sub">
+            If you were hoping this extension does something for a screen like
+            yours — we&rsquo;d be very grateful for one line about the problem
+            you wanted to solve. A few answers will teach us what to build
+            next; nobody else even asks 16:9 users.
+          </p>
+          <label class="wl-gate-label" for="gate-text">What did you want Ultrawider to do on this screen?</label>
+          <textarea id="gate-text" class="wl-gate-text" rows="4" maxlength="4000"
+            placeholder="e.g. stretch video to fill without black bars on top/bottom, remove letterboxing, use my TV better…"></textarea>
+          <div class="wl-gate-row">
+            <span id="gate-draft-note" class="wl-gate-draft" aria-live="polite"></span>
+            <button type="button" id="gate-submit" class="wl-gate-cta wl-gate-cta--send">
+              Send
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            </button>
+          </div>
+          <div id="gate-thanks" hidden>
+            <p class="wl-thanks-line">
+              Thank you — genuinely. Every answer here shapes what we build next.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section id="flow-std" class="wl-flow container" hidden>
         <!-- S1 · Status bar + honest verdict, one attached unit -->
         <div class="wl-unit">
