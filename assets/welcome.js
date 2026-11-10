@@ -1093,7 +1093,15 @@
     var flowGate = $('flow-gate');
     if (!flowGate) { showStdFlow(); return; } // markup missing → honest fallback
     var res = $('gate-res');
-    if (res && state.dims) res.textContent = state.dims.w + ' × ' + state.dims.h + ' px';
+    if (res && state.dims) {
+      res.textContent = state.dims.w + ' × ' + state.dims.h + ' px';
+      // A FORCED PREVIEW ON AN ULTRAWIDE must say so (owner 10.11): the
+      // ?force=gate link shows this page on ANY screen — an ultrawide
+      // visitor would otherwise read their 3440×1440 as "doesn't match".
+      if (BOOT.force === 'gate' && isUltrawide(state.dims.w, state.dims.h)) {
+        res.textContent += ' — ultrawide: this screen would NEVER see this page (preview mode)';
+      }
+    }
     flowGate.hidden = false;
     if (!gateWired) {
       gateWired = true;
